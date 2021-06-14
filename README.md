@@ -1,63 +1,46 @@
-# CodeIgniter 4 Application Starter
+# CodeIgniter 4 Point Of Sales Project
+<img alt="php" src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white">
+<img alt="bootstrap" src="https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white">
+<img alt="bootstrap" src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
+<img alt="bootstrap" src="https://img.shields.io/badge/Codeigniter-EF4223?style=for-the-badge&logo=codeigniter&logoColor=white">
 
-## What is CodeIgniter?
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Point Of Sales - Aplikasi Kasir Berbasis Web
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+Point of Sales(POS) adalah suatu sistem yang digunakan oleh berbagai macam usaha ritel untuk menyelesaikan transaksi jual beli. Merupakan versi modern dari mesin kasir konvensional/cash register yang biasanya sudah dilengkapi dengan cash drawer. Aplikasi ini dikembangkan dengan menggunakan Codeigniter 4. Aplikasi ini merupakan versi beta dan terus mengalami pengembangan
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
-
-## Installation & updates
-
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
-
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
-
-## Setup
-
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use Github issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 7.3 or higher is required, with the following extensions installed:
-
+## System Requerements
+- PHP >= 7.4
+- GIT
+- Apache Server dan SQL Server => [Dapat diperoleh dengan menginstall `XAMPP` atau `Laragon`]
 - [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+- [libcurl](http://php.net/manual/en/curl.requirements.php)
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 
 - json (enabled by default - don't turn it off)
 - [mbstring](http://php.net/manual/en/mbstring.installation.php)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
 - xml (enabled by default - don't turn it off)
+
+## Installation & updates
+
+- Buka folder `xampp/htdocs` lalu clone repository ini dengan menggunakan perintah `git clone https://github.com/deyan-ardi/pos-project`
+- Buka folder pos-project di Visual StudiO Code, selanjutnya rename file `env rename` menjadi `.env`
+- Buat sebuah database di mysql, boleh menggunakan phpmyadmin. Selanjutnya buka file `.env` lalu lihat bagian `database.default.database = db_pos_project`, ganti `db_pos_project` menjadi nama database yang baru saja anda buat
+- Buka terminal/cmd, arahkan ke folder root project. Jalankan perintah `composer update`. Setelah itu, jalankan perintah berikut secara bertahap
+1. `php spark migrate`
+2. `php spark db:seed AddGroupUser`
+3. `php spark db:seed AddUserSuperAdmin`
+4. `php spark serve`
+- Jika tidak ada masalah, selanjutnya silahkan akses kehalaman `http://localhost:8080/` maka seharusnya halaman login akan muncul
+- Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
+## Update Information
+- Fix register activation
+- Add Myth/Auth to sistem
+- Create migration file
+- Create seeder file
+
+## Credit
+Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021
