@@ -1,0 +1,68 @@
+/*
+    description Of variables for build for theme layouts
+        1) menu-caption-color
+            List of color for sidebar menu caption
+
+        2) brand-background
+            List of color for logo background
+
+        3) header-dark-background
+            List of color for Dark Header
+
+        4) header-light-background
+            List of color for light Header
+
+        5) menu-dark-background
+            List of color for Dark sidebar menu
+
+        6) menu-light-background
+            List of color for light sidebar menu
+
+        7) menu-active-color
+            List of color for Active item highliter
+
+        8) menu-icon-color
+            List of color for sidebar menu items icon colors
+*/
+/**  =====================
+     box css start
+==========================  **/
+/* ====== [Box start ] ======== */
+body.box-layout {
+    position: static;
+    background-image: url("../../images/bg-images/5.jpg");
+    background-size: auto;
+    background-attachment: fixed;
+}
+
+body.box-layout .pcoded-header {
+    position: relative;
+}
+
+body.box-layout .pcoded-header ~ .pcoded-main-container {
+    padding-top: 0;
+    background: #eff3f6;
+}
+
+body.box-layout .pcoded-navbar {
+    position: fixed;
+    align-content: space-around;
+}
+
+body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
+    position: relative;
+}
+
+@media only screen and (max-width: 992px) {
+    body.box-layout {
+        position: relative;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .container {
+        padding: 0;
+    }
+}
+
+/* ====== [ Box end ] ======== */

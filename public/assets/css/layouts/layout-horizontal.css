@@ -1,0 +1,351 @@
+/*
+    description Of variables for build for theme layouts
+        1) menu-caption-color
+            List of color for sidebar menu caption
+
+        2) brand-background
+            List of color for logo background
+
+        3) header-dark-background
+            List of color for Dark Header
+
+        4) header-light-background
+            List of color for light Header
+
+        5) menu-dark-background
+            List of color for Dark sidebar menu
+
+        6) menu-light-background
+            List of color for light sidebar menu
+
+        7) menu-active-color
+            List of color for Active item highliter
+
+        8) menu-icon-color
+            List of color for sidebar menu items icon colors
+*/
+/**  =====================
+     horizontal css start
+==========================  **/
+/* menu[ horizontal ] css start */
+.pcoded-navbar.theme-horizontal {
+    display: block;
+    height: 64px;
+    width: 100%;
+    z-index: 1023;
+    box-shadow: none;
+    position: fixed;
+    top: 64px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-badge {
+    display: none;
+}
+
+.pcoded-navbar.theme-horizontal.top-nav-collapse {
+    top: 0;
+}
+
+.pcoded-navbar.theme-horizontal.default, .pcoded-navbar.theme-horizontal.default.top-nav-collapse {
+    top: 64px;
+}
+
+.pcoded-navbar.theme-horizontal.header-hide {
+    top: 0;
+}
+
+.pcoded-navbar.theme-horizontal.header-hide.top-nav-collapse {
+    top: -64px;
+}
+
+.pcoded-navbar.theme-horizontal.header-hide ~ .pcoded-main-container {
+    margin-top: 64px;
+}
+
+.pcoded-navbar.theme-horizontal .header-logo {
+    display: none;
+}
+
+.pcoded-navbar.theme-horizontal .sidenav-horizontal-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    white-space: nowrap;
+    transition: all 0.5s ease-in-out;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-menu-caption {
+    display: none;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li {
+    display: inline-block;
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li > a {
+    margin: 0;
+    padding: 8px 15px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li > a > .pcoded-mtext {
+    position: relative;
+    top: 0;
+    margin-right: 5px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li > a:after {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li:last-child > a {
+    margin-right: 70px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.active a, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-trigger a, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li:hover a {
+    box-shadow: none;
+    color: #fff;
+    background: transparent;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-hasmenu.active:before, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-hasmenu.pcoded-trigger:before {
+    content: "\6d";
+    position: absolute;
+    bottom: -29px;
+    left: 0;
+    font-family: "pct";
+    z-index: 1001;
+    font-size: 50px;
+    line-height: 1;
+    padding-left: calc(50% - 25px);
+    color: #39465C;
+    text-shadow: 0 3px 4px rgba(69, 90, 100, 0.05);
+    width: 100%;
+    height: 40px;
+    transform: scaleX(1.2);
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-hasmenu.active > .pcoded-submenu, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-hasmenu.pcoded-trigger > .pcoded-submenu {
+    margin-top: 30px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.active:after, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-trigger:after {
+    content: "";
+    background-color: #19BCBF;
+    z-index: 1027;
+    position: absolute;
+    left: 19px;
+    top: auto;
+    bottom: 5px;
+    width: 23px;
+    height: 2px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar > li.pcoded-hasmenu.edge > .pcoded-submenu {
+    left: auto;
+    right: 0;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu {
+    position: relative;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu {
+    opacity: 0;
+    visibility: hidden;
+    transform-origin: 50% 50%;
+    transition: transform 0.3s, opacity 0.3s;
+    transform-style: preserve-3d;
+    transform: rotateX(-90deg);
+    position: absolute;
+    min-width: 250px;
+    display: block;
+    z-index: 1;
+    top: 100%;
+    list-style: outside none none;
+    margin: 0;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 4px 24px 0 rgba(62, 57, 107, 0.18);
+    background: #fff;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu a {
+    color: #39465C;
+    padding: 10px 20px 10px 30px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu a:before {
+    left: 5px;
+    top: 19px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu li.active > a, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu li.pcoded-trigger > a, .pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu li:hover > a {
+    color: #19BCBF;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu .pcoded-submenu {
+    position: absolute;
+    min-width: 250px;
+    z-index: 1;
+    left: calc(100% + 10px);
+    top: -10px;
+    margin: 0 0 0 20px;
+    border-radius: 4px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu .pcoded-submenu:before {
+    content: "\6a";
+    position: absolute;
+    top: 8px;
+    left: -31px;
+    font-family: "pct";
+    z-index: 1001;
+    font-size: 50px;
+    line-height: 1;
+    color: #fff;
+    width: 40px;
+    height: 100%;
+    text-shadow: -8px 0 13px rgba(62, 57, 107, 0.08);
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu .pcoded-submenu a {
+    color: #39465C;
+    padding: 10px 20px 10px 30px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu .pcoded-submenu a:before {
+    left: 5px;
+    top: 19px;
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu .pcoded-hasmenu.edge .pcoded-submenu {
+    left: auto;
+    margin: 0 20px 0 0;
+    right: calc(100% + 10px);
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu .pcoded-submenu .pcoded-hasmenu.edge .pcoded-submenu:before {
+    content: '\6b';
+    left: auto;
+    right: -21px;
+    text-shadow: 8px 0 13px rgba(62, 57, 107, 0.08);
+}
+
+.pcoded-navbar.theme-horizontal .pcoded-inner-navbar .pcoded-hasmenu.pcoded-trigger > .pcoded-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: rotateX(0deg);
+}
+
+.pcoded-navbar.theme-horizontal .navbar-content {
+    display: flex;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header {
+    position: fixed;
+    top: 0;
+    margin-left: 0;
+    width: 100%;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header .b-title {
+    color: #39465C;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*='header-'] .b-title {
+    color: #fff;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header .m-header {
+    display: inline-flex;
+    padding: 0 15px;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header .m-header .logo-main,
+      .pcoded-navbar.theme-horizontal ~ .pcoded-header .m-header .logo-thumb {
+    display: none;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header .m-header .logo-dark {
+    display: inline-block;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header .mobile-menu {
+    display: none;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .m-header {
+    display: inline-flex;
+    padding: 0 15px;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .m-header .logo-dark,
+        .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .m-header .logo-thumb {
+    display: none;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .m-header .logo-main {
+    display: inline-block;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu {
+    color: #686c71;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu a {
+    color: #686c71;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li > a {
+    color: #686c71;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li.active, .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li:active, .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li:focus, .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li:hover {
+    background: rgba(25, 188, 191, 0.1);
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li.active > a, .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li:active > a, .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li:focus > a, .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown-menu > li:hover > a {
+    background: transparent;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] a,
+      .pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] dropdown-toggle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown .notification .noti-body li.notification:hover {
+    background: rgba(25, 188, 191, 0.1);
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown .profile-notification .pro-head {
+    color: #fff;
+    background: #19BCBF;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-header[class*="header-"] .dropdown .profile-notification .pro-head .dud-logout {
+    color: #fff;
+}
+
+.pcoded-navbar.theme-horizontal ~ .pcoded-main-container {
+    margin-top: 128px;
+    margin-left: 0;
+}
+
+/* menu [ horizontal ] css end */
