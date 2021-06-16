@@ -10,7 +10,7 @@ class ItemCategoryModel extends Model
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = ItemCategory::class;
+	protected $returnType           = ItemCategoryModel::class;
 	protected $useSoftDeletes       = true;
 	protected $allowedFields        = ['category_name', 'deleted_at'];
 

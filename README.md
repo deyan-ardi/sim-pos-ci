@@ -34,12 +34,8 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Jika tidak ada masalah, selanjutnya silahkan akses kehalaman `http://localhost:8080/` maka seharusnya halaman login akan muncul
 - Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
 ## Update Information
-Last Updated : 15 Juni 2021
-- Add and Implementation Template to Application
-- Create and Implementation Routing Application
-- Create Model
-- Create and Implementation Simple Controller
-- Setting `Auth.php` disable Registration
-- Show Login User information in dashboard
+Last Updated : 16 Juni 2021
+- Add Logic in ItemCategories File
+- CRUD in Item Categories Menu
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

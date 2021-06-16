@@ -38,6 +38,9 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
 $routes->group('categories', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Category::index');
+	$routes->patch('/', 'Category::index');
+	$routes->delete('/', 'Category::index');
+	$routes->post('/', 'Category::index');
 });
 
 $routes->group('items', ['namespace' => 'App\Controllers'], function ($routes) {
