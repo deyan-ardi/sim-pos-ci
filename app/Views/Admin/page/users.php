@@ -1,6 +1,6 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Users Login Page
+Data User Sistem
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
@@ -29,13 +29,11 @@ Users Login Page
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Point Of Sale Application</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Data User Sistem</h5>
                                         </div>
                                         <ul class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="index-2.html"><i
-                                                        class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Items
-                                                    Categories</a></li>
+                                            <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Data User Sistem</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -47,192 +45,156 @@ Users Login Page
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Multi-Column Ordering</h5>
+                                        <h5>List Data User Sistem</h5>
                                     </div>
                                     <div class="card-body">
+                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan User</button>
                                         <div class="dt-responsive table-responsive">
-                                            <table id="multi-colum-dt"
-                                                class="table table-striped table-bordered nowrap">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>#</th>
+                                                        <th>Foto User</th>
+                                                        <th>Email</th>
+                                                        <th>Nama User</th>
+                                                        <th>Kontak</th>
+                                                        <th>Hak Akses</th>
+                                                        <th>Status</th>
+                                                        <th>Diubah Terakhir</th>
+                                                        <th class="text-center"><i class="feather icon-settings"></i>
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Quinn Flynn</td>
-                                                        <td>System Architect</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>61</td>
-                                                        <td>2011/04/25</td>
-                                                        <td>$320,800</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Garrett Winters</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>63</td>
-                                                        <td>2011/07/25</td>
-                                                        <td>$170,750</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Ashton Cox</td>
-                                                        <td>Junior Technical Author</td>
-                                                        <td>San Francisco</td>
-                                                        <td>66</td>
-                                                        <td>2009/01/12</td>
-                                                        <td>$86,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Cedric Kelly</td>
-                                                        <td>Senior Javascript Developer</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>22</td>
-                                                        <td>2012/03/29</td>
-                                                        <td>$433,060</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Airi Satou</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>33</td>
-                                                        <td>2008/11/28</td>
-                                                        <td>$162,700</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brielle Williamson</td>
-                                                        <td>Integration Specialist</td>
-                                                        <td>New York</td>
-                                                        <td>61</td>
-                                                        <td>2012/12/02</td>
-                                                        <td>$372,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Herrod Chandler</td>
-                                                        <td>Sales Assistant</td>
-                                                        <td>San Francisco</td>
-                                                        <td>59</td>
-                                                        <td>2012/08/06</td>
-                                                        <td>$137,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Rhona Davidson</td>
-                                                        <td>Integration Specialist</td>
-                                                        <td>Tokyo</td>
-                                                        <td>55</td>
-                                                        <td>2010/10/14</td>
-                                                        <td>$327,900</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Colleen Hurst</td>
-                                                        <td>Javascript Developer</td>
-                                                        <td>San Francisco</td>
-                                                        <td>39</td>
-                                                        <td>2009/09/15</td>
-                                                        <td>$205,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sonya Frost</td>
-                                                        <td>Software Engineer</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>23</td>
-                                                        <td>2008/12/13</td>
-                                                        <td>$103,600</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Jena Gaines</td>
-                                                        <td>Office Manager</td>
-                                                        <td>London</td>
-                                                        <td>30</td>
-                                                        <td>2008/12/19</td>
-                                                        <td>$90,560</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Quinn Flynn</td>
-                                                        <td>Support Lead</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>22</td>
-                                                        <td>2013/03/03</td>
-                                                        <td>$342,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Charde Marshall</td>
-                                                        <td>Regional Director</td>
-                                                        <td>San Francisco</td>
-                                                        <td>36</td>
-                                                        <td>2008/10/16</td>
-                                                        <td>$470,600</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Haley Kennedy</td>
-                                                        <td>Senior Marketing Designer</td>
-                                                        <td>London</td>
-                                                        <td>43</td>
-                                                        <td>2012/12/18</td>
-                                                        <td>$313,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tatyana Fitzpatrick</td>
-                                                        <td>Regional Director</td>
-                                                        <td>London</td>
-                                                        <td>19</td>
-                                                        <td>2010/03/17</td>
-                                                        <td>$385,750</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Michael Silva</td>
-                                                        <td>Marketing Designer</td>
-                                                        <td>London</td>
-                                                        <td>66</td>
-                                                        <td>2012/11/27</td>
-                                                        <td>$198,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Paul Byrd</td>
-                                                        <td>Chief Financial Officer (CFO)</td>
-                                                        <td>New York</td>
-                                                        <td>64</td>
-                                                        <td>2010/06/09</td>
-                                                        <td>$725,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Gloria Little</td>
-                                                        <td>Systems Administrator</td>
-                                                        <td>New York</td>
-                                                        <td>59</td>
-                                                        <td>2009/04/10</td>
-                                                        <td>$237,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Bradley Greer</td>
-                                                        <td>Software Engineer</td>
-                                                        <td>London</td>
-                                                        <td>41</td>
-                                                        <td>2012/10/13</td>
-                                                        <td>$132,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dai Rios</td>
-                                                        <td>Personnel Lead</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>35</td>
-                                                        <td>2012/09/26</td>
-                                                        <td>$217,500</td>
-                                                    </tr>
+                                                    <?php
+                                                    $i = 1;
+                                                    foreach ($user as $c) : ?>
+                                                        <tr>
+                                                            <td><?= $i++; ?></td>
+                                                            <?php if (empty($c->user_image)) : ?>
+                                                                <td><img src="<?= base_url(); ?>/upload/user/user-default.jpg" width="50%" alt="Default Image"></td>
+                                                            <?php else : ?>
+                                                                <td><img src="<?= base_url(); ?>/upload/user/<?= $c->user_image; ?>" alt="Image User" width="50%"></td>
+                                                            <?php endif; ?>
+                                                            <td><?= $c->email; ?></td>
+                                                            <td><?= $c->username; ?></td>
+                                                            <td><?= !empty($c->user_number) ? $c->user_number : "Kosong"; ?></td>
+                                                            <td><?= ucWords(strtolower($c->name)); ?></td>
+                                                            <?php if ($c->active == 1) : ?>
+                                                                <td><button type="button" class="btn btn-icon btn-success"><i class="feather icon-check-circle" title="User Aktif" data-toggle="tooltip"></i></button></td>
+                                                            <?php else : ?>
+                                                                <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-alert-triangle" title="User Tidak Aktif" data-toggle="tooltip"></i></button></td>
+                                                            <?php endif; ?>
+                                                            <td>
+                                                                <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
+                                                            </td>
+                                                            <td>
+                                                                <div class="row justify-content-center">
+                                                                    <!-- Update Button Modal -->
+                                                                    <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->userid; ?>"><i class="feather icon-edit" title="Ubah User" data-toggle="tooltip"></i></button>
+
+                                                                    <!-- Update Modal -->
+                                                                    <div id="updateCategory-<?= $c->userid; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->userid; ?>" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->userid; ?>">Ubah Data
+                                                                                        Kategori</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form action="" method="POST" enctype="multipart/form-data">
+                                                                                        <?= csrf_field(); ?>
+                                                                                        <input type="hidden" name="_method" value="PATCH">
+                                                                                        <input type="hidden" name="id_user" value="<?= $c->userid; ?>">
+                                                                                        <div class="form-group">
+                                                                                            <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image_up') ? "is-invalid" : ""; ?>" name="user_image_up">
+                                                                                            <small id="file" class="form-text text-muted">Bersifat Opsional, jika ingin menambahkan silahkan sesuaikan foto profil yang diupload <br> maksimal 1 Mb, bertipe .jpg, .png. atau
+                                                                                                .jpeg</small>
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("user_image_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="email" class="form-control <?= $validation->getError('email_up') ? "is-invalid" : ""; ?>" name="email_up" required placeholder="Email User" value="<?= (old('email_up')) ? old('email_up') : $c->email; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("email_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('username_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="username_up" required placeholder="Nama User" value="<?= (old('username_up')) ? old('username_up') : $c->username; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("username_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="user_number_up" placeholder="Kontak User (Opsional)" value="<?= (old('user_number_up')) ? old('user_number_up') : $c->user_number; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("user_number_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="password" class="form-control <?= $validation->getError('password_up') ? "is-invalid" : ""; ?>" name="password_up" placeholder="Kata Sandi Akun" value="<?= (old('password_up')) ? old('password_up') : ""; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("password_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="password" class="form-control <?= $validation->getError('password_confirm_up') ? "is-invalid" : ""; ?>" name="password_confirm_up" placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm_up')) ? old('password_confirm_up') : ""; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("password_confirm_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <select class="form-control <?= $validation->getError('group_up') ? "is-invalid" : ""; ?>" name="group_up">
+                                                                                                <option value="">Pilih Hak Akses</option>
+                                                                                                <option value="1" <?= $c->name == "KASIR" ? "selected" : ""; ?>>Kasir</option>
+                                                                                                <option value="2" <?= $c->name == "ADMIN" ? "selected" : ""; ?>>Admin</option>
+                                                                                                <option value="3" <?= $c->name == "SUPER ADMIN" ? "selected" : ""; ?>>Super Admin</option>
+                                                                                                <option value="4" <?= $c->name == "ATASAN" ? "selected" : ""; ?>>Atasan</option>
+                                                                                            </select>
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("group_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="submit" name="update_user" value="update" class="btn btn-primary">Simpan
+                                                                                                Perubahan</button>
+                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                    <!-- Delete -->
+                                                                    <form action="" method="POST">
+                                                                        <?= csrf_field(); ?>
+                                                                        <input type="hidden" name="_method" value="DELETE" />
+                                                                        <input type="hidden" name="id_user" value="<?= $c->userid; ?>">
+                                                                        <button type="submit" name="delete_user" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus User" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                    </form>
+
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>#</th>
+                                                        <th>Foto User</th>
+                                                        <th>Email</th>
+                                                        <th>Nama User</th>
+                                                        <th>Kontak</th>
+                                                        <th>Hak Akses</th>
+                                                        <th>Status</th>
+                                                        <th>Diubah Terakhir</th>
+                                                        <th class="text-center"><i class="feather icon-settings"></i>
+                                                        </th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -250,4 +212,75 @@ Users Login Page
     </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<!-- Modal -->
+<div id="addCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryLabel">Tambah User Baru</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
+                    <div class="form-group">
+                        <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image') ? "is-invalid" : ""; ?>" name="user_image">
+                        <small id="file" class="form-text text-muted">Bersifat Opsional, jika ingin menambahkan silahkan sesuaikan foto profil yang diupload maksimal 1 Mb, bertipe .jpg, .png. atau
+                            .jpeg</small>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("user_image"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control <?= $validation->getError('email') ? "is-invalid" : ""; ?>" name="email" required placeholder="Email User" value="<?= (old('email')) ? old('email') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("email"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control <?= $validation->getError('username') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="username" required placeholder="Nama User" value="<?= (old('username')) ? old('username') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("username"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="user_number" placeholder="Kontak User (Opsional)" value="<?= (old('user_number')) ? old('user_number') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("user_number"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control <?= $validation->getError('password') ? "is-invalid" : ""; ?>" name="password" required placeholder="Kata Sandi Akun" value="<?= (old('password')) ? old('password') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("password"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control <?= $validation->getError('password_confirm') ? "is-invalid" : ""; ?>" name="password_confirm" required placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm')) ? old('password_confirm') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("password_confirm"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control <?= $validation->getError('group') ? "is-invalid" : ""; ?>" name="group">
+                            <option value="">Pilih Hak Akses</option>
+                            <option value="1">Kasir</option>
+                            <option value="2">Admin</option>
+                            <option value="3">Super Admin</option>
+                            <option value="4">Atasan</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("group"); ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="submit_user" value="submit" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>

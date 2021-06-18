@@ -27,7 +27,6 @@ class Supplier extends BaseController
 				'supplier_description' => 'required|max_length[500]',
 			]);
 			if (!$formSubmit) {
-				dd($formSubmit);
 				return redirect()->to('/suppliers')->withInput();
 			} else {
 				$save = $this->m_supplier->save([

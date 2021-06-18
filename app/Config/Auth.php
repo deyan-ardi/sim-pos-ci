@@ -287,7 +287,7 @@ class Auth extends \Myth\Auth\Config\Auth
 		'Myth\Auth\Authentication\Passwords\CompositionValidator',
 		'Myth\Auth\Authentication\Passwords\NothingPersonalValidator',
 		'Myth\Auth\Authentication\Passwords\DictionaryValidator',
-		// 'Myth\Auth\Authentication\Passwords\PwnedValidator',
+		'Myth\Auth\Authentication\Passwords\PwnedValidator',
 	];
 
 	/**

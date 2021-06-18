@@ -13,6 +13,7 @@ class CreateAuthTables extends Migration
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'email'            => ['type' => 'varchar', 'constraint' => 255],
             'username'         => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
+            'user_image'       => ['type' => 'longtext', 'null' => true],
             'user_number'      => ['type' => 'varchar', 'constraint' => 15, 'null' => true],
             'password_hash'    => ['type' => 'varchar', 'constraint' => 255],
             'reset_hash'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
@@ -143,7 +144,7 @@ class CreateAuthTables extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addKey('id');
+        $this->forge->addKey('id',true);
         $this->forge->addKey(['group_id', 'user_id']);
         $this->forge->addForeignKey('group_id', 'auth_groups', 'id', false, 'CASCADE');
         $this->forge->addForeignKey('user_id', 'users', 'id', false, 'CASCADE');

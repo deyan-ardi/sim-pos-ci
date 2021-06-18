@@ -355,13 +355,14 @@ class AuthController extends BaseController
 	 */
 	public function resendActivateAccount()
 	{
+
 		if ($this->config->requireActivation === null) {
 			return redirect()->route('login');
 		}
 
 		$throttler = service('throttler');
 
-		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false) {
+		if ($throttler->check(md5($this->request->getIPAddress()), 2, MINUTE) === false) {
 			return service('response')->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
 		}
 

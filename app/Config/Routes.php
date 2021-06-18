@@ -59,6 +59,9 @@ $routes->group('members', ['namespace' => 'App\Controllers'], function ($routes)
 
 $routes->group('users', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'User::index');
+	$routes->post('/', 'User::index');
+	$routes->patch('/', 'User::index');
+	$routes->delete('/', 'User::index');
 });
 
 $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($routes) {

@@ -13,7 +13,7 @@ class UserModel extends Model
     protected $useSoftDeletes = false;
 
     protected $allowedFields = [
-        'email', 'username', 'password_hash', 'reset_hash', 'reset_at', 'reset_expires', 'activate_hash',
+        'email', 'username', 'password_hash', 'reset_hash', 'reset_at','user_image', 'reset_expires', 'activate_hash',
         'status', 'status_message', 'active', 'force_pass_reset', 'permissions', 'deleted_at', 'user_number'
     ];
 
@@ -122,12 +122,16 @@ class UserModel extends Model
 
     public function getUserRole($id = null, $role = null)
     {
-        if ($id == null) {
-            $this->select('users.id as userid, username,user_number, email, name, password_hash,active');
+        if ($id == null && $role != null) {
+            $this->select('users.id as userid,auth_groups_users.id as groupid,user_image, username,user_number, email, name,updated_at, password_hash,active');
             $this->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
             return $this->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')->where('auth_groups_users.group_id', $role)->get()->getResultArray();
+        }else if($id == null) {
+            $this->select('users.id as userid,user_image, auth_groups_users.id as groupid,username,user_number, email, name, password_hash,updated_at,active');
+            $this->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+            return $this->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')->get()->getResult();
         } else if ($id != null) {
-            $this->select('users.id as userid, username,user_number, email, name, password_hash,active');
+            $this->select('users.id as userid,user_image,auth_groups_users.id as groupid, username,user_number, email, name, password_hash,updated_at,active');
             $this->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
             return $this->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')->where('users.id', $id)->get()->getResultArray();
         }
