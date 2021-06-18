@@ -9,8 +9,9 @@ Point of Sales(POS) adalah suatu sistem yang digunakan oleh berbagai macam usaha
 
 ## System Requerements
 - PHP >= 7.4
-- GIT
-- Apache Server dan SQL Server => [Dapat diperoleh dengan menginstall `XAMPP` atau `Laragon`]
+- [GIT Windows](https://git-scm.com/download/win)
+- [Composer](https://getcomposer.org/download/)
+- Apache Server dan SQL Server => [Dapat diperoleh dengan menginstall [XAMPP](https://www.apachefriends.org/download.html) atau [Laragon](https://laragon.org/download/index.html)]
 - [intl](http://php.net/manual/en/intl.requirements.php)
 - [libcurl](http://php.net/manual/en/curl.requirements.php)
 
@@ -24,7 +25,7 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 ## Installation & updates
 
 - Buka folder `xampp/htdocs` lalu clone repository ini dengan menggunakan perintah `git clone https://github.com/deyan-ardi/pos-project`
-- Buka folder pos-project di Visual StudiO Code, selanjutnya rename file `env rename` menjadi `.env`
+- Buka folder pos-project di Visual Studio Code, selanjutnya rename file `env rename` menjadi `.env`
 - Buat sebuah database di mysql, boleh menggunakan phpmyadmin. Selanjutnya buka file `.env` lalu lihat bagian `database.default.database = db_pos_project`, ganti `db_pos_project` menjadi nama database yang baru saja anda buat
 - Buka terminal/cmd, arahkan ke folder root project. Jalankan perintah `composer update`. Setelah itu, jalankan perintah berikut secara bertahap
 1. `php spark migrate`
@@ -34,8 +35,14 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Jika tidak ada masalah, selanjutnya silahkan akses kehalaman `http://localhost:8080/` maka seharusnya halaman login akan muncul
 - Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
 ## Update Information
-Last Updated : 16 Juni 2021
-- Add Logic in ItemCategories File
-- CRUD in Item Categories Menu
+Last Updated : 18 Juni 2021
+- CRUD Barang, Perbaikan CRUD Kategori Barang, CRUD Supplier
+- Penambahan tabel dan relasi baru
+- Penambahan kolom baru pada tabel Barang
+- Penambahan fungsi upload file/foto
+- Penambahan helper
+- Perubahan bahasa Views dari Bahasa Inggris menjadi Bahasa Indonesia
+- Perbaikan file Migrations dan Seeder
+- Penambahan item di Router File
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

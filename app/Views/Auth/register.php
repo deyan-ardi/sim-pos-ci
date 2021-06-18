@@ -1,7 +1,7 @@
 <?= $this->extend($config->viewLayout) ?>
 
 <?= $this->section('title') ?>
-Register Page
+Halaman Registrasi Akun
 <?= $this->endSection() ?>
 
 <?= $this->section('main') ?>
@@ -14,7 +14,7 @@ Register Page
                 <div class="col-md-6">
                     <div class="card-body">
                         <img src="<?= base_url(); ?>/assets/images/logo-dark.svg" alt="" class="img-fluid mb-4">
-                        <h4 class="mb-3 f-w-400">Sign up into your account</h4>
+                        <h4 class="mb-3 f-w-400">Daftar Akun Baru</h4>
                         <?= view('App\Auth\_message_block') ?>
 
                         <form action="<?= route_to('register') ?>" method="post">
@@ -39,30 +39,30 @@ Register Page
                             </div>
 
                             <div class="form-group">
-                                <label for="password"><?= lang('Auth.password') ?></label>
+                                <label for="password">Kata Sandi</label>
                                 <input type="password" name="password"
                                     class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>"
-                                    placeholder="<?= lang('Auth.password') ?>" autocomplete="off">
+                                    placeholder="********" autocomplete="off">
                             </div>
 
                             <div class="form-group">
-                                <label for="pass_confirm"><?= lang('Auth.repeatPassword') ?></label>
+                                <label for="pass_confirm">Ulang Kata Sandi</label>
                                 <input type="password" name="pass_confirm"
                                     class="form-control <?php if (session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>"
-                                    placeholder="<?= lang('Auth.repeatPassword') ?>" autocomplete="off">
+                                    placeholder="********" autocomplete="off">
                             </div>
 
                             <br>
 
                             <button type="submit"
-                                class="btn btn-primary btn-block"><?= lang('Auth.register') ?></button>
+                                class="btn btn-primary btn-block">Buat Akun</button>
                         </form>
 
 
                         <hr>
 
                         <p><?= lang('Auth.alreadyRegistered') ?> <a
-                                href="<?= route_to('login') ?>"><?= lang('Auth.signIn') ?></a></p>
+                                href="<?= route_to('login') ?>">Sudah Punya Akun? Masuk</a></p>
                     </div>
                 </div>
                 <div class="col-md-6 d-none d-md-block">

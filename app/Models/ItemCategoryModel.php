@@ -11,7 +11,7 @@ class ItemCategoryModel extends Model
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = ItemCategoryModel::class;
-	protected $useSoftDeletes       = true;
+	protected $useSoftDeletes       = false;
 	protected $allowedFields        = ['category_name', 'deleted_at'];
 
 	// Dates

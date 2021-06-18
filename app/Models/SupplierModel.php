@@ -10,8 +10,8 @@ class SupplierModel extends Model
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = Supplier::class;
-	protected $useSoftDeletes       = true;
+	protected $returnType           = SupplierModel::class;
+	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
 		'supplier_name', 'supplier_contact', 'supplier_description', 'deleted_at'
 	];

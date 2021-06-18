@@ -10,7 +10,7 @@ class SaleDetailModel extends Model
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = SaleDetail::class;
+	protected $returnType           = SaleDetailModel::class;
 	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
 		'detail_total', 'detail_quantity', 'user_id', 'item_id', 'sale_id'

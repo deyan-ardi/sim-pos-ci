@@ -1,6 +1,6 @@
 <?= $this->extend($config->viewLayout) ?>
 <?= $this->section('title') ?>
-Forgot Password Page
+Halaman Lupa Kata Sandi
 <?= $this->endSection() ?>
 
 <?= $this->section('main') ?>
@@ -13,20 +13,19 @@ Forgot Password Page
                 <div class="col-md-6">
                     <div class="card-body">
                         <img src="<?= base_url(); ?>/assets/images/logo-dark.svg" alt="" class="img-fluid mb-4">
-                        <h4 class="mb-3 f-w-400">Reset your password</h4>
+                        <h4 class="mb-3 f-w-400">Setel Ulang Kata Sandi</h4>
 
                         <?= view('App\Auth\_message_block') ?>
 
-                        <p><?= lang('Auth.enterEmailForInstructions') ?></p>
+                        <p>Tidak masalah! Silahkan masukkan email akun anda pada kolom dibawah dan kami akan mengirimkan instruksi untuk menyetel ulang kata sandi</p>
+
 
                         <form action="<?= route_to('forgot') ?>" method="post">
                             <?= csrf_field() ?>
 
                             <div class="form-group">
-                                <label for="email"><?= lang('Auth.emailAddress') ?></label>
-                                <input type="email"
-                                    class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>"
-                                    name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>">
+                                <label for="email">Alamat Email</label>
+                                <input type="email" class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>">
                                 <div class="invalid-feedback">
                                     <?= session('errors.email') ?>
                                 </div>
@@ -34,8 +33,7 @@ Forgot Password Page
 
                             <br>
 
-                            <button type="submit"
-                                class="btn btn-primary btn-block"><?= lang('Auth.sendInstructions') ?></button>
+                            <button type="submit" class="btn btn-primary btn-block">Kirimkan Instruksi</button>
                         </form>
                     </div>
                 </div>

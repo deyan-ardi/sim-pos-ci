@@ -10,8 +10,8 @@ class SaleModel extends Model
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = Sale::class;
-	protected $useSoftDeletes       = true;
+	protected $returnType           = SaleModel::class;
+	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
 		'sale_code', 'sale_total', 'sale_discount', 'sale_profit', 'user_id', 'member_id', 'deleted_at'
 	];

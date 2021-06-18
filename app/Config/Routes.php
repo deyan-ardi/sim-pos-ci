@@ -45,6 +45,9 @@ $routes->group('categories', ['namespace' => 'App\Controllers'], function ($rout
 
 $routes->group('items', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Item::index');
+	$routes->post('/', 'Item::index');
+	$routes->patch('/', 'Item::index');
+	$routes->delete('/', 'Item::index');
 });
 
 $routes->group('members', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -57,6 +60,9 @@ $routes->group('users', ['namespace' => 'App\Controllers'], function ($routes) {
 
 $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Supplier::index');
+	$routes->post('/', 'Supplier::index');
+	$routes->patch('/', 'Supplier::index');
+	$routes->delete('/', 'Supplier::index');
 	$routes->get('order-items', 'Supplier::order');
 	$routes->get('report-order', 'Supplier::report');
 });

@@ -18,70 +18,74 @@
                        <a href="#!" class="nav-link"><span class="pcoded-micon"><i
                                    class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
                        <ul class="pcoded-submenu">
-                           <li class=""><a href="<?= base_url(); ?>/home-page" class="">Home Page</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/profile-setting" class="">Profile Setting</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/logout" class="">Logout</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/home-page" class="">Halaman Beranda</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/profile-setting" class="">Pengaturan Profil</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/logout" class="">Keluar</a></li>
+                       </ul>
+                   </li>
+                   <li class="nav-item pcoded-menu-caption">
+                       <label>Menu Supplier</label>
+                   </li>
+                   <li data-username="supplier items order report suppliers" class="nav-item pcoded-hasmenu">
+                       <a href="#!" class="nav-link"><span class="pcoded-micon"><i
+                                   class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Manajemen
+                               Supplier</span></a>
+                       <ul class="pcoded-submenu">
+                           <li class=""><a href="<?= base_url(); ?>/suppliers" class="">Data Supplier</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Barang</a>
+                           </li>
+                           <li class=""><a href="<?= base_url(); ?>/suppliers/report-order" class="">Laporan
+                                   Supplier</a></li>
                        </ul>
                    </li>
 
                    <li class="nav-item pcoded-menu-caption">
-                       <label>Items Menu</label>
+                       <label>Menu Item Barang</label>
                    </li>
                    <li data-username="items item management categories" class="nav-item pcoded-hasmenu">
                        <a href="#!" class="nav-link"><span class="pcoded-micon"><i
-                                   class="feather icon-box"></i></span><span class="pcoded-mtext">Items
-                               Management</span></a>
+                                   class="feather icon-box"></i></span><span class="pcoded-mtext">Manajemen
+                               Barang</span></a>
                        <ul class="pcoded-submenu">
-                           <li class=""><a href="<?= base_url(); ?>/categories" class="">Item Categories</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/items" class="">Items</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/categories" class="">Data Kategori Barang</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/items" class="">Data Barang</a></li>
                        </ul>
                    </li>
+
                    <li class="nav-item pcoded-menu-caption">
-                       <label>Supplier Menu</label>
-                   </li>
-                   <li data-username="supplier items order report suppliers" class="nav-item pcoded-hasmenu">
-                       <a href="#!" class="nav-link"><span class="pcoded-micon"><i
-                                   class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Supplier
-                               Management</span></a>
-                       <ul class="pcoded-submenu">
-                           <li class=""><a href="<?= base_url(); ?>/suppliers" class="">Supplier</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Items</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/suppliers/report-order" class="">Report</a></li>
-                       </ul>
-                   </li>
-                   <li class="nav-item pcoded-menu-caption">
-                       <label>User Menu</label>
+                       <label>Menu User Member</label>
                    </li>
                    <li data-username="user users admin atasan super kasir members member shop"
                        class="nav-item pcoded-hasmenu">
                        <a href="#!" class="nav-link"><span class="pcoded-micon"><i
-                                   class="feather icon-users"></i></span><span class="pcoded-mtext">Users
-                               Management</span></a>
+                                   class="feather icon-users"></i></span><span class="pcoded-mtext">Manajemen User
+                               Member</span></a>
                        <ul class="pcoded-submenu">
-                           <li class=""><a href="<?= base_url(); ?>/members" class="">Shop Members</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/users" class="">User Login Management</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/members" class="">Data Member Toko</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/users" class="">Data User Sistem</a></li>
                        </ul>
                    </li>
 
                    <li class="nav-item pcoded-menu-caption">
-                       <label>Payments Menu</label>
+                       <label>Menu Transaksi</label>
                    </li>
                    <li data-username="payment cashier report" class="nav-item pcoded-hasmenu">
                        <a href="#!" class="nav-link"><span class="pcoded-micon"><i
-                                   class="feather icon-lock"></i></span><span class="pcoded-mtext">Payments
-                               Management</span></a>
+                                   class="feather icon-lock"></i></span><span class="pcoded-mtext">Manajemen
+                               Transaksi</span></a>
                        <ul class="pcoded-submenu">
-                           <li class=""><a href="<?= base_url(); ?>/transaction" class="">Cashier Menu</a></li>
-                           <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Report</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/transaction" class="">Sistem Kasir</a></li>
+                           <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi</a>
+                           </li>
                        </ul>
                    </li>
                    <li class="nav-item pcoded-menu-caption">
-                       <label>Reports Menu</label>
+                       <label>Menu Laporan Keuangan</label>
                    </li>
                    <li data-username="financial report payment" class="nav-item"><a href="image_crop.html"
                            class="nav-link"><span class="pcoded-micon"><i
-                                   class="feather icon-file-text"></i></span><span class="pcoded-mtext">Financial
-                               Report</span></a></li>
+                                   class="feather icon-file-text"></i></span><span class="pcoded-mtext">Data Laporan
+                               Keuangan</span></a></li>
                </ul>
            </div>
 

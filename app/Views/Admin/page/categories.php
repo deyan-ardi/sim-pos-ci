@@ -1,6 +1,6 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Categories Page
+Data Kategori Barang
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
@@ -29,13 +29,12 @@ Categories Page
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Point Of Sale Application - Categories</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Data Kategori Barang</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i
                                                         class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Items
-                                                    Categories</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Data Kategori Barang</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -47,19 +46,19 @@ Categories Page
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>List Of Categories</h5>
+                                        <h5>List Data Kategori</h5>
                                     </div>
                                     <div class="card-body">
                                         <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4"
                                             data-toggle="modal" data-target="#addCategory"><i
-                                                class="feather icon-file-plus"></i> Create New</button>
+                                                class="feather icon-file-plus"></i> Tambahkan Kategori</button>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Category Name</th>
-                                                        <th>Create At</th>
+                                                        <th>Nama Kategori</th>
+                                                        <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
 
@@ -74,7 +73,7 @@ Categories Page
                                                         <td><?= $i++; ?></td>
                                                         <td><?= $c->category_name; ?></td>
                                                         <td>
-                                                            <?= CodeIgniter\I18n\Time::parse($c->created_at)->humanize(); ?>
+                                                            <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                         </td>
                                                         <td>
                                                             <div class="row justify-content-center">
@@ -82,8 +81,7 @@ Categories Page
                                                                 <button type="button"
                                                                     class="btn btn-warning btn-icon btn-rounded"
                                                                     data-toggle="modal" data-target="#updateCategory"><i
-                                                                        class="feather icon-edit"
-                                                                        title="Update Category"
+                                                                        class="feather icon-edit" title="Ubah Kategori"
                                                                         data-toggle="tooltip"></i></button>
 
                                                                 <!-- Update Modal -->
@@ -95,8 +93,8 @@ Categories Page
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
                                                                                 <h5 class="modal-title"
-                                                                                    id="updateCategoryLabel">Create New
-                                                                                    Category</h5>
+                                                                                    id="updateCategoryLabel">Ubah Data
+                                                                                    Kategori</h5>
                                                                                 <button type="button" class="close"
                                                                                     data-dismiss="modal"
                                                                                     aria-label="Close"><span
@@ -123,10 +121,11 @@ Categories Page
                                                                                         <button type="submit"
                                                                                             name="update_category"
                                                                                             value="update"
-                                                                                            class="btn btn-primary">Save</button>
+                                                                                            class="btn btn-primary">Simpan
+                                                                                            Perubahan</button>
                                                                                         <button type="button"
                                                                                             class="btn btn-light"
-                                                                                            data-dismiss="modal">Close</button>
+                                                                                            data-dismiss="modal">Batal</button>
                                                                                     </div>
                                                                                 </form>
                                                                             </div>
@@ -146,7 +145,7 @@ Categories Page
                                                                     <button type="submit" name="delete_category"
                                                                         value="delete"
                                                                         class="btn btn-danger btn-icon btn-rounded"
-                                                                        title="Delete Category" data-toggle="tooltip"><i
+                                                                        title="Hapus Kategori" data-toggle="tooltip"><i
                                                                             class="feather icon-trash"></i></button>
                                                                 </form>
 
@@ -158,8 +157,8 @@ Categories Page
                                                 <tfoot>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Category Name</th>
-                                                        <th>Create At</th>
+                                                        <th>Nama Kategori</th>
+                                                        <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
 
@@ -187,7 +186,7 @@ Categories Page
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addCategoryLabel">Create New Category</h5>
+                <h5 class="modal-title" id="addCategoryLabel">Tambah Kategori Baru</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -203,8 +202,8 @@ Categories Page
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="submit_category" value="submit"
-                            class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                            class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
                     </div>
                 </form>
             </div>

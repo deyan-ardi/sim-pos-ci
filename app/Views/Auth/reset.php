@@ -1,6 +1,6 @@
 <?= $this->extend($config->viewLayout) ?>
 <?= $this->section('title') ?>
-Reset Password Page
+Halaman Setel Ulang Kata Sandi
 <?= $this->endSection() ?>
 
 <?= $this->section('main') ?>
@@ -12,10 +12,10 @@ Reset Password Page
                 <div class="col-md-6">
                     <div class="card-body">
                         <img src="<?= base_url(); ?>/assets/images/logo-dark.svg" alt="" class="img-fluid mb-4">
-                        <h4 class="mb-3 f-w-400">Reset your password</h4>
+                        <h4 class="mb-3 f-w-400">Setel Ulang Kata Sandi</h4>
                         <?= view('App\Auth\_message_block') ?>
 
-                        <p><?= lang('Auth.enterCodeEmailPassword') ?></p>
+                        <p>Masukkan kode yang anda terima melalui alamat email anda, email akun anda, dan kata sandi baru yang ingin anda gunakan pada kolom dibawah</p>
 
                         <form action="<?= route_to('reset-password') ?>" method="post">
                             <?= csrf_field() ?>
@@ -45,20 +45,20 @@ Reset Password Page
                             <br>
 
                             <div class="form-group">
-                                <label for="password"><?= lang('Auth.newPassword') ?></label>
+                                <label for="password">Kata Sandi Baru</label>
                                 <input type="password"
                                     class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>"
-                                    name="password">
+                                    name="password" placeholder="********">
                                 <div class="invalid-feedback">
                                     <?= session('errors.password') ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="pass_confirm"><?= lang('Auth.newPasswordRepeat') ?></label>
+                                <label for="pass_confirm">Konfirmasi Ulang Kata Sandi</label>
                                 <input type="password"
                                     class="form-control <?php if (session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>"
-                                    name="pass_confirm">
+                                    name="pass_confirm" placeholder="********">
                                 <div class="invalid-feedback">
                                     <?= session('errors.pass_confirm') ?>
                                 </div>
@@ -67,7 +67,7 @@ Reset Password Page
                             <br>
 
                             <button type="submit"
-                                class="btn btn-primary btn-block"><?= lang('Auth.resetPassword') ?></button>
+                                class="btn btn-primary btn-block">Setel Ulang Kata Sandi Saya</button>
                         </form>
                     </div>
                 </div>

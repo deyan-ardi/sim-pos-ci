@@ -1,12 +1,13 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Items Page
+Data Item Barang
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
 <!-- datatable Js -->
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
+
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -29,13 +30,12 @@ Items Page
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Point Of Sale Application</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Data Item Barang</h5>
                                         </div>
                                         <ul class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="index-2.html"><i
+                                            <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i
                                                         class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Items
-                                                    Categories</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Data Barang</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -47,192 +47,362 @@ Items Page
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Multi-Column Ordering</h5>
+                                        <h5>List Item Barang</h5>
                                     </div>
                                     <div class="card-body">
+                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4"
+                                            data-toggle="modal" data-target="#addCategory"><i
+                                                class="feather icon-file-plus"></i> Tambahkan Barang</button>
                                         <div class="dt-responsive table-responsive">
-                                            <table id="multi-colum-dt"
-                                                class="table table-striped table-bordered nowrap">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>#</th>
+                                                        <th>Gambar Produk</th>
+                                                        <th>Kode Barang</th>
+                                                        <th>Nama Barang</th>
+                                                        <th>Merk Barang</th>
+                                                        <th>Tipe Barang</th>
+                                                        <th>Berat Barang</th>
+                                                        <th>Panjang Barang</th>
+                                                        <th>Lebar Barang</th>
+                                                        <th>Tinggi Barang</th>
+                                                        <th>Deskripsi Barang</th>
+                                                        <th>Stok</th>
+                                                        <th>Harga Beli</th>
+                                                        <th>Harga Jual</th>
+                                                        <th>Untung Per Barang</th>
+                                                        <th>Kategori</th>
+                                                        <th>Disuplai Oleh</th>
+                                                        <th>Diubah Terakhir</th>
+                                                        <th class="text-center"><i class="feather icon-settings"></i>
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <?php
+                                                    $i = 1;
+                                                    foreach ($items as $c) : ?>
                                                     <tr>
-                                                        <td>Quinn Flynn</td>
-                                                        <td>System Architect</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>61</td>
-                                                        <td>2011/04/25</td>
-                                                        <td>$320,800</td>
+                                                        <td><?= $i++; ?></td>
+                                                        <td><img src="<?= base_url(); ?>/upload/produk/<?= $c->item_image; ?>"
+                                                                alt="Gambar Produk" width="50%">
+                                                        </td>
+                                                        <td><?= $c->item_code; ?></td>
+                                                        <td><?= $c->item_name; ?></td>
+                                                        <td>
+                                                            <?= !empty($c->item_merk) ? $c->item_merk : "Kosong"; ?>
+                                                        </td>
+                                                        <td><?= !empty($c->item_type) ? $c->item_type : "Kosong"; ?>
+                                                        </td>
+                                                        <td><?= $c->item_weight; ?> Kg</td>
+                                                        <td><?= $c->item_length; ?> Meter</td>
+                                                        <td><?= $c->item_width; ?> Meter</td>
+                                                        <td><?= $c->item_height; ?> Meter</td>
+                                                        <td><?= !empty($c->item_description) ? $c->item_description : "Kosong"; ?>
+                                                        </td>
+                                                        <td><?= $c->item_stock; ?> Buah</td>
+                                                        <td>Rp. <?= format_rupiah($c->item_hpp); ?></td>
+                                                        <td>Rp. <?= format_rupiah($c->item_sale); ?></td>
+                                                        <td>Rp. <?= format_rupiah($c->item_profit); ?></td>
+                                                        <td><?= $c->category_name; ?></td>
+                                                        <td><?= $c->supplier_name; ?></td>
+                                                        <td>
+                                                            <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
+                                                        </td>
+                                                        <td>
+                                                            <div class="row justify-content-center">
+                                                                <!-- Update Button Modal -->
+                                                                <button type="button"
+                                                                    class="btn btn-warning btn-icon btn-rounded"
+                                                                    data-toggle="modal" data-target="#updateCategory"><i
+                                                                        class="feather icon-edit" title="Ubah Barang"
+                                                                        data-toggle="tooltip"></i></button>
+
+                                                                <!-- Update Modal -->
+                                                                <div id="updateCategory" class="modal fade"
+                                                                    tabindex="-1" role="dialog"
+                                                                    aria-labelledby="updateCategoryLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="updateCategoryLabel">Ubah Data
+                                                                                    Barang</h5>
+                                                                                <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                        aria-hidden="true">&times;</span></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form action="" method="POST"
+                                                                                    enctype="multipart/form-data">
+                                                                                    <?= csrf_field(); ?>
+                                                                                    <input type="hidden" name="_method"
+                                                                                        value="PATCH">
+                                                                                    <input type="hidden" name="id_item"
+                                                                                        value="<?= $c->id; ?>">
+                                                                                    <div class="form-group">
+                                                                                        <input type="file"
+                                                                                            accept=".png,.jpg,.jpeg"
+                                                                                            class="form-control <?= $validation->getError('item_image_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_image_up">
+                                                                                        <small id="file"
+                                                                                            class="form-text text-muted">Bersifat
+                                                                                            opsional, jika ingin diubah
+                                                                                            pastikan file
+                                                                                            maksimal 1 Mb, bertipe .jpg,
+                                                                                            .png. atau
+                                                                                            .jpeg</small>
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_image_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="text"
+                                                                                            class="form-control <?= $validation->getError('item_code_up') ? "is-invalid" : ""; ?>"
+                                                                                            style="text-transform: capitalize;"
+                                                                                            name="item_code_up" required
+                                                                                            placeholder="Kode Barang"
+                                                                                            value="<?= (old('item_code_up')) ? old('item_code_up') : $c->item_code; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_code_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="text"
+                                                                                            class="form-control <?= $validation->getError('item_name_up') ? "is-invalid" : ""; ?>"
+                                                                                            style="text-transform: capitalize;"
+                                                                                            name="item_name_up" required
+                                                                                            placeholder="Nama Barang"
+                                                                                            value="<?= (old('item_name_up')) ? old('item_name_up') : $c->item_name; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_name_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="text"
+                                                                                            class="form-control <?= $validation->getError('item_merk_up') ? "is-invalid" : ""; ?>"
+                                                                                            style="text-transform: capitalize;"
+                                                                                            name="item_merk_up"
+                                                                                            placeholder="Merk Barang (Opsional)"
+                                                                                            value="<?= (old('item_merk_up')) ? old('item_merk_up') : $c->item_merk; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_merk_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="text"
+                                                                                            class="form-control <?= $validation->getError('item_type_up') ? "is-invalid" : ""; ?>"
+                                                                                            style="text-transform: capitalize;"
+                                                                                            name="item_type_up"
+                                                                                            placeholder="Tipe Barang (Opsional)"
+                                                                                            value="<?= (old('item_type_up')) ? old('item_type_up') : $c->item_type; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_type_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            step="0.01"
+                                                                                            class="form-control <?= $validation->getError('item_weight_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_weight_up"
+                                                                                            placeholder="Berat Dalam Kg (Opsional)"
+                                                                                            value="<?= (old('item_weight_up')) ? old('item_weight_up') : $c->item_weight; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_weight_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            step="0.01"
+                                                                                            class="form-control <?= $validation->getError('item_length_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_length_up"
+                                                                                            placeholder="Panjang Dalam Meter (Opsional)"
+                                                                                            value="<?= (old('item_length_up')) ? old('item_length_up') : $c->item_length; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_length_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            step="0.01"
+                                                                                            class="form-control <?= $validation->getError('item_width_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_width_up"
+                                                                                            placeholder="Lebar Dalam Meter (Opsional)"
+                                                                                            value="<?= (old('item_width_up')) ? old('item_width_up') : $c->item_length; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_width_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            step="0.01"
+                                                                                            class="form-control <?= $validation->getError('item_height_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_height_up"
+                                                                                            placeholder="Tinggi Dalam Meter (Opsional)"
+                                                                                            value="<?= (old('item_height_up')) ? old('item_height_up') : $c->item_height; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_height_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            class="form-control <?= $validation->getError('item_hpp_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_hpp_up"
+                                                                                            placeholder="Harga Beli (Rupiah)"
+                                                                                            required
+                                                                                            value="<?= (old('item_hpp_up')) ? old('item_hpp_up') : $c->item_hpp; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_hpp_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            class="form-control <?= $validation->getError('item_stock_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_stock_up"
+                                                                                            placeholder="Jumlah Stok"
+                                                                                            required
+                                                                                            value="<?= (old('item_stock_up')) ? old('item_stock_up') : $c->item_stock; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_stock_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <input type="number" min="0"
+                                                                                            class="form-control <?= $validation->getError('item_sale_up') ? "is-invalid" : ""; ?>"
+                                                                                            name="item_sale_up"
+                                                                                            placeholder="Harga Jual (Rupiah)"
+                                                                                            required
+                                                                                            value="<?= (old('item_sale_up')) ? old('item_sale_up') : $c->item_sale; ?>">
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_sale_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <textarea
+                                                                                            class="form-control <?= $validation->getError('item_description_up') ? "is-invalid" : ""; ?>"
+                                                                                            style="text-transform: capitalize;"
+                                                                                            name="item_description_up"
+                                                                                            placeholder="Deskripsi Barang (Opsional)"><?= (old('item_description_up')) ? old('item_description_up') : $c->item_description; ?></textarea>
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("item_description_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <select name="category_up"
+                                                                                            id="category_up" required
+                                                                                            class="form-control <?= $validation->getError('category_up') ? "is-invalid" : ""; ?>">
+                                                                                            <option value="">- Pilih
+                                                                                                Kategori Barang -
+                                                                                            </option>
+                                                                                            <?php foreach ($category as $ca) : ?>
+                                                                                            <?php if ($ca->id == $c->category_id) : ?>
+                                                                                            <option
+                                                                                                value="<?= $ca->id; ?>"
+                                                                                                selected>
+                                                                                                <?= $ca->category_name; ?>
+                                                                                            </option>
+                                                                                            <?php else : ?>
+                                                                                            <option
+                                                                                                value="<?= $ca->id; ?>">
+                                                                                                <?= $ca->category_name; ?>
+                                                                                            </option>
+                                                                                            <?php endif; ?>
+
+                                                                                            <?php endforeach; ?>
+
+                                                                                        </select>
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("category_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <select name="supplier_up"
+                                                                                            id="supplier_up" required
+                                                                                            class="form-control <?= $validation->getError('supplier_up') ? "is-invalid" : ""; ?>">
+                                                                                            <option value="">- Pilih
+                                                                                                Supplier -</option>
+                                                                                            <?php foreach ($supplier as $ca) : ?>
+                                                                                            <?php if ($ca->id == $c->supplier_id) : ?>
+                                                                                            <option
+                                                                                                value="<?= $ca->id; ?>"
+                                                                                                selected>
+                                                                                                <?= $ca->supplier_name; ?>
+                                                                                            </option>
+                                                                                            <?php else : ?>
+                                                                                            <option
+                                                                                                value="<?= $ca->id; ?>">
+                                                                                                <?= $ca->supplier_name; ?>
+                                                                                            </option>
+                                                                                            <?php endif; ?>
+                                                                                            <?php endforeach; ?>
+                                                                                        </select>
+                                                                                        <div class="invalid-feedback">
+                                                                                            <?= $validation->getError("supplier_up"); ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="submit"
+                                                                                            name="update_items"
+                                                                                            value="update"
+                                                                                            class="btn btn-primary">Simpan
+                                                                                            Perubahan</button>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-light"
+                                                                                            data-dismiss="modal">Batal</button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <!-- Delete -->
+                                                                <form action="" method="POST">
+                                                                    <?= csrf_field(); ?>
+                                                                    <input type="hidden" name="_method"
+                                                                        value="DELETE" />
+                                                                    <input type="hidden" name="id_item"
+                                                                        value="<?= $c->id; ?>">
+                                                                    <button type="submit" name="delete_items"
+                                                                        value="delete"
+                                                                        class="btn btn-danger btn-icon btn-rounded"
+                                                                        title="Hapus Barang" data-toggle="tooltip"><i
+                                                                            class="feather icon-trash"></i></button>
+                                                                </form>
+
+                                                            </div>
+                                                        </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Garrett Winters</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>63</td>
-                                                        <td>2011/07/25</td>
-                                                        <td>$170,750</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Ashton Cox</td>
-                                                        <td>Junior Technical Author</td>
-                                                        <td>San Francisco</td>
-                                                        <td>66</td>
-                                                        <td>2009/01/12</td>
-                                                        <td>$86,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Cedric Kelly</td>
-                                                        <td>Senior Javascript Developer</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>22</td>
-                                                        <td>2012/03/29</td>
-                                                        <td>$433,060</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Airi Satou</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>33</td>
-                                                        <td>2008/11/28</td>
-                                                        <td>$162,700</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brielle Williamson</td>
-                                                        <td>Integration Specialist</td>
-                                                        <td>New York</td>
-                                                        <td>61</td>
-                                                        <td>2012/12/02</td>
-                                                        <td>$372,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Herrod Chandler</td>
-                                                        <td>Sales Assistant</td>
-                                                        <td>San Francisco</td>
-                                                        <td>59</td>
-                                                        <td>2012/08/06</td>
-                                                        <td>$137,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Rhona Davidson</td>
-                                                        <td>Integration Specialist</td>
-                                                        <td>Tokyo</td>
-                                                        <td>55</td>
-                                                        <td>2010/10/14</td>
-                                                        <td>$327,900</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Colleen Hurst</td>
-                                                        <td>Javascript Developer</td>
-                                                        <td>San Francisco</td>
-                                                        <td>39</td>
-                                                        <td>2009/09/15</td>
-                                                        <td>$205,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sonya Frost</td>
-                                                        <td>Software Engineer</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>23</td>
-                                                        <td>2008/12/13</td>
-                                                        <td>$103,600</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Jena Gaines</td>
-                                                        <td>Office Manager</td>
-                                                        <td>London</td>
-                                                        <td>30</td>
-                                                        <td>2008/12/19</td>
-                                                        <td>$90,560</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Quinn Flynn</td>
-                                                        <td>Support Lead</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>22</td>
-                                                        <td>2013/03/03</td>
-                                                        <td>$342,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Charde Marshall</td>
-                                                        <td>Regional Director</td>
-                                                        <td>San Francisco</td>
-                                                        <td>36</td>
-                                                        <td>2008/10/16</td>
-                                                        <td>$470,600</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Haley Kennedy</td>
-                                                        <td>Senior Marketing Designer</td>
-                                                        <td>London</td>
-                                                        <td>43</td>
-                                                        <td>2012/12/18</td>
-                                                        <td>$313,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tatyana Fitzpatrick</td>
-                                                        <td>Regional Director</td>
-                                                        <td>London</td>
-                                                        <td>19</td>
-                                                        <td>2010/03/17</td>
-                                                        <td>$385,750</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Michael Silva</td>
-                                                        <td>Marketing Designer</td>
-                                                        <td>London</td>
-                                                        <td>66</td>
-                                                        <td>2012/11/27</td>
-                                                        <td>$198,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Paul Byrd</td>
-                                                        <td>Chief Financial Officer (CFO)</td>
-                                                        <td>New York</td>
-                                                        <td>64</td>
-                                                        <td>2010/06/09</td>
-                                                        <td>$725,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Gloria Little</td>
-                                                        <td>Systems Administrator</td>
-                                                        <td>New York</td>
-                                                        <td>59</td>
-                                                        <td>2009/04/10</td>
-                                                        <td>$237,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Bradley Greer</td>
-                                                        <td>Software Engineer</td>
-                                                        <td>London</td>
-                                                        <td>41</td>
-                                                        <td>2012/10/13</td>
-                                                        <td>$132,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dai Rios</td>
-                                                        <td>Personnel Lead</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>35</td>
-                                                        <td>2012/09/26</td>
-                                                        <td>$217,500</td>
-                                                    </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>#</th>
+                                                        <th>Gambar Produk</th>
+                                                        <th>Kode Barang</th>
+                                                        <th>Nama Barang</th>
+                                                        <th>Merk Barang</th>
+                                                        <th>Tipe Barang</th>
+                                                        <th>Berat Barang</th>
+                                                        <th>Panjang Barang</th>
+                                                        <th>Lebar Barang</th>
+                                                        <th>Tinggi Barang</th>
+                                                        <th>Deskripsi Barang</th>
+                                                        <th>Stok</th>
+                                                        <th>Harga Beli</th>
+                                                        <th>Harga Jual</th>
+                                                        <th>Untung Per Barang</th>
+                                                        <th>Kategori</th>
+                                                        <th>Disuplai Oleh</th>
+                                                        <th>Diubah Terakhir</th>
+                                                        <th class="text-center"><i class="feather icon-settings"></i>
+                                                        </th>
+
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -250,4 +420,170 @@ Items Page
     </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<!-- Modal -->
+<div id="addCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryLabel">Tambah Barang Baru</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
+                    <div class="form-group">
+                        <input type="file" accept=".png,.jpg,.jpeg"
+                            class="form-control <?= $validation->getError('item_image') ? "is-invalid" : ""; ?>"
+                            name="item_image" required>
+                        <small id="file" class="form-text text-muted">File maksimal 1 Mb, bertipe .jpg, .png. atau
+                            .jpeg</small>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_image"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control <?= $validation->getError('item_code') ? "is-invalid" : ""; ?>"
+                            style="text-transform: capitalize;" name="item_code" required placeholder="Kode Barang"
+                            value="<?= (old('item_code')) ? old('item_code') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_code"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>"
+                            style="text-transform: capitalize;" name="item_name" required placeholder="Nama Barang"
+                            value="<?= (old('item_name')) ? old('item_name') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_name"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control <?= $validation->getError('item_merk') ? "is-invalid" : ""; ?>"
+                            style="text-transform: capitalize;" name="item_merk" placeholder="Merk Barang (Opsional)"
+                            value="<?= (old('item_merk')) ? old('item_merk') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_merk"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control <?= $validation->getError('item_type') ? "is-invalid" : ""; ?>"
+                            style="text-transform: capitalize;" name="item_type" placeholder="Tipe Barang (Opsional)"
+                            value="<?= (old('item_type')) ? old('item_type') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_type"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" step="0.01"
+                            class="form-control <?= $validation->getError('item_weight') ? "is-invalid" : ""; ?>"
+                            name="item_weight" placeholder="Berat Dalam Kg (Opsional)"
+                            value="<?= (old('item_weight')) ? old('item_weight') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_weight"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" step="0.01"
+                            class="form-control <?= $validation->getError('item_length') ? "is-invalid" : ""; ?>"
+                            name="item_length" placeholder="Panjang Dalam Meter (Opsional)"
+                            value="<?= (old('item_length')) ? old('item_length') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_length"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" step="0.01"
+                            class="form-control <?= $validation->getError('item_width') ? "is-invalid" : ""; ?>"
+                            name="item_width" placeholder="Lebar Dalam Meter (Opsional)"
+                            value="<?= (old('item_width')) ? old('item_width') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_width"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" step="0.01"
+                            class="form-control <?= $validation->getError('item_height') ? "is-invalid" : ""; ?>"
+                            name="item_height" placeholder="Tinggi Dalam Meter (Opsional)"
+                            value="<?= (old('item_height')) ? old('item_height') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_height"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0"
+                            class="form-control <?= $validation->getError('item_hpp') ? "is-invalid" : ""; ?>"
+                            name="item_hpp" placeholder="Harga Beli (Rupiah)" required
+                            value="<?= (old('item_hpp')) ? old('item_hpp') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_hpp"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0"
+                            class="form-control <?= $validation->getError('item_stock') ? "is-invalid" : ""; ?>"
+                            name="item_stock" placeholder="Jumlah Stok" required
+                            value="<?= (old('item_stock')) ? old('item_stock') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_stock"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0"
+                            class="form-control <?= $validation->getError('item_sale') ? "is-invalid" : ""; ?>"
+                            name="item_sale" placeholder="Harga Jual (Rupiah)" required
+                            value="<?= (old('item_sale')) ? old('item_sale') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_sale"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea
+                            class="form-control <?= $validation->getError('item_description') ? "is-invalid" : ""; ?>"
+                            style="text-transform: capitalize;" name="item_description"
+                            placeholder="Deskripsi Barang (Opsional)"><?= (old('item_description')) ? old('item_description') : ""; ?></textarea>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("item_description"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select name="category" id="category" required
+                            class="form-control <?= $validation->getError('category') ? "is-invalid" : ""; ?>">
+                            <option value="">- Pilih Kategori Barang -</option>
+                            <?php foreach ($category as $c) : ?>
+                            <option value="<?= $c->id; ?>"><?= $c->category_name; ?></option>
+                            <?php endforeach; ?>
+
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("category"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select name="supplier" id="supplier" required
+                            class="form-control <?= $validation->getError('supplier') ? "is-invalid" : ""; ?>">
+                            <option value="">- Pilih Supplier -</option>
+                            <?php foreach ($supplier as $c) : ?>
+                            <option value="<?= $c->id; ?>"><?= $c->supplier_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("supplier"); ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="input_items" value="items" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>

@@ -10,8 +10,8 @@ class MemberModel extends Model
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = Member::class;
-	protected $useSoftDeletes       = true;
+	protected $returnType           = MemberModel::class;
+	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
 		'member_name', 'member_contact', 'member_description', 'deleted_at'
 	];

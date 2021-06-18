@@ -21,7 +21,7 @@
                 <li class="nav-item">
                     <div class="main-search open">
                         <div class="input-group">
-                            <input type="text" id="m-search" class="form-control" placeholder="Search Menu...">
+                            <input type="text" id="m-search" class="form-control" placeholder="Pencarian Menu...">
                             <a href="#!" class="input-group-append search-close">
                                 <i class="feather icon-x input-group-text"></i>
                             </a>
@@ -48,17 +48,11 @@
                                 </span>
                             </div>
                             <ul class="pro-body">
-                                <li><a href="#!" class="dropdown-item"><i class="feather icon-settings"></i>
-                                        Settings</a></li>
-                                <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i> Profile</a>
+                                <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i> Pengaturan Profil</a>
                                 </li>
-                                <li><a href="message.html" class="dropdown-item"><i class="feather icon-mail"></i> My
-                                        Messages</a></li>
-                                <li><a href="auth-signin.html" class="dropdown-item"><i class="feather icon-lock"></i>
-                                        Lock Screen</a></li>
                                 <li><a href="<?= base_url(); ?>/logout" class="dropdown-item"><i
                                             class="feather icon-power text-danger"></i>
-                                        Logout</a></li>
+                                        Keluar</a></li>
                             </ul>
                         </div>
                     </div>

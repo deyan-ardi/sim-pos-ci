@@ -55,14 +55,23 @@ class Category extends BaseController
 			}
 		} else if (!empty($this->request->getPost('delete_category'))) {
 			$find = $this->m_category->find($this->request->getPost('id_category'));
+			$find_relation = $this->m_item->where('category_id', $find->id)->findAll();
 			if (!empty($find)) {
-				if ($this->m_category->delete($this->request->getPost('id_category'))) {
-					echo "Berhasil Dihapus";
+				if (!empty($find_relation)) {
+					foreach ($find_relation as $r) {
+						unlink('upload/produk/' . $r->item_image);
+					}
+					$status = true;
 				} else {
-					echo "Gagal Dihapus";
+					$status = true;
 				}
-			} else {
-				echo "Data Tidak Ditemukan";
+				if ($status) {
+					if ($this->m_supplier->delete($this->request->getPost('id_category'))) {
+						echo "Berhasil Dihapus";
+					} else {
+						echo "Gagal Dihapus";
+					}
+				}
 			}
 		} else {
 			return view('Admin/page/categories', $data);
