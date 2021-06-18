@@ -43,6 +43,6 @@ Last Updated : 18 Juni 2021
 - Penambahan helper
 - Perubahan bahasa Views dari Bahasa Inggris menjadi Bahasa Indonesia
 - Perbaikan file Migrations dan Seeder
-- Penambahan item di Router File
+- Penambahan item di Router
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021
