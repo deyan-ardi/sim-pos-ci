@@ -35,7 +35,8 @@ class Item extends BaseController
 				'item_weight' => 'permit_empty',
 				'item_length' => 'permit_empty',
 				'item_width' => 'permit_empty',
-				'item_heigth' => 'permit_empty',
+				'item_height' => 'permit_empty',
+				'item_discount' => 'permit_empty',
 				'item_hpp' => 'required|integer',
 				'item_stock' => 'required|integer',
 				'item_sale' => 'required',
@@ -48,13 +49,23 @@ class Item extends BaseController
 			} else {
 				$fotoProduk = $this->request->getFile('item_image');
 				$namaProduk = $fotoProduk->getRandomName();
+
 				$fotoProduk->move('upload/produk', $namaProduk);
 				$move = $this->crop
 					->withFile('upload/produk/' . $namaProduk)
 					->fit(200, 200, 'center')
 					->save('upload/produk/' . $namaProduk);
 				if ($move) {
-					$profit = $this->request->getPost('item_sale') - $this->request->getPost('item_hpp');
+					// Perhitungan discount
+					$before = $this->request->getPost('item_sale');
+					if(empty($this->request->getPost('item_discount'))){
+						$bil_dis = 0;
+					}else{
+						$bil_dis = $this->request->getPost('item_discount');
+					}
+					$discount = ($before * $bil_dis) / 100;
+					$after = $before - $discount;
+					$profit = $after - $this->request->getPost('item_hpp');
 					if ($profit <= 0) {
 						$profit = 0;
 					}
@@ -70,7 +81,9 @@ class Item extends BaseController
 						'item_height' => $this->request->getPost('item_height'),
 						'item_hpp' => $this->request->getPost('item_hpp'),
 						'item_stock' => $this->request->getPost('item_stock'),
-						'item_sale' => $this->request->getPost('item_sale'),
+						'item_before_sale' => $this->request->getPost('item_sale'),
+						'item_discount' => $this->request->getPost('item_discount'),
+						'item_sale' => $after,
 						'item_profit' => $profit,
 						'item_description' => ucWords($this->request->getPost('item_description')),
 						'category_id' => $this->request->getPost('category'),
@@ -96,8 +109,9 @@ class Item extends BaseController
 					'item_weight_up' => 'permit_empty',
 					'item_length_up' => 'permit_empty',
 					'item_width_up' => 'permit_empty',
-					'item_heigth_up' => 'permit_empty',
+					'item_height_up' => 'permit_empty',
 					'item_hpp_up' => 'required|integer',
+					'item_discount' => 'permit_empty',
 					'item_stock_up' => 'required|integer',
 					'item_sale_up' => 'required',
 					'item_description_up' => 'permit_empty|max_length[500]',
@@ -113,8 +127,9 @@ class Item extends BaseController
 					'item_weight_up' => 'permit_empty',
 					'item_length_up' => 'permit_empty',
 					'item_width_up' => 'permit_empty',
-					'item_heigth_up' => 'permit_empty',
+					'item_height_up' => 'permit_empty',
 					'item_hpp_up' => 'required|integer',
+					'item_discount' => 'permit_empty',
 					'item_stock_up' => 'required|integer',
 					'item_sale_up' => 'required',
 					'item_description_up' => 'permit_empty|max_length[500]',
@@ -126,10 +141,21 @@ class Item extends BaseController
 				return redirect()->to('/items')->withInput();
 			} else {
 				$find = $this->m_item->find($this->request->getPost('id_item'));
-				$profit = $this->request->getPost('item_sale_up') - $this->request->getPost('item_hpp_up');
+				// Perhitungan discount
+				$before = $this->request->getPost('item_sale');
+				if (empty($this->request->getPost('item_discount'))) {
+					$bil_dis = 0;
+				} else {
+					$bil_dis = $this->request->getPost('item_discount');
+				}
+				$discount = ($before * $bil_dis) / 100;
+				$after = $before - $discount;
+				$profit = $after - $this->request->getPost('item_hpp_up');
 				if ($profit <= 0) {
 					$profit = 0;
 				}
+				
+
 				if ($this->request->getFile('item_image_up')->getError() == 0) {
 					$fotoProduk = $this->request->getFile('item_image_up');
 					$namaProduk = $fotoProduk->getRandomName();
@@ -153,7 +179,9 @@ class Item extends BaseController
 								'item_height' => $this->request->getPost('item_height_up'),
 								'item_hpp' => $this->request->getPost('item_hpp_up'),
 								'item_stock' => $this->request->getPost('item_stock_up'),
-								'item_sale' => $this->request->getPost('item_sale_up'),
+								'item_before_sale' => $this->request->getPost('item_sale_up'),
+								'item_discount' => $this->request->getPost('item_discount_up'),
+								'item_sale' => $after,
 								'item_profit' => $profit,
 								'item_description' => ucWords($this->request->getPost('item_description_up')),
 								'category_id' => $this->request->getPost('category_up'),
@@ -184,7 +212,9 @@ class Item extends BaseController
 						'item_height' => $this->request->getPost('item_height_up'),
 						'item_hpp' => $this->request->getPost('item_hpp_up'),
 						'item_stock' => $this->request->getPost('item_stock_up'),
-						'item_sale' => $this->request->getPost('item_sale_up'),
+						'item_before_sale' => $this->request->getPost('item_sale_up'),
+						'item_discount' => $this->request->getPost('item_discount_up'),
+						'item_sale' => $after,
 						'item_profit' => $profit,
 						'item_description' => ucWords($this->request->getPost('item_description_up')),
 						'category_id' => $this->request->getPost('category_up'),

@@ -1,6 +1,6 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Shop Members Page
+Data Member Toko
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
@@ -29,13 +29,11 @@ Shop Members Page
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Point Of Sale Application</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Data Member Toko</h5>
                                         </div>
                                         <ul class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="index-2.html"><i
-                                                        class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Items
-                                                    Categories</a></li>
+                                            <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Data Member Toko</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -47,192 +45,120 @@ Shop Members Page
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Multi-Column Ordering</h5>
+                                        <h5>List Member Toko</h5>
                                     </div>
                                     <div class="card-body">
+                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Barang</button>
                                         <div class="dt-responsive table-responsive">
-                                            <table id="multi-colum-dt"
-                                                class="table table-striped table-bordered nowrap">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>#</th>
+                                                        <th>Nama Member</th>
+                                                        <th>Kontak Member</th>
+                                                        <th>Deskripsi Member</th>
+                                                        <th>Discount Member</th>
+                                                        <th>Diubah Terakhir</th>
+                                                        <th class="text-center"><i class="feather icon-settings"></i>
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Quinn Flynn</td>
-                                                        <td>System Architect</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>61</td>
-                                                        <td>2011/04/25</td>
-                                                        <td>$320,800</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Garrett Winters</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>63</td>
-                                                        <td>2011/07/25</td>
-                                                        <td>$170,750</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Ashton Cox</td>
-                                                        <td>Junior Technical Author</td>
-                                                        <td>San Francisco</td>
-                                                        <td>66</td>
-                                                        <td>2009/01/12</td>
-                                                        <td>$86,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Cedric Kelly</td>
-                                                        <td>Senior Javascript Developer</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>22</td>
-                                                        <td>2012/03/29</td>
-                                                        <td>$433,060</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Airi Satou</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>33</td>
-                                                        <td>2008/11/28</td>
-                                                        <td>$162,700</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brielle Williamson</td>
-                                                        <td>Integration Specialist</td>
-                                                        <td>New York</td>
-                                                        <td>61</td>
-                                                        <td>2012/12/02</td>
-                                                        <td>$372,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Herrod Chandler</td>
-                                                        <td>Sales Assistant</td>
-                                                        <td>San Francisco</td>
-                                                        <td>59</td>
-                                                        <td>2012/08/06</td>
-                                                        <td>$137,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Rhona Davidson</td>
-                                                        <td>Integration Specialist</td>
-                                                        <td>Tokyo</td>
-                                                        <td>55</td>
-                                                        <td>2010/10/14</td>
-                                                        <td>$327,900</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Colleen Hurst</td>
-                                                        <td>Javascript Developer</td>
-                                                        <td>San Francisco</td>
-                                                        <td>39</td>
-                                                        <td>2009/09/15</td>
-                                                        <td>$205,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sonya Frost</td>
-                                                        <td>Software Engineer</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>23</td>
-                                                        <td>2008/12/13</td>
-                                                        <td>$103,600</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Jena Gaines</td>
-                                                        <td>Office Manager</td>
-                                                        <td>London</td>
-                                                        <td>30</td>
-                                                        <td>2008/12/19</td>
-                                                        <td>$90,560</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Quinn Flynn</td>
-                                                        <td>Support Lead</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>22</td>
-                                                        <td>2013/03/03</td>
-                                                        <td>$342,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Charde Marshall</td>
-                                                        <td>Regional Director</td>
-                                                        <td>San Francisco</td>
-                                                        <td>36</td>
-                                                        <td>2008/10/16</td>
-                                                        <td>$470,600</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Haley Kennedy</td>
-                                                        <td>Senior Marketing Designer</td>
-                                                        <td>London</td>
-                                                        <td>43</td>
-                                                        <td>2012/12/18</td>
-                                                        <td>$313,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tatyana Fitzpatrick</td>
-                                                        <td>Regional Director</td>
-                                                        <td>London</td>
-                                                        <td>19</td>
-                                                        <td>2010/03/17</td>
-                                                        <td>$385,750</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Michael Silva</td>
-                                                        <td>Marketing Designer</td>
-                                                        <td>London</td>
-                                                        <td>66</td>
-                                                        <td>2012/11/27</td>
-                                                        <td>$198,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Paul Byrd</td>
-                                                        <td>Chief Financial Officer (CFO)</td>
-                                                        <td>New York</td>
-                                                        <td>64</td>
-                                                        <td>2010/06/09</td>
-                                                        <td>$725,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Gloria Little</td>
-                                                        <td>Systems Administrator</td>
-                                                        <td>New York</td>
-                                                        <td>59</td>
-                                                        <td>2009/04/10</td>
-                                                        <td>$237,500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Bradley Greer</td>
-                                                        <td>Software Engineer</td>
-                                                        <td>London</td>
-                                                        <td>41</td>
-                                                        <td>2012/10/13</td>
-                                                        <td>$132,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dai Rios</td>
-                                                        <td>Personnel Lead</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>35</td>
-                                                        <td>2012/09/26</td>
-                                                        <td>$217,500</td>
-                                                    </tr>
+                                                    <?php
+                                                    $i = 1;
+                                                    foreach ($member as $c) : ?>
+                                                        <tr>
+                                                            <td><?= $i++; ?></td>
+                                                            <td><?= $c->member_name; ?></td>
+                                                            <td>0<?= $c->member_contact; ?></td>
+                                                            <td><?= !empty($c->member_description) ? $c->member_description : "Kosong"; ?></td>
+                                                            <td><?= $c->member_discount; ?> %</td>
+                                                            <td>
+                                                                <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
+                                                            </td>
+                                                            <td>
+                                                                <div class="row justify-content-center">
+                                                                    <!-- Update Button Modal -->
+                                                                    <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id ?>"><i class="feather icon-edit" title="Ubah Member" data-toggle="tooltip"></i></button>
+
+                                                                    <!-- Update Modal -->
+                                                                    <div id="updateCategory-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel<?= $c->id ?>" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="updateCategoryLabel<?= $c->id ?>">Ubah Data
+                                                                                        Supplier</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form action="" method="POST">
+                                                                                        <?= csrf_field(); ?>
+                                                                                        <input type="hidden" name="_method" value="PATCH">
+                                                                                        <input type="hidden" name="id_member" value="<?= $c->id; ?>">
+
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Member Toko" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("member_name_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact_up" required placeholder="Kontak Member" value="<?= (old('member_contact_up')) ? old('member_contact_up') :  $c->member_contact; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("member_contact_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="form-control <?= $validation->getError('member_description_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description_up" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description_up')) ? old('member_description_up') : $c->member_description; ?>"></textarea>
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("member_description_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount_up" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount_up')) ? old('member_discount_up') : $c->member_discount; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("member_discount_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="submit" name="update_member" value="update" class="btn btn-primary">Simpan
+                                                                                                Perubahan</button>
+                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                    <!-- Delete -->
+                                                                    <form action="" method="POST">
+                                                                        <?= csrf_field(); ?>
+                                                                        <input type="hidden" name="_method" value="DELETE" />
+                                                                        <input type="hidden" name="id_member" value="<?= $c->id; ?>">
+                                                                        <button type="submit" name="delete_member" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Member" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                    </form>
+
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>#</th>
+                                                        <th>Nama Member</th>
+                                                        <th>Kontak Member</th>
+                                                        <th>Deskripsi Member</th>
+                                                        <th>Discount Member</th>
+                                                        <th>Diubah Terakhir</th>
+                                                        <th class="text-center"><i class="feather icon-settings"></i>
+                                                        </th>
+
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -250,4 +176,49 @@ Shop Members Page
     </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<!-- Modal -->
+<div id="addCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryLabel">Tambah Data Supplier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    <?= csrf_field(); ?>
+                    <div class="form-group">
+                        <input type="text" class="form-control <?= $validation->getError('member_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name" required placeholder="Nama Member Toko" value="<?= (old('member_name')) ? old('member_name') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_name"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact" required placeholder="Kontak Member" value="<?= (old('member_contact')) ? old('member_contact') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_contact"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control <?= $validation->getError('member_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description')) ? old('member_description') : ""; ?>"></textarea>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_description"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount')) ? old('member_discount') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_discount"); ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="input_member" value="member" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>

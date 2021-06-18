@@ -82,20 +82,20 @@ Data Supplier Barang
                                                                 <!-- Update Button Modal -->
                                                                 <button type="button"
                                                                     class="btn btn-warning btn-icon btn-rounded"
-                                                                    data-toggle="modal" data-target="#updateCategory"><i
+                                                                    data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i
                                                                         class="feather icon-edit" title="Ubah Supplier"
                                                                         data-toggle="tooltip"></i></button>
 
                                                                 <!-- Update Modal -->
-                                                                <div id="updateCategory" class="modal fade"
+                                                                <div id="updateCategory-<?= $c->id; ?>" class="modal fade"
                                                                     tabindex="-1" role="dialog"
-                                                                    aria-labelledby="updateCategoryLabel"
+                                                                    aria-labelledby="updateCategoryLabel-<?= $c->id; ?>"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
                                                                                 <h5 class="modal-title"
-                                                                                    id="updateCategoryLabel">Ubah Data
+                                                                                    id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
                                                                                     Supplier</h5>
                                                                                 <button type="button" class="close"
                                                                                     data-dismiss="modal"

@@ -36,7 +36,7 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
 ## Update Information
 Last Updated : 18 Juni 2021
-- CRUD Barang, Perbaikan CRUD Kategori Barang, CRUD Supplier
+- CRUD Barang, Perbaikan CRUD Kategori Barang, CRUD Supplier, CRUD Member
 - Penambahan tabel dan relasi baru
 - Penambahan kolom baru pada tabel Barang
 - Penambahan fungsi upload file/foto

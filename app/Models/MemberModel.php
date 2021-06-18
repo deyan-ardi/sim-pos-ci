@@ -13,7 +13,7 @@ class MemberModel extends Model
 	protected $returnType           = MemberModel::class;
 	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
-		'member_name', 'member_contact', 'member_description', 'deleted_at'
+		'member_name', 'member_contact','member_discount', 'member_description', 'deleted_at'
 	];
 
 	// Dates
@@ -22,7 +22,6 @@ class MemberModel extends Model
 	protected $validationRules      = [
 		'member_name' => 'required',
 		'member_contact' => 'required',
-		'member_description' => 'required',
 	];
 	protected $validationMessages   = [];
 	protected $skipValidation       = false;
