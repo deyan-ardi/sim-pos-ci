@@ -33,7 +33,9 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Home::index');
-	$routes->get('/home-page', 'Home::index');
+	$routes->get('home-page', 'Home::index');
+	$routes->get('profile-setting','Home::profile');
+	$routes->patch('profile-setting', 'Home::profile');
 });
 
 $routes->group('categories', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -70,7 +72,12 @@ $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($route
 	$routes->patch('/', 'Supplier::index');
 	$routes->delete('/', 'Supplier::index');
 	$routes->get('order-items', 'Supplier::order');
-	$routes->get('report-order', 'Supplier::report');
+	$routes->post('order-items', 'Supplier::order');
+	$routes->patch('order-items', 'Supplier::order');
+	$routes->delete('order-items', 'Supplier::order');
+	$routes->get('create_orders', 'Supplier::create_order');
+	$routes->post('create_orders', 'Supplier::create_order');
+
 });
 
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {

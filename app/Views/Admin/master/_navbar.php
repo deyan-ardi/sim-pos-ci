@@ -48,7 +48,7 @@
                                 </span>
                             </div>
                             <ul class="pro-body">
-                                <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i> Pengaturan Profil</a>
+                                <li><a href="<?= base_url(); ?>/profile-setting" class="dropdown-item"><i class="feather icon-user"></i> Pengaturan Profil</a>
                                 </li>
                                 <li><a href="<?= base_url(); ?>/logout" class="dropdown-item"><i
                                             class="feather icon-power text-danger"></i>

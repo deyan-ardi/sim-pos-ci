@@ -35,12 +35,18 @@ class ItemModel extends Model
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;
 
-	public function getAllItem($id = null)
+	public function getAllItem($id = null,$supplier_id = null)
 	{
-		if ($id == null) {
+		if ($id == null && $supplier_id == null) {
 			$this->select('items.*,suppliers.supplier_name,item_categories.category_name');
 			$this->join('item_categories', 'item_categories.id = items.category_id');
-			$this->join('suppliers', 'suppliers.id = items.supplier_id')->where('items.deleted_at', NULL);
+			$this->join('suppliers', 'suppliers.id = items.supplier_id');
+			return $this->get()->getResult();
+		}else if($id == null && $supplier_id != null){
+			$this->select('items.*,suppliers.supplier_name,item_categories.category_name');
+			$this->join('item_categories', 'item_categories.id = items.category_id');
+			$this->join('suppliers', 'suppliers.id = items.supplier_id');
+			$this->where('supplier_id',$supplier_id);
 			return $this->get()->getResult();
 		}
 	}

@@ -34,8 +34,6 @@
                            <li class=""><a href="<?= base_url(); ?>/suppliers" class="">Data Supplier</a></li>
                            <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Barang</a>
                            </li>
-                           <li class=""><a href="<?= base_url(); ?>/suppliers/report-order" class="">Laporan
-                                   Supplier</a></li>
                        </ul>
                    </li>
 

@@ -248,22 +248,22 @@ Dashboard Page
                                             <?php if (!empty($user[0]['user_number'])) : ?>
                                             <div class="col text-center">
                                                 <h4><?= $user[0]['user_number']; ?></h4>
-                                                <span>User ID</span>
+                                                <span>Kontak</span>
                                             </div>
                                             <?php else : ?>
                                             <div class="col text-center">
-                                                <h4>xxxxxxxxxx</h4>
-                                                <span>User ID</span>
+                                                <h4>Kosong</h4>
+                                                <span>Kontak</span>
                                             </div>
                                             <?php endif; ?>
                                             <?php if (!empty($user[0]['name'])) : ?>
                                             <div class="col text-center">
                                                 <h4><?= ucWords(strtolower($user[0]['name'])); ?></h4>
-                                                <span>Role</span>
+                                                <span>Hak Akses</span>
                                             </div>
                                             <?php else : ?>
                                             <div class="col text-center">
-                                                <span>Role</span>
+                                                <span>Hak Akses</span>
                                             </div>
                                             <?php endif; ?>
 

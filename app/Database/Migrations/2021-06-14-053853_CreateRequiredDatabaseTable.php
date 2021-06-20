@@ -135,6 +135,7 @@ class CreateRequiredDatabaseTable extends Migration
 			'order_code'   	   	=> ['type' => 'varchar', 'constraint' => 50],
 			'order_total_quantity' 	=> ['type' => 'int'],
 			'order_total_item' 		=> ['type' => 'int'],
+			'order_status' 		=> ['type' => 'int'],
 			'user_id'      		=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'supplier_id'      	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'created_at'       	=> ['type' => 'datetime', 'null' => true],

@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ItemModel;
+use App\Models\OrderDetailModel;
+use App\Models\OrderModel;
 use App\Models\SupplierModel;
 
 class Supplier extends BaseController
@@ -13,6 +15,8 @@ class Supplier extends BaseController
 		$this->validate = \Config\Services::validation();
 		$this->m_supplier = new SupplierModel();
 		$this->m_item = new ItemModel();
+		$this->m_order = new OrderModel();
+		$this->m_order_detail = new OrderDetailModel();
 	}
 	public function index()
 	{
@@ -89,13 +93,136 @@ class Supplier extends BaseController
 		}
 	}
 
-	public function report()
-	{
-		return view('Admin/page/supplier_report');
-	}
-
 	public function order()
 	{
-		return view('Admin/page/supplier_order');
+		$data = [
+			'order' => $this->m_order->getAllOrder(),
+			'validation' => $this->validate,
+			'supplier' => $this->m_supplier->findAll(),
+		];
+		if (!empty($this->request->getPost('input_order'))) {
+			$formSubmit = $this->validate([
+				'supplier_name' => 'required',
+			]);
+			if (!$formSubmit) {
+				return redirect()->to('/suppliers/order-items')->withInput();
+			} else {
+				$string = "0123456789BCDFGHJKLMNPQRSTVWXYZ";
+				$token = substr(str_shuffle($string), 0, 10);
+				$save = $this->m_order->save([
+					'order_code' => $token,
+					'order_total_quantity' => '0',
+					'order_total_item' => '0',
+					'order_status' => '1',
+					'user_id' => user()->id,
+					'supplier_id' => $this->request->getPost('supplier_name'),
+				]);
+				if ($save) {
+					echo "Berhasil Ditambahkan";
+				} else {
+					echo "Gagal Ditambahkan";
+				}
+			}
+		}
+		else if (!empty($this->request->getPost('input_order'))) {
+			// Disini ada perkondisian untuk menghitung 
+			$formSubmit = $this->validate([
+				'supplier_name_up' => 'required',
+			]);
+			if (!$formSubmit) {
+				return redirect()->to('/suppliers/order-items')->withInput();
+			} else {
+				$save = $this->m_order->save([
+					'order_total_quantity' => '0',
+					'order_total_item' => '0',
+					'order_status' => '1',
+					'user_id' => user()->id,
+					'supplier_id' => $this->request->getPost('supplier_name'),
+				]);
+				if ($save) {
+					echo "Berhasil Ditambahkan";
+				} else {
+					echo "Gagal Ditambahkan";
+				}
+			}
+		} else if (!empty($this->request->getPost('update_status_order'))) {
+			// Disini ada perkondisian untuk menghitung 
+			$formSubmit = $this->validate([
+				'order_name_up' => 'required',
+			]);
+			if (!$formSubmit) {
+				return redirect()->to('/suppliers/order-items')->withInput();
+			} else {
+				$save = $this->m_order->save([
+					'id' => $this->request->getPost('id_order'),
+					'order_status' => $this->request->getPost('order_name_up'),
+				]);
+				if ($save) {
+					echo "Berhasil Diset Ulang";
+				} else {
+					echo "Gagal Diset Ulang";
+				}
+			}
+		} else if (!empty($this->request->getPost('delete_order'))) {
+			// Disini ada perkondisian untuk menghitung 
+			$find = $this->m_order->find($this->request->getPost('id_order'));
+			if(!empty($find)){
+				if($this->m_order->delete($this->request->getPost('id_order'))){
+					echo "Berhasil dihapus";
+				}else{
+					echo "Gagal Dihapus";
+				}
+			}else{
+				echo "Data Tidak Ditemukan";
+			}
+		} else {
+			return view('Admin/page/supplier_order', $data);
+		}
+	}
+
+	public function create_order(){
+		if(!empty($this->request->getGet('order_code'))){
+			$find = $this->m_order->getAllOrder(null,$this->request->getGet('order_code'));
+			if(!empty($find)){
+				$data = [
+					'supplier' => $find,
+					'validation' => $this->validate,
+					'order' => $this->m_order_detail->getAllOrder($find[0]->id),
+					'item' => $this->m_item->getAllItem(null, $find[0]->supplier_id),
+				];
+				if($this->request->getPost('input_order')){
+					$formSubmit = $this->validate([
+						'item_name' => 'required',
+						'item_quantity' => 'required|integer',
+					]);
+					if (!$formSubmit) {
+						return redirect()->to('/suppliers/order-items')->withInput();
+					} else {
+						$check_item = $this->m_order_detail->where('item_id',$this->request->getPost('item_name'))->where('order_id',$this->request->getPost('id_order'))->findAll();
+						if(empty($check_item)){
+							$save = $this->m_order_detail->save([
+								'detail_quantity' => $this->request->getPost('item_quantity'),
+								'user_id' => user()->id,
+								'order_id' => $this->request->getPost('id_order'),
+								'item_id' => $this->request->getPost('item_name'),
+							]);
+							if ($save) {
+								echo "Berhasil Ditambahkan";
+							} else {
+								echo "Gagal Ditambahkan";
+							}
+						}else{
+							echo "Gagal Menambahkan Pesanan, Produk sudah ada di list pesanan";
+						}
+					}
+				}else{
+					return view('Admin/page/create_orders',$data);
+				}
+			}else{
+				echo "Data Order Tidak Ditemukan";
+			}
+		}else{
+			return redirect()->to('/suppliers/order-items');
+		}
 	}
 }
