@@ -63,119 +63,129 @@ Tambahkan Order
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
-                                            <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                            <?php if ($supplier[0]->order_status == 1) : ?>
+                                                <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                            <?php endif; ?>
                                             <div class="dt-responsive table-responsive">
                                                 <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
+                                                            <th>Kode Barang</th>
                                                             <th>Nama Barang</th>
                                                             <th>Jumlah Order</th>
                                                             <th>Diubah Terakhir</th>
                                                             <th>Diubah Oleh</th>
-                                                            <th class="text-center"><i class="feather icon-settings"></i>
-                                                            </th>
+                                                            <?php if ($supplier[0]->order_status == 1) : ?>
+                                                                <th class="text-center"><i class="feather icon-settings"></i>
+                                                                </th>
+                                                            <?php endif; ?>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
                                                         $i = 1;
+                                                        $total_order = 0;
                                                         foreach ($order as $c) : ?>
                                                             <tr>
                                                                 <td><?= $i++; ?></td>
+                                                                <td><?= $c->item_code; ?></td>
                                                                 <td><?= $c->item_name; ?></td>
                                                                 <td><?= $c->detail_quantity; ?> Buah</td>
                                                                 <td>
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
                                                                 <td><?= $c->username; ?></td>
+                                                                <?php if ($supplier[0]->order_status == 1) : ?>
+                                                                    <td>
+                                                                        <div class="row justify-content-center">
 
-                                                                <td>
-                                                                    <div class="row justify-content-center">
+                                                                            <!-- Update Button Modal -->
+                                                                            <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Order" data-toggle="tooltip"></i></button>
 
-                                                                        <!-- Update Button Modal -->
-                                                                        <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Order" data-toggle="tooltip"></i></button>
-
-                                                                        <!-- Update Modal -->
-                                                                        <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                            <div class="modal-dialog" role="document">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
-                                                                                            Supplier</h5>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <form action="" method="POST">
-                                                                                            <?= csrf_field(); ?>
-                                                                                            <input type="hidden" name="_method" value="PATCH">
-                                                                                            <input type="hidden" name="id_order_detail" value="<?= $c->id; ?>">
-                                                                                            <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
-                                                                                            <div class="form-group">
-                                                                                                <select class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style=" text-transform: capitalize;" name="item_name" required>
-                                                                                                    <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
-                                                                                                    <?php foreach ($item as $s) : ?>
-                                                                                                        <?php if ($s->id == $c->id) : ?>
-                                                                                                            <option value="<?= $s->id; ?>" selected>
-                                                                                                                <?= $s->item_code; ?> - <?= $s->item_name; ?>
-                                                                                                            </option>
-                                                                                                        <?php else : ?>
-                                                                                                            <option value="<?= $s->id; ?>">
-                                                                                                                <?= $s->item_code; ?> - <?= $s->item_name; ?>
-                                                                                                            </option>
-                                                                                                        <?php endif; ?>
-                                                                                                    <?php endforeach; ?>
-                                                                                                </select>
-                                                                                                <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError("item_name"); ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="form-group">
-                                                                                                <div class="input-group search-form">
-                                                                                                    <input type="number" min="0" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" name="item_quantity" required placeholder="Jumlah Order" value="<?= old('item_quantity') ? old('item_quantity') : $c->detail_quantity; ?>">
-                                                                                                    <div class="input-group-append">
-                                                                                                        <span class="input-group-text bg-transparent">Buah</span>
-                                                                                                    </div>
+                                                                            <!-- Update Modal -->
+                                                                            <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
+                                                                                <div class="modal-dialog" role="document">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
+                                                                                                Supplier</h5>
+                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <form action="" method="POST">
+                                                                                                <?= csrf_field(); ?>
+                                                                                                <input type="hidden" name="_method" value="PATCH">
+                                                                                                <input type="hidden" name="id_order_detail" value="<?= $c->id; ?>">
+                                                                                                <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
+                                                                                                <div class="form-group">
+                                                                                                    <select class="form-control <?= $validation->getError('item_name_up') ? "is-invalid" : ""; ?>" style=" text-transform: capitalize;" name="item_name_up" required>
+                                                                                                        <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
+                                                                                                        <?php foreach ($item as $s) : ?>
+                                                                                                            <?php if ($s->id == $c->item_id) : ?>
+                                                                                                                <option value="<?= $s->id; ?>" selected>
+                                                                                                                    <?= $s->item_code; ?> - <?= $s->item_name; ?>
+                                                                                                                </option>
+                                                                                                            <?php else : ?>
+                                                                                                                <option value="<?= $s->id; ?>">
+                                                                                                                    <?= $s->item_code; ?> - <?= $s->item_name; ?>
+                                                                                                                </option>
+                                                                                                            <?php endif; ?>
+                                                                                                        <?php endforeach; ?>
+                                                                                                    </select>
                                                                                                     <div class="invalid-feedback">
-                                                                                                        <?= $validation->getError("item_quantity"); ?>
+                                                                                                        <?= $validation->getError("item_name_up"); ?>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="submit" name="update_order" value="update" class="btn btn-primary">Simpan
-                                                                                                    Perubahan</button>
-                                                                                                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                            </div>
-                                                                                        </form>
+                                                                                                <div class="form-group">
+                                                                                                    <div class="input-group search-form">
+                                                                                                        <input type="number" min="0" class="form-control <?= $validation->getError('item_quantity_up') ? "is-invalid" : ""; ?>" name="item_quantity_up" required placeholder="Jumlah Order" value="<?= old('item_quantity_up') ? old('item_quantity_up') : $c->detail_quantity; ?>">
+                                                                                                        <div class="input-group-append">
+                                                                                                            <span class="input-group-text bg-transparent">Buah</span>
+                                                                                                        </div>
+                                                                                                        <div class="invalid-feedback">
+                                                                                                            <?= $validation->getError("item_quantity_up"); ?>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="modal-footer">
+                                                                                                    <button type="submit" name="update_order" value="update" class="btn btn-primary">Simpan
+                                                                                                        Perubahan</button>
+                                                                                                    <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+
+
+
+                                                                            <!-- Delete -->
+                                                                            <form action="" method="POST">
+                                                                                <?= csrf_field(); ?>
+                                                                                <input type="hidden" name="_method" value="DELETE" />
+                                                                                <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                                                                                <button type="submit" name="delete_order" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Order" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                            </form>
+
                                                                         </div>
-
-
-
-                                                                        <!-- Delete -->
-                                                                        <form action="" method="POST">
-                                                                            <?= csrf_field(); ?>
-                                                                            <input type="hidden" name="_method" value="DELETE" />
-                                                                            <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                            <button type="submit" name="delete_order" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Order" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                        </form>
-
-                                                                    </div>
-                                                                </td>
+                                                                    </td>
+                                                                <?php endif; ?>
                                                             </tr>
-                                                        <?php endforeach; ?>
+                                                        <?php
+                                                            $total_order = $total_order + $c->detail_quantity;
+                                                        endforeach; ?>
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th>#</th>
-                                                            <th>Nama Barang</th>
-                                                            <th>Jumlah Order</th>
-                                                            <th>Diubah Terakhir</th>
-                                                            <th>Diubah Oleh</th>
-                                                            <th class="text-center"><i class="feather icon-settings"></i>
-                                                            </th>
+                                                            <th colspan="4" rowspan="2"></th>
+                                                            <th>Total Barang</th>
+                                                            <th colspan="3"><?= $i - 1; ?> Jenis</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Total Item Dipesan</th>
+                                                            <th colspan="3"><?= $total_order; ?> Buah Barang</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -244,7 +254,7 @@ Tambahkan Order
                     </div>
                     <div class="form-group">
                         <div class="input-group search-form">
-                            <input type="number" min="0" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" name="item_quantity" required placeholder="Jumlah Order" value="<?= old('item_quantity') ? old('item_quantity') : ""; ?>">
+                            <input type="number" min="0" class="form-control <?= $validation->getError('item_quantity') ? "is-invalid" : ""; ?>" name="item_quantity" required placeholder="Jumlah Order" value="<?= old('item_quantity') ? old('item_quantity') : ""; ?>">
                             <div class="input-group-append">
                                 <span class="input-group-text bg-transparent">Buah</span>
                             </div>

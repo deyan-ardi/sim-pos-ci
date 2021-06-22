@@ -136,51 +136,12 @@ Order Barang Supplier
                                                                         </div>
                                                                     </div>
 
-
-                                                                    <!-- Update Button Modal -->
-                                                                    <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Order" data-toggle="tooltip"></i></button>
-
-                                                                    <!-- Update Modal -->
-                                                                    <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
-                                                                                        Supplier</h5>
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="" method="POST">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="PATCH">
-                                                                                        <input type="hidden" name="id_supplier" value="<?= $c->id; ?>">
-                                                                                        <div class="form-group">
-                                                                                            <select class="form-control <?= $validation->getError('supplier_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_name_up" required>
-                                                                                                <option value="">Pilih Supplier</option>
-                                                                                                <?php foreach ($supplier as $s) : ?>
-                                                                                                    <?php if ($c->supplier_id == $s->id) : ?>
-                                                                                                        <option value="<?= $s->id; ?>" selected><?= $s->supplier_name; ?> (0<?= $s->supplier_contact; ?>)</option>
-                                                                                                    <?php else : ?>
-                                                                                                        <option value="<?= $s->id; ?>"><?= $s->supplier_name; ?> (0<?= $s->supplier_contact; ?>)</option>
-                                                                                                    <?php endif; ?>
-                                                                                                <?php endforeach; ?>
-                                                                                            </select>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("supplier_name_up"); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="submit" name="update_order" value="update" class="btn btn-primary">Simpan
-                                                                                                Perubahan</button>
-                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
+                                                                    <!-- Delete -->
+                                                                    <form action="<?= base_url(); ?>/suppliers/invoice" method="POST">
+                                                                        <?= csrf_field(); ?>
+                                                                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                                                                        <button type="submit" name="print_order" value="print" class="btn btn-warning btn-icon btn-rounded" title="Unduh Data Order" data-toggle="tooltip"><i class="feather icon-download"></i></button>
+                                                                    </form>
 
                                                                     <!-- Delete -->
                                                                     <form action="" method="POST">

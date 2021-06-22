@@ -35,14 +35,9 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Jika tidak ada masalah, selanjutnya silahkan akses kehalaman `http://localhost:8080/` maka seharusnya halaman login akan muncul
 - Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
 ## Update Information
-Last Updated : 18 Juni 2021
-- CRUD Barang, Perbaikan CRUD Kategori Barang, CRUD Supplier, CRUD Member, CRUD User
-- Penambahan tabel dan relasi baru
-- Penambahan kolom baru pada tabel Barang
-- Penambahan fungsi upload file/foto
-- Penambahan helper
-- Perubahan bahasa Views dari Bahasa Inggris menjadi Bahasa Indonesia
-- Perbaikan file Migrations dan Seeder
-- Penambahan item di Router
+Last Updated : 22 Juni 2021
+- Order Item to Supplier Fiture
+- Add mPDF to convert pdf invoice
+
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

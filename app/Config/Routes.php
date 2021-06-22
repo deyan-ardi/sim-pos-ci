@@ -77,6 +77,10 @@ $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($route
 	$routes->delete('order-items', 'Supplier::order');
 	$routes->get('create_orders', 'Supplier::create_order');
 	$routes->post('create_orders', 'Supplier::create_order');
+	$routes->patch('create_orders', 'Supplier::create_order');
+	$routes->delete('create_orders', 'Supplier::create_order');
+	$routes->post('invoice', 'Supplier::export_pdf');
+
 
 });
 
