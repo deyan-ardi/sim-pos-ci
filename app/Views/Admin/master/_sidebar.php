@@ -80,7 +80,7 @@
                    <li class="nav-item pcoded-menu-caption">
                        <label>Menu Laporan Keuangan</label>
                    </li>
-                   <li data-username="financial report payment" class="nav-item"><a href="image_crop.html"
+                   <li data-username="financial report payment" class="nav-item"><a href="<?= base_url(); ?>/report"
                            class="nav-link"><span class="pcoded-micon"><i
                                    class="feather icon-file-text"></i></span><span class="pcoded-mtext">Data Laporan
                                Keuangan</span></a></li>

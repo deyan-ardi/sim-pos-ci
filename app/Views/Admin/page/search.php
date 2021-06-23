@@ -66,35 +66,27 @@ Transaksi Barang - Menu Kasir
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if (empty($find_sale)) : ?>
+                        <?php if ($find_sale[0]->sale_status == 1) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir - Pilih Member</span></h5>
+                                            <h5>Sistem Kasir - Informasi Transaksi</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
-                                                <form action="" method="POST">
-                                                    <?php csrf_field() ?>
-
-                                                    <div class="form-group">
-                                                        <select name="member_id" id="item" required class="form-control <?= $validation->getError('member_id') ? "is-invalid" : ""; ?>">
-                                                            <option value="">--Pilih Member--</option>
-                                                            <?php foreach ($member as $m) : ?>
-                                                                <option value="<?= $m->id; ?>"><?= $m->member_code; ?> - <?= $m->member_name; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            <?= $validation->getError("member_id"); ?>
-                                                        </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12">
+                                                        <h4 class="text-center mb-4">Transaksi dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
+                                                        <a href="<?= base_url(); ?>/transaction" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
+                                                        <form action="" method="post">
+                                                            <?php csrf_field() ?>
+                                                            <input type="hidden" name="_key" value="download">
+                                                            <button type="submit" name="invoice" value="invoice" class="form-control btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
+                                                        </form>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" name="submit_member" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Pilih Member</button>
-                                                    </div>
-                                                </form>
-
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -118,51 +110,51 @@ Transaksi Barang - Menu Kasir
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="row">
-                                        <?php if($find_sale[0]->sale_pay <= $find_sale[0]->sale_total): ?> 
-                                        <div class="col-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h5>Sistem Kasir - Input Barang Yang Dibeli</span></h5>
-                                                </div>
-                                                <div class="card-body">
+                                        <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Sistem Kasir - Input Barang Yang Dibeli</span></h5>
+                                                    </div>
                                                     <div class="card-body">
-                                                        <form action="" method="POST">
-                                                            <div class="form-group">
-                                                                <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? "is-invalid" : ""; ?>">
-                                                                    <option value="">--Pilih Barang--</option>
-                                                                    <?php foreach ($item as $i) : ?>
-                                                                        <?php if ($i->item_stock <= 0) : ?>
-                                                                            <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - [ STOK HABIS ]</option>
-                                                                        <?php else : ?>
-                                                                            <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Buah</option>
-                                                                        <?php endif; ?>
-                                                                    <?php endforeach; ?>
-                                                                </select>
-                                                                <div class="invalid-feedback">
-                                                                    <?= $validation->getError("item_barang"); ?>
+                                                        <div class="card-body">
+                                                            <form action="" method="POST">
+                                                                <div class="form-group">
+                                                                    <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
                                                                 </div>
-                                                            </div>
-                                                            <div class="input-group search-form">
-                                                                <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? "is-invalid" : ""; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ? old('item_quantity') : ""; ?>">
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text bg-transparent">Buah</span>
+                                                                <div class="form-group">
+                                                                    <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? "is-invalid" : ""; ?>">
+                                                                        <option value="">--Pilih Barang--</option>
+                                                                        <?php foreach ($item as $i) : ?>
+                                                                            <?php if ($i->item_stock <= 0) : ?>
+                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - [ STOK HABIS ]</option>
+                                                                            <?php else : ?>
+                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Buah</option>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                    <div class="invalid-feedback">
+                                                                        <?= $validation->getError("item_barang"); ?>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="invalid-feedback">
-                                                                    <?= $validation->getError("item_quantity"); ?>
+                                                                <div class="input-group search-form">
+                                                                    <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? "is-invalid" : ""; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ? old('item_quantity') : ""; ?>">
+                                                                    <div class="input-group-append">
+                                                                        <span class="input-group-text bg-transparent">Buah</span>
+                                                                    </div>
+                                                                    <div class="invalid-feedback">
+                                                                        <?= $validation->getError("item_quantity"); ?>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <button type="submit" name="submit_transaksi" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Tambah Transaksi</button>
-                                                            </div>
-                                                        </form>
+                                                                <div class="form-group">
+                                                                    <button type="submit" name="submit_transaksi" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Tambah Transaksi</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <?php endif; ?> 
+                                        <?php endif; ?>
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
@@ -235,11 +227,14 @@ Transaksi Barang - Menu Kasir
                                                                         <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                     </tr>
                                                                     <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total && !empty($transaction)) : ?>
+
                                                                         <tr>
                                                                             <th>Bayar</th>
                                                                             <th colspan="<?= $colspan; ?>">
                                                                                 <form action="" onkeyup="ajax_send()" method="post" id="form">
                                                                                     <?php csrf_field() ?>
+                                                                                    <input type="hidden" name="cetak_ulang" value="cetak_ulang">
+                                                                                    <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
                                                                                     <input type="number" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
                                                                                 </form>
                                                                             </th>

@@ -33,10 +33,17 @@ class SaleModel extends Model
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;
 	
-	public function getAllSale($sale_id){
-		$this->select('members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,sales.*');
-		$this->join('members','members.id = sales.member_id');
-		$this->where('sales.id',$sale_id);
-		return $this->get()->getResult();
+	public function getAllSale($sale_id = null){
+		if($sale_id != null){
+			$this->select('members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,sales.*');
+			$this->join('members','members.id = sales.member_id');
+			$this->where('sales.id',$sale_id);
+			return $this->get()->getResult();
+		}else{
+			$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,sales.*');
+			$this->join('members', 'members.id = sales.member_id');
+			$this->join('users', 'users.id = sales.user_id');
+			return $this->get()->getResult();
+		}
 	}
 }

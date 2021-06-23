@@ -211,12 +211,12 @@ class Transaction extends BaseController
 				echo "Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi";
 			}
 		} else if (!empty($this->request->getPost('invoice'))) {
-            if (get_cookie('transaction')) {
+			if (get_cookie('transaction')) {
 				$save_update_status = $this->m_sale->save([
 					'id' => get_cookie('transaction'),
 					'sale_status' => 1,
 				]);
-				if($save_update_status){
+				if ($save_update_status) {
 					$find_member = $this->m_member->find($find_sale[0]->member_id);
 					$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
 					$data = [
@@ -237,10 +237,9 @@ class Transaction extends BaseController
 					// $mpdf->AutoPrint(true);
 					$mpdf->SetJS('this.print();');
 					// $mpdf->Output('Invoice Transaction.pdf', 'I'); 
-					$mpdf->Output(); 
-					
+					$mpdf->Output();
 				}
-            }else{
+			} else {
 				echo "Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi";
 			}
 		} else {
@@ -248,17 +247,280 @@ class Transaction extends BaseController
 		}
 	}
 
-	public function validation_payment(){
-		if (get_cookie('transaction')) {
+	public function validation_payment()
+	{
+		if (get_cookie('transaction') || !empty($this->request->getPost('cetak_ulang'))) {
+			if(!empty($this->request->getPost('cetak_ulang'))){
+				$id_transaksi = $this->request->getPost('id_transaksi');
+			}else{
+				$id_transaksi = get_cookie('transaction');
+			}
 			$save = $this->m_sale->save([
-				'id' => get_cookie('transaction'),
+				'id' => $id_transaksi,
 				'sale_pay' => $this->request->getPost('bayar'),
 			]);
-			if($save){
+			if ($save) {
 				echo json_encode(array("status" => TRUE));
-			}else{
+			} else {
 				echo json_encode(array("status" => FALSE));
 			}
+		}
+	}
+
+	public function report()
+	{
+		$data = [
+			'transaksi' => $this->m_sale->getAllSale(),
+		];
+		$find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->findAll();
+		if (!empty($this->request->getPost('invoice'))) {
+			$save_update_status = $this->m_sale->save([
+				'id' => $find_sale_code[0]->id,
+				'sale_status' => 1,
+			]);
+			if ($save_update_status) {
+				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
+				$find_sale = $this->m_sale->getAllSale($find_sale_code[0]->id);
+				$find_member = $this->m_member->find($find_sale[0]->member_id);
+				$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+				$data = [
+					'detail' => $find_detail,
+					'sale' => $find_sale,
+					'member' => $find_member,
+					'user' => $find_user,
+				];
+				// return view('Admin/page/invoice_transaction', $data);
+				set_cookie('transaction', false, 900);
+				$mpdf = new \Mpdf\Mpdf();
+				$html = view('Admin/page/invoice_transaction', $data);
+				$mpdf->WriteHTML($html);
+				$mpdf->SetWatermarkText("SUKSES");
+				$mpdf->showWatermarkText = true;
+				$mpdf->showImageErrors = true;
+				$this->response->setHeader('Content-Type', 'application/pdf');
+				// $mpdf->AutoPrint(true);
+				$mpdf->SetJS('this.print();');
+				// $mpdf->Output('Invoice Transaction.pdf', 'I'); 
+				$mpdf->Output();
+			}
+		}
+		if (!empty($this->request->getPost('delete_transaksi'))) {
+			$find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
+			$find_item = $this->m_item->findAll();
+			if (!empty($find_sale_detail))
+				foreach ($find_sale_detail as $d) {
+					foreach ($find_item as $i) {
+						if ($d->item_id == $i->id) {
+							$this->m_item->save([
+								'id' => $i->id,
+								'item_stock' => $i->item_stock + $d->detail_quantity,
+							]);
+						}
+					}
+					$status = true;
+				}
+			else {
+				$status = true;
+			}
+			if ($status) {
+				if ($this->m_sale->delete($find_sale_code[0]->id)) {
+					echo "Berhasil Menghapus Transaksi";
+				} else {
+					echo "Gagal Menghapus Transaksi";
+				}
+			} else {
+				echo "Gagal Mengupdate Stok";
+			}
+		} else{
+			return view('Admin/page/report', $data);
+		}
+	}
+
+	public function search()
+	{
+		if ($this->request->getGet('sale_code') != null) {
+			$sale_code = $this->request->getGet('sale_code');
+			$find_sale_code = $this->m_sale->where('sale_code', $sale_code)->findAll();
+			if (!empty($find_sale_code)) {
+				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
+				$find_sale = $this->m_sale->getAllSale($find_sale_code[0]->id);
+				$data = [
+					'transaction' => $find_detail,
+					'member' => $this->m_member->findAll(),
+					'validation' => $this->validate,
+					'item' => $this->m_item->findAll(),
+					'find_sale' => $find_sale
+				];
+				if (!empty($this->request->getPost('submit_transaksi'))) {
+					$formSubmit = $this->validate([
+						'item_barang' => 'required',
+						'item_quantity' => 'required|integer',
+					]);
+					if (!$formSubmit) {
+						return redirect()->to('/transaction')->withInput();
+					} else {
+						// Cek apakah sudah ada item tersebut di database
+						$check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', $find_sale_code[0]->id)->findAll();
+						if (!empty($check)) {
+							echo "Barang Sudah Ada Di List";
+						} else {
+							$item_barang = $this->m_item->find($this->request->getPost('item_barang'));
+							$stock_sisa = $item_barang->item_stock - $this->request->getPost('item_quantity');
+							if ($stock_sisa < 0) {
+								echo "Stok Barang Tidak Mencukupi";
+							} else {
+								// Perhitungan
+								$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
+								$discount = $detail * $find_sale[0]->sale_discount / 100;
+								$detail_total = $detail - $discount;
+								$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
+
+								// Total Belanja
+								$total_sale = $find_sale[0]->sale_total + $detail_total;
+								// Total Keuntungan
+								$total_profit = $find_sale[0]->sale_profit + $profit_per_item;
+								// $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
+								$save_sale_detail = $this->m_sale_detail->save([
+									'detail_total' => $detail,
+									'detail_quantity' => $this->request->getPost('item_quantity'),
+									'user_id' => user()->id,
+									'item_id' => $this->request->getPost('item_barang'),
+									'sale_id' => $find_sale_code[0]->id,
+								]);
+								if ($save_sale_detail) {
+									$save_item = $this->m_item->save([
+										'id' => $item_barang->id,
+										'item_stock' => $stock_sisa,
+									]);
+									if ($save_item) {
+										$save_sale = $this->m_sale->save([
+											'id' => $find_sale_code[0]->id,
+											'sale_total' => $total_sale,
+											// 'sale_discount' => $total_discount,
+											'sale_profit' => $total_profit,
+										]);
+										if ($save_sale) {
+											echo "Berhasil Menambahkan Transaksi";
+										} else {
+											echo "Gagal Mengubah Transaksi";
+										}
+									} else {
+										echo "Gagal Mengurangkan Stock Barang";
+									}
+								} else {
+									echo "Gagal Menambahkan Detail Transaksi";
+								}
+							}
+						}
+					}
+				} else if (!empty($this->request->getPost('batalkan_transaksi'))) {
+					$find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
+					$find_item = $this->m_item->findAll();
+					if (!empty($find_sale_detail))
+						foreach ($find_sale_detail as $d) {
+							foreach ($find_item as $i) {
+								if ($d->item_id == $i->id) {
+									$this->m_item->save([
+										'id' => $i->id,
+										'item_stock' => $i->item_stock + $d->detail_quantity,
+									]);
+								}
+							}
+							$status = true;
+						}
+					else {
+						$status = true;
+					}
+					if ($status) {
+						if ($this->m_sale->delete($find_sale_code[0]->id)) {
+							echo "Berhasil Membatalkan Transaksi";
+						} else {
+							echo "Gagal Membatalkan Transaksi";
+						}
+					} else {
+						echo "Gagal Mengupdate Stok";
+					}
+				} else if (!empty($this->request->getPost('delete_item'))) {
+
+					// Ambil detail penjualan
+					$detail_sale = $this->m_sale_detail->find($this->request->getPost('id_item'));
+					// Ambil barang berdasarkan id item yang ada didetail penjualan
+					$item_barang = $this->m_item->find($detail_sale->item_id);
+					// Hitung stocknya jika dihapus
+					$stock_sisa = $item_barang->item_stock + $detail_sale->detail_quantity;
+
+					// Perhitungan
+					$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
+					$discount = $detail * $find_sale[0]->sale_discount / 100;
+					$detail_total = $detail - $discount;
+					$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
+
+					// Total Belanja
+					$total_sale = $find_sale[0]->sale_total - $detail_total;
+					// Total Keuntungan
+					$total_profit = $find_sale[0]->sale_profit - $profit_per_item;
+
+					// Perlu input itu ada stoknya, sale_total,sale_profit
+					// Pertama ubah stocknya
+					$save_update_stock = $this->m_item->save([
+						'id' => $detail_sale->item_id,
+						'item_stock' => $stock_sisa,
+					]);
+					if ($save_update_stock) {
+						$save_update_sale = $this->m_sale->save([
+							'id' => $detail_sale->sale_id,
+							'sale_total' => $total_sale,
+							'sale_profit' => $total_profit,
+						]);
+						if ($save_update_sale) {
+							if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
+								echo "Berhasil menghapus barang";
+							} else {
+								echo "Gagal menghapus barang";
+							}
+						} else {
+							echo "Gagal mengupdate transaksi";
+						}
+					} else {
+						echo "Gagal mengupdate stock";
+					}
+				} else if (!empty($this->request->getPost('invoice'))) {
+
+					$save_update_status = $this->m_sale->save([
+						'id' => $find_sale_code[0]->id,
+						'sale_status' => 1,
+					]);
+					if ($save_update_status) {
+						$find_member = $this->m_member->find($find_sale[0]->member_id);
+						$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+						$data = [
+							'detail' => $find_detail,
+							'sale' => $find_sale,
+							'member' => $find_member,
+							'user' => $find_user,
+						];
+						// return view('Admin/page/invoice_transaction', $data);
+						set_cookie('transaction', false, 900);
+						$mpdf = new \Mpdf\Mpdf();
+						$html = view('Admin/page/invoice_transaction', $data);
+						$mpdf->WriteHTML($html);
+						$mpdf->SetWatermarkText("SUKSES");
+						$mpdf->showWatermarkText = true;
+						$mpdf->showImageErrors = true;
+						$this->response->setHeader('Content-Type', 'application/pdf');
+						// $mpdf->AutoPrint(true);
+						$mpdf->SetJS('this.print();');
+						// $mpdf->Output('Invoice Transaction.pdf', 'I'); 
+						$mpdf->Output();
+					}
+				} else {
+					return view('Admin/page/search', $data);
+				}
+			} else {
+				return redirect()->to('/transaction/report');
+			}
+		} else {
+			return redirect()->to('/transaction/report');
 		}
 	}
 }

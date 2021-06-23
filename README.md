@@ -37,8 +37,10 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 ## Update Information
 Last Updated : 23 Juni 2021
 - Fitur Sistem Kasir
+- Fitur Laporan Transaksi
 - Perbaikan Database, Migration
 - Penambahan fitur cetak invoice
+- Penambahan Controller Laporan Keuangan
 
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

@@ -87,8 +87,18 @@ $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($route
 $routes->group('transaction', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Transaction::index');
 	$routes->post('/', 'Transaction::index');
-	$routes->patch('/validation_payment', 'Transaction::validation_payment');
 	$routes->delete('/', 'Transaction::index');
+	$routes->patch('validation_payment', 'Transaction::validation_payment');
+	$routes->get('report', 'Transaction::report');
+	$routes->post('report', 'Transaction::report');
+	$routes->delete('report', 'Transaction::report');
+	$routes->post('report/search', 'Transaction::search');
+	$routes->delete('report/search', 'Transaction::search');
+	$routes->get('report/search', 'Transaction::search');
+});
+
+$routes->group('report', ['namespace' => 'App\Controllers'], function ($routes) {
+	$routes->get('/', 'Report::index');
 });
 
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
