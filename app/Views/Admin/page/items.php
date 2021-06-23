@@ -165,50 +165,74 @@ Data Item Barang
                                                                                                 <?= $validation->getError("item_type_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
                                                                                             <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_weight_up') ? "is-invalid" : ""; ?>" name="item_weight_up" placeholder="Berat Dalam Kg (Opsional)" value="<?= (old('item_weight_up')) ? old('item_weight_up') : $c->item_weight; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Kg</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_weight_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
                                                                                             <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_length_up') ? "is-invalid" : ""; ?>" name="item_length_up" placeholder="Panjang Dalam Meter (Opsional)" value="<?= (old('item_length_up')) ? old('item_length_up') : $c->item_length; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Meter</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_length_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
                                                                                             <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_width_up') ? "is-invalid" : ""; ?>" name="item_width_up" placeholder="Lebar Dalam Meter (Opsional)" value="<?= (old('item_width_up')) ? old('item_width_up') : $c->item_length; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Meter</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_width_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
                                                                                             <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_height_up') ? "is-invalid" : ""; ?>" name="item_height_up" placeholder="Tinggi Dalam Meter (Opsional)" value="<?= (old('item_height_up')) ? old('item_height_up') : $c->item_height; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Meter</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_height_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Rp</span>
+                                                                                            </div>
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_hpp_up') ? "is-invalid" : ""; ?>" name="item_hpp_up" placeholder="Harga Beli (Rupiah)" required value="<?= (old('item_hpp_up')) ? old('item_hpp_up') : $c->item_hpp; ?>">
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_hpp_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_up') ? "is-invalid" : ""; ?>" name="item_stock_up" placeholder="Jumlah Stok" required value="<?= (old('item_stock_up')) ? old('item_stock_up') : $c->item_stock; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Buah</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_stock_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Rp</span>
+                                                                                            </div>
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_sale_up') ? "is-invalid" : ""; ?>" name="item_sale_up" placeholder="Harga Jual (Rupiah)" required value="<?= (old('item_sale_up')) ? old('item_sale_up') : $c->item_sale; ?>">
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_sale_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group input-group search-form">
                                                                                             <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('item_discount_up') ? "is-invalid" : ""; ?>" name="item_discount_up" placeholder="Diskon Barang Dalam Persen (Opsional)" value="<?= (old('item_discount_up')) ? old('item_discount_up') : $c->item_discount; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">%</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("item_discount_up"); ?>
                                                                                             </div>
@@ -374,50 +398,74 @@ Data Item Barang
                             <?= $validation->getError("item_type"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
                         <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_weight') ? "is-invalid" : ""; ?>" name="item_weight" placeholder="Berat Dalam Kg (Opsional)" value="<?= (old('item_weight')) ? old('item_weight') : ""; ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Kg</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_weight"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
                         <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_length') ? "is-invalid" : ""; ?>" name="item_length" placeholder="Panjang Dalam Meter (Opsional)" value="<?= (old('item_length')) ? old('item_length') : ""; ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Meter</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_length"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
                         <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_width') ? "is-invalid" : ""; ?>" name="item_width" placeholder="Lebar Dalam Meter (Opsional)" value="<?= (old('item_width')) ? old('item_width') : ""; ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Meter</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_width"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
                         <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_height') ? "is-invalid" : ""; ?>" name="item_height" placeholder="Tinggi Dalam Meter (Opsional)" value="<?= (old('item_height')) ? old('item_height') : ""; ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Meter</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_height"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Rp</span>
+                        </div>
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_hpp') ? "is-invalid" : ""; ?>" name="item_hpp" placeholder="Harga Beli (Rupiah)" required value="<?= (old('item_hpp')) ? old('item_hpp') : ""; ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_hpp"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock') ? "is-invalid" : ""; ?>" name="item_stock" placeholder="Jumlah Stok" required value="<?= (old('item_stock')) ? old('item_stock') : ""; ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Buah</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_stock"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Rp</span>
+                        </div>
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_sale') ? "is-invalid" : ""; ?>" name="item_sale" placeholder="Harga Jual (Rupiah)" required value="<?= (old('item_sale')) ? old('item_sale') : ""; ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_sale"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-group search-form">
                         <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('item_discount') ? "is-invalid" : ""; ?>" name="item_discount" placeholder="Diskon Barang Dalam Persen (Opsional)" value="<?= (old('item_discount')) ? old('item_discount') : "" ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">%</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_discount"); ?>
                         </div>

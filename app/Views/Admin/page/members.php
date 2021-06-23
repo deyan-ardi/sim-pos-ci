@@ -54,6 +54,7 @@ Data Member Toko
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
+                                                        <th>Kode Member</th>
                                                         <th>Nama Member</th>
                                                         <th>Kontak Member</th>
                                                         <th>Deskripsi Member</th>
@@ -69,6 +70,7 @@ Data Member Toko
                                                     foreach ($member as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
+                                                            <td><?= $c->member_code; ?></td>
                                                             <td><?= $c->member_name; ?></td>
                                                             <td>0<?= $c->member_contact; ?></td>
                                                             <td><?= !empty($c->member_description) ? $c->member_description : "Kosong"; ?></td>
@@ -95,7 +97,9 @@ Data Member Toko
                                                                                         <?= csrf_field(); ?>
                                                                                         <input type="hidden" name="_method" value="PATCH">
                                                                                         <input type="hidden" name="id_member" value="<?= $c->id; ?>">
-
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="form-control" required disabled value="<?= $c->member_code; ?>">
+                                                                                        </div>
                                                                                         <div class="form-group">
                                                                                             <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Member Toko" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
                                                                                             <div class="invalid-feedback">
@@ -114,8 +118,11 @@ Data Member Toko
                                                                                                 <?= $validation->getError("member_description_up"); ?>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
+                                                                                        <div class="input-group search-form form-group">
                                                                                             <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount_up" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount_up')) ? old('member_discount_up') : $c->member_discount; ?>">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">%</span>
+                                                                                            </div>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("member_discount_up"); ?>
                                                                                             </div>
@@ -151,6 +158,7 @@ Data Member Toko
                                                 <tfoot>
                                                     <tr>
                                                         <th>#</th>
+                                                        <th>Kode Member</th>
                                                         <th>Nama Member</th>
                                                         <th>Kontak Member</th>
                                                         <th>Deskripsi Member</th>
@@ -206,8 +214,11 @@ Data Member Toko
                             <?= $validation->getError("member_description"); ?>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="input-group search-form form-group">
                         <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount')) ? old('member_discount') : ""; ?>">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">%</span>
+                        </div>
                         <div class="invalid-feedback">
                             <?= $validation->getError("member_discount"); ?>
                         </div>

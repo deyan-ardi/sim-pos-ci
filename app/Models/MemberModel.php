@@ -13,13 +13,14 @@ class MemberModel extends Model
 	protected $returnType           = MemberModel::class;
 	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
-		'member_name', 'member_contact','member_discount', 'member_description', 'deleted_at'
+		'member_name','member_code', 'member_contact','member_discount', 'member_description', 'deleted_at'
 	];
 
 	// Dates
 	protected $useTimestamps        = true;
 	// Validation
 	protected $validationRules      = [
+		'member_code' => 'required',
 		'member_name' => 'required',
 		'member_contact' => 'required',
 	];

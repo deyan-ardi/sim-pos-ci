@@ -34,4 +34,11 @@ class SaleDetailModel extends Model
 	protected $validationMessages   = [];
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;
+
+	public function getAllSaleDetail($sale_id){
+		$this->select('sale_details.*,items.item_name,items.item_code,items.item_sale');
+		$this->join('items','items.id = sale_details.item_id');
+		$this->where('sale_details.sale_id',$sale_id);
+		return $this->get()->getResult();
+	}
 }

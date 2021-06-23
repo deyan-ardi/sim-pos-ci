@@ -28,7 +28,10 @@ class Member extends BaseController
 			if (!$formSubmit) {
 				return redirect()->to('/members')->withInput();
 			} else {
+				$string = "0123456789";
+				$token = date('Ym').substr(str_shuffle($string), 0, 4);
 				$save = $this->m_member->save([
+					'member_code' => $token,
 					'member_name' => ucWords($this->request->getPost('member_name')),
 					'member_contact' => $this->request->getPost('member_contact'),
 					'member_discount' => $this->request->getPost('member_discount'),

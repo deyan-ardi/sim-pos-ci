@@ -104,11 +104,11 @@ class AuthController extends BaseController
 	 */
 	public function logout()
 	{
+		set_cookie('transaction',false, 900);
 		if ($this->auth->check()) {
 			$this->auth->logout();
 		}
-
-		return redirect()->to(site_url('/'));
+		return redirect()->to(site_url('/'))->withCookies();
 	}
 
 	//--------------------------------------------------------------------

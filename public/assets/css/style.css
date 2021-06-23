@@ -7726,7 +7726,7 @@ body.layout-1 .pcoded-navbar.active-dark .sidemenu li.active:after {
 
 .profile-card {
     position: relative;
-    min-height: 410px;
+    min-height: 350px;
     overflow: hidden;
 }
 

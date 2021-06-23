@@ -7,20 +7,6 @@ Tambahkan Order
 <!-- datatable Js -->
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
-<script>
-    const previewImg = () => {
-        const file = document.getElementById('file');
-        // const fileLabel = document.querySelector('.custom-file-control');
-        const imgPreview = document.querySelector('.img-preview');
-        // fileLabel.textContent = file.files[0].name;
-
-        const fileSampul = new FileReader();
-        fileSampul.readAsDataURL(file.files[0]);
-        fileSampul.onload = function(e) {
-            imgPreview.src = e.target.result;
-        }
-    }
-</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -56,7 +42,7 @@ Tambahkan Order
                         <!-- [ breadcrumb ] end -->
                         <!-- [ Main Content ] start -->
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-sm-8">
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>List Order Barang - Kode Pesanan <span class="text-primary"><?= $supplier[0]->order_code; ?></span></h5>
@@ -181,11 +167,11 @@ Tambahkan Order
                                                         <tr>
                                                             <th colspan="4" rowspan="2"></th>
                                                             <th>Total Barang</th>
-                                                            <th colspan="3"><?= $i - 1; ?> Jenis</th>
+                                                            <th colspan="2"><?= $i - 1; ?> Jenis</th>
                                                         </tr>
                                                         <tr>
                                                             <th>Total Item Dipesan</th>
-                                                            <th colspan="3"><?= $total_order; ?> Buah Barang</th>
+                                                            <th colspan="2"><?= $total_order; ?> Buah Barang</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -194,7 +180,7 @@ Tambahkan Order
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="card borderless-card">
                                     <div class="profile-card">
                                         <img class="img-fluid" src="<?= base_url(); ?>/upload/supplier/59858.jpg" alt="">

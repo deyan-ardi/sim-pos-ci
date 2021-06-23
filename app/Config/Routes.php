@@ -84,6 +84,13 @@ $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($route
 
 });
 
+$routes->group('transaction', ['namespace' => 'App\Controllers'], function ($routes) {
+	$routes->get('/', 'Transaction::index');
+	$routes->post('/', 'Transaction::index');
+	$routes->patch('/validation_payment', 'Transaction::validation_payment');
+	$routes->delete('/', 'Transaction::index');
+});
+
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 	// Login/out
 	$routes->get('login', 'AuthController::login', ['as' => 'login']);

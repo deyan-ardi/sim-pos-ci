@@ -35,9 +35,10 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Jika tidak ada masalah, selanjutnya silahkan akses kehalaman `http://localhost:8080/` maka seharusnya halaman login akan muncul
 - Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
 ## Update Information
-Last Updated : 22 Juni 2021
-- Order Item to Supplier Fiture
-- Add mPDF to convert pdf invoice
+Last Updated : 23 Juni 2021
+- Fitur Sistem Kasir
+- Perbaikan Database, Migration
+- Penambahan fitur cetak invoice
 
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

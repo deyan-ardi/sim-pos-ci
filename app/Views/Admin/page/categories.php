@@ -91,7 +91,7 @@ Data Kategori Barang
                                                                                         <?= csrf_field(); ?>
                                                                                         <input type="hidden" name="_method" value="PATCH">
                                                                                         <input type="hidden" name="id_category" value="<?= $c->id; ?>">
-                                                                                        <input type="text" class="form-control <?= $validation->getError('category_update') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="category_update" placeholder="Category Name" value="<?= (old('category_update')) ? old('category_update') : $c->category_name; ?>">
+                                                                                        <input type="text" class="form-control <?= $validation->getError('category_update') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="category_update" placeholder="Nama Kategori" value="<?= (old('category_update')) ? old('category_update') : $c->category_name; ?>">
                                                                                         <div class="invalid-feedback">
                                                                                             <?= $validation->getError("category_update"); ?>
                                                                                         </div>
@@ -158,7 +158,7 @@ Data Kategori Barang
             <div class="modal-body">
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
-                    <input type="text" class="form-control <?= $validation->getError('category') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="category" required placeholder="Category Name" value="<?= (old('category')) ? old('category') : ""; ?>">
+                    <input type="text" class="form-control <?= $validation->getError('category') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="category" required placeholder="Nama Kategori" value="<?= (old('category')) ? old('category') : ""; ?>">
                     <div class="invalid-feedback">
                         <?= $validation->getError("category"); ?>
                     </div>

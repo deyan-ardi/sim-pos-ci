@@ -41,6 +41,7 @@ class CreateRequiredDatabaseTable extends Migration
 		*/
 		$this->forge->addField([
 			'id'               		=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+			'member_code' 			=> ['type' => 'varchar', 'constraint' => 50],
 			'member_name' 			=> ['type' => 'varchar', 'constraint' => 255],
 			'member_contact' 		=> ['type' => 'bigint'],
 			'member_description'	=> ['type' => 'longtext','null' => true],
@@ -93,8 +94,10 @@ class CreateRequiredDatabaseTable extends Migration
 			'id'               	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
 			'sale_code'   	   	=> ['type' => 'varchar', 'constraint' => 50],
 			'sale_total'   	   	=> ['type' => 'float'],
+			'sale_pay'   	   	=> ['type' => 'float'],
 			'sale_discount' 	=> ['type' => 'float'],
 			'sale_profit' 		=> ['type' => 'float'],
+			'sale_status' 		=> ['type' => 'int'],
 			'user_id'      		=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'member_id'      	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'created_at'       	=> ['type' => 'datetime', 'null' => true],

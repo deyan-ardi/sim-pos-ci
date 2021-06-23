@@ -142,11 +142,11 @@ class Item extends BaseController
 			} else {
 				$find = $this->m_item->find($this->request->getPost('id_item'));
 				// Perhitungan discount
-				$before = $this->request->getPost('item_sale');
-				if (empty($this->request->getPost('item_discount'))) {
+				$before = $this->request->getPost('item_sale_up');
+				if (empty($this->request->getPost('item_discount_up'))) {
 					$bil_dis = 0;
 				} else {
-					$bil_dis = $this->request->getPost('item_discount');
+					$bil_dis = $this->request->getPost('item_discount_up');
 				}
 				$discount = ($before * $bil_dis) / 100;
 				$after = $before - $discount;
