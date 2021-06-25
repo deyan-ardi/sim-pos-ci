@@ -99,6 +99,8 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], function ($rou
 
 $routes->group('report', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Report::index');
+	$routes->post('/', 'Report::index');
+	$routes->post('fetch-data', 'Report::fetch_data');
 });
 
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {

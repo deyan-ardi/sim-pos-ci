@@ -48,6 +48,12 @@ class ItemModel extends Model
 			$this->join('suppliers', 'suppliers.id = items.supplier_id');
 			$this->where('supplier_id',$supplier_id);
 			return $this->get()->getResult();
+		}else{
+			$this->select('items.*,suppliers.supplier_name,item_categories.category_name');
+			$this->join('item_categories', 'item_categories.id = items.category_id');
+			$this->join('suppliers', 'suppliers.id = items.supplier_id');
+			$this->where('items.id', $id);
+			return $this->get()->getResult();
 		}
 	}
 }

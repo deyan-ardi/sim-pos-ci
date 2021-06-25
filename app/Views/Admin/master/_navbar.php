@@ -40,8 +40,12 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-notification">
                             <div class="pro-head">
-                                <img src="<?= base_url(); ?>/assets/images/user/avatar-1.jpg" class="img-radius"
-                                    alt="User-Profile-Image">
+                                <?php if (!empty(user()->user_image)) : ?>
+                                    <img class="img-radius" src="<?= base_url(); ?>/upload/user/<?= user()->user_image; ?>" alt="Profile-user">
+                                <?php else : ?>
+                                    <img class="img-radius" src="<?= base_url(); ?>/upload/user/user-default.jpg" alt="Profile-user">
+
+                                <?php endif; ?>
                                 <span>
                                     <span class="text-muted"><?= ucWords(user()->username); ?></span>
                                     <span class="h6"><?= strtolower(user()->email); ?></span>
@@ -50,8 +54,7 @@
                             <ul class="pro-body">
                                 <li><a href="<?= base_url(); ?>/profile-setting" class="dropdown-item"><i class="feather icon-user"></i> Pengaturan Profil</a>
                                 </li>
-                                <li><a href="<?= base_url(); ?>/logout" class="dropdown-item"><i
-                                            class="feather icon-power text-danger"></i>
+                                <li><a href="<?= base_url(); ?>/logout" class="dropdown-item"><i class="feather icon-power text-danger"></i>
                                         Keluar</a></li>
                             </ul>
                         </div>

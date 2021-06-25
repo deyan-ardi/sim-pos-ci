@@ -36,11 +36,7 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Gunakan email `super.admin@ganatech.id` dan password `admin123` untuk login ke sistem sebagai Super Admin
 ## Update Information
 Last Updated : 23 Juni 2021
-- Fitur Sistem Kasir
-- Fitur Laporan Transaksi
-- Perbaikan Database, Migration
-- Penambahan fitur cetak invoice
-- Penambahan Controller Laporan Keuangan
+- Fixed fitur umum
 
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

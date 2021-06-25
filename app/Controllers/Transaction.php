@@ -26,9 +26,11 @@ class Transaction extends BaseController
 		if (!get_cookie('transaction')) {
 			$find_detail = array();
 			$find_sale = null;
+			$count_member = null;
 		} else {
 			$find_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction'));
 			$find_sale = $this->m_sale->getAllSale(get_cookie('transaction'));
+			$count_member = $this->m_sale->where('user_id',$find_sale[0]->user_id)->countAll();
 		}
 		// set_cookie('_transaction', 1, time() + 900);
 		// Send Data
@@ -37,7 +39,8 @@ class Transaction extends BaseController
 			'member' => $this->m_member->findAll(),
 			'validation' => $this->validate,
 			'item' => $this->m_item->findAll(),
-			'find_sale' => $find_sale
+			'find_sale' => $find_sale,
+			'count_user' => $count_member,
 		];
 		if (!empty($this->request->getPost('submit_member'))) {
 			$formSubmit = $this->validate([
@@ -85,16 +88,15 @@ class Transaction extends BaseController
 						if ($stock_sisa < 0) {
 							echo "Stok Barang Tidak Mencukupi";
 						} else {
-							// Perhitungan
+							// Perhitungan Total Belanjar
 							$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
 							$discount = $detail * $find_sale[0]->sale_discount / 100;
 							$detail_total = $detail - $discount;
-							$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
-
-							// Total Belanja
 							$total_sale = $find_sale[0]->sale_total + $detail_total;
+
 							// Total Keuntungan
-							$total_profit = $find_sale[0]->sale_profit + $profit_per_item;
+							$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
+							$total_profit = $find_sale[0]->sale_profit + $profit_per_item - $discount;
 							// $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
 							$save_sale_detail = $this->m_sale_detail->save([
 								'detail_total' => $detail,
@@ -165,6 +167,8 @@ class Transaction extends BaseController
 			}
 		} else if (!empty($this->request->getPost('delete_item'))) {
 			if (get_cookie('transaction')) {
+
+
 				// Ambil detail penjualan
 				$detail_sale = $this->m_sale_detail->find($this->request->getPost('id_item'));
 				// Ambil barang berdasarkan id item yang ada didetail penjualan
@@ -172,17 +176,15 @@ class Transaction extends BaseController
 				// Hitung stocknya jika dihapus
 				$stock_sisa = $item_barang->item_stock + $detail_sale->detail_quantity;
 
-				// Perhitungan
+				// Perhitungan Total Belanjar
 				$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
 				$discount = $detail * $find_sale[0]->sale_discount / 100;
 				$detail_total = $detail - $discount;
-				$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
-
-				// Total Belanja
 				$total_sale = $find_sale[0]->sale_total - $detail_total;
-				// Total Keuntungan
-				$total_profit = $find_sale[0]->sale_profit - $profit_per_item;
 
+				// Total Keuntungan
+				$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
+				$total_profit = $find_sale[0]->sale_profit - $profit_per_item + $discount;
 				// Perlu input itu ada stoknya, sale_total,sale_profit
 				// Pertama ubah stocknya
 				$save_update_stock = $this->m_item->save([
@@ -250,9 +252,9 @@ class Transaction extends BaseController
 	public function validation_payment()
 	{
 		if (get_cookie('transaction') || !empty($this->request->getPost('cetak_ulang'))) {
-			if(!empty($this->request->getPost('cetak_ulang'))){
+			if (!empty($this->request->getPost('cetak_ulang'))) {
 				$id_transaksi = $this->request->getPost('id_transaksi');
-			}else{
+			} else {
 				$id_transaksi = get_cookie('transaction');
 			}
 			$save = $this->m_sale->save([
@@ -331,7 +333,7 @@ class Transaction extends BaseController
 			} else {
 				echo "Gagal Mengupdate Stok";
 			}
-		} else{
+		} else {
 			return view('Admin/page/report', $data);
 		}
 	}
@@ -341,6 +343,7 @@ class Transaction extends BaseController
 		if ($this->request->getGet('sale_code') != null) {
 			$sale_code = $this->request->getGet('sale_code');
 			$find_sale_code = $this->m_sale->where('sale_code', $sale_code)->findAll();
+			$count_member = $this->m_sale->where('user_id', $find_sale_code[0]->user_id)->countAllResults();
 			if (!empty($find_sale_code)) {
 				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
 				$find_sale = $this->m_sale->getAllSale($find_sale_code[0]->id);
@@ -349,7 +352,8 @@ class Transaction extends BaseController
 					'member' => $this->m_member->findAll(),
 					'validation' => $this->validate,
 					'item' => $this->m_item->findAll(),
-					'find_sale' => $find_sale
+					'find_sale' => $find_sale,
+					'count_user' => $count_member,
 				];
 				if (!empty($this->request->getPost('submit_transaksi'))) {
 					$formSubmit = $this->validate([
@@ -369,16 +373,15 @@ class Transaction extends BaseController
 							if ($stock_sisa < 0) {
 								echo "Stok Barang Tidak Mencukupi";
 							} else {
-								// Perhitungan
+								// Perhitungan Total Belanjar
 								$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
 								$discount = $detail * $find_sale[0]->sale_discount / 100;
 								$detail_total = $detail - $discount;
-								$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
-
-								// Total Belanja
 								$total_sale = $find_sale[0]->sale_total + $detail_total;
+
 								// Total Keuntungan
-								$total_profit = $find_sale[0]->sale_profit + $profit_per_item;
+								$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
+								$total_profit = $find_sale[0]->sale_profit + $profit_per_item - $discount;
 								// $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
 								$save_sale_detail = $this->m_sale_detail->save([
 									'detail_total' => $detail,
@@ -449,16 +452,15 @@ class Transaction extends BaseController
 					// Hitung stocknya jika dihapus
 					$stock_sisa = $item_barang->item_stock + $detail_sale->detail_quantity;
 
-					// Perhitungan
+					// Perhitungan Total Belanjar
 					$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
 					$discount = $detail * $find_sale[0]->sale_discount / 100;
 					$detail_total = $detail - $discount;
-					$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
-
-					// Total Belanja
 					$total_sale = $find_sale[0]->sale_total - $detail_total;
+
 					// Total Keuntungan
-					$total_profit = $find_sale[0]->sale_profit - $profit_per_item;
+					$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
+					$total_profit = $find_sale[0]->sale_profit - $profit_per_item + $discount;
 
 					// Perlu input itu ada stoknya, sale_total,sale_profit
 					// Pertama ubah stocknya

@@ -96,6 +96,7 @@ Order Barang Supplier
                                                             <?php endif; ?>
                                                             <td>
                                                                 <div class="row justify-content-center">
+                                                                    <?php if($c->order_status != 4): ?> 
                                                                     <!-- Set Status Button Modal -->
                                                                     <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
 
@@ -135,14 +136,6 @@ Order Barang Supplier
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
-                                                                    <!-- Delete -->
-                                                                    <form action="<?= base_url(); ?>/suppliers/invoice" method="POST">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                        <button type="submit" name="print_order" value="print" class="btn btn-warning btn-icon btn-rounded" title="Unduh Data Order" data-toggle="tooltip"><i class="feather icon-download"></i></button>
-                                                                    </form>
-
                                                                     <!-- Delete -->
                                                                     <form action="" method="POST">
                                                                         <?= csrf_field(); ?>
@@ -150,6 +143,14 @@ Order Barang Supplier
                                                                         <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                         <button type="submit" name="delete_order" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Order" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
                                                                     </form>
+                                                                    <?php endif; ?> 
+                                                                    <!-- Delete -->
+                                                                    <form target="_blank" action="<?= base_url(); ?>/suppliers/invoice" method="POST">
+                                                                        <?= csrf_field(); ?>
+                                                                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                                                                        <button type="submit" name="print_order" value="print" class="btn btn-warning btn-icon btn-rounded" title="Unduh Data Order" data-toggle="tooltip"><i class="feather icon-download"></i></button>
+                                                                    </form>
+
 
                                                                 </div>
                                                             </td>

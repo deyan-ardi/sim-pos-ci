@@ -131,6 +131,17 @@ class Supplier extends BaseController
 			if (!$formSubmit) {
 				return redirect()->to('/suppliers/order-items')->withInput();
 			} else {
+				if($this->request->getPost('order_name_up') == 4){
+					$order_data = $this->m_order_detail->where('order_id',$this->request->getPost('id_order'))->findAll();
+					foreach($order_data as $o){
+						$find_item = $this->m_item->getAllItem($o->item_id);
+						$total = $find_item[0]->item_stock + $o->detail_quantity;
+						$this->m_item->save([
+							'id' => $find_item[0]->id,
+							'item_stock' => $total,
+						]);
+					}
+				}
 				$save = $this->m_order->save([
 					'id' => $this->request->getPost('id_order'),
 					'order_status' => $this->request->getPost('order_name_up'),
@@ -166,6 +177,7 @@ class Supplier extends BaseController
 				$data = [
 					'supplier' => $find,
 					'validation' => $this->validate,
+					'count_order' => $this->m_order->where('supplier_id', $find[0]->supplier_id)->countAllResults(),
 					'order' => $this->m_order_detail->getAllOrder($find[0]->id),
 					'item' => $this->m_item->getAllItem(null, $find[0]->supplier_id),
 				];
@@ -189,7 +201,7 @@ class Supplier extends BaseController
 								$count = $this->m_order_detail->getAllOrder($find[0]->id);
 								$i = 0;
 								$total_item = 0;
-								foreach($count as $c){
+								foreach ($count as $c) {
 									$i++;
 									$total_item = $total_item + $c->detail_quantity;
 								}
@@ -198,9 +210,9 @@ class Supplier extends BaseController
 									'order_total_quantity' => $i,
 									'order_total_item' => $total_item,
 								]);
-								if($save_count){
+								if ($save_count) {
 									echo "Berhasil Ditambahkan";
-								}else{
+								} else {
 									echo "Gagal Ditambahkan";
 								}
 							} else {
@@ -210,7 +222,7 @@ class Supplier extends BaseController
 							echo "Gagal Menambahkan Pesanan, Produk sudah ada di list pesanan";
 						}
 					}
-				}else if ($this->request->getPost('update_order')) {
+				} else if ($this->request->getPost('update_order')) {
 					$formSubmit = $this->validate([
 						'item_name_up' => 'required',
 						'item_quantity_up' => 'required|integer',
@@ -220,13 +232,13 @@ class Supplier extends BaseController
 					} else {
 						$find_order = $this->m_order_detail->find($this->request->getPost('id_order_detail'));
 						// dd($find->item_id == $this->request->getPost('item_name_up'));
-						if($find_order->item_id == $this->request->getPost('item_name_up')){
+						if ($find_order->item_id == $this->request->getPost('item_name_up')) {
 							$status = true;
-						}else{
+						} else {
 							$check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name_up'))->where('order_id', $this->request->getPost('id_order'))->findAll();
-							if(empty($check_item)){
+							if (empty($check_item)) {
 								$status = true;
-							}else{
+							} else {
 								$status = false;
 							}
 						}
@@ -265,8 +277,8 @@ class Supplier extends BaseController
 					}
 				} else if ($this->request->getPost('delete_order')) {
 					$find_order = $this->m_order_detail->find($this->request->getPost('id_order'));
-					if(!empty($find_order)){
-						if($this->m_order_detail->delete($this->request->getPost('id_order'))){
+					if (!empty($find_order)) {
+						if ($this->m_order_detail->delete($this->request->getPost('id_order'))) {
 							$count = $this->m_order_detail->getAllOrder($find[0]->id);
 							$i = 0;
 							$total_item = 0;
@@ -284,10 +296,10 @@ class Supplier extends BaseController
 							} else {
 								echo "Gagal Dihapus";
 							}
-						}else{
+						} else {
 							echo "Gagal Dihapus";
 						}
-					}else{
+					} else {
 						echo "Data Tidak Ditemukan";
 					}
 				} else {
@@ -301,7 +313,8 @@ class Supplier extends BaseController
 		}
 	}
 
-	public function export_pdf(){
+	public function export_pdf()
+	{
 
 		$find = $this->m_order->find($this->request->getPost('id_order'));
 		$find_order = $this->m_order_detail->getAllOrder($find->id);
@@ -316,7 +329,7 @@ class Supplier extends BaseController
 		$mpdf->WriteHTML($html);
 		$mpdf->showImageErrors = true;
 		$this->response->setHeader('Content-Type', 'application/pdf');
-		$mpdf->Output('Invoice Order.pdf', 'I'); 
+		$mpdf->Output('Invoice Order.pdf', 'I');
 		// return view('');
 	}
 }

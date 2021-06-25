@@ -2,6 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Models\ItemCategoryModel;
+use App\Models\ItemModel;
+use App\Models\MemberModel;
+use App\Models\SaleModel;
+use App\Models\SupplierModel;
 use App\Models\UserModel;
 
 class Home extends BaseController
@@ -10,12 +15,22 @@ class Home extends BaseController
 	{
 		$this->validate = \Config\Services::validation();
 		$this->m_user = new UserModel();
+		$this->m_sale = new SaleModel();
+		$this->m_category = new ItemCategoryModel();
+		$this->m_item = new ItemModel();
+		$this->m_member = new MemberModel();
+		$this->m_supplier = new SupplierModel();
 		$this->crop = \Config\Services::image();
 	}
 	public function index()
 	{
 		$data = [
+			"sale" => $this->m_sale->limit(7)->findAll(),
 			"user" => $this->m_user->getUserRole(user()->id),
+			"member" => $this->m_member->countAll(),
+			"kategori" => $this->m_category->countAll(),
+			"supplier" => $this->m_supplier->countAll(),
+			"item" => $this->m_item->countAll(),
 		];
 		return view('Admin/page/index', $data);
 	}

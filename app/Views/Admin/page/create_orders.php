@@ -16,6 +16,10 @@ Tambahkan Order
 <?= $this->endSection(); ?>
 
 <?= $this->section('main'); ?>
+<?= $item_count = 0; ?>
+<?php foreach($item as $i){
+    $item_count++;
+} ?> 
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
@@ -193,11 +197,11 @@ Tambahkan Order
                                     <div class="card-footer bg-inverse">
                                         <div class="row text-center">
                                             <div class="col">
-                                                <h4>11</h4>
-                                                <span>Kategori Barang</span>
+                                                <h4><?= $count_order; ?></h4>
+                                                <span>Kali Order</span>
                                             </div>
                                             <div class="col">
-                                                <h4>13</h4>
+                                                <h4><?= $item_count ?></h4>
                                                 <span>Barang</span>
                                             </div>
                                         </div>

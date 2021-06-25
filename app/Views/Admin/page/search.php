@@ -33,6 +33,18 @@ Transaksi Barang - Menu Kasir
         // console.log($('#form').serialize());
     }
 </script>
+<script>
+    waktu();
+
+    function waktu() {
+        var waktu = new Date();
+        setTimeout("waktu()", 1000);
+        if (document.getElementById("jam") != null || document.getElementById("menit") != null) {
+            document.getElementById("jam").innerHTML = waktu.getHours() + "	:";
+            document.getElementById("menit").innerHTML = waktu.getMinutes() + " WITA";
+        }
+    }
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -98,8 +110,11 @@ Transaksi Barang - Menu Kasir
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
-
-
+                                                <div class="row justify-content-center">
+                                                    <div class="h2 mb-0 mr-1 font-weight-bold text-primary" id="jam"></div>
+                                                    <div class="h2 mb-0 mr-1 font-weight-bold text-primary" id="menit"></div>
+                                                </div>
+                                                <p class="text-center"><?= date('l, d F Y') ?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -226,7 +241,7 @@ Transaksi Barang - Menu Kasir
                                                                         <th>Total</th>
                                                                         <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                     </tr>
-                                                                    <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total && !empty($transaction)) : ?>
+                                                                    <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
 
                                                                         <tr>
                                                                             <th>Bayar</th>
@@ -261,7 +276,7 @@ Transaksi Barang - Menu Kasir
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" method="post">
+                                                                <form action="" target="_blank" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <button type="submit" name="invoice" value="invoice" <?= $disabled; ?> class="form-control btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
@@ -292,7 +307,11 @@ Transaksi Barang - Menu Kasir
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="card-body">
-
+                                                        <div class="row justify-content-center">
+                                                            <div class="h2 mb-0 mr-1 font-weight-bold text-primary" id="jam"></div>
+                                                            <div class="h2 mb-0 mr-1 font-weight-bold text-primary" id="menit"></div>
+                                                        </div>
+                                                        <p class="text-center"><?= date('l, d F Y') ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -310,7 +329,7 @@ Transaksi Barang - Menu Kasir
                                                 <div class="card-footer bg-inverse">
                                                     <div class="row text-center">
                                                         <div class="col">
-                                                            <h4>11</h4>
+                                                            <h4><?= $count_user; ?></h4>
                                                             <span>Transaksi</span>
                                                         </div>
                                                         <div class="col">
