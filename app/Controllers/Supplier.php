@@ -39,9 +39,11 @@ class Supplier extends BaseController
 					'supplier_description' => ucWords($this->request->getPost('supplier_description')),
 				]);
 				if ($save) {
-					echo "Berhasil Ditambahkan";
+					session()->setFlashdata('berhasil', 'Supplier Baru Berhasil Ditambahkan');
+					return redirect()->to('/suppliers')->withCookies();
 				} else {
-					echo "Gagal Ditambahkan";
+					session()->setFlashdata('gagal', 'Gagal Menambahkan Supplier');
+					return redirect()->to('/suppliers')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('update_supplier'))) {
@@ -60,9 +62,11 @@ class Supplier extends BaseController
 					'supplier_description' => ucWords($this->request->getPost('supplier_description_up')),
 				]);
 				if ($save) {
-					echo "Berhasil Diubah";
+					session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Diubah');
+					return redirect()->to('/suppliers')->withCookies();
 				} else {
-					echo "Gagal Diubah";
+					session()->setFlashdata('gagal', 'Gagal Mengubah Supplier');
+					return redirect()->to('/suppliers')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('delete_supplier'))) {
@@ -80,13 +84,16 @@ class Supplier extends BaseController
 				}
 				if ($status) {
 					if ($this->m_supplier->delete($this->request->getPost('id_supplier'))) {
-						echo "Berhasil Dihapus";
+						session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Dihapus');
+						return redirect()->to('/suppliers')->withCookies();
 					} else {
-						echo "Gagal Dihapus";
+						session()->setFlashdata('gagal', 'Gagal Menghapus Supplier');
+						return redirect()->to('/suppliers')->withCookies();
 					}
 				}
 			} else {
-				echo "Data Tidak Ditemukan";
+				session()->setFlashdata('gagal', 'Gagal Menemukan Data Supplier');
+				return redirect()->to('/suppliers')->withCookies();
 			}
 		} else {
 			return view('Admin/page/suppliers', $data);
@@ -118,9 +125,11 @@ class Supplier extends BaseController
 					'supplier_id' => $this->request->getPost('supplier_name'),
 				]);
 				if ($save) {
-					echo "Berhasil Ditambahkan";
+					session()->setFlashdata('berhasil', 'Permintaan Order Barang Berhasil Dibuat');
+					return redirect()->to('/suppliers/order-items')->withCookies();
 				} else {
-					echo "Gagal Ditambahkan";
+					session()->setFlashdata('gagal', 'Gagal Menambahkan Order Barang');
+					return redirect()->to('/suppliers/order-items')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('update_status_order'))) {
@@ -131,9 +140,9 @@ class Supplier extends BaseController
 			if (!$formSubmit) {
 				return redirect()->to('/suppliers/order-items')->withInput();
 			} else {
-				if($this->request->getPost('order_name_up') == 4){
-					$order_data = $this->m_order_detail->where('order_id',$this->request->getPost('id_order'))->findAll();
-					foreach($order_data as $o){
+				if ($this->request->getPost('order_name_up') == 4) {
+					$order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
+					foreach ($order_data as $o) {
 						$find_item = $this->m_item->getAllItem($o->item_id);
 						$total = $find_item[0]->item_stock + $o->detail_quantity;
 						$this->m_item->save([
@@ -147,9 +156,11 @@ class Supplier extends BaseController
 					'order_status' => $this->request->getPost('order_name_up'),
 				]);
 				if ($save) {
-					echo "Berhasil Diset Ulang";
+					session()->setFlashdata('berhasil', 'Status Order Berhasil Diperbaharui');
+					return redirect()->to('/suppliers/order-items')->withCookies();
 				} else {
-					echo "Gagal Diset Ulang";
+					session()->setFlashdata('gagal', 'Status Order Gagal Diperbaharui');
+					return redirect()->to('/suppliers/order-items')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('delete_order'))) {
@@ -157,12 +168,15 @@ class Supplier extends BaseController
 			$find = $this->m_order->find($this->request->getPost('id_order'));
 			if (!empty($find)) {
 				if ($this->m_order->delete($this->request->getPost('id_order'))) {
-					echo "Berhasil dihapus";
+					session()->setFlashdata('berhasil', 'Permintaan Order Barang Yang Dipilih Berhasil Dihapus');
+					return redirect()->to('/suppliers/order-items')->withCookies();
 				} else {
-					echo "Gagal Dihapus";
+					session()->setFlashdata('gagal', 'Permintaan Order Barang Yang Dipilih Gagal Dihapus');
+					return redirect()->to('/suppliers/order-items')->withCookies();
 				}
 			} else {
-				echo "Data Tidak Ditemukan";
+				session()->setFlashdata('gagal', 'Kode Order Gagal Ditemukan');
+				return redirect()->to('/suppliers/order-items')->withCookies();
 			}
 		} else {
 			return view('Admin/page/supplier_order', $data);
@@ -211,15 +225,19 @@ class Supplier extends BaseController
 									'order_total_item' => $total_item,
 								]);
 								if ($save_count) {
-									echo "Berhasil Ditambahkan";
+									session()->setFlashdata('berhasil', 'Pesanan Baru Berhasil Dibuat');
+									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 								} else {
-									echo "Gagal Ditambahkan";
+									session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat');
+									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 								}
 							} else {
-								echo "Gagal Ditambahkan";
+								session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat');
+								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 							}
 						} else {
-							echo "Gagal Menambahkan Pesanan, Produk sudah ada di list pesanan";
+							session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat, Produk Yang Dipilih Sudah Ada Di List Pesanan');
+							return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 						}
 					}
 				} else if ($this->request->getPost('update_order')) {
@@ -264,15 +282,19 @@ class Supplier extends BaseController
 									'order_total_item' => $total_item,
 								]);
 								if ($save_count) {
-									echo "Berhasil Diubah";
+									session()->setFlashdata('berhasil', 'Pesanan Yang Dipilih Berhasil Diperbaharui');
+									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 								} else {
-									echo "Gagal Diubah";
+									session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Diperbaharui');
+									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 								}
 							} else {
-								echo "Gagal Diubah";
+								session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Diperbaharui');
+								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 							}
 						} else {
-							echo "Gagal Mengubah Pesanan, Produk sudah ada di list pesanan";
+							session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat, Produk Yang Dipilih Sudah Ada Di List Pesanan');
+							return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 						}
 					}
 				} else if ($this->request->getPost('delete_order')) {
@@ -292,24 +314,29 @@ class Supplier extends BaseController
 								'order_total_item' => $total_item,
 							]);
 							if ($save_count) {
-								echo "Berhasil Dihapus";
+								session()->setFlashdata('berhasil', 'Pesanan Yang Dipilih Berhasil Dihapus');
+								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 							} else {
-								echo "Gagal Dihapus";
+								session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Dihapus');
+								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 							}
 						} else {
-							echo "Gagal Dihapus";
+							session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Dihapus');
+							return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 						}
 					} else {
-						echo "Data Tidak Ditemukan";
+						session()->setFlashdata('gagal', 'Data Pesanan Gagal Ditemukan');
+						return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 					}
 				} else {
 					return view('Admin/page/create_orders', $data);
 				}
 			} else {
-				echo "Data Order Tidak Ditemukan";
+				session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');
+				return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
 			}
 		} else {
-			return redirect()->to('/suppliers/order-items');
+			return redirect()->to('/suppliers/order-items')->withCookies();
 		}
 	}
 

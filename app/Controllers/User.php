@@ -92,18 +92,23 @@ class User extends BaseController
 								'user_id' => $user_id,
 							]);
 							if ($save_group) {
-								echo "Berhasil Menambahkan Member";
+								session()->setFlashdata('berhasil', 'User Baru Berhasil Ditambahkan');
+								return redirect()->to('/users')->withCookies();
 							} else {
-								echo "Gagal Membuat Hak Akses";
+								session()->setFlashdata('gagal', 'Gagal Membuat  Hak Akses User');
+								return redirect()->to('/users')->withCookies();
 							}
 						} else {
-							echo "Gagal Menambahkan Member";
+							session()->setFlashdata('gagal', 'Gagal Menambahkan User');
+							return redirect()->to('/users')->withCookies();
 						}
 					} else {
-						echo "File Gagal Diupload Ke Server";
+						session()->setFlashdata('gagal', 'File Gagal Diunggah Ke Server');
+						return redirect()->to('/users')->withCookies();
 					}
 				} else {
-					echo "Kata Sandi Tidak Boleh Kosong";
+					session()->setFlashdata('gagal', 'Kata Sandi Tidak Boleh Kosong');
+					return redirect()->to('/users')->withCookies();
 				}
 			}
 		} else if ($this->request->getPost('update_user')) {
@@ -196,22 +201,27 @@ class User extends BaseController
 							'user_id' => $this->request->getPost('id_user'),
 						]);
 						if ($save_group) {
-							echo "Berhasil Mengubah Member";
+							session()->setFlashdata('berhasil', 'User Yang Dipilih Berhasil Diperbaharui');
+							return redirect()->to('/users')->withCookies();
 						} else {
-							echo "Gagal Membuat Hak Akses";
+							session()->setFlashdata('gagal', 'Gagal Membuat Hak Akses');
+							return redirect()->to('/users')->withCookies();
 						}
 					} else {
-						echo "Gagal Mengubah Member";
+						session()->setFlashdata('gagal', 'Gagal Mengubah Data User Yang Dipilih');
+						return redirect()->to('/users')->withCookies();
 					}
 				} else {
-					echo "File Gagal Diupload Ke Server";
+					session()->setFlashdata('gagal', 'File Gagal Diunggah Ke Server');
+					return redirect()->to('/users')->withCookies();
 				}
 			}
 		} else if ($this->request->getPost('delete_user')) {
 			$find = $this->m_user->getUserRole($this->request->getPost('id_user'));
 			if(!empty($find)){
 				if($find[0]['userid'] == user()->id){
-					echo "Tidak Dapat Menghapus Diri Sendiri";
+					session()->setFlashdata('gagal', 'Tidak Dapat Mengapus Diri Sendiri');
+					return redirect()->to('/users')->withCookies();
 				}else{
 					if (!empty($find[0]['user_image'])) {
 						if (unlink('upload/user/' . $find[0]['user_image'])) {
@@ -224,12 +234,15 @@ class User extends BaseController
 					}
 					if($unlink){
 						if($this->m_user->delete($this->request->getPost('id_user'))){
-							echo "Berhasil Menghapus User";
+							session()->setFlashdata('berhasil', 'User Yang Dipilih Berhasil Dihapus');
+							return redirect()->to('/users')->withCookies();
 						}else{
-							echo "Gagal Menghapus User";
+							session()->setFlashdata('gagal', 'User Yang Dipilih Gagal Dihapus');
+							return redirect()->to('/users')->withCookies();
 						}
 					}else{
-						echo "Terjadi kesalahan saat menghapus gambar di server";
+						session()->setFlashdata('gagal', 'Gagal Memperbaharui File Di Server');
+						return redirect()->to('/users')->withCookies();
 					}
 				}
 			}

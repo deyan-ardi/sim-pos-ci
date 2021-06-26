@@ -121,12 +121,15 @@ class Home extends BaseController
 						'password_hash' => $password,
 					]);
 					if ($save) {
-						echo "Berhasil Mengubah Member";
+						session()->setFlashdata('berhasil', 'Profil Anda Berhasil Diubah');
+						return redirect()->to('/home-page')->withCookies();
 					} else {
-						echo "Gagal Mengubah Member";
+						session()->setFlashdata('gagal', 'Gagal Mengubah Profil Anda');
+						return redirect()->to('/home-page')->withCookies();
 					}
 				} else {
-					echo "File Gagal Diupload Ke Server";
+					session()->setFlashdata('gagal', 'Gagal Mengupload File Foto Anda Ke Server');
+					return redirect()->to('/home-page')->withCookies();
 				}
 			}
 		}else{

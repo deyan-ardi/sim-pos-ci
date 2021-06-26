@@ -90,12 +90,15 @@ class Item extends BaseController
 						'supplier_id' => $this->request->getPost('supplier'),
 					]);
 					if ($save) {
-						echo "Produk Berhasil Ditambahkan";
+						session()->setFlashdata('berhasil', 'Data Produk Baru Berhasil Ditambahkan');
+						return redirect()->to('/items')->withCookies();
 					} else {
-						echo "Produk Gagal Ditambahkan";
+						session()->setFlashdata('gagal', 'Data Produk Gagal Ditambahkan');
+						return redirect()->to('/items')->withCookies();
 					}
 				} else {
-					echo "Gagal Memindahkan File Ke Server";
+					session()->setFlashdata('gagal', 'File Gagal Dipindahkan Ke Server');
+					return redirect()->to('/items')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('update_items'))) {
@@ -188,15 +191,19 @@ class Item extends BaseController
 								'supplier_id' => $this->request->getPost('supplier_up'),
 							]);
 							if ($save) {
-								echo "Produk Berhasil Diubah";
+								session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Diubah');
+								return redirect()->to('/items')->withCookies();
 							} else {
-								echo "Produk Gagal Diubah";
+								session()->setFlashdata('gagal', 'Data Produk Gagal Diubah');
+								return redirect()->to('/items')->withCookies();
 							}
 						} else {
-							echo "Gagal Menghapus Gambar Item Lama";
+							session()->setFlashdata('gagal', 'Gagal Memperbaharui Gambar Produk Di Server');
+							return redirect()->to('/items')->withCookies();
 						}
 					} else {
-						echo "Gagal Memindahkan File Ke Server";
+						session()->setFlashdata('gagal', 'File Gambar Produk Gagal Dipindahkan Ke Server');
+						return redirect()->to('/items')->withCookies();
 					}
 				} else {
 
@@ -221,27 +228,32 @@ class Item extends BaseController
 						'supplier_id' => $this->request->getPost('supplier_up'),
 					]);
 					if ($save) {
-						echo "Produk Berhasil Diubah";
+						session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Diubah');
+						return redirect()->to('/items')->withCookies();
 					} else {
-						echo "Produk Gagal Diubah";
+						session()->setFlashdata('gagal', 'Data Produk Gagal Diubah');
+						return redirect()->to('/items')->withCookies();
 					}
 				}
 			}
 		} else if (!empty($this->request->getPost('delete_items'))) {
 			$find = $this->m_item->find($this->request->getPost('id_item'));
 			if (!empty($find)) {
-				if ($this->m_item->delete($this->request->getPost('id_item'))) {
-					dd($this->request->getPost('id_item'), $find);
-					echo "Berhasil Dihapus";
-				} else {
-					echo "Gagal Dihapus";
-				}
 				if (unlink('upload/produk/' . $find->item_image)) {
+					if ($this->m_item->delete($this->request->getPost('id_item'))) {
+						session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Dihapus');
+						return redirect()->to('/items')->withCookies();
+					} else {
+						session()->setFlashdata('gagal', 'Data Produk Gagal Dihapus');
+						return redirect()->to('/items')->withCookies();
+					}
 				} else {
-					echo "Gagal Menghapus Gambar di Server";
+					session()->setFlashdata('gagal', 'Gagal Mengahapus Gambar Produk di Server');
+					return redirect()->to('/items')->withCookies();
 				}
 			} else {
-				echo "Data Tidak Ditemukan";
+				session()->setFlashdata('gagal', 'Data Yang Dicari Tidak Ditemukan');
+				return redirect()->to('/items')->withCookies();
 			}
 		} else {
 			return view('Admin/page/items', $data);

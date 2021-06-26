@@ -38,9 +38,11 @@ class Member extends BaseController
 					'member_description' => ucWords($this->request->getPost('member_description')),
 				]);
 				if($save){
-					echo "Berhasil Menambahkan Member";
+					session()->setFlashdata('berhasil', 'Member Baru Berhasil Ditambahkan');
+					return redirect()->to('/members')->withCookies();
 				}else{
-					echo "Gagal Menambahkan Member";
+					session()->setFlashdata('gagal', 'Gagal Menambahkan Member');
+					return redirect()->to('/members')->withCookies();
 				}
 			}
 		}else if ($this->request->getPost('update_member')) {
@@ -61,21 +63,26 @@ class Member extends BaseController
 					'member_description' => ucWords($this->request->getPost('member_description_up')),
 				]);
 				if ($save) {
-					echo "Berhasil Mengubah Member";
+					session()->setFlashdata('berhasil', 'Member Yang Dipilih Berhasil Diubah');
+					return redirect()->to('/members')->withCookies();
 				} else {
-					echo "Gagal Mengubah Member";
+					session()->setFlashdata('gagal', 'Gagal Mengubah Member');
+					return redirect()->to('/members')->withCookies();
 				}
 			}
 		} else if ($this->request->getPost('delete_member')) {
 			$find = $this->m_member->find($this->request->getPost('id_member'));
 			if(!empty($find)){
 				if($this->m_member->delete($this->request->getPost('id_member'))){
-					echo "Berhasil Dihapus";
+					session()->setFlashdata('berhasil', 'Member Yang Dipilih Berhasil Dihapus');
+					return redirect()->to('/members')->withCookies();
 				}else{
-					echo "Gagal Dihapus";
+					session()->setFlashdata('gagal', 'Gagal Menghapus Member');
+					return redirect()->to('/members')->withCookies();
 				}
 			}else{
-				echo "Data Tidak Ditemukan";
+				session()->setFlashdata('gagal', 'Data Member Gagal Ditemukan');
+				return redirect()->to('/members')->withCookies();
 			}
 		} else{
 			return view('Admin/page/members',$data);

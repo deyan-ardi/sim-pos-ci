@@ -31,9 +31,11 @@ class Category extends BaseController
 					'category_name' => ucWords($this->request->getPost('category')),
 				]);
 				if ($save) {
-					echo "Berhasil Ditambahkan";
+					session()->setFlashdata('berhasil', 'Kategori Baru Berhasil Ditambahkan');
+					return redirect()->to('/categories')->withCookies();
 				} else {
-					echo "Gagal Ditambahkan";
+					session()->setFlashdata('berhasil', 'Gagal Menambahkan Kategori');
+					return redirect()->to('/categories')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('update_category'))) {
@@ -48,9 +50,11 @@ class Category extends BaseController
 					'category_name' => ucWords($this->request->getPost('category_update')),
 				]);
 				if ($save) {
-					echo "Berhasil Diubah";
+					session()->setFlashdata('berhasil', 'Data Kategori Yang Dipilih Berhasil Diubah');
+					return redirect()->to('/categories')->withCookies();
 				} else {
-					echo "Gagal Diubah";
+					session()->setFlashdata('gagal', 'Gagal Mengubah Data Kategori');
+					return redirect()->to('/categories')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('delete_category'))) {
@@ -67,9 +71,11 @@ class Category extends BaseController
 				}
 				if ($status) {
 					if ($this->m_supplier->delete($this->request->getPost('id_category'))) {
-						echo "Berhasil Dihapus";
+						session()->setFlashdata('berhasil', 'Data Kategori Yang Dipilih Berhasil Dihapus');
+						return redirect()->to('/categories')->withCookies();
 					} else {
-						echo "Gagal Dihapus";
+						session()->setFlashdata('gagal', 'Gagal Menghapus Data Kategori');
+						return redirect()->to('/categories')->withCookies();
 					}
 				}
 			}

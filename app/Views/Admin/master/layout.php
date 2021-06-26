@@ -23,6 +23,8 @@
             <div class="loader-fill"></div>
         </div>
     </div>
+    <div class="berhasil" data-berhasil="<?= session()->getFlashdata('berhasil') ?>"></div>
+    <div class="gagal" data-gagal="<?= session()->getFlashdata('gagal') ?>"></div>
     <!-- [ Pre-loader ] End -->
 
     <?= $this->include('Admin/master/_sidebar'); ?>

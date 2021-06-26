@@ -62,11 +62,13 @@ class Transaction extends BaseController
 					'user_id' => user()->id,
 					'member_id' => $this->request->getPost('member_id'),
 				]);
-				set_cookie('transaction', $this->m_sale->getInsertID(), 900);
 				if ($save) {
-					echo "Berhasil Membuat Transaksi Member";
+					set_cookie('transaction', $this->m_sale->getInsertID(), 900);
+					setcookie('transaction', $this->m_sale->getInsertID(), 900);
+					return redirect()->to('/transaction')->withCookies();
 				} else {
-					echo "Gagal Membuat Transaksi Member";
+					session()->setFlashdata('gagal', 'Gagal Membuat Transaksi Baru');
+					return redirect()->to('/transaction')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('submit_transaksi'))) {
@@ -81,12 +83,14 @@ class Transaction extends BaseController
 					// Cek apakah sudah ada item tersebut di database
 					$check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', get_cookie('transaction'))->findAll();
 					if (!empty($check)) {
-						echo "Barang Sudah Ada Di List";
+						session()->setFlashdata('gagal', 'Barang Sudah Ada Di List, Gagal Menambahkan');
+						return redirect()->to('/transaction')->withCookies();
 					} else {
 						$item_barang = $this->m_item->find($this->request->getPost('item_barang'));
 						$stock_sisa = $item_barang->item_stock - $this->request->getPost('item_quantity');
 						if ($stock_sisa < 0) {
-							echo "Stok Barang Tidak Mencukupi";
+							session()->setFlashdata('gagal', 'Stok Barang Yang Tersedia Tidak Mencukupi');
+							return redirect()->to('/transaction')->withCookies();
 						} else {
 							// Perhitungan Total Belanjar
 							$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
@@ -118,20 +122,24 @@ class Transaction extends BaseController
 										'sale_profit' => $total_profit,
 									]);
 									if ($save_sale) {
-										echo "Berhasil Menambahkan Transaksi";
+										return redirect()->to('/transaction')->withCookies();
 									} else {
-										echo "Gagal Mengubah Transaksi";
+										session()->setFlashdata('gagal', 'Gagal Menambahkan Transaksi');
+										return redirect()->to('/transaction')->withCookies();
 									}
 								} else {
-									echo "Gagal Mengurangkan Stock Barang";
+									session()->setFlashdata('gagal', 'Gagal Mengurangkan Stok Item');
+									return redirect()->to('/transaction')->withCookies();
 								}
 							} else {
-								echo "Gagal Menambahkan Detail Transaksi";
+								session()->setFlashdata('gagal', 'Gagal Menambahkan Detail Transaksi');
+								return redirect()->to('/transaction')->withCookies();
 							}
 						}
 					}
 				} else {
-					echo "Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi";
+					session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
+					return redirect()->to('/transaction')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('batalkan_transaksi'))) {
@@ -155,15 +163,19 @@ class Transaction extends BaseController
 				}
 				if ($status) {
 					if ($this->m_sale->delete(get_cookie('transaction'))) {
-						echo "Berhasil Membatalkan Transaksi";
+						session()->setFlashdata('berhasil', 'Transaksi Berhasil Dibatalkan');
+						return redirect()->to('/transaction')->withCookies();
 					} else {
-						echo "Gagal Membatalkan Transaksi";
+						session()->setFlashdata('gagal', 'Gagal Membatalkan Transaksi');
+						return redirect()->to('/transaction')->withCookies();
 					}
 				} else {
-					echo "Gagal Mengupdate Stok";
+					session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok');
+					return redirect()->to('/transaction')->withCookies();
 				}
 			} else {
-				echo "Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi";
+				session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
+				return redirect()->to('/transaction')->withCookies();
 			}
 		} else if (!empty($this->request->getPost('delete_item'))) {
 			if (get_cookie('transaction')) {
@@ -199,18 +211,22 @@ class Transaction extends BaseController
 					]);
 					if ($save_update_sale) {
 						if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
-							echo "Berhasil menghapus barang";
+							return redirect()->to('/transaction')->withCookies();
 						} else {
-							echo "Gagal menghapus barang";
+							session()->setFlashdata('gagal', 'Gagal Menghapus Barang');
+							return redirect()->to('/transaction')->withCookies();
 						}
 					} else {
-						echo "Gagal mengupdate transaksi";
+						session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi');
+						return redirect()->to('/transaction')->withCookies();
 					}
 				} else {
-					echo "Gagal mengupdate stock";
+					session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Barang');
+					return redirect()->to('/transaction')->withCookies();
 				}
 			} else {
-				echo "Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi";
+				session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
+				return redirect()->to('/transaction')->withCookies();
 			}
 		} else if (!empty($this->request->getPost('invoice'))) {
 			if (get_cookie('transaction')) {
@@ -242,7 +258,8 @@ class Transaction extends BaseController
 					$mpdf->Output();
 				}
 			} else {
-				echo "Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi";
+				session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
+				return redirect()->to('/transaction')->withCookies();
 			}
 		} else {
 			return view('Admin/page/transaction', $data);
@@ -326,12 +343,15 @@ class Transaction extends BaseController
 			}
 			if ($status) {
 				if ($this->m_sale->delete($find_sale_code[0]->id)) {
-					echo "Berhasil Menghapus Transaksi";
+					session()->setFlashdata('berhasil', 'Berhasil Menghapus Transaksi Yang Dipilih');
+					return redirect()->to('/transaction/report')->withCookies();
 				} else {
-					echo "Gagal Menghapus Transaksi";
+					session()->setFlashdata('gagal', 'Gagal Menghapus Transaksi Yang Dipilih');
+					return redirect()->to('/transaction/report')->withCookies();
 				}
 			} else {
-				echo "Gagal Mengupdate Stok";
+				session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Transaksi Yang Dipilih');
+				return redirect()->to('/transaction/report')->withCookies();
 			}
 		} else {
 			return view('Admin/page/report', $data);
@@ -343,8 +363,8 @@ class Transaction extends BaseController
 		if ($this->request->getGet('sale_code') != null) {
 			$sale_code = $this->request->getGet('sale_code');
 			$find_sale_code = $this->m_sale->where('sale_code', $sale_code)->findAll();
-			$count_member = $this->m_sale->where('user_id', $find_sale_code[0]->user_id)->countAllResults();
 			if (!empty($find_sale_code)) {
+				$count_member = $this->m_sale->where('user_id', $find_sale_code[0]->user_id)->countAllResults();
 				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
 				$find_sale = $this->m_sale->getAllSale($find_sale_code[0]->id);
 				$data = [
@@ -366,12 +386,14 @@ class Transaction extends BaseController
 						// Cek apakah sudah ada item tersebut di database
 						$check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', $find_sale_code[0]->id)->findAll();
 						if (!empty($check)) {
-							echo "Barang Sudah Ada Di List";
+							session()->setFlashdata('gagal', 'Barang Yang  Dipilih Sudah Ada Dalam List Transaksi');
+							return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 						} else {
 							$item_barang = $this->m_item->find($this->request->getPost('item_barang'));
 							$stock_sisa = $item_barang->item_stock - $this->request->getPost('item_quantity');
 							if ($stock_sisa < 0) {
-								echo "Stok Barang Tidak Mencukupi";
+								session()->setFlashdata('gagal', 'Stok Barang Tidak Mencukupi');
+								return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 							} else {
 								// Perhitungan Total Belanjar
 								$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
@@ -403,15 +425,18 @@ class Transaction extends BaseController
 											'sale_profit' => $total_profit,
 										]);
 										if ($save_sale) {
-											echo "Berhasil Menambahkan Transaksi";
+											return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 										} else {
-											echo "Gagal Mengubah Transaksi";
+											session()->setFlashdata('gagal', 'Gagal Mengubah Transaksi Yang Dipilih');
+											return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 										}
 									} else {
-										echo "Gagal Mengurangkan Stock Barang";
+										session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Barang');
+										return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 									}
 								} else {
-									echo "Gagal Menambahkan Detail Transaksi";
+									session()->setFlashdata('gagal', 'Gagal Menambahkan Detail Transaksi');
+									return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 								}
 							}
 						}
@@ -436,12 +461,15 @@ class Transaction extends BaseController
 					}
 					if ($status) {
 						if ($this->m_sale->delete($find_sale_code[0]->id)) {
-							echo "Berhasil Membatalkan Transaksi";
+							session()->setFlashdata('berhasil', 'Berhasil Membatalkan Transaksi Yang Dipilih');
+							return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 						} else {
-							echo "Gagal Membatalkan Transaksi";
+							session()->setFlashdata('gagal', 'Gagal Membatalkan Transaksi Yang Dipilih');
+							return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 						}
 					} else {
-						echo "Gagal Mengupdate Stok";
+						session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Barang');
+						return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 					}
 				} else if (!empty($this->request->getPost('delete_item'))) {
 
@@ -476,15 +504,18 @@ class Transaction extends BaseController
 						]);
 						if ($save_update_sale) {
 							if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
-								echo "Berhasil menghapus barang";
+								return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 							} else {
-								echo "Gagal menghapus barang";
+								session()->setFlashdata('gagal', 'Gagal Menghapus Item Barang Yang Dipilih');
+								return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 							}
 						} else {
-							echo "Gagal mengupdate transaksi";
+							session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi Yang Dipilih');
+							return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 						}
 					} else {
-						echo "Gagal mengupdate stock";
+						session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Barang');
+						return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 					}
 				} else if (!empty($this->request->getPost('invoice'))) {
 
