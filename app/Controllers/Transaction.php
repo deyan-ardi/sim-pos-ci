@@ -30,7 +30,11 @@ class Transaction extends BaseController
 		} else {
 			$find_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction'));
 			$find_sale = $this->m_sale->getAllSale(get_cookie('transaction'));
-			$count_member = $this->m_sale->where('user_id',$find_sale[0]->user_id)->countAll();
+			if(!empty($find_sale)){
+				$count_member = $this->m_sale->where('user_id',$find_sale[0]->user_id)->countAll();
+			}else{
+				$count_member = null;
+			}
 		}
 		// set_cookie('_transaction', 1, time() + 900);
 		// Send Data
@@ -462,7 +466,7 @@ class Transaction extends BaseController
 					if ($status) {
 						if ($this->m_sale->delete($find_sale_code[0]->id)) {
 							session()->setFlashdata('berhasil', 'Berhasil Membatalkan Transaksi Yang Dipilih');
-							return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
+							return redirect()->to('/transaction/report')->withCookies();
 						} else {
 							session()->setFlashdata('gagal', 'Gagal Membatalkan Transaksi Yang Dipilih');
 							return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();

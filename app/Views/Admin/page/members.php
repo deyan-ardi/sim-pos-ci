@@ -7,6 +7,32 @@ Data Member Toko
 <!-- datatable Js -->
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
+<script type="text/javascript">
+    $(".delete-button").on("click", function(e) {
+        e.preventDefault();
+        var self = $(this);
+        var nama = $(this).attr("data-nama");
+        var formId = $(this).attr("data-formid");
+        swal({
+                title: "Hapus Member " + nama + "?",
+                text: "Informasi Yang Terkait Dengan Data Ini Akan Hilang Secara Permanen",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((result) => {
+                if (result) {
+                    $("#" + formId).submit();
+                } else {
+                    swal({
+                        title: "File Aman !",
+                        text: "Data Member " + nama + " Batal Dihapus",
+                        icon: "info",
+                    });
+                }
+            });
+    });
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -48,7 +74,7 @@ Data Member Toko
                                         <h5>List Member Toko</h5>
                                     </div>
                                     <div class="card-body">
-                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Barang</button>
+                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Member</button>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
@@ -143,11 +169,12 @@ Data Member Toko
 
 
                                                                     <!-- Delete -->
-                                                                    <form action="" method="POST">
+                                                                    <form action="" id="<?= $c->id ?>" method="POST">
                                                                         <?= csrf_field(); ?>
                                                                         <input type="hidden" name="_method" value="DELETE" />
                                                                         <input type="hidden" name="id_member" value="<?= $c->id; ?>">
-                                                                        <button type="submit" name="delete_member" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Member" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                        <input type="hidden" name="delete_member" value="delete">
+                                                                        <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->member_name ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Member" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
                                                                     </form>
 
                                                                 </div>

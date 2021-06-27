@@ -1,8 +1,7 @@
  <!-- Required Js -->
- <script src="<?= base_url(); ?>/assets/js/vendor-all.min.js"></script>
- <script src="<?= base_url(); ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
  <script src="<?= base_url(); ?>/assets/plugins/sweetalert/js/sweetalert.min.js"></script>
  <script src="<?= base_url(); ?>/assets/js/pcoded.min.js"></script>
+ 
  <!-- sweet alert Js -->
 
  <?= $this->renderSection('footer'); ?>

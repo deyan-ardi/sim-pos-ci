@@ -7,7 +7,32 @@ Data Item Barang
 <!-- datatable Js -->
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
-
+<script type="text/javascript">
+    $(".delete-button").on("click", function(e) {
+        e.preventDefault();
+        var self = $(this);
+        var nama = $(this).attr("data-nama");
+        var formId = $(this).attr("data-formid");
+        swal({
+                title: "Hapus Item Barang Dengan Kode " + nama + "?",
+                text: "Informasi Yang Terkait Dengan Data Ini Akan Hilang Secara Permanen",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((result) => {
+                if (result) {
+                    $("#" + formId).submit();
+                } else {
+                    swal({
+                        title: "File Aman !",
+                        text: "Data Item Barang Dengan Kode " + nama + " Batal Dihapus",
+                        icon: "info",
+                    });
+                }
+            });
+    });
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -300,11 +325,12 @@ Data Item Barang
 
 
                                                                     <!-- Delete -->
-                                                                    <form action="" method="POST">
+                                                                    <form action="" id="<?= $c->id; ?>" method="POST">
                                                                         <?= csrf_field(); ?>
                                                                         <input type="hidden" name="_method" value="DELETE" />
                                                                         <input type="hidden" name="id_item" value="<?= $c->id; ?>">
-                                                                        <button type="submit" name="delete_items" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                        <input type="hidden" name="delete_items" value="delete">
+                                                                        <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->item_code ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
                                                                     </form>
 
                                                                 </div>

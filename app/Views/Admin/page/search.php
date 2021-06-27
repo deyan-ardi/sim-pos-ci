@@ -33,6 +33,61 @@ Transaksi Barang - Menu Kasir
         // console.log($('#form').serialize());
     }
 </script>
+<script type="text/javascript">
+    $(".cetak-button").on("click", function(e) {
+        e.preventDefault();
+        var self = $(this);
+        var nama = $(this).attr("data-nama");
+        var formId = $(this).attr("data-formid");
+        swal({
+                title: "Yakin Mencetak Transaksi " + nama + "?",
+                text: "Pastikan printer dalam keadaan hidup, Anda akan diarahkan ke halaman pencetakan",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((result) => {
+                if (result) {
+                    setTimeout(function() {
+                        window.location.reload(1);
+                    }, 5000);
+                    $("#cetak-" + formId).submit();
+                } else {
+                    swal({
+                        title: "File Aman !",
+                        text: "Data Transaksi " + nama + " Batal Dicetak",
+                        icon: "info",
+                    });
+                }
+            });
+    });
+</script>
+<script type="text/javascript">
+    $(".delete-button").on("click", function(e) {
+        e.preventDefault();
+        var self = $(this);
+        var nama = $(this).attr("data-nama");
+        var formId = $(this).attr("data-formid");
+        swal({
+                title: "Yakin Membatalkan Transaksi " + nama + "?",
+                text: "Data pesanan akan dihapus",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((result) => {
+                if (result) {
+                    $("#delete-" + formId).submit();
+                } else {
+                    swal({
+                        title: "File Aman !",
+                        text: "Data Transaksi " + nama + " Batal Dihapus",
+                        icon: "info",
+                    });
+                }
+            });
+    });
+</script>
 <script>
     waktu();
 
@@ -92,10 +147,11 @@ Transaksi Barang - Menu Kasir
                                                     <div class="col-12">
                                                         <h4 class="text-center mb-4">Transaksi dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
                                                         <a href="<?= base_url(); ?>/transaction" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
-                                                        <form action="" method="post">
+                                                        <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
                                                             <?php csrf_field() ?>
                                                             <input type="hidden" name="_key" value="download">
-                                                            <button type="submit" name="invoice" value="invoice" class="form-control btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
+                                                            <input type="hidden" name="invoice" value="invoice">
+                                                            <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -276,18 +332,20 @@ Transaksi Barang - Menu Kasir
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
-                                                                    <button type="submit" name="invoice" value="invoice" <?= $disabled; ?> class="form-control btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
+                                                                    <input type="hidden" name="invoice" value="invoice">
+                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" method="POST">
+                                                                <form action="" id="delete-<?= $find_sale[0]->sale_code; ?>" method="POST">
                                                                     <?php csrf_field() ?>
 
                                                                     <input type="hidden" name="_method" value="DELETE">
-                                                                    <button type="submit" name="batalkan_transaksi" value="batalkan" class="form-control btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
+                                                                    <input type="hidden" name="batalkan_transaksi" value="batalkan">
+                                                                    <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
                                                                 </form>
                                                             </div>
                                                         </div>

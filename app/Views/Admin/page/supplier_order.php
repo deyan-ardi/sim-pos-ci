@@ -7,6 +7,32 @@ Order Barang Supplier
 <!-- datatable Js -->
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
+<script type="text/javascript">
+    $(".delete-button").on("click", function(e) {
+        e.preventDefault();
+        var self = $(this);
+        var nama = $(this).attr("data-nama");
+        var formId = $(this).attr("data-formid");
+        swal({
+                title: "Hapus Permintaan Order Dengan Kode " + nama + "?",
+                text: "Informasi Yang Terkait Dengan Data Ini Akan Hilang Secara Permanen",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((result) => {
+                if (result) {
+                    $("#" + formId).submit();
+                } else {
+                    swal({
+                        title: "File Aman !",
+                        text: "Data Pesanan Supplier Dengan Kode " + nama + " Batal Dihapus",
+                        icon: "info",
+                    });
+                }
+            });
+    });
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -79,7 +105,12 @@ Order Barang Supplier
                                                             <td><?= $c->order_total_quantity; ?> Jenis Barang</td>
                                                             <td><?= $c->order_total_item; ?> Barang</td>
                                                             <td><?= $c->username ?></td>
-                                                            <td><a href="<?= base_url(); ?>/suppliers/create_orders?order_code=<?= $c->order_code; ?>" class="btn btn-primary"><i class="feather icon-shopping-cart"></i> Buat Pesanan</a></td>
+                                                            <?php if ($c->order_status == 1) : ?>
+                                                                <td><a href="<?= base_url(); ?>/suppliers/create_orders?order_code=<?= $c->order_code; ?>" class="btn btn-primary"><i class="feather icon-shopping-cart"></i> Buat Pesanan</a></td>
+                                                            <?php else : ?>
+                                                                <td><a href="<?= base_url(); ?>/suppliers/create_orders?order_code=<?= $c->order_code; ?>" class="btn btn-info"><i class="feather icon-shopping-cart"></i> Lihat Pesanan</a></td>
+
+                                                            <?php endif; ?>
                                                             <td>
                                                                 <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                             </td>
@@ -96,54 +127,55 @@ Order Barang Supplier
                                                             <?php endif; ?>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if($c->order_status != 4): ?> 
-                                                                    <!-- Set Status Button Modal -->
-                                                                    <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
+                                                                    <?php if ($c->order_status != 4) : ?>
+                                                                        <!-- Set Status Button Modal -->
+                                                                        <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
 
-                                                                    <!-- Update Modal -->
-                                                                    <div id="updateOrder-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrderLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateOrderLabel-<?= $c->id; ?>">Ubah Status Order</h5>
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="" method="POST">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="PATCH">
-                                                                                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                                        <div class="form-group">
-                                                                                            <select class="form-control <?= $validation->getError('order_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="order_name_up" required>
-                                                                                                <option value="">Pilih Status Order</option>
-                                                                                                <option value="1" <?= $c->order_status == 1 ? "selected" : ""; ?>>Pending - Pesanan Belum Dibuat</option>
-                                                                                                <option value="2" <?= $c->order_status == 2 ? "selected" : ""; ?>>Proses - Pesanan Diterima Oleh Supplier</option>
-                                                                                                <option value="3" <?= $c->order_status == 3 ? "selected" : ""; ?>>Diterima - Barang Pesanan Diterima Oleh Staf Gudang</option>
-                                                                                                <option value="4" <?= $c->order_status == 4 ? "selected" : ""; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
-                                                                                                <option value="5" <?= $c->order_status == 5 ? "selected" : ""; ?>>Pengembalian - Ada Barang Yang Tidak Sesuai, Proses Retur</option>
-                                                                                            </select>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("order_name_up"); ?>
+                                                                        <!-- Update Modal -->
+                                                                        <div id="updateOrder-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrderLabel-<?= $c->id; ?>" aria-hidden="true">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title" id="updateOrderLabel-<?= $c->id; ?>">Ubah Status Order</h5>
+                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <form action="" method="POST">
+                                                                                            <?= csrf_field(); ?>
+                                                                                            <input type="hidden" name="_method" value="PATCH">
+                                                                                            <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                                                                                            <div class="form-group">
+                                                                                                <select class="form-control <?= $validation->getError('order_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="order_name_up" required>
+                                                                                                    <option value="">Pilih Status Order</option>
+                                                                                                    <option value="1" <?= $c->order_status == 1 ? "selected" : ""; ?>>Pending - Pesanan Belum Dibuat</option>
+                                                                                                    <option value="2" <?= $c->order_status == 2 ? "selected" : ""; ?>>Proses - Pesanan Diterima Oleh Supplier</option>
+                                                                                                    <option value="3" <?= $c->order_status == 3 ? "selected" : ""; ?>>Diterima - Barang Pesanan Diterima Oleh Staf Gudang</option>
+                                                                                                    <option value="4" <?= $c->order_status == 4 ? "selected" : ""; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
+                                                                                                    <option value="5" <?= $c->order_status == 5 ? "selected" : ""; ?>>Pengembalian - Ada Barang Yang Tidak Sesuai, Proses Retur</option>
+                                                                                                </select>
+                                                                                                <div class="invalid-feedback">
+                                                                                                    <?= $validation->getError("order_name_up"); ?>
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="submit" name="update_status_order" value="update" class="btn btn-primary">Simpan
-                                                                                                Perubahan</button>
-                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                        </div>
-                                                                                    </form>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="submit" name="update_status_order" value="update" class="btn btn-primary">Simpan
+                                                                                                    Perubahan</button>
+                                                                                                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                                                                                            </div>
+                                                                                        </form>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <!-- Delete -->
-                                                                    <form action="" method="POST">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                        <button type="submit" name="delete_order" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Order" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                    </form>
-                                                                    <?php endif; ?> 
+                                                                        <!-- Delete -->
+                                                                        <form action="" id="<?= $c->id; ?>" method="POST">
+                                                                            <?= csrf_field(); ?>
+                                                                            <input type="hidden" name="_method" value="DELETE" />
+                                                                            <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                                                                            <input type="hidden" name="delete_order" value="delete">
+                                                                            <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->order_code ?>" class="btn btn-danger delete-button btn-icon btn-rounded" title="Hapus Order" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                        </form>
+                                                                    <?php endif; ?>
                                                                     <!-- Delete -->
                                                                     <form target="_blank" action="<?= base_url(); ?>/suppliers/invoice" method="POST">
                                                                         <?= csrf_field(); ?>

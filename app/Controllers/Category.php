@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ItemCategoryModel;
+use App\Models\ItemModel;
+use App\Models\SupplierModel;
 
 class Category extends BaseController
 {
@@ -11,6 +13,7 @@ class Category extends BaseController
 	{
 		$this->validate = \Config\Services::validation();
 		$this->m_category = new ItemCategoryModel();
+		$this->m_item = new ItemModel();
 	}
 
 	
@@ -59,8 +62,8 @@ class Category extends BaseController
 			}
 		} else if (!empty($this->request->getPost('delete_category'))) {
 			$find = $this->m_category->find($this->request->getPost('id_category'));
-			$find_relation = $this->m_item->where('category_id', $find->id)->findAll();
 			if (!empty($find)) {
+				$find_relation = $this->m_item->where('category_id', $find->id)->findAll();
 				if (!empty($find_relation)) {
 					foreach ($find_relation as $r) {
 						unlink('upload/produk/' . $r->item_image);
@@ -70,7 +73,7 @@ class Category extends BaseController
 					$status = true;
 				}
 				if ($status) {
-					if ($this->m_supplier->delete($this->request->getPost('id_category'))) {
+					if ($this->m_category->delete($this->request->getPost('id_category'))) {
 						session()->setFlashdata('berhasil', 'Data Kategori Yang Dipilih Berhasil Dihapus');
 						return redirect()->to('/categories')->withCookies();
 					} else {
