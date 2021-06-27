@@ -161,34 +161,34 @@ class Report extends BaseController
 		}
 	}
 
-	public function fetch_data()
-	{
-		if (!empty($this->request->getPost('submit_sortir'))) {
-			if ($this->request->getPost('order') == 1) {
+	// public function fetch_data()
+	// {
+	// 	if (!empty($this->request->getPost('submit_sortir'))) {
+	// 		if ($this->request->getPost('order') == 1) {
 				
-				$find = $this->m_sale->getAllSale();
-			} else if ($this->request->getPost('order') == 2) {
+	// 			$find = $this->m_sale->getAllSale();
+	// 		} else if ($this->request->getPost('order') == 2) {
 				
-				$find = $this->m_sale->getAllSale(null, date('Y'), null, "Y");
-			} else if ($this->request->getPost('order') == 3) {
+	// 			$find = $this->m_sale->getAllSale(null, date('Y'), null, "Y");
+	// 		} else if ($this->request->getPost('order') == 3) {
 				
-				$find = $this->m_sale->getAllSale(null, date('Y-m'), null, "M");
-			} else if ($this->request->getPost('order') == 4) {
-				$find = $this->m_sale->getAllSale(null, date('Y-m-d'), null, "D");
-			} else {
-				if ($this->request->getPost('tgl_dari') >= $this->request->getPost('tgl_sampai')) {
-					$dari = $this->request->getPost('tgl_sampai');
-					$sampai = $this->request->getPost('tgl_dari');
-				} else {
-					$dari = $this->request->getPost('tgl_dari');
-					$sampai = $this->request->getPost('tgl_sampai');
-				}
-				$find = $this->m_sale->getAllSale(null, $dari, $sampai, "C");
-			}
-		} else {
-			$find = $this->m_sale->getAllSale();
+	// 			$find = $this->m_sale->getAllSale(null, date('Y-m'), null, "M");
+	// 		} else if ($this->request->getPost('order') == 4) {
+	// 			$find = $this->m_sale->getAllSale(null, date('Y-m-d'), null, "D");
+	// 		} else {
+	// 			if ($this->request->getPost('tgl_dari') >= $this->request->getPost('tgl_sampai')) {
+	// 				$dari = $this->request->getPost('tgl_sampai');
+	// 				$sampai = $this->request->getPost('tgl_dari');
+	// 			} else {
+	// 				$dari = $this->request->getPost('tgl_dari');
+	// 				$sampai = $this->request->getPost('tgl_sampai');
+	// 			}
+	// 			$find = $this->m_sale->getAllSale(null, $dari, $sampai, "C");
+	// 		}
+	// 	} else {
+	// 		$find = $this->m_sale->getAllSale();
 
-		}
+	// 	}
 
-	}
+	// }
 }

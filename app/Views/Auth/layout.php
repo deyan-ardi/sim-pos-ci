@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Point Of Sale - <?= $this->renderSection('title'); ?></title>
+    <title>Dintara Point Of Sale - <?= $this->renderSection('title'); ?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,7 +12,7 @@
     <meta name="author" content="Ganatech ID" />
 
     <!-- Favicon icon -->
-    <link rel="icon" href="<?= base_url(); ?>/assets/images/favicon.svg" type="image/x-icon">
+    <link rel="icon" href="<?= base_url(); ?>/logo-white.ico" type="image/x-icon">
     <!-- fontawesome icon -->
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/fonts/fontawesome/css/fontawesome-all.min.css">
     <!-- animation css -->

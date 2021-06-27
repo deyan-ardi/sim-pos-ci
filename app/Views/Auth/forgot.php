@@ -7,12 +7,14 @@ Halaman Lupa Kata Sandi
 
 <div class="auth-wrapper">
     <!-- [ reset-password ] start -->
-    <div class="auth-content container">
-        <div class="card">
+    <div class="auth-content row justify-content-center container">
+        <div class="card col-md-6">
             <div class="row align-items-center">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card-body">
-                        <img src="<?= base_url(); ?>/assets/images/logo-dark.svg" alt="" class="img-fluid mb-4">
+                        <div class="row justify-content-center">
+                            <img src="<?= base_url(); ?>/logo-dark.png" width="30%" alt="" class="img-fluid mb-4">
+                        </div>
                         <h4 class="mb-3 f-w-400">Setel Ulang Kata Sandi</h4>
 
                         <?= view('App\Auth\_message_block') ?>
@@ -36,9 +38,6 @@ Halaman Lupa Kata Sandi
                             <button type="submit" class="btn btn-primary btn-block">Kirimkan Instruksi</button>
                         </form>
                     </div>
-                </div>
-                <div class="col-md-6 d-none d-md-block">
-                    <img src="<?= base_url(); ?>/assets/images/auth/auth-bg.jpg" alt="" class="img-fluid">
                 </div>
             </div>
         </div>

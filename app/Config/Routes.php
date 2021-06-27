@@ -31,42 +31,42 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('', ['filter' => 'role:SUPER ADMIN, KASIR, ATASAN, ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Home::index');
 	$routes->get('home-page', 'Home::index');
 	$routes->get('profile-setting','Home::profile');
 	$routes->patch('profile-setting', 'Home::profile');
 });
 
-$routes->group('categories', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('categories', ['filter' => 'role:SUPER ADMIN, ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Category::index');
 	$routes->patch('/', 'Category::index');
 	$routes->delete('/', 'Category::index');
 	$routes->post('/', 'Category::index');
 });
 
-$routes->group('items', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('items', ['filter' => 'role:SUPER ADMIN, ADMIN'],['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Item::index');
 	$routes->post('/', 'Item::index');
 	$routes->patch('/', 'Item::index');
 	$routes->delete('/', 'Item::index');
 });
 
-$routes->group('members', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Member::index');
 	$routes->post('/', 'Member::index');
 	$routes->patch('/', 'Member::index');
 	$routes->delete('/', 'Member::index');
 });
 
-$routes->group('users', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('users', ['filter' => 'role:SUPER ADMIN'],['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'User::index');
 	$routes->post('/', 'User::index');
 	$routes->patch('/', 'User::index');
 	$routes->delete('/', 'User::index');
 });
 
-$routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Supplier::index');
 	$routes->post('/', 'Supplier::index');
 	$routes->patch('/', 'Supplier::index');
@@ -84,7 +84,7 @@ $routes->group('suppliers', ['namespace' => 'App\Controllers'], function ($route
 
 });
 
-$routes->group('transaction', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('transaction', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Transaction::index');
 	$routes->post('/', 'Transaction::index');
 	$routes->delete('/', 'Transaction::index');
@@ -97,10 +97,9 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], function ($rou
 	$routes->get('report/search', 'Transaction::search');
 });
 
-$routes->group('report', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('report', ['filter' => 'role:SUPER ADMIN, ATASAN'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Report::index');
 	$routes->post('/', 'Report::index');
-	$routes->post('fetch-data', 'Report::fetch_data');
 });
 
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {

@@ -3,13 +3,13 @@
 
         <div class="m-header">
             <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
-            <a href="index-2.html" class="b-brand">
+            <a href="<?= base_url(); ?>" class="b-brand">
                 <!-- <div class="b-bg">
 						<i class="fas fa-bolt"></i>
 					</div>
 					<span class="b-title">Dasho</span> -->
-                <img src="<?= base_url(); ?>/assets/images/logo.svg" alt="" class="logo images">
-                <img src="<?= base_url(); ?>/assets/images/logo-icon.svg" alt="" class="logo-thumb images">
+                <img src="<?= base_url(); ?>/logo-white.png" width="15%" alt="" class="logo images">
+                <img src="<?= base_url(); ?>/logo-white.png" width="30%" alt="" class="logo-thumb images">
             </a>
         </div>
         <a class="mobile-menu" id="mobile-header" href="#!">

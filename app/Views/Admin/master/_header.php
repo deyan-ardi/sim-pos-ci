@@ -1,12 +1,12 @@
     <!-- Favicon icon -->
-    <link rel="icon" href="<?= base_url(); ?>/assets/images/favicon.svg" type="image/x-icon">
+    <link rel="icon" href="<?= base_url(); ?>/logo-white.ico" type="image/x-icon">
+
     <!-- fontawesome icon -->
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/fonts/fontawesome/css/fontawesome-all.min.css">
     <!-- animation css -->
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/plugins/animation/css/animate.min.css">
 
-    <!-- Rating css -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/plugins/ratting/css/bars-1to10.css">
+    
 
     <?= $this->renderSection('header'); ?>
     <!-- vendor css -->
