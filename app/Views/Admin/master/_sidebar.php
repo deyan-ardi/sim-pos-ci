@@ -22,7 +22,22 @@
                            <li class=""><a href="<?= base_url(); ?>/logout" class="">Keluar</a></li>
                        </ul>
                    </li>
-                   <?php if (in_groups('SUPER ADMIN') || in_groups('ADMIN')) : ?>
+                   <?php if (in_groups('SUPER ADMIN') || in_groups('MARKETING')) : ?>
+                       <li class="nav-item pcoded-menu-caption">
+                           <label>Menu Marketing</label>
+                       </li>
+                       <li data-username="marketing items order report suppliers" class="nav-item pcoded-hasmenu">
+                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-percent"></i></span><span class="pcoded-mtext">Manajemen Marketing</span></a>
+                           <ul class="pcoded-submenu">
+                               <li class=""><a href="<?= base_url(); ?>/marketing" class="">Data Barang</a></li>
+                               <li class=""><a href="<?= base_url(); ?>/marketing/order-items" class="">Request Order Barang</a>
+                               </li>
+                               <li class=""><a href="<?= base_url(); ?>/marketing/view-orders" class="">Daftar Order Barang</a>
+                               </li>
+                           </ul>
+                       </li>
+                   <?php endif; ?>
+                   <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG') || in_groups('PURCHASING')) : ?>
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Supplier</label>
                        </li>
@@ -30,7 +45,11 @@
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Manajemen
                                    Supplier</span></a>
                            <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/suppliers" class="">Data Supplier</a></li>
+                               <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
+                                   <li class=""><a href="<?= base_url(); ?>/suppliers" class="">Data Supplier</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/suppliers/view-orders" class="">Daftar Permintaan Order</a>
+                                   </li>
+                               <?php endif; ?>
                                <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Barang</a>
                                </li>
                            </ul>
@@ -47,33 +66,33 @@
                            </ul>
                        </li>
                    <?php endif; ?>
-                   <?php if (in_groups('SUPER ADMIN') || in_groups('KASIR')) : ?>
+                   <?php if (in_groups('SUPER ADMIN') || in_groups('KASIR') || in_groups('MARKETING')) : ?>
                        <li class="nav-item pcoded-menu-caption">
-                           <label>Menu User Member</label>
+                           <label>Menu Manajemen User</label>
                        </li>
                        <li data-username="user users admin atasan super kasir members member shop" class="nav-item pcoded-hasmenu">
-                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Manajemen User
-                                   Member</span></a>
+                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Manajemen User</span></a>
                            <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/members" class="">Data Member Toko</a></li>
+                               <li class=""><a href="<?= base_url(); ?>/members" class="">Data Pelanggan Project</a></li>
                                <?php if (in_groups('SUPER ADMIN')) : ?>
                                    <li class=""><a href="<?= base_url(); ?>/users" class="">Data User Sistem</a></li>
                                <?php endif; ?>
                            </ul>
                        </li>
-
-                       <li class="nav-item pcoded-menu-caption">
-                           <label>Menu Transaksi</label>
-                       </li>
-                       <li data-username="payment cashier report" class="nav-item pcoded-hasmenu">
-                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Manajemen
-                                   Transaksi</span></a>
-                           <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/transaction" class="">Sistem Kasir</a></li>
-                               <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi</a>
-                               </li>
-                           </ul>
-                       </li>
+                       <?php if (in_groups('SUPER ADMIN') || in_groups('KASIR')) : ?>
+                           <li class="nav-item pcoded-menu-caption">
+                               <label>Menu Transaksi</label>
+                           </li>
+                           <li data-username="payment cashier report" class="nav-item pcoded-hasmenu">
+                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Manajemen
+                                       Transaksi</span></a>
+                               <ul class="pcoded-submenu">
+                                   <li class=""><a href="<?= base_url(); ?>/transaction" class="">Sistem Kasir</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi</a>
+                                   </li>
+                               </ul>
+                           </li>
+                       <?php endif; ?>
                    <?php endif; ?>
                    <?php if (in_groups('SUPER ADMIN') || in_groups('ATASAN')) : ?>
 

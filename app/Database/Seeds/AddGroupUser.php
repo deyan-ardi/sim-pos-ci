@@ -14,8 +14,8 @@ class AddGroupUser extends Seeder
 				'description' => 'Group For Kasir User',
 			],
 			[
-				'name' => 'ADMIN',
-				'description' => 'Group For Admin User',
+				'name' => 'GUDANG',
+				'description' => 'Group For Gudang User',
 			],
 			[
 				'name' => 'SUPER ADMIN',
@@ -24,6 +24,14 @@ class AddGroupUser extends Seeder
 			[
 				'name' => 'ATASAN',
 				'description' => 'Group For Atasan User',
+			],
+			[
+				'name' => 'PURCHASING',
+				'description' => 'Group For Purchasing User',
+			],
+			[
+				'name' => 'MARKETING',
+				'description' => 'Group For Marketing User',
 			]
 		];
 		$this->db->table('auth_groups')->insertBatch($data);

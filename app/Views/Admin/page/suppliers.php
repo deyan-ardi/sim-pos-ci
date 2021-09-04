@@ -74,7 +74,7 @@ Data Supplier Barang
                                         <h5>List Supplier</h5>
                                     </div>
                                     <div class="card-body">
-                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Barang</button>
+                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Supplier</button>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
@@ -82,6 +82,8 @@ Data Supplier Barang
                                                         <th>#</th>
                                                         <th>Nama Supplier</th>
                                                         <th>Kontak Supplier</th>
+                                                        <th>Email</th>
+                                                        <th>Alamat</th>
                                                         <th>Deskripsi Supplier</th>
                                                         <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
@@ -96,6 +98,8 @@ Data Supplier Barang
                                                             <td><?= $i++; ?></td>
                                                             <td><?= $c->supplier_name; ?></td>
                                                             <td>0<?= $c->supplier_contact; ?></td>
+                                                            <td><?= $c->supplier_email; ?></td>
+                                                            <td><?= $c->supplier_address; ?></td>
                                                             <td><?= $c->supplier_description; ?></td>
                                                             <td>
                                                                 <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
@@ -129,6 +133,18 @@ Data Supplier Barang
                                                                                             <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_contact_up" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact_up')) ? old('supplier_contact_up') : $c->supplier_contact; ?>">
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("supplier_contact_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="email" class="form-control <?= $validation->getError('supplier_email_up') ? "is-invalid" : ""; ?>" name="supplier_email_up" required placeholder="Email Supplier" value="<?= (old('supplier_email_up')) ? old('supplier_email_up') : $c->supplier_email; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("supplier_email_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_alamat_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_alamat_up" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat_up')) ? old('supplier_alamat_up') : $c->supplier_address; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("supplier_alamat_up"); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
@@ -168,6 +184,8 @@ Data Supplier Barang
                                                         <th>#</th>
                                                         <th>Nama Supplier</th>
                                                         <th>Kontak Supplier</th>
+                                                        <th>Email</th>
+                                                        <th>Alamat</th>
                                                         <th>Deskripsi Supplier</th>
                                                         <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
@@ -212,6 +230,18 @@ Data Supplier Barang
                         <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_contact" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact')) ? old('supplier_contact') : ""; ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError("supplier_contact"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control <?= $validation->getError('supplier_email') ? "is-invalid" : ""; ?>" name="supplier_email" required placeholder="Email Supplier" value="<?= (old('supplier_email')) ? old('supplier_email') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("supplier_email"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control <?= $validation->getError('supplier_alamat') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_alamat" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat')) ? old('supplier_alamat') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("supplier_alamat"); ?>
                         </div>
                     </div>
                     <div class="form-group">

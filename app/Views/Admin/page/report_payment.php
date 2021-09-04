@@ -105,7 +105,7 @@ if ($sortir == 1) {
                             $j = 0;
                             $s = 0;
                             foreach ($order as $all) {
-                                if ($all->order_status == 4) {
+                                if ($all->order_status == 8) {
                                     $s++;
                                 } 
                                 $j++;

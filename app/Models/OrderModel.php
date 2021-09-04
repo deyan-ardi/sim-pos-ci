@@ -34,18 +34,18 @@ class OrderModel extends Model
 
 	public function getAllOrder($id = null, $code = null){
 		if($id == null && $code == null){
-			$this->select('orders.*,users.username,suppliers.supplier_name,suppliers.supplier_contact,suppliers.supplier_description');
+			$this->select('orders.*,users.username,suppliers.supplier_name,suppliers.supplier_contact,suppliers.supplier_description,suppliers.supplier_email,suppliers.supplier_address');
 			$this->join('suppliers','suppliers.id = orders.supplier_id');
 			$this->join('users','users.id = orders.user_id');
 			return $this->get()->getResult();
 		} else if($id == null && $code != null) {
-            $this->select('orders.*,users.username,suppliers.supplier_name,suppliers.supplier_contact,suppliers.supplier_description');
+            $this->select('orders.*,users.username,suppliers.supplier_name,suppliers.supplier_contact,suppliers.supplier_description,suppliers.supplier_email,suppliers.supplier_address');
             $this->join('suppliers', 'suppliers.id = orders.supplier_id');
             $this->join('users', 'users.id = orders.user_id');
             $this->where('orders.order_code', $code);
 			return $this->limit(1)->orderBy('created_at','supplier_DESC')->get()->getResult();
         }  else{
-			$this->select('orders.*,users.username,suppliers.supplier_name,suppliers.supplier_contact,suppliers.supplier_description');
+			$this->select('orders.*,users.username,suppliers.supplier_name,suppliers.supplier_contact,suppliers.supplier_description,suppliers.supplier_email,suppliers.supplier_address');
 			$this->join('suppliers', 'suppliers.id = orders.supplier_id');
 			$this->join('users', 'users.id = orders.user_id');
 			$this->where('orders.id',$id);

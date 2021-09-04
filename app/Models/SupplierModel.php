@@ -13,7 +13,7 @@ class SupplierModel extends Model
 	protected $returnType           = SupplierModel::class;
 	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
-		'supplier_name', 'supplier_contact', 'supplier_description', 'deleted_at'
+		'supplier_name', 'supplier_contact', 'supplier_description', 'deleted_at','supplier_email','supplier_address'
 	];
 
 	// Dates
@@ -22,6 +22,8 @@ class SupplierModel extends Model
 	protected $validationRules      = [
 		'supplier_name' => 'required',
 		'supplier_contact' => 'required',
+		'supplier_email' => 'required',
+		'supplier_address' => 'required',
 		'supplier_description' => 'required',
 	];
 	protected $validationMessages   = [];

@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\ItemModel;
 use App\Models\OrderDetailModel;
 use App\Models\OrderModel;
+use App\Models\RequestOrderModel;
 use App\Models\SupplierModel;
 
 class Supplier extends BaseController
@@ -15,88 +16,101 @@ class Supplier extends BaseController
 		$this->validate = \Config\Services::validation();
 		$this->m_supplier = new SupplierModel();
 		$this->m_item = new ItemModel();
+		$this->m_request_order = new RequestOrderModel();
 		$this->m_order = new OrderModel();
 		$this->m_order_detail = new OrderDetailModel();
 	}
 	public function index()
 	{
-		$data = [
-			'supplier' => $this->m_supplier->findAll(),
-			'validation' => $this->validate,
-		];
-		if (!empty($this->request->getPost('input_supplier'))) {
-			$formSubmit = $this->validate([
-				'supplier_name' => 'required|max_length[200]',
-				'supplier_contact' => 'required|is_natural',
-				'supplier_description' => 'required|max_length[500]',
-			]);
-			if (!$formSubmit) {
-				return redirect()->to('/suppliers')->withInput();
-			} else {
-				$save = $this->m_supplier->save([
-					'supplier_name' => ucWords($this->request->getPost('supplier_name')),
-					'supplier_contact' => $this->request->getPost('supplier_contact'),
-					'supplier_description' => ucWords($this->request->getPost('supplier_description')),
+		if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) {
+			$data = [
+				'supplier' => $this->m_supplier->findAll(),
+				'validation' => $this->validate,
+			];
+			if (!empty($this->request->getPost('input_supplier'))) {
+				$formSubmit = $this->validate([
+					'supplier_name' => 'required|max_length[200]',
+					'supplier_contact' => 'required|is_natural',
+					'supplier_email' => 'required|valid_email',
+					'supplier_alamat' => 'required',
+					'supplier_description' => 'required|max_length[500]',
 				]);
-				if ($save) {
-					session()->setFlashdata('berhasil', 'Supplier Baru Berhasil Ditambahkan');
-					return redirect()->to('/suppliers')->withCookies();
+				if (!$formSubmit) {
+					return redirect()->to('/suppliers')->withInput();
 				} else {
-					session()->setFlashdata('gagal', 'Gagal Menambahkan Supplier');
-					return redirect()->to('/suppliers')->withCookies();
-				}
-			}
-		} else if (!empty($this->request->getPost('update_supplier'))) {
-			$formSubmit = $this->validate([
-				'supplier_name_up' => 'required|max_length[200]',
-				'supplier_contact_up' => 'required|is_natural',
-				'supplier_description_up' => 'required|max_length[500]',
-			]);
-			if (!$formSubmit) {
-				return redirect()->to('/suppliers')->withInput();
-			} else {
-				$save = $this->m_supplier->save([
-					'id' => $this->request->getPost('id_supplier'),
-					'supplier_name' => ucWords($this->request->getPost('supplier_name_up')),
-					'supplier_contact' => $this->request->getPost('supplier_contact_up'),
-					'supplier_description' => ucWords($this->request->getPost('supplier_description_up')),
-				]);
-				if ($save) {
-					session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Diubah');
-					return redirect()->to('/suppliers')->withCookies();
-				} else {
-					session()->setFlashdata('gagal', 'Gagal Mengubah Supplier');
-					return redirect()->to('/suppliers')->withCookies();
-				}
-			}
-		} else if (!empty($this->request->getPost('delete_supplier'))) {
-			$find = $this->m_supplier->find($this->request->getPost('id_supplier'));
-			$find_relation = $this->m_item->where('supplier_id', $find->id)->findAll();
-
-			if (!empty($find)) {
-				if (!empty($find_relation)) {
-					foreach ($find_relation as $r) {
-						unlink('upload/produk/' . $r->item_image);
-					}
-					$status = true;
-				} else {
-					$status = true;
-				}
-				if ($status) {
-					if ($this->m_supplier->delete($this->request->getPost('id_supplier'))) {
-						session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Dihapus');
+					$save = $this->m_supplier->save([
+						'supplier_name' => ucWords($this->request->getPost('supplier_name')),
+						'supplier_contact' => $this->request->getPost('supplier_contact'),
+						'supplier_email' => $this->request->getPost('supplier_email'),
+						'supplier_address' => ucWords($this->request->getPost('supplier_alamat')),
+						'supplier_description' => ucWords($this->request->getPost('supplier_description')),
+					]);
+					if ($save) {
+						session()->setFlashdata('berhasil', 'Supplier Baru Berhasil Ditambahkan');
 						return redirect()->to('/suppliers')->withCookies();
 					} else {
-						session()->setFlashdata('gagal', 'Gagal Menghapus Supplier');
+						session()->setFlashdata('gagal', 'Gagal Menambahkan Supplier');
 						return redirect()->to('/suppliers')->withCookies();
 					}
 				}
+			} else if (!empty($this->request->getPost('update_supplier'))) {
+				$formSubmit = $this->validate([
+					'supplier_name_up' => 'required|max_length[200]',
+					'supplier_contact_up' => 'required|is_natural',
+					'supplier_email_up' => 'required|valid_email',
+					'supplier_alamat_up' => 'required',
+					'supplier_description_up' => 'required|max_length[500]',
+				]);
+				if (!$formSubmit) {
+					return redirect()->to('/suppliers')->withInput();
+				} else {
+					$save = $this->m_supplier->save([
+						'id' => $this->request->getPost('id_supplier'),
+						'supplier_name' => ucWords($this->request->getPost('supplier_name_up')),
+						'supplier_contact' => $this->request->getPost('supplier_contact_up'),
+						'supplier_email' => $this->request->getPost('supplier_email_up'),
+						'supplier_address' => ucWords($this->request->getPost('supplier_alamat_up')),
+						'supplier_description' => ucWords($this->request->getPost('supplier_description_up')),
+					]);
+					if ($save) {
+						session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Diubah');
+						return redirect()->to('/suppliers')->withCookies();
+					} else {
+						session()->setFlashdata('gagal', 'Gagal Mengubah Supplier');
+						return redirect()->to('/suppliers')->withCookies();
+					}
+				}
+			} else if (!empty($this->request->getPost('delete_supplier'))) {
+				$find = $this->m_supplier->find($this->request->getPost('id_supplier'));
+				$find_relation = $this->m_item->where('supplier_id', $find->id)->findAll();
+
+				if (!empty($find)) {
+					if (!empty($find_relation)) {
+						foreach ($find_relation as $r) {
+							unlink('upload/produk/' . $r->item_image);
+						}
+						$status = true;
+					} else {
+						$status = true;
+					}
+					if ($status) {
+						if ($this->m_supplier->delete($this->request->getPost('id_supplier'))) {
+							session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Dihapus');
+							return redirect()->to('/suppliers')->withCookies();
+						} else {
+							session()->setFlashdata('gagal', 'Gagal Menghapus Supplier');
+							return redirect()->to('/suppliers')->withCookies();
+						}
+					}
+				} else {
+					session()->setFlashdata('gagal', 'Gagal Menemukan Data Supplier');
+					return redirect()->to('/suppliers')->withCookies();
+				}
 			} else {
-				session()->setFlashdata('gagal', 'Gagal Menemukan Data Supplier');
-				return redirect()->to('/suppliers')->withCookies();
+				return view('Admin/page/suppliers', $data);
 			}
 		} else {
-			return view('Admin/page/suppliers', $data);
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 		}
 	}
 
@@ -140,13 +154,15 @@ class Supplier extends BaseController
 			if (!$formSubmit) {
 				return redirect()->to('/suppliers/order-items')->withInput();
 			} else {
-				if ($this->request->getPost('order_name_up') == 4) {
+				if ($this->request->getPost('order_name_up') == 8) {
 					$order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
 					foreach ($order_data as $o) {
 						$find_item = $this->m_item->getAllItem($o->item_id);
 						$total = $find_item[0]->item_stock + $o->detail_quantity;
+						$warehouse_a = $find_item[0]->item_warehouse_a + $o->detail_quantity;
 						$this->m_item->save([
 							'id' => $find_item[0]->id,
+							'item_warehouse_a' => $warehouse_a,
 							'item_stock' => $total,
 						]);
 					}
@@ -358,5 +374,41 @@ class Supplier extends BaseController
 		$this->response->setHeader('Content-Type', 'application/pdf');
 		$mpdf->Output('Invoice Order.pdf', 'I');
 		// return view('');
+	}
+
+	public function view_order()
+	{
+		if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) {
+
+			$data = [
+				'request_order' => $this->m_request_order->getAllOrder(),
+				'item' => $this->m_item->getAllItem(),
+				'validation' => $this->validate,
+			];
+			if (!empty($this->request->getPost('update_status_order'))) {
+				$formSubmit = $this->validate([
+					'request_status' => 'required|integer',
+				]);
+				if (!$formSubmit) {
+					return redirect()->to('/suppliers/view-orders')->withInput();
+				} else {
+					$save = $this->m_request_order->save([
+						'id' => $this->request->getPost('id_order'),
+						'request_status' => $this->request->getPost('request_status'),
+					]);
+					if ($save) {
+						session()->setFlashdata('berhasil', 'Status Permintaan Order Barang Berhasil Diperbaharui');
+						return redirect()->to('/suppliers/view-orders')->withCookies();
+					} else {
+						session()->setFlashdata('gagal', 'Gagal Memperbaharui Status Order Barang');
+						return redirect()->to('/suppliers/view-orders')->withCookies();
+					}
+				}
+			} else {
+				return view('Admin/page/list_request_order', $data);
+			}
+		} else {
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+		}
 	}
 }

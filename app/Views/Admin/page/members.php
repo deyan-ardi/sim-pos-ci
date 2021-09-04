@@ -1,6 +1,6 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Data Member Toko
+Data Pelanggan Project
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
@@ -55,11 +55,11 @@ Data Member Toko
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dintara Point Of Sale - Data Member Toko</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Data Pelanggan Project</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Data Member Toko</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Data Pelanggan Project</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -71,20 +71,21 @@ Data Member Toko
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>List Member Toko</h5>
+                                        <h5>List Pelanggan Project</h5>
                                     </div>
                                     <div class="card-body">
-                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Member</button>
+                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Pelanggan</button>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Kode Member</th>
-                                                        <th>Nama Member</th>
-                                                        <th>Kontak Member</th>
-                                                        <th>Deskripsi Member</th>
-                                                        <th>Discount Member</th>
+                                                        <th>Kode Pelanggan</th>
+                                                        <th>Nama Pelanggan</th>
+                                                        <th>Kontak Pelanggan</th>
+                                                        <th>Email Pelanggan</th>
+                                                        <th>Deskripsi Pelanggan</th>
+                                                        <th>Discount Pelanggan</th>
                                                         <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
@@ -99,6 +100,7 @@ Data Member Toko
                                                             <td><?= $c->member_code; ?></td>
                                                             <td><?= $c->member_name; ?></td>
                                                             <td>0<?= $c->member_contact; ?></td>
+                                                            <td><?= $c->member_email; ?></td>
                                                             <td><?= !empty($c->member_description) ? $c->member_description : "Kosong"; ?></td>
                                                             <td><?= $c->member_discount; ?> %</td>
                                                             <td>
@@ -127,7 +129,7 @@ Data Member Toko
                                                                                             <input type="text" class="form-control" required disabled value="<?= $c->member_code; ?>">
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Member Toko" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("member_name_up"); ?>
                                                                                             </div>
@@ -136,6 +138,12 @@ Data Member Toko
                                                                                             <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact_up" required placeholder="Kontak Member" value="<?= (old('member_contact_up')) ? old('member_contact_up') :  $c->member_contact; ?>">
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("member_contact_up"); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <input type="email" class="form-control <?= $validation->getError('member_email') ? "is-invalid" : ""; ?>" name="member_email" required placeholder="Email Pelanggan" value="<?= (old('member_email')) ? old('member_email') : $c->member_email; ?>">
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError("member_email"); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
@@ -185,11 +193,12 @@ Data Member Toko
                                                 <tfoot>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Kode Member</th>
-                                                        <th>Nama Member</th>
-                                                        <th>Kontak Member</th>
-                                                        <th>Deskripsi Member</th>
-                                                        <th>Discount Member</th>
+                                                        <th>Kode Pelanggan</th>
+                                                        <th>Nama Pelanggan</th>
+                                                        <th>Kontak Pelanggan</th>
+                                                        <th>Email Pelanggan</th>
+                                                        <th>Deskripsi Pelanggan</th>
+                                                        <th>Discount Pelanggan</th>
                                                         <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
@@ -224,19 +233,25 @@ Data Member Toko
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('member_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name" required placeholder="Nama Member Toko" value="<?= (old('member_name')) ? old('member_name') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('member_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name')) ? old('member_name') : ""; ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError("member_name"); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact" required placeholder="Kontak Member" value="<?= (old('member_contact')) ? old('member_contact') : ""; ?>">
+                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact" required placeholder="Kontak Pelanggan" value="<?= (old('member_contact')) ? old('member_contact') : ""; ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError("member_contact"); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control <?= $validation->getError('member_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description')) ? old('member_description') : ""; ?>"></textarea>
+                        <input type="email" class="form-control <?= $validation->getError('member_email') ? "is-invalid" : ""; ?>" name="member_email" required placeholder="Email Pelanggan" value="<?= (old('member_email')) ? old('member_email') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_email"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control <?= $validation->getError('member_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description" placeholder="Deskripsi Pelanggan (Opsional)" value="<?= (old('member_description')) ? old('member_description') : ""; ?>"></textarea>
                         <div class="invalid-feedback">
                             <?= $validation->getError("member_description"); ?>
                         </div>

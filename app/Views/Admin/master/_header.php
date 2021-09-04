@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/fonts/fontawesome/css/fontawesome-all.min.css">
     <!-- animation css -->
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/plugins/animation/css/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 
-    
 
     <?= $this->renderSection('header'); ?>
     <!-- vendor css -->

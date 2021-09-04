@@ -31,28 +31,28 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->group('', ['filter' => 'role:SUPER ADMIN, KASIR, ATASAN, ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('/', ['filter' => 'role:SUPER ADMIN, KASIR, ATASAN, GUDANG, MARKETING, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Home::index');
 	$routes->get('home-page', 'Home::index');
 	$routes->get('profile-setting','Home::profile');
 	$routes->patch('profile-setting', 'Home::profile');
 });
 
-$routes->group('categories', ['filter' => 'role:SUPER ADMIN, ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('categories', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Category::index');
 	$routes->patch('/', 'Category::index');
 	$routes->delete('/', 'Category::index');
 	$routes->post('/', 'Category::index');
 });
 
-$routes->group('items', ['filter' => 'role:SUPER ADMIN, ADMIN'],['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'],['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Item::index');
 	$routes->post('/', 'Item::index');
 	$routes->patch('/', 'Item::index');
 	$routes->delete('/', 'Item::index');
 });
 
-$routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR, MARKETING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Member::index');
 	$routes->post('/', 'Member::index');
 	$routes->patch('/', 'Member::index');
@@ -66,11 +66,13 @@ $routes->group('users', ['filter' => 'role:SUPER ADMIN'],['namespace' => 'App\Co
 	$routes->delete('/', 'User::index');
 });
 
-$routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Supplier::index');
 	$routes->post('/', 'Supplier::index');
 	$routes->patch('/', 'Supplier::index');
 	$routes->delete('/', 'Supplier::index');
+	$routes->get('view-orders/', 'Supplier::view_order');
+	$routes->patch('view-orders', 'Supplier::view_order');
 	$routes->get('order-items', 'Supplier::order');
 	$routes->post('order-items', 'Supplier::order');
 	$routes->patch('order-items', 'Supplier::order');
@@ -80,8 +82,16 @@ $routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, ADMIN'], ['namespace
 	$routes->patch('create_orders', 'Supplier::create_order');
 	$routes->delete('create_orders', 'Supplier::create_order');
 	$routes->post('invoice', 'Supplier::export_pdf');
+});
 
-
+$routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['namespace' => 'App\Controllers'], function ($routes) {
+	$routes->get('/', 'Marketing::index');
+	$routes->get('view-orders', 'Marketing::view_order');
+	$routes->get('order-items', 'Marketing::order');
+	$routes->get('list-orders', 'Marketing::list_orders');
+	$routes->post('order-items', 'Marketing::order');
+	$routes->patch('order-items', 'Marketing::order');
+	$routes->delete('order-items', 'Marketing::order');
 });
 
 $routes->group('transaction', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], function ($routes) {

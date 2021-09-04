@@ -100,6 +100,18 @@ Transaksi Barang - Menu Kasir
         }
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $('#member_id').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function() {
+        $('#item_id').selectize({
+            sortField: 'text'
+        });
+    });
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -147,7 +159,7 @@ Transaksi Barang - Menu Kasir
                                                     <?php csrf_field() ?>
 
                                                     <div class="form-group">
-                                                        <select name="member_id" id="item" required class="form-control <?= $validation->getError('member_id') ? "is-invalid" : ""; ?>">
+                                                        <select name="member_id" id="member_id" required class="form-control <?= $validation->getError('member_id') ? "is-invalid" : ""; ?>">
                                                             <option value="">--Pilih Member--</option>
                                                             <?php foreach ($member as $m) : ?>
                                                                 <option value="<?= $m->id; ?>"><?= $m->member_code; ?> - <?= $m->member_name; ?></option>
@@ -201,7 +213,7 @@ Transaksi Barang - Menu Kasir
                                                                     <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? "is-invalid" : ""; ?>">
+                                                                    <select name="item_barang" required id="item_id" class="form-control <?= $validation->getError('item_barang') ? "is-invalid" : ""; ?>">
                                                                         <option value="">--Pilih Barang--</option>
                                                                         <?php foreach ($item as $i) : ?>
                                                                             <?php if ($i->item_stock <= 0) : ?>

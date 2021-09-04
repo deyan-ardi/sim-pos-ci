@@ -62,18 +62,25 @@ class Report extends BaseController
 		}
 		// JSON Data Send To Grafik
 		$order = $this->m_order->getAllOrder();
-
-		foreach ($order as $row) {
-			$output_order[] = array(
-				'date'  => $row->created_at,
-				'price' => $row->order_total_item
-			);
+		if ($order != null) {
+			foreach ($order as $row) {
+				$output_order[] = array(
+					'date'  => $row->created_at,
+					'price' => $row->order_total_item
+				);
+			}
+		} else {
+			$output_order[] = array();
 		}
-		foreach ($find as $row) {
-			$output_transaksi[] = array(
-				'date'  => $row->created_at,
-				'price' => $row->sale_profit
-			);
+		if ($find != null) {
+			foreach ($find as $row) {
+				$output_transaksi[] = array(
+					'date'  => $row->created_at,
+					'price' => $row->sale_profit
+				);
+			}
+		} else {
+			$output_transaksi[] = array();
 		}
 		// End JSON Data
 		$data = [
@@ -165,13 +172,13 @@ class Report extends BaseController
 	// {
 	// 	if (!empty($this->request->getPost('submit_sortir'))) {
 	// 		if ($this->request->getPost('order') == 1) {
-				
+
 	// 			$find = $this->m_sale->getAllSale();
 	// 		} else if ($this->request->getPost('order') == 2) {
-				
+
 	// 			$find = $this->m_sale->getAllSale(null, date('Y'), null, "Y");
 	// 		} else if ($this->request->getPost('order') == 3) {
-				
+
 	// 			$find = $this->m_sale->getAllSale(null, date('Y-m'), null, "M");
 	// 		} else if ($this->request->getPost('order') == 4) {
 	// 			$find = $this->m_sale->getAllSale(null, date('Y-m-d'), null, "D");

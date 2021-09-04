@@ -74,7 +74,9 @@ Order Barang Supplier
                                         <h5>List Order Barang</h5>
                                     </div>
                                     <div class="card-body">
-                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                        <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
+                                            <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                        <?php endif; ?>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
@@ -83,8 +85,10 @@ Order Barang Supplier
                                                         <th>Kode Order</th>
                                                         <th>Nama Supplier</th>
                                                         <th>Kontak Supplier</th>
+                                                        <th>Email Supplier</th>
+                                                        <th>Alamat Supplier</th>
                                                         <th>Total Item Dipesan</th>
-                                                        <th>Total Barang</th>
+                                                        <th>Total Barang Dipesan</th>
                                                         <th>Dipesan Oleh</th>
                                                         <th>Manajemen Pesanan</th>
                                                         <th>Diubah Terakhir</th>
@@ -102,6 +106,8 @@ Order Barang Supplier
                                                             <td><?= $c->order_code; ?></td>
                                                             <td><?= $c->supplier_name; ?></td>
                                                             <td>0<?= $c->supplier_contact; ?></td>
+                                                            <td><?= $c->supplier_email; ?></td>
+                                                            <td><?= $c->supplier_address; ?></td>
                                                             <td><?= $c->order_total_quantity; ?> Jenis Barang</td>
                                                             <td><?= $c->order_total_item; ?> Barang</td>
                                                             <td><?= $c->username ?></td>
@@ -115,19 +121,27 @@ Order Barang Supplier
                                                                 <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                             </td>
                                                             <?php if ($c->order_status == 1) : ?>
-                                                                <td><a href="" class="btn btn-warning btn-sm">Pending</a></td>
+                                                                <td><a href="" class="btn btn-warning btn-sm">Request Diterima</a></td>
                                                             <?php elseif ($c->order_status == 2) : ?>
-                                                                <td><a href="" class="btn btn-info btn-sm">Diproses</a></td>
+                                                                <td><a href="" class="btn btn-info btn-sm">Persetujuan</a></td>
                                                             <?php elseif ($c->order_status == 3) : ?>
-                                                                <td><a href="" class="btn btn-primary btn-sm">Diterima</a></td>
+                                                                <td><a href="" class="btn btn-info btn-sm">Order Keluar</a></td>
                                                             <?php elseif ($c->order_status == 4) : ?>
+                                                                <td><a href="" class="btn btn-info btn-sm">Invoice Masuk</a></td>
+                                                            <?php elseif ($c->order_status == 5) : ?>
+                                                                <td><a href="" class="btn btn-info btn-sm">Produksi</a></td>
+                                                            <?php elseif ($c->order_status == 6) : ?>
+                                                                <td><a href="" class="btn btn-info btn-sm">Dikirim Supplier</a></td>
+                                                            <?php elseif ($c->order_status == 7) : ?>
+                                                                <td><a href="" class="btn btn-info btn-sm">Diterima Gudang</a></td>
+                                                            <?php elseif ($c->order_status == 8) : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Selesai</a></td>
                                                             <?php else : ?>
                                                                 <td><a href="" class="btn btn-danger btn-sm">Pengembalian</a></td>
                                                             <?php endif; ?>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if ($c->order_status != 4) : ?>
+                                                                    <?php if ($c->order_status != 8) : ?>
                                                                         <!-- Set Status Button Modal -->
                                                                         <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
 
@@ -146,12 +160,22 @@ Order Barang Supplier
                                                                                             <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                                             <div class="form-group">
                                                                                                 <select class="form-control <?= $validation->getError('order_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="order_name_up" required>
-                                                                                                    <option value="">Pilih Status Order</option>
-                                                                                                    <option value="1" <?= $c->order_status == 1 ? "selected" : ""; ?>>Pending - Pesanan Belum Dibuat</option>
-                                                                                                    <option value="2" <?= $c->order_status == 2 ? "selected" : ""; ?>>Proses - Pesanan Diterima Oleh Supplier</option>
-                                                                                                    <option value="3" <?= $c->order_status == 3 ? "selected" : ""; ?>>Diterima - Barang Pesanan Diterima Oleh Staf Gudang</option>
-                                                                                                    <option value="4" <?= $c->order_status == 4 ? "selected" : ""; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
-                                                                                                    <option value="5" <?= $c->order_status == 5 ? "selected" : ""; ?>>Pengembalian - Ada Barang Yang Tidak Sesuai, Proses Retur</option>
+                                                                                                    <?php if (in_groups('GUDANG')) : ?>
+                                                                                                        <?php if ($c->order_status == 6 || $c->order_status == 7 || $c->order_status == 8 || $c->order_status == 9) : ?>
+                                                                                                            <option value="7" <?= $c->order_status == 7 ? "selected" : ""; ?>>Diterima - Barang Telah Diterima Oleh Pihak Gudang</option>
+                                                                                                            <option value="8" <?= $c->order_status == 8 ? "selected" : ""; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
+                                                                                                            <option value="9" <?= $c->order_status == 9 ? "selected" : ""; ?>>Pengembalian - Ada Barang Yang Tidak Sesuai, Proses Retur</option>
+                                                                                                        <?php else : ?>
+                                                                                                            <option value="">-- Pesanan Belum Dikirim Oleh Supplier --</option>
+                                                                                                        <?php endif; ?>
+                                                                                                    <?php elseif (in_groups('PURCHASING')) : ?>
+                                                                                                        <option value="1" <?= $c->order_status == 1 ? "selected" : ""; ?>>Request Diterima - Permintaan Pesanan Diterima</option>
+                                                                                                        <option value="2" <?= $c->order_status == 2 ? "selected" : ""; ?>>Persetujuan - Pesanan Telah Dibuat, Request Persetujuan</option>
+                                                                                                        <option value="3" <?= $c->order_status == 3 ? "selected" : ""; ?>>Order Keluar - Pesanan Disetujui, Order Keluar</option>
+                                                                                                        <option value="4" <?= $c->order_status == 4 ? "selected" : ""; ?>>Invoice Masuk - Invoice Barang Yang Dipesan Telah Diterima</option>
+                                                                                                        <option value="5" <?= $c->order_status == 5 ? "selected" : ""; ?>>Produksi - Barang Pesanan Sudah Dalam Tahap Produksi</option>
+                                                                                                        <option value="6" <?= $c->order_status == 6 ? "selected" : ""; ?>>Dikirim Oleh Vendor - Pesanan Dikirim Supplier</option>
+                                                                                                    <?php endif; ?>
                                                                                                 </select>
                                                                                                 <div class="invalid-feedback">
                                                                                                     <?= $validation->getError("order_name_up"); ?>
@@ -195,8 +219,10 @@ Order Barang Supplier
                                                         <th>Kode Order</th>
                                                         <th>Nama Supplier</th>
                                                         <th>Kontak Supplier</th>
+                                                        <th>Email Supplier</th>
+                                                        <th>Alamat Supplier</th>
                                                         <th>Total Item Dipesan</th>
-                                                        <th>Total Barang</th>
+                                                        <th>Total Barang Dipesan</th>
                                                         <th>Dipesan Oleh</th>
                                                         <th>Manajemen Pesanan</th>
                                                         <th>Diubah Terakhir</th>

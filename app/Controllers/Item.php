@@ -38,7 +38,10 @@ class Item extends BaseController
 				'item_height' => 'permit_empty',
 				'item_discount' => 'permit_empty',
 				'item_hpp' => 'required|integer',
-				'item_stock' => 'required|integer',
+				'item_stock_a' => 'required|integer',
+				'item_stock_b' => 'required|integer',
+				'item_stock_c' => 'required|integer',
+				'item_stock_d' => 'required|integer',
 				'item_sale' => 'required',
 				'item_description' => 'permit_empty|max_length[500]',
 				'category' => 'required|integer',
@@ -69,6 +72,7 @@ class Item extends BaseController
 					if ($profit <= 0) {
 						$profit = 0;
 					}
+					$total = $this->request->getPost('item_stock_a') + $this->request->getPost('item_stock_b') + $this->request->getPost('item_stock_c') + $this->request->getPost('item_stock_d');
 					$save = $this->m_item->save([
 						'item_image' => $namaProduk,
 						'item_code' => $this->request->getPost('item_code'),
@@ -80,7 +84,11 @@ class Item extends BaseController
 						'item_width' => $this->request->getPost('item_width'),
 						'item_height' => $this->request->getPost('item_height'),
 						'item_hpp' => $this->request->getPost('item_hpp'),
-						'item_stock' => $this->request->getPost('item_stock'),
+						'item_warehouse_a' => $this->request->getPost('item_stock_a'),
+						'item_warehouse_b' => $this->request->getPost('item_stock_b'),
+						'item_warehouse_c' => $this->request->getPost('item_stock_c'),
+						'item_warehouse_d' => $this->request->getPost('item_stock_d'),
+						'item_stock' => $total,
 						'item_before_sale' => $this->request->getPost('item_sale'),
 						'item_discount' => $this->request->getPost('item_discount'),
 						'item_sale' => $after,
@@ -115,7 +123,10 @@ class Item extends BaseController
 					'item_height_up' => 'permit_empty',
 					'item_hpp_up' => 'required|integer',
 					'item_discount' => 'permit_empty',
-					'item_stock_up' => 'required|integer',
+					'item_stock_a_up' => 'required|integer',
+					'item_stock_b_up' => 'required|integer',
+					'item_stock_c_up' => 'required|integer',
+					'item_stock_d_up' => 'required|integer',
 					'item_sale_up' => 'required',
 					'item_description_up' => 'permit_empty|max_length[500]',
 					'category_up' => 'required|integer',
@@ -133,7 +144,10 @@ class Item extends BaseController
 					'item_height_up' => 'permit_empty',
 					'item_hpp_up' => 'required|integer',
 					'item_discount' => 'permit_empty',
-					'item_stock_up' => 'required|integer',
+					'item_stock_a_up' => 'required|integer',
+					'item_stock_b_up' => 'required|integer',
+					'item_stock_c_up' => 'required|integer',
+					'item_stock_d_up' => 'required|integer',
 					'item_sale_up' => 'required',
 					'item_description_up' => 'permit_empty|max_length[500]',
 					'category_up' => 'required|integer',
@@ -169,6 +183,7 @@ class Item extends BaseController
 						->save('upload/produk/' . $namaProduk);
 					if ($move) {
 						if (unlink('upload/produk/' . $find->item_image)) {
+							$total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
 							$save = $this->m_item->save([
 								'id' => $this->request->getPost('id_item'),
 								'item_image' => $namaProduk,
@@ -181,7 +196,11 @@ class Item extends BaseController
 								'item_width' => $this->request->getPost('item_width_up'),
 								'item_height' => $this->request->getPost('item_height_up'),
 								'item_hpp' => $this->request->getPost('item_hpp_up'),
-								'item_stock' => $this->request->getPost('item_stock_up'),
+								'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+								'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+								'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+								'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+								'item_stock' => $total,
 								'item_before_sale' => $this->request->getPost('item_sale_up'),
 								'item_discount' => $this->request->getPost('item_discount_up'),
 								'item_sale' => $after,
@@ -206,7 +225,7 @@ class Item extends BaseController
 						return redirect()->to('/items')->withCookies();
 					}
 				} else {
-
+					$total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
 					$save = $this->m_item->save([
 						'id' => $this->request->getPost('id_item'),
 						'item_code' => $this->request->getPost('item_code_up'),
@@ -218,7 +237,11 @@ class Item extends BaseController
 						'item_width' => $this->request->getPost('item_width_up'),
 						'item_height' => $this->request->getPost('item_height_up'),
 						'item_hpp' => $this->request->getPost('item_hpp_up'),
-						'item_stock' => $this->request->getPost('item_stock_up'),
+						'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+						'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+						'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+						'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+						'item_stock' => $total,
 						'item_before_sale' => $this->request->getPost('item_sale_up'),
 						'item_discount' => $this->request->getPost('item_discount_up'),
 						'item_sale' => $after,
@@ -236,7 +259,40 @@ class Item extends BaseController
 					}
 				}
 			}
-		} else if (!empty($this->request->getPost('delete_items'))) {
+		} else if (!empty($this->request->getPost('update_posisi_item'))) {
+			$formSubmit = $this->validate([
+				'item_stock_a_up' => 'required|integer',
+				'item_stock_b_up' => 'required|integer',
+				'item_stock_c_up' => 'required|integer',
+				'item_stock_d_up' => 'required|integer',
+			]);
+			if (!$formSubmit) {
+				return redirect()->to('/items')->withInput();
+			} else {
+				$find = $this->m_item->find($this->request->getPost('id_item'));
+				$total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
+				if($total == $find->item_stock){
+					$save = $this->m_item->save([
+						'id' => $this->request->getPost('id_item'),
+						'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+						'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+						'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+						'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+						'item_stock' => $total,
+					]);
+					if ($save) {
+						session()->setFlashdata('berhasil', 'Jumlah Stok di Gudang Berhasil Diubah');
+						return redirect()->to('/items')->withCookies();
+					} else {
+						session()->setFlashdata('gagal', 'Jumlah Stok di Gudang Gagal Diubah');
+						return redirect()->to('/items')->withCookies();
+					}
+				}else{
+					session()->setFlashdata('gagal', 'Jumlah Stok Digudang A,B,C,D Harus Sama Dengan Master Stok');
+					return redirect()->to('/items')->withCookies();
+				}
+            }
+		}else if (!empty($this->request->getPost('delete_items'))) {
 			$find = $this->m_item->find($this->request->getPost('id_item'));
 			if (!empty($find)) {
 				if (unlink('upload/produk/' . $find->item_image)) {

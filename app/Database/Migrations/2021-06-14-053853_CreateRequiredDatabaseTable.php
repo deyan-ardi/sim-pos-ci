@@ -28,6 +28,8 @@ class CreateRequiredDatabaseTable extends Migration
 			'id'               		=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
 			'supplier_name' 		=> ['type' => 'varchar', 'constraint' => 255],
 			'supplier_contact' 		=> ['type' => 'bigint'],
+			'supplier_email'		=> ['type' => 'varchar', 'constraint' => 255],
+			'supplier_address'		=> ['type' => 'text'],
 			'supplier_description'	=> ['type' => 'longtext'],
 			'created_at'       		=> ['type' => 'datetime', 'null' => true],
 			'updated_at'       		=> ['type' => 'datetime', 'null' => true],
@@ -44,8 +46,9 @@ class CreateRequiredDatabaseTable extends Migration
 			'member_code' 			=> ['type' => 'varchar', 'constraint' => 50],
 			'member_name' 			=> ['type' => 'varchar', 'constraint' => 255],
 			'member_contact' 		=> ['type' => 'bigint'],
-			'member_description'	=> ['type' => 'longtext','null' => true],
-			'member_discount'		=> ['type' => 'float','null' => true],
+			'member_description'	=> ['type' => 'longtext', 'null' => true],
+			'member_discount'		=> ['type' => 'float', 'null' => true],
+			'member_email'			=> ['type' => 'varchar', 'constraint' => 255, 'null' => true],
 			'created_at'       		=> ['type' => 'datetime', 'null' => true],
 			'updated_at'       		=> ['type' => 'datetime', 'null' => true],
 			'deleted_at'       		=> ['type' => 'datetime', 'null' => true],
@@ -68,12 +71,16 @@ class CreateRequiredDatabaseTable extends Migration
 			'item_width' 	   => ['type' => 'float', 'null' => true],
 			'item_height' 	   => ['type' => 'float', 'null' => true],
 			'item_hpp'	 	   => ['type' => 'float', 'null' => true],
-			'item_stock' 	   => ['type' => 'int'],
 			'item_before_sale' => ['type' => 'float'],
-			'item_discount'    => ['type' => 'float','null' => true],
+			'item_discount'    => ['type' => 'float', 'null' => true],
 			'item_sale' 	   => ['type' => 'float'],
 			'item_profit' 	   => ['type' => 'float'],
 			'item_description' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+			'item_warehouse_a' => ['type' => 'int','default' => 0],
+			'item_warehouse_b' => ['type' => 'int','default' => 0],
+			'item_warehouse_c' => ['type' => 'int','default' => 0],
+			'item_warehouse_d' => ['type' => 'int','default' => 0],
+			'item_stock' 	   => ['type' => 'int'],
 			'category_id'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'supplier_id'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'created_at'       => ['type' => 'datetime', 'null' => true],
@@ -81,7 +88,7 @@ class CreateRequiredDatabaseTable extends Migration
 			'deleted_at'       => ['type' => 'datetime', 'null' => true],
 		]);
 		$this->forge->addKey('id', true);
-		$this->forge->addKey(['category_id','supplier_id']);
+		$this->forge->addKey(['category_id', 'supplier_id']);
 		$this->forge->addForeignKey('category_id', 'item_categories', 'id', false, 'CASCADE');
 		$this->forge->addForeignKey('supplier_id', 'suppliers', 'id', false, 'CASCADE');
 		$this->forge->createTable('items', true);
@@ -105,10 +112,30 @@ class CreateRequiredDatabaseTable extends Migration
 			'deleted_at'       	=> ['type' => 'datetime', 'null' => true],
 		]);
 		$this->forge->addKey('id', true);
-		$this->forge->addKey(['user_id','member_id']);
+		$this->forge->addKey(['user_id', 'member_id']);
 		$this->forge->addForeignKey('user_id', 'users', 'id', false, 'CASCADE');
 		$this->forge->addForeignKey('member_id', 'members', 'id', false, 'CASCADE');
 		$this->forge->createTable('sales', true);
+
+		/* 
+		Request Order Migration
+		*/
+		$this->forge->addField([
+			'id'               		=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+			'request_description'	=> ['type' => 'text'],
+			'request_total' 		=> ['type' => 'int'],
+			'request_status' 		=> ['type' => 'int'],
+			'user_id'      			=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+			'item_id'      			=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+			'created_at'       		=> ['type' => 'datetime', 'null' => true],
+			'updated_at'       		=> ['type' => 'datetime', 'null' => true],
+			'deleted_at'       		=> ['type' => 'datetime', 'null' => true],
+		]);
+		$this->forge->addKey('id', true);
+		$this->forge->addKey(['user_id', 'item_id']);
+		$this->forge->addForeignKey('user_id', 'users', 'id', false, 'CASCADE');
+		$this->forge->addForeignKey('item_id', 'items', 'id', false, 'CASCADE');
+		$this->forge->createTable('request_orders', true);
 
 		/*
 		Sale Details Migration
@@ -124,7 +151,7 @@ class CreateRequiredDatabaseTable extends Migration
 			'updated_at'       	=> ['type' => 'datetime', 'null' => true],
 		]);
 		$this->forge->addKey('id', true);
-		$this->forge->addKey(['user_id','item_id','sale_id']);
+		$this->forge->addKey(['user_id', 'item_id', 'sale_id']);
 		$this->forge->addForeignKey('user_id', 'users', 'id', false, 'CASCADE');
 		$this->forge->addForeignKey('item_id', 'items', 'id', false, 'CASCADE');
 		$this->forge->addForeignKey('sale_id', 'sales', 'id', false, 'CASCADE');
@@ -173,9 +200,8 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->addForeignKey('item_id', 'items', 'id', false, 'CASCADE');
 		$this->forge->addForeignKey('order_id', 'orders', 'id', false, 'CASCADE');
 		$this->forge->createTable('order_details', true);
-
 	}
-	
+
 
 	public function down()
 	{
