@@ -75,4 +75,14 @@ class SaleModel extends Model
 			return $this->get()->getResult();
 		}
 	}
+	
+	public function getAllOrderWhere(){
+		$this->select('users.username,sales.*,sale_details.detail_quantity,item_categories.category_name,items.item_name');
+		$this->join('sale_details','sale_details.sale_id = sales.id');
+		$this->join('items', 'items.id = sale_details.item_id');
+		$this->join('item_categories', 'item_categories.id = items.category_id');
+		$this->join('users', 'users.id = sales.user_id');
+		$this->where('sales.sale_status', 1);
+		return $this->get()->getResult();
+	}
 }

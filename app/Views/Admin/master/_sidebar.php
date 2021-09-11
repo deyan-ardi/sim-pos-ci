@@ -63,6 +63,7 @@
                            <ul class="pcoded-submenu">
                                <li class=""><a href="<?= base_url(); ?>/categories" class="">Data Kategori Barang</a></li>
                                <li class=""><a href="<?= base_url(); ?>/items" class="">Data Barang</a></li>
+                               <li class=""><a href="<?= base_url(); ?>/item-reports" class="">Laporan Transaksi Barang</a></li>
                            </ul>
                        </li>
                    <?php endif; ?>
@@ -87,8 +88,8 @@
                                <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Manajemen
                                        Transaksi</span></a>
                                <ul class="pcoded-submenu">
-                                   <li class=""><a href="<?= base_url(); ?>/transaction" class="">Sistem Kasir</a></li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi</a>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Transaksi Project</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Project</a>
                                    </li>
                                </ul>
                            </li>

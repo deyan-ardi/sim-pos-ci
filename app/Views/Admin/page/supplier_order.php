@@ -160,21 +160,21 @@ Order Barang Supplier
                                                                                             <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                                             <div class="form-group">
                                                                                                 <select class="form-control <?= $validation->getError('order_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="order_name_up" required>
-                                                                                                    <?php if (in_groups('GUDANG')) : ?>
-                                                                                                        <?php if ($c->order_status == 6 || $c->order_status == 7 || $c->order_status == 8 || $c->order_status == 9) : ?>
+                                                                                                    <?php if (in_groups('GUDANG')|| in_groups('SUPER ADMIN')) : ?>
+                                                                                                        <?php if (in_groups('PURCHASING') || in_groups('SUPER ADMIN')) : ?>
+                                                                                                            <option value="1" <?= $c->order_status == 1 ? "selected" : ""; ?>>Request Diterima - Permintaan Pesanan Diterima</option>
+                                                                                                            <option value="2" <?= $c->order_status == 2 ? "selected" : ""; ?>>Persetujuan - Pesanan Telah Dibuat, Request Persetujuan</option>
+                                                                                                            <option value="3" <?= $c->order_status == 3 ? "selected" : ""; ?>>Order Keluar - Pesanan Disetujui, Order Keluar</option>
+                                                                                                            <option value="4" <?= $c->order_status == 4 ? "selected" : ""; ?>>Invoice Masuk - Invoice Barang Yang Dipesan Telah Diterima</option>
+                                                                                                            <option value="5" <?= $c->order_status == 5 ? "selected" : ""; ?>>Produksi - Barang Pesanan Sudah Dalam Tahap Produksi</option>
+                                                                                                            <option value="6" <?= $c->order_status == 6 ? "selected" : ""; ?>>Dikirim Oleh Vendor - Pesanan Dikirim Supplier</option>
+                                                                                                        <?php elseif ($c->order_status == 6 || $c->order_status == 7 || $c->order_status == 8 || $c->order_status == 9) : ?>
                                                                                                             <option value="7" <?= $c->order_status == 7 ? "selected" : ""; ?>>Diterima - Barang Telah Diterima Oleh Pihak Gudang</option>
                                                                                                             <option value="8" <?= $c->order_status == 8 ? "selected" : ""; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
                                                                                                             <option value="9" <?= $c->order_status == 9 ? "selected" : ""; ?>>Pengembalian - Ada Barang Yang Tidak Sesuai, Proses Retur</option>
                                                                                                         <?php else : ?>
                                                                                                             <option value="">-- Pesanan Belum Dikirim Oleh Supplier --</option>
                                                                                                         <?php endif; ?>
-                                                                                                    <?php elseif (in_groups('PURCHASING')) : ?>
-                                                                                                        <option value="1" <?= $c->order_status == 1 ? "selected" : ""; ?>>Request Diterima - Permintaan Pesanan Diterima</option>
-                                                                                                        <option value="2" <?= $c->order_status == 2 ? "selected" : ""; ?>>Persetujuan - Pesanan Telah Dibuat, Request Persetujuan</option>
-                                                                                                        <option value="3" <?= $c->order_status == 3 ? "selected" : ""; ?>>Order Keluar - Pesanan Disetujui, Order Keluar</option>
-                                                                                                        <option value="4" <?= $c->order_status == 4 ? "selected" : ""; ?>>Invoice Masuk - Invoice Barang Yang Dipesan Telah Diterima</option>
-                                                                                                        <option value="5" <?= $c->order_status == 5 ? "selected" : ""; ?>>Produksi - Barang Pesanan Sudah Dalam Tahap Produksi</option>
-                                                                                                        <option value="6" <?= $c->order_status == 6 ? "selected" : ""; ?>>Dikirim Oleh Vendor - Pesanan Dikirim Supplier</option>
                                                                                                     <?php endif; ?>
                                                                                                 </select>
                                                                                                 <div class="invalid-feedback">

@@ -42,7 +42,7 @@ class Transaction extends BaseController
 			'transaction' => $find_detail,
 			'member' => $this->m_member->findAll(),
 			'validation' => $this->validate,
-			'item' => $this->m_item->findAll(),
+			'item' => $this->m_item->getAllItemWhere(),
 			'find_sale' => $find_sale,
 			'count_user' => $count_member,
 		];

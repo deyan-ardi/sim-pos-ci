@@ -2,6 +2,8 @@ $(document).ready(function() {
     setTimeout(function() {
         // [ Zero Configuration ] start
         $('#simpletable').DataTable();
+        $("#simpletable2").DataTable();
+
 
         // [ Default Ordering ] start
         $('#order-table').DataTable({

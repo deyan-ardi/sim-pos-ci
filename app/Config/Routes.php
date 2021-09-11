@@ -52,6 +52,10 @@ $routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'],['n
 	$routes->delete('/', 'Item::index');
 });
 
+$routes->group('item-reports', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
+	$routes->get('/', 'Item::report');
+});
+
 $routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR, MARKETING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Member::index');
 	$routes->post('/', 'Member::index');

@@ -5,6 +5,9 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ItemCategoryModel;
 use App\Models\ItemModel;
+use App\Models\OrderModel;
+use App\Models\RequestOrderModel;
+use App\Models\SaleModel;
 use App\Models\SupplierModel;
 
 class Item extends BaseController
@@ -16,6 +19,8 @@ class Item extends BaseController
 		$this->m_category = new ItemCategoryModel();
 		$this->m_supplier = new SupplierModel();
 		$this->crop = \Config\Services::image();
+		$this->m_order = new OrderModel();
+		$this->m_sale = new SaleModel();
 	}
 	public function index()
 	{
@@ -37,12 +42,12 @@ class Item extends BaseController
 				'item_width' => 'permit_empty',
 				'item_height' => 'permit_empty',
 				'item_discount' => 'permit_empty',
-				'item_hpp' => 'required|integer',
+				'item_hpp' => 'permit_empty|integer',
 				'item_stock_a' => 'required|integer',
 				'item_stock_b' => 'required|integer',
 				'item_stock_c' => 'required|integer',
 				'item_stock_d' => 'required|integer',
-				'item_sale' => 'required',
+				'item_sale' => 'permit_empty',
 				'item_description' => 'permit_empty|max_length[500]',
 				'category' => 'required|integer',
 				'supplier' => 'required|integer',
@@ -61,9 +66,9 @@ class Item extends BaseController
 				if ($move) {
 					// Perhitungan discount
 					$before = $this->request->getPost('item_sale');
-					if(empty($this->request->getPost('item_discount'))){
+					if (empty($this->request->getPost('item_discount'))) {
 						$bil_dis = 0;
-					}else{
+					} else {
 						$bil_dis = $this->request->getPost('item_discount');
 					}
 					$discount = ($before * $bil_dis) / 100;
@@ -73,30 +78,52 @@ class Item extends BaseController
 						$profit = 0;
 					}
 					$total = $this->request->getPost('item_stock_a') + $this->request->getPost('item_stock_b') + $this->request->getPost('item_stock_c') + $this->request->getPost('item_stock_d');
-					$save = $this->m_item->save([
-						'item_image' => $namaProduk,
-						'item_code' => $this->request->getPost('item_code'),
-						'item_name' => ucWords($this->request->getPost('item_name')),
-						'item_merk' => ucWords($this->request->getPost('item_merk')),
-						'item_type' =>  ucWords($this->request->getPost('item_type')),
-						'item_weight' => $this->request->getPost('item_weight'),
-						'item_length' => $this->request->getPost('item_length'),
-						'item_width' => $this->request->getPost('item_width'),
-						'item_height' => $this->request->getPost('item_height'),
-						'item_hpp' => $this->request->getPost('item_hpp'),
-						'item_warehouse_a' => $this->request->getPost('item_stock_a'),
-						'item_warehouse_b' => $this->request->getPost('item_stock_b'),
-						'item_warehouse_c' => $this->request->getPost('item_stock_c'),
-						'item_warehouse_d' => $this->request->getPost('item_stock_d'),
-						'item_stock' => $total,
-						'item_before_sale' => $this->request->getPost('item_sale'),
-						'item_discount' => $this->request->getPost('item_discount'),
-						'item_sale' => $after,
-						'item_profit' => $profit,
-						'item_description' => ucWords($this->request->getPost('item_description')),
-						'category_id' => $this->request->getPost('category'),
-						'supplier_id' => $this->request->getPost('supplier'),
-					]);
+					if (in_groups('GUDANG')) {
+						$save = $this->m_item->save([
+							'item_image' => $namaProduk,
+							'item_code' => $this->request->getPost('item_code'),
+							'item_name' => ucWords($this->request->getPost('item_name')),
+							'item_merk' => ucWords($this->request->getPost('item_merk')),
+							'item_type' =>  ucWords($this->request->getPost('item_type')),
+							'item_weight' => $this->request->getPost('item_weight'),
+							'item_length' => $this->request->getPost('item_length'),
+							'item_width' => $this->request->getPost('item_width'),
+							'item_height' => $this->request->getPost('item_height'),
+							'item_warehouse_a' => $this->request->getPost('item_stock_a'),
+							'item_warehouse_b' => $this->request->getPost('item_stock_b'),
+							'item_warehouse_c' => $this->request->getPost('item_stock_c'),
+							'item_warehouse_d' => $this->request->getPost('item_stock_d'),
+							'item_stock' => $total,
+							'item_description' => ucWords($this->request->getPost('item_description')),
+							'category_id' => $this->request->getPost('category'),
+							'supplier_id' => $this->request->getPost('supplier'),
+						]);
+					} else {
+						$save = $this->m_item->save([
+							'item_image' => $namaProduk,
+							'item_code' => $this->request->getPost('item_code'),
+							'item_name' => ucWords($this->request->getPost('item_name')),
+							'item_merk' => ucWords($this->request->getPost('item_merk')),
+							'item_type' =>  ucWords($this->request->getPost('item_type')),
+							'item_weight' => $this->request->getPost('item_weight'),
+							'item_length' => $this->request->getPost('item_length'),
+							'item_width' => $this->request->getPost('item_width'),
+							'item_height' => $this->request->getPost('item_height'),
+							'item_warehouse_a' => $this->request->getPost('item_stock_a'),
+							'item_warehouse_b' => $this->request->getPost('item_stock_b'),
+							'item_warehouse_c' => $this->request->getPost('item_stock_c'),
+							'item_warehouse_d' => $this->request->getPost('item_stock_d'),
+							'item_stock' => $total,
+							'item_hpp' => $this->request->getPost('item_hpp'),
+							'item_before_sale' => $this->request->getPost('item_sale'),
+							'item_discount' => $this->request->getPost('item_discount'),
+							'item_sale' => $after,
+							'item_profit' => $profit,
+							'item_description' => ucWords($this->request->getPost('item_description')),
+							'category_id' => $this->request->getPost('category'),
+							'supplier_id' => $this->request->getPost('supplier'),
+						]);
+					}
 					if ($save) {
 						session()->setFlashdata('berhasil', 'Data Produk Baru Berhasil Ditambahkan');
 						return redirect()->to('/items')->withCookies();
@@ -121,13 +148,13 @@ class Item extends BaseController
 					'item_length_up' => 'permit_empty',
 					'item_width_up' => 'permit_empty',
 					'item_height_up' => 'permit_empty',
-					'item_hpp_up' => 'required|integer',
+					'item_hpp_up' => 'permit_empty|integer',
 					'item_discount' => 'permit_empty',
-					'item_stock_a_up' => 'required|integer',
-					'item_stock_b_up' => 'required|integer',
-					'item_stock_c_up' => 'required|integer',
-					'item_stock_d_up' => 'required|integer',
-					'item_sale_up' => 'required',
+					'item_stock_a_up' => 'permit_empty|integer',
+					'item_stock_b_up' => 'permit_empty|integer',
+					'item_stock_c_up' => 'permit_empty|integer',
+					'item_stock_d_up' => 'permit_empty|integer',
+					'item_sale_up' => 'permit_empty',
 					'item_description_up' => 'permit_empty|max_length[500]',
 					'category_up' => 'required|integer',
 					'supplier_up' => 'required|integer',
@@ -142,13 +169,13 @@ class Item extends BaseController
 					'item_length_up' => 'permit_empty',
 					'item_width_up' => 'permit_empty',
 					'item_height_up' => 'permit_empty',
-					'item_hpp_up' => 'required|integer',
+					'item_hpp_up' => 'permit_empty|integer',
 					'item_discount' => 'permit_empty',
 					'item_stock_a_up' => 'required|integer',
 					'item_stock_b_up' => 'required|integer',
 					'item_stock_c_up' => 'required|integer',
 					'item_stock_d_up' => 'required|integer',
-					'item_sale_up' => 'required',
+					'item_sale_up' => 'permit_empty',
 					'item_description_up' => 'permit_empty|max_length[500]',
 					'category_up' => 'required|integer',
 					'supplier_up' => 'required|integer',
@@ -171,7 +198,6 @@ class Item extends BaseController
 				if ($profit <= 0) {
 					$profit = 0;
 				}
-				
 
 				if ($this->request->getFile('item_image_up')->getError() == 0) {
 					$fotoProduk = $this->request->getFile('item_image_up');
@@ -184,31 +210,54 @@ class Item extends BaseController
 					if ($move) {
 						if (unlink('upload/produk/' . $find->item_image)) {
 							$total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-							$save = $this->m_item->save([
-								'id' => $this->request->getPost('id_item'),
-								'item_image' => $namaProduk,
-								'item_code' => $this->request->getPost('item_code_up'),
-								'item_name' => ucWords($this->request->getPost('item_name_up')),
-								'item_merk' => ucWords($this->request->getPost('item_merk_up')),
-								'item_type' =>  ucWords($this->request->getPost('item_type_up')),
-								'item_weight' => $this->request->getPost('item_weight_up'),
-								'item_length' => $this->request->getPost('item_length_up'),
-								'item_width' => $this->request->getPost('item_width_up'),
-								'item_height' => $this->request->getPost('item_height_up'),
-								'item_hpp' => $this->request->getPost('item_hpp_up'),
-								'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
-								'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
-								'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
-								'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
-								'item_stock' => $total,
-								'item_before_sale' => $this->request->getPost('item_sale_up'),
-								'item_discount' => $this->request->getPost('item_discount_up'),
-								'item_sale' => $after,
-								'item_profit' => $profit,
-								'item_description' => ucWords($this->request->getPost('item_description_up')),
-								'category_id' => $this->request->getPost('category_up'),
-								'supplier_id' => $this->request->getPost('supplier_up'),
-							]);
+							if (!in_groups('GUDANG')) {
+								$save = $this->m_item->save([
+									'id' => $this->request->getPost('id_item'),
+									'item_image' => $namaProduk,
+									'item_code' => $this->request->getPost('item_code_up'),
+									'item_name' => ucWords($this->request->getPost('item_name_up')),
+									'item_merk' => ucWords($this->request->getPost('item_merk_up')),
+									'item_type' =>  ucWords($this->request->getPost('item_type_up')),
+									'item_weight' => $this->request->getPost('item_weight_up'),
+									'item_length' => $this->request->getPost('item_length_up'),
+									'item_width' => $this->request->getPost('item_width_up'),
+									'item_height' => $this->request->getPost('item_height_up'),
+									'item_hpp' => $this->request->getPost('item_hpp_up'),
+									'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+									'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+									'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+									'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+									'item_stock' => $total,
+									'item_before_sale' => $this->request->getPost('item_sale_up'),
+									'item_discount' => $this->request->getPost('item_discount_up'),
+									'item_sale' => $after,
+									'item_profit' => $profit,
+									'item_description' => ucWords($this->request->getPost('item_description_up')),
+									'category_id' => $this->request->getPost('category_up'),
+									'supplier_id' => $this->request->getPost('supplier_up'),
+								]);
+							} else {
+								$save = $this->m_item->save([
+									'id' => $this->request->getPost('id_item'),
+									'item_image' => $namaProduk,
+									'item_code' => $this->request->getPost('item_code_up'),
+									'item_name' => ucWords($this->request->getPost('item_name_up')),
+									'item_merk' => ucWords($this->request->getPost('item_merk_up')),
+									'item_type' =>  ucWords($this->request->getPost('item_type_up')),
+									'item_weight' => $this->request->getPost('item_weight_up'),
+									'item_length' => $this->request->getPost('item_length_up'),
+									'item_width' => $this->request->getPost('item_width_up'),
+									'item_height' => $this->request->getPost('item_height_up'),
+									'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+									'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+									'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+									'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+									'item_stock' => $total,
+									'item_description' => ucWords($this->request->getPost('item_description_up')),
+									'category_id' => $this->request->getPost('category_up'),
+									'supplier_id' => $this->request->getPost('supplier_up'),
+								]);
+							}
 							if ($save) {
 								session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Diubah');
 								return redirect()->to('/items')->withCookies();
@@ -226,30 +275,53 @@ class Item extends BaseController
 					}
 				} else {
 					$total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-					$save = $this->m_item->save([
-						'id' => $this->request->getPost('id_item'),
-						'item_code' => $this->request->getPost('item_code_up'),
-						'item_name' => ucWords($this->request->getPost('item_name_up')),
-						'item_merk' => ucWords($this->request->getPost('item_merk_up')),
-						'item_type' =>  ucWords($this->request->getPost('item_type_up')),
-						'item_weight' => $this->request->getPost('item_weight_up'),
-						'item_length' => $this->request->getPost('item_length_up'),
-						'item_width' => $this->request->getPost('item_width_up'),
-						'item_height' => $this->request->getPost('item_height_up'),
-						'item_hpp' => $this->request->getPost('item_hpp_up'),
-						'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
-						'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
-						'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
-						'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
-						'item_stock' => $total,
-						'item_before_sale' => $this->request->getPost('item_sale_up'),
-						'item_discount' => $this->request->getPost('item_discount_up'),
-						'item_sale' => $after,
-						'item_profit' => $profit,
-						'item_description' => ucWords($this->request->getPost('item_description_up')),
-						'category_id' => $this->request->getPost('category_up'),
-						'supplier_id' => $this->request->getPost('supplier_up'),
-					]);
+					if (!in_groups('GUDANG')) {
+
+						$save = $this->m_item->save([
+							'id' => $this->request->getPost('id_item'),
+							'item_code' => $this->request->getPost('item_code_up'),
+							'item_name' => ucWords($this->request->getPost('item_name_up')),
+							'item_merk' => ucWords($this->request->getPost('item_merk_up')),
+							'item_type' =>  ucWords($this->request->getPost('item_type_up')),
+							'item_weight' => $this->request->getPost('item_weight_up'),
+							'item_length' => $this->request->getPost('item_length_up'),
+							'item_width' => $this->request->getPost('item_width_up'),
+							'item_height' => $this->request->getPost('item_height_up'),
+							'item_hpp' => $this->request->getPost('item_hpp_up'),
+							'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+							'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+							'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+							'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+							'item_stock' => $total,
+							'item_before_sale' => $this->request->getPost('item_sale_up'),
+							'item_discount' => $this->request->getPost('item_discount_up'),
+							'item_sale' => $after,
+							'item_profit' => $profit,
+							'item_description' => ucWords($this->request->getPost('item_description_up')),
+							'category_id' => $this->request->getPost('category_up'),
+							'supplier_id' => $this->request->getPost('supplier_up'),
+						]);
+					} else {
+						$save = $this->m_item->save([
+							'id' => $this->request->getPost('id_item'),
+							'item_code' => $this->request->getPost('item_code_up'),
+							'item_name' => ucWords($this->request->getPost('item_name_up')),
+							'item_merk' => ucWords($this->request->getPost('item_merk_up')),
+							'item_type' =>  ucWords($this->request->getPost('item_type_up')),
+							'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
+							'item_warehouse_b' => $this->request->getPost('item_stock_b_up'),
+							'item_warehouse_c' => $this->request->getPost('item_stock_c_up'),
+							'item_warehouse_d' => $this->request->getPost('item_stock_d_up'),
+							'item_stock' => $total,
+							'item_weight' => $this->request->getPost('item_weight_up'),
+							'item_length' => $this->request->getPost('item_length_up'),
+							'item_width' => $this->request->getPost('item_width_up'),
+							'item_height' => $this->request->getPost('item_height_up'),
+							'item_description' => ucWords($this->request->getPost('item_description_up')),
+							'category_id' => $this->request->getPost('category_up'),
+							'supplier_id' => $this->request->getPost('supplier_up'),
+						]);
+					}
 					if ($save) {
 						session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Diubah');
 						return redirect()->to('/items')->withCookies();
@@ -271,7 +343,7 @@ class Item extends BaseController
 			} else {
 				$find = $this->m_item->find($this->request->getPost('id_item'));
 				$total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-				if($total == $find->item_stock){
+				if ($total == $find->item_stock) {
 					$save = $this->m_item->save([
 						'id' => $this->request->getPost('id_item'),
 						'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
@@ -287,12 +359,12 @@ class Item extends BaseController
 						session()->setFlashdata('gagal', 'Jumlah Stok di Gudang Gagal Diubah');
 						return redirect()->to('/items')->withCookies();
 					}
-				}else{
+				} else {
 					session()->setFlashdata('gagal', 'Jumlah Stok Digudang A,B,C,D Harus Sama Dengan Master Stok');
 					return redirect()->to('/items')->withCookies();
 				}
-            }
-		}else if (!empty($this->request->getPost('delete_items'))) {
+			}
+		} else if (!empty($this->request->getPost('delete_items'))) {
 			$find = $this->m_item->find($this->request->getPost('id_item'));
 			if (!empty($find)) {
 				if (unlink('upload/produk/' . $find->item_image)) {
@@ -314,5 +386,13 @@ class Item extends BaseController
 		} else {
 			return view('Admin/page/items', $data);
 		}
+	}
+
+	public function report(){
+		$data = [
+			'items' => $this->m_order->getAllOrderWhere(),
+			'item_outs' => $this->m_sale->getAllOrderWhere(),
+		];
+		return view('Admin/page/report-items', $data);
 	}
 }

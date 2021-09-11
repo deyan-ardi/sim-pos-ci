@@ -23,15 +23,11 @@ class ItemModel extends Model
 		'item_image' => 'required',
 		'item_code' => 'required|max_length[50]',
 		'item_name' => 'required',
-		'item_hpp' => 'required',
 		'item_warehouse_a' => 'required',
 		'item_warehouse_b' => 'required',
 		'item_warehouse_c' => 'required',
 		'item_warehouse_d' => 'required',
 		'item_stock' => 'required',
-		'item_profit' => 'required',
-		'item_before_sale' => 'required',
-		'item_sale' => 'required',
 		'category_id' => 'required',
 		'supplier_id' => 'required'
 	];
@@ -59,5 +55,8 @@ class ItemModel extends Model
 			$this->where('items.id', $id);
 			return $this->get()->getResult();
 		}
+	}
+	public function getAllItemWhere(){
+		return $this->where('item_sale !=',NULL)->where('item_before_sale !=', NULL)->where('item_profit !=', NULL)->get()->getResult();	
 	}
 }

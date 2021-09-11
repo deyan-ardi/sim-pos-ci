@@ -175,9 +175,11 @@ Data User Sistem
                                                                                             <select class="form-control <?= $validation->getError('group_up') ? "is-invalid" : ""; ?>" name="group_up">
                                                                                                 <option value="">Pilih Hak Akses</option>
                                                                                                 <option value="1" <?= $c->name == "KASIR" ? "selected" : ""; ?>>Kasir</option>
-                                                                                                <option value="2" <?= $c->name == "ADMIN" ? "selected" : ""; ?>>Admin</option>
+                                                                                                <option value="2" <?= $c->name == "GUDANG" ? "selected" : ""; ?>>Gudang</option>
                                                                                                 <option value="3" <?= $c->name == "SUPER ADMIN" ? "selected" : ""; ?>>Super Admin</option>
                                                                                                 <option value="4" <?= $c->name == "ATASAN" ? "selected" : ""; ?>>Atasan</option>
+                                                                                                <option value="5" <?= $c->name == "PURCHASING" ? "selected" : ""; ?>>Purchasing</option>
+                                                                                                <option value="6" <?= $c->name == "MARKETING" ? "selected" : ""; ?>>Marketing</option>
                                                                                             </select>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError("group_up"); ?>
@@ -293,9 +295,11 @@ Data User Sistem
                         <select class="form-control <?= $validation->getError('group') ? "is-invalid" : ""; ?>" name="group">
                             <option value="">Pilih Hak Akses</option>
                             <option value="1">Kasir</option>
-                            <option value="2">Admin</option>
+                            <option value="2">Gudang</option>
                             <option value="3">Super Admin</option>
                             <option value="4">Atasan</option>
+                            <option value="5">Purchasing</option>
+                            <option value="6">Marketing</option>
                         </select>
                         <div class="invalid-feedback">
                             <?= $validation->getError("group"); ?>
