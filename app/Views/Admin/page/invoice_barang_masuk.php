@@ -147,6 +147,11 @@
                         <div>Jl. Mertasari Jl. Suwung Batan Kendal No.68 F, Sidakarya, <br /> Denpasar Selatan, Kota Denpasar, Bali</div>
                         <div>(0361) 710984</div>
                         <div><a href="mailto:dintara.kitchen@gmail.com">dintara.kitchen@gmail.com</a></div>
+                        <?php if (!empty($awal) && !empty($akhir)) : ?>
+                            <div>Data dari <?= $awal; ?> sampai <?= $akhir; ?></div>
+                        <?php else : ?>
+                            <div>Keseluruhan Data</div>
+                        <?php endif; ?>
                     </div>
                 </td>
             </tr>

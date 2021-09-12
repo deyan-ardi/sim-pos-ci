@@ -41,6 +41,44 @@ Data Item Barang
                         </div>
                         <!-- [ breadcrumb ] end -->
                         <!-- [ Main Content ] start -->
+                        <div class="card">
+                            <div class="card-body py-2">
+                                <form class="row" action="" method="GET">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-sm-2 d-flex align-items-center">
+                                                <span class="p">Filter Data</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group m-0">
+                                                    <label class="m-0 mb-2" for="tanggal_awal"><small>Tanggal
+                                                            Awal</small></label>
+                                                    <input type="date" id="tanggal_awal" class="form-control " name="tanggal_awal" value="<?= isset($_GET['tanggal_awal']) ? $_GET['tanggal_awal'] : ""; ?>">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group m-0">
+                                                    <label class="m-0 mb-2" for="tanggal_akhir"><small>Tanggal
+                                                            Akhir</small></label>
+                                                    <input type="date" id="tanggal_akhir" class="form-control" name="tanggal_akhir" value="<?= isset($_GET['tanggal_akhir']) ? $_GET['tanggal_akhir'] : ""; ?>">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group m-0">
+                                                    <label class="m-0 mb-2" for=""></label>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="submit" name="filter" value="filter" class="btn btn-sm mt-2 btn-primary rounded px-5">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">
@@ -50,6 +88,8 @@ Data Item Barang
                                     <div class="card-body">
                                         <form action="" target="_blank" method="post">
                                             <?= csrf_field(); ?>
+                                            <input type="hidden" name="tanggal_awal" value="<?= isset($_GET['tanggal_awal']) ? $_GET['tanggal_awal'] : ""; ?>">
+                                            <input type="hidden" name="tanggal_akhir" value="<?= isset($_GET['tanggal_akhir']) ? $_GET['tanggal_akhir'] : ""; ?>">
                                             <button type="submit" class="btn btn-success mb-3" name="export_in" value="submit"><i class="fa fa-print"></i> Export PDF</button>
                                         </form>
                                         <div class="dt-responsive table-responsive">

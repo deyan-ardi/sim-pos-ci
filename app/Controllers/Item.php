@@ -392,14 +392,53 @@ class Item extends BaseController
 	{
 		$item_in = $this->m_order->getAllOrderWhere();
 		$item_out = $this->m_sale->getAllOrderWhere();
-		$data = [
-			'items' => $item_in,
-			'item_outs' => $item_out,
-		];
-		if (!empty($this->request->getPost('export_out'))) {
+
+		if (!empty($this->request->getGet('filter'))) {
+			$item_in_filter = $this->m_order->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
+			$item_out_filter = $this->m_sale->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
+			$data = [
+				'items' => $item_in_filter,
+				'item_outs' => $item_out_filter,
+			];
+			if (!empty($this->request->getPost('export_out'))) {
+                if ($this->request->getGet('tanggal_awal') != null && $this->request->getGet('tanggal_akhir') != null) {
+                    $item_out_filter = $this->m_sale->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
+                    $data_in = [
+                        'ket' => 'BARANG KELUAR',
+                        'barang' => $item_out_filter,
+						'awal' => $this->request->getGet('tanggal_awal'),
+						'akhir' => $this->request->getGet('tanggal_akhir'),
+                    ];
+            
+                    $mpdf = new \Mpdf\Mpdf();
+                    $html = view('Admin/page/invoice_barang_keluar', $data_in);
+                    $mpdf->WriteHTML($html);
+                    $mpdf->showImageErrors = true;
+                    $this->response->setHeader('Content-Type', 'application/pdf');
+                    $mpdf->Output('Data Barang Masuk.pdf', 'I');
+                }
+			} else if($this->request->getPost('export_in')){
+				$data_in = [
+					'ket' => 'BARANG MASUK',
+					'barang' => $item_in_filter,
+					'awal' => $this->request->getGet('tanggal_awal'),
+					'akhir' => $this->request->getGet('tanggal_akhir'),
+				];
+				$mpdf = new \Mpdf\Mpdf();
+				$html = view('Admin/page/invoice_barang_masuk', $data_in);
+				$mpdf->WriteHTML($html);
+				$mpdf->showImageErrors = true;
+				$this->response->setHeader('Content-Type', 'application/pdf');
+				$mpdf->Output('Data Barang Masuk.pdf', 'I');
+			}else{
+				return view('Admin/page/report-items', $data);
+			}
+		} else if (!empty($this->request->getPost('export_out'))) {
 			$data_in = [
 				'ket' => 'BARANG KELUAR',
 				'barang' => $item_out,
+				'awal' => null,
+				'akhir' => null,
 			];
 			$mpdf = new \Mpdf\Mpdf();
 			$html = view('Admin/page/invoice_barang_keluar', $data_in);
@@ -408,9 +447,11 @@ class Item extends BaseController
 			$this->response->setHeader('Content-Type', 'application/pdf');
 			$mpdf->Output('Data Barang Masuk.pdf', 'I');
 		} else if (!empty($this->request->getPost('export_in'))) {
-			$data_in =[
+			$data_in = [
 				'ket' => 'BARANG MASUK',
 				'barang' => $item_in,
+				'awal' => null,
+				'akhir' => null,
 			];
 			$mpdf = new \Mpdf\Mpdf();
 			$html = view('Admin/page/invoice_barang_masuk', $data_in);
@@ -419,6 +460,10 @@ class Item extends BaseController
 			$this->response->setHeader('Content-Type', 'application/pdf');
 			$mpdf->Output('Data Barang Masuk.pdf', 'I');
 		} else {
+			$data = [
+				'items' => $item_in,
+				'item_outs' => $item_out,
+			];
 			return view('Admin/page/report-items', $data);
 		}
 	}

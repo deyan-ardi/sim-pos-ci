@@ -84,7 +84,18 @@ class SaleModel extends Model
 		$this->where('sales.sale_status', 1);
 		return $this->get()->getResult();
 	}
-
+	public function getAllOrderWhereFilter($awal,$akhir)
+	{
+		$this->select('users.username,sales.*,sale_details.detail_quantity,item_categories.category_name,items.item_name,items.item_code');
+		$this->join('sale_details', 'sale_details.sale_id = sales.id');
+		$this->join('items', 'items.id = sale_details.item_id');
+		$this->join('item_categories', 'item_categories.id = items.category_id');
+		$this->join('users', 'users.id = sales.user_id');
+		$this->where('sales.sale_status', 1);
+		$this->where('sales.updated_at >=', $awal . " 00:00:00");
+		$this->where('sales.updated_at <=', $akhir . " 23:59:00");
+		return $this->get()->getResult();
+	}
 	public function getAllSaleWhere($ket){
 		if($ket == "General"){
 			$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,sales.*');
