@@ -249,12 +249,13 @@ class Transaction extends BaseController
 						'user' => $find_user,
 					];
 					// return view('Admin/page/invoice_transaction', $data);
-					set_cookie('transaction', false, 900);
+					set_cookie('transaction', false, -900);
+					delete_cookie("transaction");
 					$mpdf = new \Mpdf\Mpdf();
 					$html = view('Admin/page/invoice_transaction', $data);
 					$mpdf->WriteHTML($html);
-					$mpdf->SetWatermarkText("SUKSES");
-					$mpdf->showWatermarkText = true;
+					// $mpdf->SetWatermarkText("SUKSES");
+					// $mpdf->showWatermarkText = true;
 					$mpdf->showImageErrors = true;
 					$this->response->setHeader('Content-Type', 'application/pdf');
 					// $mpdf->AutoPrint(true);

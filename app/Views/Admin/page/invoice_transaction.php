@@ -184,7 +184,7 @@
                 ?>
                 <?php if (empty($detail)) : ?>
                     <tr>
-                        <td colspan="4" style="text-align: center;">
+                        <td colspan="6" style="text-align: center;">
                             <h4><em>Tidak Ada Item Yang Dibeli</em></h4>
                         </td>
                     </tr>

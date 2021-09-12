@@ -189,6 +189,7 @@ if ($sortir == 1) {
                                                         <th>Total Transaksi</th>
                                                         <th>Total Keuntungan</th>
                                                         <th>Nama Kasir</th>
+                                                        <th>Jenis Transaksi</th>
                                                         <th>Status Transaksi</th>
                                                         <th>Tanggal Transaksi</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
@@ -211,6 +212,7 @@ if ($sortir == 1) {
                                                             <td>Rp. <?= format_rupiah($t->sale_total); ?></td>
                                                             <td>Rp. <?= format_rupiah($t->sale_profit); ?></td>
                                                             <td><?= $t->username; ?></td>
+                                                            <td>Transaksi <?= $t->sale_ket; ?></td>
                                                             <?php if ($t->sale_status == 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
                                                             <?php else : ?>
@@ -238,21 +240,21 @@ if ($sortir == 1) {
                                                 <tfoot>
                                                     <tr>
                                                         <th colspan="5" rowspan="4"></th>
-                                                        <th colspan="2">Jumlah Kegiatan Transaksi</th>
+                                                        <th colspan="3">Jumlah Kegiatan Transaksi</th>
                                                         <th colspan="3"><?= $i - 1; ?> Transaksi
                                                         </th>
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="2">Jumlah Transaksi Sukses</th>
+                                                        <th colspan="3">Jumlah Transaksi Sukses</th>
                                                         <th colspan="3"><?= $v - 1; ?> Transaksi
                                                         </th>
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="2">Total Transaksi Sukses</th>
+                                                        <th colspan="3">Total Transaksi Sukses</th>
                                                         <th colspan="3">Rp. <?= format_rupiah($total_transaksi); ?></th>
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="2">Total Keuntungan Transaksi Sukses</th>
+                                                        <th colspan="3">Total Keuntungan Transaksi Sukses</th>
                                                         <th colspan="3">Rp. <?= format_rupiah($total_keuntungan); ?></th>
                                                     </tr>
                                                 </tfoot>

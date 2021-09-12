@@ -539,11 +539,12 @@ class GeneralTransaction extends BaseController
 						];
 						// return view('Admin/page/invoice_transaction', $data);
 						set_cookie('transaction-general', false, 900);
+						delete_cookie("transaction-general");
 						$mpdf = new \Mpdf\Mpdf();
 						$html = view('Admin/page/invoice_transaction', $data);
 						$mpdf->WriteHTML($html);
-						$mpdf->SetWatermarkText("SUKSES");
-						$mpdf->showWatermarkText = true;
+						// $mpdf->SetWatermarkText("SUKSES");
+						// $mpdf->showWatermarkText = true;
 						$mpdf->showImageErrors = true;
 						$this->response->setHeader('Content-Type', 'application/pdf');
 						// $mpdf->AutoPrint(true);

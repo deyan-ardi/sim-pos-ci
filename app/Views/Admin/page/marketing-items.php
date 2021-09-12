@@ -97,7 +97,6 @@ Data Item Barang
                                                         <th>Harga Jual</th>
                                                         <th>Diskon</th>
                                                         <th>Harga Jual Akhir</th>
-                                                        <th>Untung Per Barang</th>
                                                         <th>Kategori</th>
                                                         <th>Disuplai Oleh</th>
                                                         <th>Diubah Terakhir</th>
@@ -133,7 +132,6 @@ Data Item Barang
                                                             <td>Rp. <?= format_rupiah($c->item_before_sale); ?></td>
                                                             <td><?= format_rupiah($c->item_discount); ?> %</td>
                                                             <td>Rp. <?= format_rupiah($c->item_sale); ?></td>
-                                                            <td>Rp. <?= format_rupiah($c->item_profit); ?></td>
                                                             <td><?= $c->category_name; ?></td>
                                                             <td><?= $c->supplier_name; ?></td>
                                                             <td>
@@ -163,7 +161,6 @@ Data Item Barang
                                                         <th>Harga Jual</th>
                                                         <th>Diskon</th>
                                                         <th>Harga Jual Akhir</th>
-                                                        <th>Untung Per Barang</th>
                                                         <th>Kategori</th>
                                                         <th>Disuplai Oleh</th>
                                                         <th>Diubah Terakhir</th>

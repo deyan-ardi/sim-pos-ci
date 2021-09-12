@@ -19,18 +19,18 @@ class ItemModel extends Model
 	protected $useTimestamps        = true;
 
 	// Validation
-	protected $validationRules      = [
-		'item_image' => 'required',
-		'item_code' => 'required|max_length[50]',
-		'item_name' => 'required',
-		'item_warehouse_a' => 'required',
-		'item_warehouse_b' => 'required',
-		'item_warehouse_c' => 'required',
-		'item_warehouse_d' => 'required',
-		'item_stock' => 'required',
-		'category_id' => 'required',
-		'supplier_id' => 'required'
-	];
+	// protected $validationRules      = [
+	// 	'item_image' => 'required',
+	// 	'item_code' => 'required|max_length[50]',
+	// 	'item_name' => 'required',
+	// 	'item_warehouse_a' => 'required',
+	// 	'item_warehouse_b' => 'required',
+	// 	'item_warehouse_c' => 'required',
+	// 	'item_warehouse_d' => 'required',
+	// 	'item_stock' => 'required',
+	// 	'category_id' => 'required',
+	// 	'supplier_id' => 'required'
+	// ];
 	protected $validationMessages   = [];
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;

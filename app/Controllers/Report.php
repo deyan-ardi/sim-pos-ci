@@ -109,8 +109,8 @@ class Report extends BaseController
 			$mpdf = new \Mpdf\Mpdf();
 			$html = view('Admin/page/invoice_transaction', $data);
 			$mpdf->WriteHTML($html);
-			$mpdf->SetWatermarkText("SUKSES");
-			$mpdf->showWatermarkText = true;
+			// $mpdf->SetWatermarkText("SUKSES");
+			// $mpdf->showWatermarkText = true;
 			$mpdf->showImageErrors = true;
 			$this->response->setHeader('Content-Type', 'application/pdf');
 			// $mpdf->AutoPrint(true);
