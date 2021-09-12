@@ -91,6 +91,9 @@
                                    <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Transaksi Project</a></li>
                                    <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Project</a>
                                    </li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir Transaksi General</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Laporan Transaksi General</a>
+                                   </li>
                                </ul>
                            </li>
                        <?php endif; ?>

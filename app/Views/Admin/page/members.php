@@ -176,15 +176,16 @@ Data Pelanggan Project
 
 
 
-                                                                    <!-- Delete -->
-                                                                    <form action="" id="<?= $c->id ?>" method="POST">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                                        <input type="hidden" name="id_member" value="<?= $c->id; ?>">
-                                                                        <input type="hidden" name="delete_member" value="delete">
-                                                                        <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->member_name ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Member" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                    </form>
-
+                                                                    <?php if ($c->member_status == 0) : ?>
+                                                                        <!-- Delete -->
+                                                                        <form action="" id="<?= $c->id ?>" method="POST">
+                                                                            <?= csrf_field(); ?>
+                                                                            <input type="hidden" name="_method" value="DELETE" />
+                                                                            <input type="hidden" name="id_member" value="<?= $c->id; ?>">
+                                                                            <input type="hidden" name="delete_member" value="delete">
+                                                                            <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->member_name ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Member" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                        </form>
+                                                                    <?php endif; ?>
                                                                 </div>
                                                             </td>
                                                         </tr>

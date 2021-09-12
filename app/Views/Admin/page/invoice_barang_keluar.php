@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Invoice Transaksi <?= $sale[0]->sale_code; ?></title>
+    <title>Laporan Transaksi</title>
     <style>
         .clearfix:after {
             content: "";
@@ -137,7 +137,7 @@
 
 <body>
     <header class="clearfix">
-        <h1>KODE TRANSAKSI <?= $sale[0]->sale_code; ?></h1>
+        <h1>LAPORAN TRANSAKSI <?= strtoupper($ket); ?></h1>
         <table id="info">
             <tr>
                 <td id="company">
@@ -147,20 +147,7 @@
                         <div>Jl. Mertasari Jl. Suwung Batan Kendal No.68 F, Sidakarya, <br /> Denpasar Selatan, Kota Denpasar, Bali</div>
                         <div>(0361) 710984</div>
                         <div><a href="mailto:dintara.kitchen@gmail.com">dintara.kitchen@gmail.com</a></div>
-                        <div>Jenis Transaksi : Transaksi <?= $sale[0]->sale_ket; ?></div>
                     </div>
-                </td>
-                <td id="project">
-                    <div>
-                        <h5>CUSTOMER :</h5>
-                        <div>Kode Member : <?= $member->member_code; ?></div>
-                        <div><?= $member->member_name; ?></div>
-                        <div>0<?= $member->member_contact; ?></div>
-                    </div>
-                    <div class="card-success" style="color:white;">
-                        <h4>SUKSES</h4>
-                    </div>
-
                 </td>
             </tr>
         </table>
@@ -172,58 +159,60 @@
                     <th class="service">#</th>
                     <th class="desc">KODE BARANG</th>
                     <th class="desc">NAMA BARANG</th>
-                    <th>BANYAK</th>
-                    <th>HARGA</th>
-                    <th>JUMLAH</th>
+                    <th class="desc">KODE TRANSAKSI</th>
+                    <th>TOTAL TRANSAKSI</th>
+                    <th>KATEGORI BARANG</th>
+                    <th>STATUS TRANSAKSI</th>
+                    <th>NAMA KASIR</th>
+                    <th>TANGGAL MASUK</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $i = 1;
-                $total = 0;
+                $total_item = 0;
+                $total_order = 0;
                 ?>
-                <?php if (empty($detail)) : ?>
+                <?php if (empty($barang)) : ?>
                     <tr>
-                        <td colspan="4" style="text-align: center;">
-                            <h4><em>Tidak Ada Item Yang Dibeli</em></h4>
+                        <td colspan="9" style="text-align: center;">
+                            <h4><em>Tidak Ada Transaksi Barang Keluar</em></h4>
                         </td>
                     </tr>
                 <?php else : ?>
-                    <?php foreach ($detail as $d) : ?>
+                    <?php foreach ($barang as $c) : ?>
+                        <?php
+                        $total_item++;
+                        $total_order = $total_order + $c->detail_quantity;
+                        ?>
                         <tr>
-                            <td class="service"><?= $i++; ?></td>
-                            <td class="service"><?= $d->item_code; ?></td>
-                            <td class="desc"><?= $d->item_name; ?></td>
-                            <td class="qty"><?= $d->detail_quantity; ?> Buah</td>
-                            <td class="qty">Rp. <?= format_rupiah($d->item_sale); ?></td>
-                            <td class="qty">Rp. <?= format_rupiah($d->detail_total); ?></td>
+                            <td><?= $i++; ?></td>
+                            <td><?= $c->item_code; ?></td>
+                            <td><?= $c->item_name; ?></td>
+                            <td><?= $c->sale_code; ?></td>
+                            <td><?= $c->detail_quantity; ?> Buah</td>
+                            <td><?= $c->category_name; ?></td>
+                            <td><button class="btn btn-success">Sukses</button></td>
+                            <td><?= $c->username; ?></td>
+                            <td>
+                                <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
+                            </td>
                         </tr>
-
-                    <?php
-                        $total = $total + $d->detail_total;
-                    endforeach; ?>
+                    <?php endforeach; ?>
                 <?php endif; ?>
-                <tr>
-                    <td colspan="5">SUB TOTAL</td>
-                    <td class="total">Rp. <?= format_rupiah($total); ?></td>
+                <tr class="total">
+                    <th colspan="5">Total Item Dibeli</th>
+                    <th colspan="4"><?= $total_item; ?> Item</th>
                 </tr>
-                <tr>
-                    <td colspan="5">DISKON MEMBER</td>
-                    <td class="total"><?= $member->member_discount; ?> %</td>
-                </tr>
-                <tr>
-                    <td colspan="5">TOTAL</td>
-                    <td class="grand total">Rp. <?= format_rupiah($sale[0]->sale_total); ?></td>
+                <tr class="grand-total">
+                    <th colspan="5">Total Jumlah Keluar</th>
+                    <th colspan="4"><?= $total_order; ?> Buah</th>
                 </tr>
             </tbody>
         </table>
-        <div id="notices">
-            <div>NOTE:</div>
-            <div class="notice">Silahkan simpan bukti transaksi ini sebagai syarat untuk mendapatkan garansi</div>
-        </div>
     </main>
     <footer>
-        Invoice ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= $user[0]['username']; ?> Pada Tanggal <?= date("d F Y H:i:s", strtotime($sale[0]->created_at)); ?> WITA
+        Laporan Transaksi ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= user()->username ?> Pada Tanggal <?= date("d F Y H:i:s") ?> WITA
     </footer>
 </body>
 

@@ -38,6 +38,7 @@ class Member extends BaseController
 					'member_contact' => $this->request->getPost('member_contact'),
 					'member_discount' => $this->request->getPost('member_discount'),
 					'member_description' => ucWords($this->request->getPost('member_description')),
+					'member_status' => 0,
 				]);
 				if($save){
 					session()->setFlashdata('berhasil', 'Member Baru Berhasil Ditambahkan');

@@ -169,7 +169,7 @@ Data Item Barang
 
                                                                                             <div class="form-group input-group search-form">
                                                                                                 <div class="input-group-append">
-                                                                                                    <span class="input-group-text bg-transparent">Gudang A</span>
+                                                                                                    <span class="input-group-text bg-transparent">Gudang Holding</span>
                                                                                                 </div>
                                                                                                 <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_a_up') ? "is-invalid" : ""; ?>" name="item_stock_a_up" placeholder="Jumlah Stok Gudang A" required value="<?= (old('item_stock_a_up')) ? old('item_stock_a_up') : $c->item_warehouse_a; ?>">
                                                                                                 <div class="input-group-append">
@@ -181,7 +181,7 @@ Data Item Barang
                                                                                             </div>
                                                                                             <div class="form-group input-group search-form">
                                                                                                 <div class="input-group-append">
-                                                                                                    <span class="input-group-text bg-transparent">Gudang B</span>
+                                                                                                    <span class="input-group-text bg-transparent">Gudang Gurita</span>
                                                                                                 </div>
                                                                                                 <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_b_up') ? "is-invalid" : ""; ?>" name="item_stock_b_up" placeholder="Jumlah Stok Gudang B" required value="<?= (old('item_stock_b_up')) ? old('item_stock_b_up') : $c->item_warehouse_b; ?>">
                                                                                                 <div class="input-group-append">
@@ -193,7 +193,7 @@ Data Item Barang
                                                                                             </div>
                                                                                             <div class="form-group input-group search-form">
                                                                                                 <div class="input-group-append">
-                                                                                                    <span class="input-group-text bg-transparent">Gudang C</span>
+                                                                                                    <span class="input-group-text bg-transparent">Showroom Sunset</span>
                                                                                                 </div>
                                                                                                 <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_c_up') ? "is-invalid" : ""; ?>" name="item_stock_c_up" placeholder="Jumlah Stok Gudang C" required value="<?= (old('item_stock_c_up')) ? old('item_stock_c_up') : $c->item_warehouse_c; ?>">
                                                                                                 <div class="input-group-append">
@@ -205,7 +205,7 @@ Data Item Barang
                                                                                             </div>
                                                                                             <div class="form-group input-group search-form">
                                                                                                 <div class="input-group-append">
-                                                                                                    <span class="input-group-text bg-transparent">Gudang D</span>
+                                                                                                    <span class="input-group-text bg-transparent">Gudang Jakarta</span>
                                                                                                 </div>
                                                                                                 <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_d_up') ? "is-invalid" : ""; ?>" name="item_stock_d_up" placeholder="Jumlah Stok Gudang D" required value="<?= (old('item_stock_d_up')) ? old('item_stock_d_up') : $c->item_warehouse_d; ?>">
                                                                                                 <div class="input-group-append">
@@ -232,7 +232,7 @@ Data Item Barang
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
                                                                     <!-- Update Modal -->
                                                                     <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
+                                                                        <div class="modal-dialog modal-lg" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
                                                                                     <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
@@ -317,6 +317,9 @@ Data Item Barang
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group input-group search-form">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Stok Gudang Holding</span>
+                                                                                            </div>
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_a_up') ? "is-invalid" : ""; ?>" name="item_stock_a_up" placeholder="Jumlah Stok Gudang A" required value="<?= (old('item_stock_a_up')) ? old('item_stock_a_up') : $c->item_warehouse_a; ?>">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text bg-transparent">Buah</span>
@@ -326,6 +329,9 @@ Data Item Barang
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group input-group search-form">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Stok Gudang Gurita</span>
+                                                                                            </div>
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_b_up') ? "is-invalid" : ""; ?>" name="item_stock_b_up" placeholder="Jumlah Stok Gudang B" required value="<?= (old('item_stock_b_up')) ? old('item_stock_b_up') : $c->item_warehouse_b; ?>">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text bg-transparent">Buah</span>
@@ -335,6 +341,9 @@ Data Item Barang
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group input-group search-form">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Stok Showroom Sunset</span>
+                                                                                            </div>
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_c_up') ? "is-invalid" : ""; ?>" name="item_stock_c_up" placeholder="Jumlah Stok Gudang C" required value="<?= (old('item_stock_c_up')) ? old('item_stock_c_up') : $c->item_warehouse_c; ?>">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text bg-transparent">Buah</span>
@@ -344,6 +353,9 @@ Data Item Barang
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group input-group search-form">
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text bg-transparent">Stok Gudang Jakarta</span>
+                                                                                            </div>
                                                                                             <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_d_up') ? "is-invalid" : ""; ?>" name="item_stock_d_up" placeholder="Jumlah Stok Gudang D" required value="<?= (old('item_stock_d_up')) ? old('item_stock_d_up') : $c->item_warehouse_d; ?>">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text bg-transparent">Buah</span>
@@ -506,7 +518,7 @@ Data Item Barang
 
 <!-- Modal -->
 <div id="addCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addCategoryLabel">Tambah Barang Baru</h5>
@@ -584,6 +596,9 @@ Data Item Barang
                         </div>
                     </div>
                     <div class="form-group input-group search-form">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Stok Gudang Holding</span>
+                        </div>
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_a') ? "is-invalid" : ""; ?>" name="item_stock_a" value="0" placeholder="Jumlah Stok Gudang A" required value="<?= (old('item_stock_a')) ? old('item_stock_a') : ""; ?>">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent">Buah</span>
@@ -593,6 +608,9 @@ Data Item Barang
                         </div>
                     </div>
                     <div class="form-group input-group search-form">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Stok Gudang Gurita</span>
+                        </div>
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_b') ? "is-invalid" : ""; ?>" name="item_stock_b" value="0" placeholder="Jumlah Stok Gudang B" required value="<?= (old('item_stock_b')) ? old('item_stock_b') : ""; ?>">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent">Buah</span>
@@ -602,6 +620,9 @@ Data Item Barang
                         </div>
                     </div>
                     <div class="form-group input-group search-form">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Stok Showroom Sunset</span>
+                        </div>
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_c') ? "is-invalid" : ""; ?>" name="item_stock_c" value="0" placeholder="Jumlah Stok Gudang C" required value="<?= (old('item_stock_c')) ? old('item_stock_c') : ""; ?>">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent">Buah</span>
@@ -611,6 +632,9 @@ Data Item Barang
                         </div>
                     </div>
                     <div class="form-group input-group search-form">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent">Stok Gudang Jakarta</span>
+                        </div>
                         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_d') ? "is-invalid" : ""; ?>" name="item_stock_d" value="0" placeholder="Jumlah Stok Gudang D" required value="<?= (old('item_stock_d')) ? old('item_stock_d') : ""; ?>">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent">Buah</span>

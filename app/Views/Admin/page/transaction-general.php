@@ -15,7 +15,7 @@ Transaksi Barang - Menu Kasir
     const ajax_send = () => {
         // console.log(event.key === "Enter");
         if (event.key === "Enter") {
-            var url = "<?php echo base_url() . "/transaction/validation_payment" ?>"
+            var url = "<?php echo base_url() . "/GeneralTransaction/validation_payment" ?>"
             $.ajax({
                 url: url,
                 type: "POST",
@@ -134,7 +134,7 @@ Transaksi Barang - Menu Kasir
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir dan Transaksi Project</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir dan Transaksi General</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
@@ -151,7 +151,7 @@ Transaksi Barang - Menu Kasir
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir - Pilih Member</span></h5>
+                                            <h5>Sistem Kasir - Kasir General</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
@@ -160,7 +160,6 @@ Transaksi Barang - Menu Kasir
 
                                                     <div class="form-group">
                                                         <select name="member_id" id="member_id" required class="form-control <?= $validation->getError('member_id') ? "is-invalid" : ""; ?>">
-                                                            <option value="">--Pilih Member--</option>
                                                             <?php foreach ($member as $m) : ?>
                                                                 <option value="<?= $m->id; ?>"><?= $m->member_code; ?> - <?= $m->member_name; ?></option>
                                                             <?php endforeach; ?>
@@ -170,7 +169,7 @@ Transaksi Barang - Menu Kasir
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <button type="submit" name="submit_member" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Pilih Member</button>
+                                                        <button type="submit" name="submit_member" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Mulai Sesi</button>
                                                     </div>
                                                 </form>
 
@@ -214,11 +213,8 @@ Transaksi Barang - Menu Kasir
                                                                         <div class="col-6">
                                                                             <input type="text" class="form-control" disabled value="<?= $find_sale[0]->member_code . " - " . $find_sale[0]->member_name; ?>">
                                                                         </div>
-                                                                        <div class="col-3">
-                                                                            <input type="text" class="form-control" disabled value="Diskon <?= $find_sale[0]->member_discount; ?> %">
-                                                                        </div>
-                                                                        <div class="col-3">
-                                                                            <input type="text" class="form-control" disabled value="<?= $count_user; ?> Kali Transaksi">
+                                                                        <div class="col-6">
+                                                                            <input type="text" class="form-control" disabled value="Diskon General Member <?= $find_sale[0]->member_discount; ?> %">
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -48,6 +48,10 @@ Data Item Barang
                                         <h5>List Item Barang Masuk</h5>
                                     </div>
                                     <div class="card-body">
+                                        <form action="" target="_blank" method="post">
+                                            <?= csrf_field(); ?>
+                                            <button type="submit" class="btn btn-success mb-3" name="export_in" value="submit"><i class="fa fa-print"></i> Export PDF</button>
+                                        </form>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>
@@ -116,6 +120,10 @@ Data Item Barang
                                     </div>
                                     <div class="card-body">
                                         <div class="dt-responsive table-responsive">
+                                            <form action="" target="_blank" method="post">
+                                                <?= csrf_field(); ?>
+                                                <button type="submit" class="btn btn-success mb-3" name="export_out" value="submit"><i class="fa fa-print"></i> Export PDF</button>
+                                            </form>
                                             <table id="simpletable2" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
@@ -126,7 +134,7 @@ Data Item Barang
                                                         <th>Total Transaksi</th>
                                                         <th>Kategori Barang</th>
                                                         <th>Status Order</th>
-                                                        <th>Dipesan Oleh</th>
+                                                        <th>Nama Kasir</th>
                                                         <th>Tanggal Masuk</th>
                                                     </tr>
                                                 </thead>
@@ -158,7 +166,7 @@ Data Item Barang
                                                         <th>Total Order</th>
                                                         <th>Kategori Barang</th>
                                                         <th>Status Order</th>
-                                                        <th>Dipesan Oleh</th>
+                                                        <th>Nama Kasir</th>
                                                         <th>Tanggal Masuk</th>
                                                     </tr>
                                                 </tfoot>

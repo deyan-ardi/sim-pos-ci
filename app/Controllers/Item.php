@@ -388,11 +388,38 @@ class Item extends BaseController
 		}
 	}
 
-	public function report(){
+	public function report()
+	{
+		$item_in = $this->m_order->getAllOrderWhere();
+		$item_out = $this->m_sale->getAllOrderWhere();
 		$data = [
-			'items' => $this->m_order->getAllOrderWhere(),
-			'item_outs' => $this->m_sale->getAllOrderWhere(),
+			'items' => $item_in,
+			'item_outs' => $item_out,
 		];
-		return view('Admin/page/report-items', $data);
+		if (!empty($this->request->getPost('export_out'))) {
+			$data_in = [
+				'ket' => 'BARANG KELUAR',
+				'barang' => $item_out,
+			];
+			$mpdf = new \Mpdf\Mpdf();
+			$html = view('Admin/page/invoice_barang_keluar', $data_in);
+			$mpdf->WriteHTML($html);
+			$mpdf->showImageErrors = true;
+			$this->response->setHeader('Content-Type', 'application/pdf');
+			$mpdf->Output('Data Barang Masuk.pdf', 'I');
+		} else if (!empty($this->request->getPost('export_in'))) {
+			$data_in =[
+				'ket' => 'BARANG MASUK',
+				'barang' => $item_in,
+			];
+			$mpdf = new \Mpdf\Mpdf();
+			$html = view('Admin/page/invoice_barang_masuk', $data_in);
+			$mpdf->WriteHTML($html);
+			$mpdf->showImageErrors = true;
+			$this->response->setHeader('Content-Type', 'application/pdf');
+			$mpdf->Output('Data Barang Masuk.pdf', 'I');
+		} else {
+			return view('Admin/page/report-items', $data);
+		}
 	}
 }

@@ -54,6 +54,7 @@ $routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'],['n
 
 $routes->group('item-reports', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Item::report');
+	$routes->post('/', 'Item::report');
 });
 
 $routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR, MARKETING'], ['namespace' => 'App\Controllers'], function ($routes) {
@@ -109,6 +110,19 @@ $routes->group('transaction', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespa
 	$routes->post('report/search', 'Transaction::search');
 	$routes->delete('report/search', 'Transaction::search');
 	$routes->get('report/search', 'Transaction::search');
+});
+
+$routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], function ($routes) {
+	$routes->get('/', 'GeneralTransaction::index');
+	$routes->post('/', 'GeneralTransaction::index');
+	$routes->delete('/', 'GeneralTransaction::index');
+	$routes->patch('validation_payment', 'GeneralTransaction::validation_payment');
+	$routes->get('report', 'GeneralTransaction::report');
+	$routes->post('report', 'GeneralTransaction::report');
+	$routes->delete('report', 'GeneralTransaction::report');
+	$routes->post('report/search', 'GeneralTransaction::search');
+	$routes->delete('report/search', 'GeneralTransaction::search');
+	$routes->get('report/search', 'GeneralTransaction::search');
 });
 
 $routes->group('report', ['filter' => 'role:SUPER ADMIN, ATASAN'], ['namespace' => 'App\Controllers'], function ($routes) {

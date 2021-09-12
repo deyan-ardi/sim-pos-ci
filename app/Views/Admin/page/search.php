@@ -122,7 +122,7 @@ Transaksi Barang - Menu Kasir
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir dan Transaksi</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir dan Transaksi Project</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
@@ -179,7 +179,7 @@ Transaksi Barang - Menu Kasir
                         <?php else : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
-                                <div class="col-sm-8">
+                                <div class="col-sm-12">
                                     <div class="row">
                                         <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
                                             <div class="col-12">
@@ -190,6 +190,19 @@ Transaksi Barang - Menu Kasir
                                                     <div class="card-body">
                                                         <div class="card-body">
                                                             <form action="" method="POST">
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <input type="text" class="form-control" disabled value="<?= $find_sale[0]->member_code . " - " . $find_sale[0]->member_name; ?>">
+                                                                        </div>
+                                                                        <div class="col-3">
+                                                                            <input type="text" class="form-control" disabled value="Diskon <?= $find_sale[0]->member_discount; ?> %">
+                                                                        </div>
+                                                                        <div class="col-3">
+                                                                            <input type="text" class="form-control" disabled value="<?= $count_user; ?> Kali Transaksi">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="form-group">
                                                                     <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
                                                                 </div>
@@ -353,53 +366,6 @@ Transaksi Barang - Menu Kasir
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h5>Waktu Server</span></h5>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="card-body">
-                                                        <div class="row justify-content-center">
-                                                            <div class="h2 mb-0 mr-1 font-weight-bold text-primary" id="jam"></div>
-                                                            <div class="h2 mb-0 mr-1 font-weight-bold text-primary" id="menit"></div>
-                                                        </div>
-                                                        <p class="text-center"><?= date('l, d F Y') ?></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="card borderless-card">
-                                                <div class="profile-card">
-                                                    <img class="img-fluid" src="<?= base_url(); ?>/upload/supplier/59858.jpg" alt="">
-                                                    <div class="card-body">
-                                                        <h3 class="text-white"><?= $find_sale[0]->member_name; ?></h3>
-                                                        <p>Member Code : <?= $find_sale[0]->member_code; ?></p>
-                                                        <a href="tel:0<?= $find_sale[0]->member_contact ?>"><button class="btn btn-info"><i i class="feather icon-phone-call"></i>Hubungi</button></a>
-                                                    </div>
-                                                </div>
-                                                <div class="card-footer bg-inverse">
-                                                    <div class="row text-center">
-                                                        <div class="col">
-                                                            <h4><?= $count_user; ?></h4>
-                                                            <span>Transaksi</span>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h4><?= $find_sale[0]->member_discount; ?> %</h4>
-                                                            <span>Diskon Member</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
                                     </div>
 
                                 </div>

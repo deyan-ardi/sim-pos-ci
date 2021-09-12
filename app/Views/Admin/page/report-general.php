@@ -55,7 +55,7 @@ Laporan Transaksi
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dintara Point Of Sale - Laporan Transaksi Project</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Laporan Transaksi General</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
@@ -112,7 +112,7 @@ Laporan Transaksi
                                                             <td>
                                                                 <div class="row justify-content-center">
                                                                     <?php if ($t->sale_status == 0) : ?>
-                                                                        <a href="<?= base_url(); ?>/transaction/report/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
+                                                                        <a href="<?= base_url(); ?>/transaction-general/report/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
                                                                     <?php else : ?>
                                                                         <form action="" target="_blank" method="POST">
                                                                             <?= csrf_field(); ?>

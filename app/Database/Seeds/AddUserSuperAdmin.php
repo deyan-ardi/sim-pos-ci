@@ -61,5 +61,17 @@ class AddUserSuperAdmin extends Seeder
 			];
 			$this->db->table('auth_groups_users')->insertBatch($data_relation);
 		}
+		$data_member = [
+			'member_code' => date('YmdHis'),
+			'member_name' => 'General User',
+			'member_discount' => 0,
+			'member_description' => null,
+			'member_email' => 'general@gmail.com',
+			'member_status' => 1,
+			'member_contact' => 81915656865,
+			'created_at' => date('Y-m-d H:i:s'),
+			'updated_at' => date('Y-m-d H:i:s'),
+		];
+		$this->db->table('members')->insert($data_member);
 	}
 }
