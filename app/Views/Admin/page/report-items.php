@@ -162,6 +162,8 @@ Data Item Barang
                                         <div class="dt-responsive table-responsive">
                                             <form action="" target="_blank" method="post">
                                                 <?= csrf_field(); ?>
+                                                <input type="hidden" name="tanggal_awal" value="<?= isset($_GET['tanggal_awal']) ? $_GET['tanggal_awal'] : ""; ?>">
+                                                <input type="hidden" name="tanggal_akhir" value="<?= isset($_GET['tanggal_akhir']) ? $_GET['tanggal_akhir'] : ""; ?>">
                                                 <button type="submit" class="btn btn-success mb-3" name="export_out" value="submit"><i class="fa fa-print"></i> Export PDF</button>
                                             </form>
                                             <table id="simpletable2" class="table table-striped table-bordered nowrap">
