@@ -94,6 +94,8 @@
                                    <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir Transaksi General</a></li>
                                    <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Laporan Transaksi General</a>
                                    </li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction/pph" class="">Pengaturan PPh</a>
+                                   </li>
                                </ul>
                            </li>
                        <?php endif; ?>

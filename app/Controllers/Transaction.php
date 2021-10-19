@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ItemModel;
 use App\Models\MemberModel;
+use App\Models\PphModel;
 use App\Models\SaleDetailModel;
 use App\Models\SaleModel;
 use App\Models\UserModel;
@@ -19,6 +20,7 @@ class Transaction extends BaseController
 		$this->m_item = new ItemModel();
 		$this->m_member = new MemberModel();
 		$this->m_user = new UserModel();
+		$this->m_pph = new PphModel();
 	}
 	public function index()
 	{
@@ -37,9 +39,11 @@ class Transaction extends BaseController
 			}
 		}
 		// set_cookie('_transaction', 1, time() + 900);
+		$pph_model = $this->m_pph->getAllPPh();
 		// Send Data
 		$data = [
 			'transaction' => $find_detail,
+			'pph' => $pph_model,
 			'member' => $this->m_member->getMemberWhere(0),
 			'validation' => $this->validate,
 			'item' => $this->m_item->getAllItemWhere(),
@@ -100,7 +104,9 @@ class Transaction extends BaseController
 							// Perhitungan Total Belanjar
 							$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
 							$discount = $detail * $find_sale[0]->sale_discount / 100;
-							$detail_total = $detail - $discount;
+							// $detail_total = $detail - $discount;
+							$pph = $detail * $pph_model[0]->pph_value / 100;
+							$detail_total = $detail - $discount + $pph;
 							$total_sale = $find_sale[0]->sale_total + $detail_total;
 
 							// Total Keuntungan
@@ -196,7 +202,9 @@ class Transaction extends BaseController
 				// Perhitungan Total Belanjar
 				$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
 				$discount = $detail * $find_sale[0]->sale_discount / 100;
-				$detail_total = $detail - $discount;
+				// $detail_total = $detail - $discount;
+				$pph = $detail * $pph_model[0]->pph_value / 100;
+				$detail_total = $detail - $discount + $pph;
 				$total_sale = $find_sale[0]->sale_total - $detail_total;
 
 				// Total Keuntungan
@@ -245,6 +253,7 @@ class Transaction extends BaseController
 					$data = [
 						'detail' => $find_detail,
 						'sale' => $find_sale,
+						'pph' => $pph_model,
 						'member' => $find_member,
 						'user' => $find_user,
 					];
@@ -308,9 +317,11 @@ class Transaction extends BaseController
 				$find_sale = $this->m_sale->getAllSale($find_sale_code[0]->id);
 				$find_member = $this->m_member->find($find_sale[0]->member_id);
 				$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+				$pph_model = $this->m_pph->getAllPPh();
 				$data = [
 					'detail' => $find_detail,
 					'sale' => $find_sale,
+					'pph' => $pph_model,
 					'member' => $find_member,
 					'user' => $find_user,
 				];
@@ -319,8 +330,8 @@ class Transaction extends BaseController
 				$mpdf = new \Mpdf\Mpdf();
 				$html = view('Admin/page/invoice_transaction', $data);
 				$mpdf->WriteHTML($html);
-				$mpdf->SetWatermarkText("SUKSES");
-				$mpdf->showWatermarkText = true;
+				// $mpdf->SetWatermarkText("SUKSES");
+				// $mpdf->showWatermarkText = true;
 				$mpdf->showImageErrors = true;
 				$this->response->setHeader('Content-Type', 'application/pdf');
 				// $mpdf->AutoPrint(true);
@@ -373,12 +384,14 @@ class Transaction extends BaseController
 				$count_member = $this->m_sale->where('member_id', $find_sale_code[0]->user_id)->countAllResults();
 				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
 				$find_sale = $this->m_sale->getAllSale($find_sale_code[0]->id);
+				$pph_model = $this->m_pph->getAllPPh();
 				$data = [
 					'transaction' => $find_detail,
 					'member' => $this->m_member->findAll(),
 					'validation' => $this->validate,
 					'item' => $this->m_item->findAll(),
 					'find_sale' => $find_sale,
+					'pph' => $pph_model,
 					'count_user' => $count_member,
 				];
 				if (!empty($this->request->getPost('submit_transaksi'))) {
@@ -404,7 +417,9 @@ class Transaction extends BaseController
 								// Perhitungan Total Belanjar
 								$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
 								$discount = $detail * $find_sale[0]->sale_discount / 100;
-								$detail_total = $detail - $discount;
+								// $detail_total = $detail - $discount;
+								$pph = $detail * $pph_model[0]->pph_value / 100;
+								$detail_total = $detail - $discount + $pph;
 								$total_sale = $find_sale[0]->sale_total + $detail_total;
 
 								// Total Keuntungan
@@ -489,7 +504,9 @@ class Transaction extends BaseController
 					// Perhitungan Total Belanjar
 					$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
 					$discount = $detail * $find_sale[0]->sale_discount / 100;
-					$detail_total = $detail - $discount;
+					// $detail_total = $detail - $discount;
+					$pph = $detail * $pph_model[0]->pph_value / 100;
+					$detail_total = $detail - $discount + $pph;
 					$total_sale = $find_sale[0]->sale_total - $detail_total;
 
 					// Total Keuntungan
@@ -535,6 +552,7 @@ class Transaction extends BaseController
 						$data = [
 							'detail' => $find_detail,
 							'sale' => $find_sale,
+							'pph' => $pph_model,
 							'member' => $find_member,
 							'user' => $find_user,
 						];
@@ -543,8 +561,8 @@ class Transaction extends BaseController
 						$mpdf = new \Mpdf\Mpdf();
 						$html = view('Admin/page/invoice_transaction', $data);
 						$mpdf->WriteHTML($html);
-						$mpdf->SetWatermarkText("SUKSES");
-						$mpdf->showWatermarkText = true;
+						// $mpdf->SetWatermarkText("SUKSES");
+						// $mpdf->showWatermarkText = true;
 						$mpdf->showImageErrors = true;
 						$this->response->setHeader('Content-Type', 'application/pdf');
 						// $mpdf->AutoPrint(true);
@@ -560,6 +578,33 @@ class Transaction extends BaseController
 			}
 		} else {
 			return redirect()->to('/transaction/report');
+		}
+	}
+
+	public function pph(){
+		if (in_groups('SUPER ADMIN') || in_groups('KASIR')) {
+
+			$data = [
+				'pph' => $this->m_pph->getAllPPh(),
+				'validation' => $this->validate,
+			];
+			if (!empty($this->request->getPost('update_status_order'))) {
+				$save = $this->m_pph->save([
+					'id' => $this->request->getPost('id_order'),
+					'pph_value' => $this->request->getPost('pph'),
+				]);
+				if ($save) {
+					session()->setFlashdata('berhasil', 'PPh Berhasil Diperbaharui');
+					return redirect()->to('/transaction/pph')->withCookies();
+				} else {
+					session()->setFlashdata('gagal', 'PPh Gagal Diperbaharui');
+					return redirect()->to('/transaction/pph')->withCookies();
+				}
+			} else {
+				return view('Admin/page/pph',$data);
+			}
+		} else {
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 		}
 	}
 }

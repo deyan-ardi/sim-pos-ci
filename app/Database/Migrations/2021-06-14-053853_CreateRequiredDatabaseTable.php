@@ -156,6 +156,7 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->addForeignKey('member_id', 'members', 'id', false, 'CASCADE');
 		$this->forge->createTable('sales', true);
 
+
 		/* 
 		Request Order Migration
 		*/
@@ -239,6 +240,19 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->addForeignKey('item_id', 'items', 'id', false, 'CASCADE');
 		$this->forge->addForeignKey('order_id', 'orders', 'id', false, 'CASCADE');
 		$this->forge->createTable('order_details', true);
+
+		/* 
+		PPh Migration
+		*/
+		$this->forge->addField([
+			'id'               	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+			'pph_value'   	   	=> ['type' => 'float'],
+			'created_at'       	=> ['type' => 'datetime', 'null' => true],
+			'updated_at'       	=> ['type' => 'datetime', 'null' => true],
+		]);
+		$this->forge->addKey('id', true);
+		$this->forge->createTable('pphs', true);
+
 	}
 
 
@@ -250,6 +264,7 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->dropTable('sale_details', true);
 		$this->forge->dropTable('suppliers', true);
 		$this->forge->dropTable('members', true);
+		$this->forge->dropTable('pphs', true);
 		$this->forge->dropTable('orders', true);
 		$this->forge->dropTable('order_details', true);
 	}

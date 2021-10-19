@@ -208,6 +208,10 @@
                     <td class="total">Rp. <?= format_rupiah($total); ?></td>
                 </tr>
                 <tr>
+                    <td colspan="5">PPh</td>
+                    <td class="total"><?= $pph[0]->pph_value; ?> %</td>
+                </tr>
+                <tr>
                     <td colspan="5">DISKON MEMBER</td>
                     <td class="total"><?= $member->member_discount; ?> %</td>
                 </tr>

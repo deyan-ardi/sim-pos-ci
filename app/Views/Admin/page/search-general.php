@@ -295,9 +295,13 @@ Transaksi Barang - Menu Kasir
                                                                 </tbody>
                                                                 <tfoot>
                                                                     <tr>
-                                                                        <th colspan="<?= $colspan_all; ?>" rowspan="5"></th>
+                                                                        <th colspan="<?= $colspan_all; ?>" rowspan="6"></th>
                                                                         <th>Sub Total</th>
                                                                         <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>PPh</th>
+                                                                        <th colspan="<?= $colspan; ?>"><?= $pph[0]->pph_value; ?> %</th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Diskon Member</th>
