@@ -7,6 +7,20 @@ Tambahkan Order
 <!-- datatable Js -->
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#item_id').selectize({
+            sortField: 'text'
+        });
+    });
+    const update = (x) => {
+        $(document).ready(function() {
+            $('#item_id-' + x).selectize({
+                sortField: 'text'
+            });
+        });
+    }
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -17,9 +31,9 @@ Tambahkan Order
 
 <?= $this->section('main'); ?>
 <?= $item_count = 0; ?>
-<?php foreach($item as $i){
+<?php foreach ($item as $i) {
     $item_count++;
-} ?> 
+} ?>
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
@@ -91,7 +105,7 @@ Tambahkan Order
                                                                         <div class="row justify-content-center">
 
                                                                             <!-- Update Button Modal -->
-                                                                            <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Order" data-toggle="tooltip"></i></button>
+                                                                            <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Order" data-toggle="tooltip"></i></button>
 
                                                                             <!-- Update Modal -->
                                                                             <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
@@ -109,16 +123,16 @@ Tambahkan Order
                                                                                                 <input type="hidden" name="id_order_detail" value="<?= $c->id; ?>">
                                                                                                 <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
                                                                                                 <div class="form-group">
-                                                                                                    <select class="form-control <?= $validation->getError('item_name_up') ? "is-invalid" : ""; ?>" style=" text-transform: capitalize;" name="item_name_up" required>
+                                                                                                    <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name_up') ? "is-invalid" : ""; ?>" style=" text-transform: capitalize;" name="item_name_up" required>
                                                                                                         <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
                                                                                                         <?php foreach ($item as $s) : ?>
                                                                                                             <?php if ($s->id == $c->item_id) : ?>
                                                                                                                 <option value="<?= $s->id; ?>" selected>
-                                                                                                                    <?= $s->item_code; ?> - <?= $s->item_name; ?>
+                                                                                                                   <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                                                                                                 </option>
                                                                                                             <?php else : ?>
                                                                                                                 <option value="<?= $s->id; ?>">
-                                                                                                                    <?= $s->item_code; ?> - <?= $s->item_name; ?>
+                                                                                                                   <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                                                                                                 </option>
                                                                                                             <?php endif; ?>
                                                                                                         <?php endforeach; ?>
@@ -230,11 +244,11 @@ Tambahkan Order
                     <?= csrf_field(); ?>
                     <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
                     <div class="form-group">
-                        <select class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style=" text-transform: capitalize;" name="item_name" required>
+                        <select id="item_id" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style=" text-transform: capitalize;" name="item_name" required>
                             <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
                             <?php foreach ($item as $s) : ?>
                                 <option value="<?= $s->id; ?>">
-                                    <?= $s->item_code; ?> - <?= $s->item_name; ?>
+                                    <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

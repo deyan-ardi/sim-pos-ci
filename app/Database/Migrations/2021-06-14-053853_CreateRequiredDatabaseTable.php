@@ -47,6 +47,8 @@ class CreateRequiredDatabaseTable extends Migration
 			'member_name' 			=> ['type' => 'varchar', 'constraint' => 255],
 			'member_contact' 		=> ['type' => 'bigint'],
 			'member_description'	=> ['type' => 'longtext', 'null' => true],
+			'member_company'		=> ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+			'member_job'			=> ['type' => 'varchar', 'constraint' => 255, 'null' => true],
 			'member_discount'		=> ['type' => 'float', 'null' => true],
 			'member_email'			=> ['type' => 'varchar', 'constraint' => 255, 'null' => true],
 			'member_status' 	   	=> ['type' => 'int'],

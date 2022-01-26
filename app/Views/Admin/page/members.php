@@ -83,6 +83,8 @@ Data Pelanggan Project
                                                         <th>Kode Pelanggan</th>
                                                         <th>Nama Pelanggan</th>
                                                         <th>Kontak Pelanggan</th>
+                                                        <th>Perusahaan</th>
+                                                        <th>Jabatan</th>
                                                         <th>Email Pelanggan</th>
                                                         <th>Deskripsi Pelanggan</th>
                                                         <th>Discount Pelanggan</th>
@@ -100,6 +102,8 @@ Data Pelanggan Project
                                                             <td><?= $c->member_code; ?></td>
                                                             <td><?= $c->member_name; ?></td>
                                                             <td>0<?= $c->member_contact; ?></td>
+                                                            <td><?= $c->member_company; ?></td>
+                                                            <td><?= $c->member_job; ?></td>
                                                             <td><?= $c->member_email; ?></td>
                                                             <td><?= !empty($c->member_description) ? $c->member_description : "Kosong"; ?></td>
                                                             <td><?= $c->member_discount; ?> %</td>
@@ -110,71 +114,6 @@ Data Pelanggan Project
                                                                 <div class="row justify-content-center">
                                                                     <!-- Update Button Modal -->
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id ?>"><i class="feather icon-edit" title="Ubah Member" data-toggle="tooltip"></i></button>
-
-                                                                    <!-- Update Modal -->
-                                                                    <div id="updateCategory-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel<?= $c->id ?>" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateCategoryLabel<?= $c->id ?>">Ubah Data
-                                                                                        Supplier</h5>
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="" method="POST">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="PATCH">
-                                                                                        <input type="hidden" name="id_member" value="<?= $c->id; ?>">
-                                                                                        <div class="form-group">
-                                                                                            <input type="text" class="form-control" required disabled value="<?= $c->member_code; ?>">
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("member_name_up"); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact_up" required placeholder="Kontak Member" value="<?= (old('member_contact_up')) ? old('member_contact_up') :  $c->member_contact; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("member_contact_up"); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="email" class="form-control <?= $validation->getError('member_email') ? "is-invalid" : ""; ?>" name="member_email" required placeholder="Email Pelanggan" value="<?= (old('member_email')) ? old('member_email') : $c->member_email; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("member_email"); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <textarea class="form-control <?= $validation->getError('member_description_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description_up" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description_up')) ? old('member_description_up') : $c->member_description; ?>"></textarea>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("member_description_up"); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="input-group search-form form-group">
-                                                                                            <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount_up" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount_up')) ? old('member_discount_up') : $c->member_discount; ?>">
-                                                                                            <div class="input-group-append">
-                                                                                                <span class="input-group-text bg-transparent">%</span>
-                                                                                            </div>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("member_discount_up"); ?>
-                                                                                            </div>
-                                                                                        </div>
-
-
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="submit" name="update_member" value="update" class="btn btn-primary">Simpan
-                                                                                                Perubahan</button>
-                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
 
                                                                     <?php if ($c->member_status == 0) : ?>
                                                                         <!-- Delete -->
@@ -197,6 +136,8 @@ Data Pelanggan Project
                                                         <th>Kode Pelanggan</th>
                                                         <th>Nama Pelanggan</th>
                                                         <th>Kontak Pelanggan</th>
+                                                        <th>Perusahaan</th>
+                                                        <th>Jabatan</th>
                                                         <th>Email Pelanggan</th>
                                                         <th>Deskripsi Pelanggan</th>
                                                         <th>Discount Pelanggan</th>
@@ -223,6 +164,82 @@ Data Pelanggan Project
 <!-- [ Main Content ] end -->
 
 <!-- Modal -->
+<?php foreach ($member as $c) : ?>
+    <!-- Update Modal -->
+    <div id="updateCategory-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel<?= $c->id ?>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCategoryLabel<?= $c->id ?>">Ubah Data
+                        Supplier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="hidden" name="id_member" value="<?= $c->id; ?>">
+                        <div class="form-group">
+                            <input type="text" class="form-control" required disabled value="<?= $c->member_code; ?>">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_name_up"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact_up" required placeholder="Kontak Member" value="<?= (old('member_contact_up')) ? old('member_contact_up') :  $c->member_contact; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_contact_up"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control <?= $validation->getError('member_company_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_company_up" required placeholder="Nama Perusahaan" value="<?= (old('member_company_up')) ? old('member_company_up') : $c->member_company; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_company_up"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control <?= $validation->getError('member_job_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_job_up" required placeholder="Jabatan Pelanggan" value="<?= (old('member_job_up')) ? old('member_job_up') : $c->member_job; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_job_up"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control <?= $validation->getError('member_email_up') ? "is-invalid" : ""; ?>" name="member_email_up" required placeholder="Email Pelanggan" value="<?= (old('member_email_up')) ? old('member_email_up') : $c->member_email; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_email_up"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control <?= $validation->getError('member_description_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description_up" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description_up')) ? old('member_description_up') : $c->member_description; ?>"></textarea>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_description_up"); ?>
+                            </div>
+                        </div>
+                        <div class="input-group search-form form-group">
+                            <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount_up" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount_up')) ? old('member_discount_up') : $c->member_discount; ?>">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-transparent">%</span>
+                            </div>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError("member_discount_up"); ?>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="submit" name="update_member" value="update" class="btn btn-primary">Simpan
+                                Perubahan</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
 <div id="addCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -243,6 +260,18 @@ Data Pelanggan Project
                         <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact" required placeholder="Kontak Pelanggan" value="<?= (old('member_contact')) ? old('member_contact') : ""; ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError("member_contact"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control <?= $validation->getError('member_company') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_company" required placeholder="Nama Perusahaan" value="<?= (old('member_company')) ? old('member_company') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_company"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control <?= $validation->getError('member_job') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_job" required placeholder="Jabatan Pelanggan" value="<?= (old('member_job')) ? old('member_job') : ""; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError("member_job"); ?>
                         </div>
                     </div>
                     <div class="form-group">

@@ -1,6 +1,6 @@
 <?= $this->extend($config->viewLayout) ?>
 <?= $this->section('title') ?>
-Halaman Masuk Akun
+Masuk Sistem
 <?= $this->endSection() ?>
 
 <?= $this->section('main') ?>
@@ -42,9 +42,16 @@ Halaman Masuk Akun
 
                             <div class="form-group">
                                 <label for="password">Kata Sandi</label>
-                                <input type="password" name="password" class="form-control  <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="********">
-                                <div class="invalid-feedback">
-                                    <?= session('errors.password') ?>
+                                <div class="input-group" id="show_hide_password">
+                                    <input type="password" name="password" class="form-control  <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="********">
+                                    <div class="invalid-feedback">
+                                        <?= session('errors.password') ?>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <a href="" class="btn btn-light btn-sm">
+                                            <i class="fas fa-eye-slash text-secondary m-0 pt-2" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -61,7 +68,6 @@ Halaman Masuk Akun
 
                             <button type="submit" class="btn btn-primary btn-block">Masuk Sistem</button>
                         </form>
-
                         <hr>
 
                         <?php if ($config->allowRegistration) : ?>

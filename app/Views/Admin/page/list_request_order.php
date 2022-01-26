@@ -48,7 +48,7 @@ Request Order Barang
                                         <h5>List Order Barang</h5>
                                     </div>
                                     <div class="card-body">
-                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Permintaan Order</button>
+                                        <!-- <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Permintaan Order</button> -->
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                 <thead>

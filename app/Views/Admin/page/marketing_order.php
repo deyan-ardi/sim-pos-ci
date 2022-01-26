@@ -32,6 +32,18 @@ Request Order Barang
                 }
             });
     });
+    $(document).ready(function() {
+        $('#item_id').selectize({
+            sortField: 'text'
+        });
+    });
+    const update = (x) => {
+        $(document).ready(function() {
+            $('#item_id-' + x).selectize({
+                sortField: 'text'
+            });
+        });
+    }
 </script>
 <?= $this->endSection(); ?>
 
@@ -115,7 +127,7 @@ Request Order Barang
                                                                 <div class="row justify-content-center">
                                                                     <?php if ($c->request_status == 0) : ?>
                                                                         <!-- Set Status Button Modal -->
-                                                                        <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Permintaan Order" data-toggle="tooltip"></i></button>
+                                                                        <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Permintaan Order" data-toggle="tooltip"></i></button>
 
 
                                                                         <!-- Modal -->
@@ -132,16 +144,16 @@ Request Order Barang
                                                                                             <input type="hidden" name="_method" value="PATCH">
                                                                                             <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                                             <div class="form-group">
-                                                                                                <select class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="item_name" required>
-                                                                                                    <option value="">Pilih Item Barang</option>
+                                                                                                <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="item_name" required>
                                                                                                     <?php foreach ($item as $i) : ?>
-                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id == $c->item_id ? "selected" : "" ?>><?= $i->item_name; ?></option>
+                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id == $c->item_id ? "selected" : "" ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
                                                                                                     <?php endforeach; ?>
                                                                                                 </select>
                                                                                                 <div class="invalid-feedback">
                                                                                                     <?= $validation->getError("item_name"); ?>
                                                                                                 </div>
                                                                                             </div>
+
                                                                                             <div class="form-group">
                                                                                                 <textarea class="form-control <?= $validation->getError('request_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required> <?= $c->request_description; ?> </textarea>
                                                                                                 <div class="invalid-feedback">
@@ -224,10 +236,10 @@ Request Order Barang
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <select class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="item_name" required>
+                        <select id="item_id" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="item_name" required>
                             <option value="">Pilih Item Barang</option>
                             <?php foreach ($item as $i) : ?>
-                                <option value="<?= $i->id; ?>"><?= $i->item_name; ?></option>
+                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
                             <?php endforeach; ?>
                         </select>
                         <div class="invalid-feedback">

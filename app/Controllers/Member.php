@@ -22,6 +22,8 @@ class Member extends BaseController
 			$formSubmit = $this->validate([
 				'member_name' => 'required|max_length[200]',
 				'member_contact' => 'required|is_natural',
+				'member_company' => 'required|max_length[200]',
+				'member_job' => 'required|max_length[200]',
 				'member_discount' => 'permit_empty',
 				'member_email' => 'required|valid_email',
 				'member_description' => 'permit_empty|max_length[500]',
@@ -35,6 +37,8 @@ class Member extends BaseController
 					'member_code' => $token,
 					'member_name' => ucWords($this->request->getPost('member_name')),
 					'member_email' => $this->request->getPost('member_email'),
+					'member_company' => $this->request->getPost('member_company'),
+					'member_job' => $this->request->getPost('member_job'),
 					'member_contact' => $this->request->getPost('member_contact'),
 					'member_discount' => $this->request->getPost('member_discount'),
 					'member_description' => ucWords($this->request->getPost('member_description')),
@@ -53,7 +57,9 @@ class Member extends BaseController
 				'member_name_up' => 'required|max_length[200]',
 				'member_contact_up' => 'required|is_natural',
 				'member_discount_up' => 'permit_empty',
-				'member_email' => 'required|valid_email',
+				'member_email_up' => 'required|valid_email',
+				'member_company_up' => 'required|max_length[200]',
+				'member_job_up' => 'required|max_length[200]',
 				'member_description_up' => 'permit_empty|max_length[500]',
 			]);
 			if (!$formSubmit) {
@@ -63,7 +69,9 @@ class Member extends BaseController
 					'id' => $this->request->getPost('id_member'),
 					'member_name' => ucWords($this->request->getPost('member_name_up')),
 					'member_contact' => $this->request->getPost('member_contact_up'),
-					'member_email' => $this->request->getPost('member_email'),
+					'member_email' => $this->request->getPost('member_email_up'),
+					'member_company' => $this->request->getPost('member_company_up'),
+					'member_job' => $this->request->getPost('member_job_up'),
 					'member_discount' => $this->request->getPost('member_discount_up'),
 					'member_description' => ucWords($this->request->getPost('member_description_up')),
 				]);

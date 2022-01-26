@@ -13,7 +13,7 @@ class MemberModel extends Model
 	protected $returnType           = MemberModel::class;
 	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
-		'member_name','member_code','member_status', 'member_contact','member_discount', 'member_description', 'member_email', 'deleted_at'
+		'member_name', 'member_code', 'member_status', 'member_job', 'member_company', 'member_contact', 'member_discount', 'member_description', 'member_email', 'deleted_at'
 	];
 
 	// Dates
@@ -29,10 +29,11 @@ class MemberModel extends Model
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;
 
-	public function getMemberWhere($status){
-		if($status == 0){
-			return $this->where('member_status',0)->get()->getResult();
-		}else{
+	public function getMemberWhere($status)
+	{
+		if ($status == 0) {
+			return $this->where('member_status', 0)->get()->getResult();
+		} else {
 			return $this->where('member_status', 1)->get()->getResult();
 		}
 	}

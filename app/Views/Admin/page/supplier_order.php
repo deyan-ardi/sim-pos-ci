@@ -32,6 +32,11 @@ Order Barang Supplier
                 }
             });
     });
+    $(document).ready(function() {
+        $('#item_id').selectize({
+            sortField: 'text'
+        });
+    });
 </script>
 <?= $this->endSection(); ?>
 
@@ -259,7 +264,7 @@ Order Barang Supplier
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <select class="form-control <?= $validation->getError('supplier_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_name" required>
+                        <select id="item_id" class="form-control <?= $validation->getError('supplier_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_name" required>
                             <option value="">Pilih Supplier</option>
                             <?php foreach ($supplier as $s) : ?>
                                 <option value="<?= $s->id; ?>"><?= $s->supplier_name; ?> (0<?= $s->supplier_contact; ?>)</option>
