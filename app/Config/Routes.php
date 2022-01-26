@@ -104,6 +104,8 @@ $routes->group('transaction', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespa
 	$routes->post('/', 'Transaction::index');
 	$routes->delete('/', 'Transaction::index');
 	$routes->patch('validation_payment', 'Transaction::validation_payment');
+	$routes->post('report/add_handling', 'Transaction::add_handling_report');
+	$routes->post('add_handling', 'Transaction::add_handling');
 	$routes->get('report', 'Transaction::report');
 	$routes->post('report', 'Transaction::report');
 	$routes->delete('report', 'Transaction::report');
@@ -119,6 +121,8 @@ $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], [
 	$routes->post('/', 'GeneralTransaction::index');
 	$routes->delete('/', 'GeneralTransaction::index');
 	$routes->patch('validation_payment', 'GeneralTransaction::validation_payment');
+	$routes->post('report/add_handling', 'GeneralTransaction::add_handling_report');
+	$routes->post('add_handling', 'GeneralTransaction::add_handling');
 	$routes->get('report', 'GeneralTransaction::report');
 	$routes->post('report', 'GeneralTransaction::report');
 	$routes->delete('report', 'GeneralTransaction::report');

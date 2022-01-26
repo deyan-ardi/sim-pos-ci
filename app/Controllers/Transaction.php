@@ -32,9 +32,9 @@ class Transaction extends BaseController
 		} else {
 			$find_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction'));
 			$find_sale = $this->m_sale->getAllSale(get_cookie('transaction'));
-			if(!empty($find_sale)){
-				$count_member = $this->m_sale->where('member_id',$find_sale[0]->user_id)->countAll();
-			}else{
+			if (!empty($find_sale)) {
+				$count_member = $this->m_sale->where('member_id', $find_sale[0]->user_id)->countAll();
+			} else {
 				$count_member = null;
 			}
 		}
@@ -297,6 +297,56 @@ class Transaction extends BaseController
 				echo json_encode(array("status" => TRUE));
 			} else {
 				echo json_encode(array("status" => FALSE));
+			}
+		}
+	}
+
+	public function add_handling_report()
+	{
+		if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+			if (!empty($this->request->getPost('handling'))) {
+				$id_transaksi = $this->request->getPost('id_transaksi');
+			} else {
+				$id_transaksi = get_cookie('transaction');
+			}
+			$find = $this->m_sale->where('id', $id_transaksi)->find();
+
+			$save = $this->m_sale->save([
+				'id' => $id_transaksi,
+				'sale_handling' => $this->request->getPost('handling_tot'),
+				'sale_total' => $this->request->getPost('handling_tot') + $find[0]->sale_total,
+			]);
+			if ($save) {
+				// echo json_encode(array("status" => TRUE));
+				return redirect()->to('/transaction/report/search?sale_code=' . $find[0]->sale_code)->withCookies();
+			} else {
+				// echo json_encode(array("status" => FALSE));
+				return redirect()->to('/transaction/report/search?sale_code=' . $find[0]->sale_code)->withCookies();
+			}
+		}
+	}
+
+	public function add_handling()
+	{
+		if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+			if (!empty($this->request->getPost('handling'))) {
+				$id_transaksi = $this->request->getPost('id_transaksi');
+			} else {
+				$id_transaksi = get_cookie('transaction');
+			}
+			$find = $this->m_sale->where('id', $id_transaksi)->find();
+
+			$save = $this->m_sale->save([
+				'id' => $id_transaksi,
+				'sale_handling' => $this->request->getPost('handling_tot'),
+				'sale_total' => $this->request->getPost('handling_tot') + $find[0]->sale_total,
+			]);
+			if ($save) {
+				// echo json_encode(array("status" => TRUE));
+				return redirect()->to('/transaction')->withCookies();
+			} else {
+				// echo json_encode(array("status" => FALSE));
+				return redirect()->to('/transaction')->withCookies();
 			}
 		}
 	}
@@ -581,7 +631,8 @@ class Transaction extends BaseController
 		}
 	}
 
-	public function pph(){
+	public function pph()
+	{
 		if (in_groups('SUPER ADMIN') || in_groups('KASIR')) {
 
 			$data = [
@@ -601,7 +652,7 @@ class Transaction extends BaseController
 					return redirect()->to('/transaction/pph')->withCookies();
 				}
 			} else {
-				return view('Admin/page/pph',$data);
+				return view('Admin/page/pph', $data);
 			}
 		} else {
 			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

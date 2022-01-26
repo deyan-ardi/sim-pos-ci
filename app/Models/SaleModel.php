@@ -13,7 +13,7 @@ class SaleModel extends Model
 	protected $returnType           = SaleModel::class;
 	protected $useSoftDeletes       = false;
 	protected $allowedFields        = [
-		'sale_code','sale_ket' ,'sale_total', 'sale_status', 'sale_pay', 'sale_discount', 'sale_profit', 'user_id', 'member_id', 'deleted_at'
+		'sale_code', 'sale_ket', 'sale_handling', 'sale_total', 'sale_status', 'sale_pay', 'sale_discount', 'sale_profit', 'user_id', 'member_id', 'deleted_at'
 	];
 
 	// Dates
@@ -74,17 +74,18 @@ class SaleModel extends Model
 			return $this->get()->getResult();
 		}
 	}
-	
-	public function getAllOrderWhere(){
+
+	public function getAllOrderWhere()
+	{
 		$this->select('users.username,sales.*,sale_details.detail_quantity,item_categories.category_name,items.item_name,items.item_code');
-		$this->join('sale_details','sale_details.sale_id = sales.id');
+		$this->join('sale_details', 'sale_details.sale_id = sales.id');
 		$this->join('items', 'items.id = sale_details.item_id');
 		$this->join('item_categories', 'item_categories.id = items.category_id');
 		$this->join('users', 'users.id = sales.user_id');
 		$this->where('sales.sale_status', 1);
 		return $this->get()->getResult();
 	}
-	public function getAllOrderWhereFilter($awal,$akhir)
+	public function getAllOrderWhereFilter($awal, $akhir)
 	{
 		$this->select('users.username,sales.*,sale_details.detail_quantity,item_categories.category_name,items.item_name,items.item_code');
 		$this->join('sale_details', 'sale_details.sale_id = sales.id');
@@ -96,14 +97,15 @@ class SaleModel extends Model
 		$this->where('sales.updated_at <=', $akhir . " 23:59:00");
 		return $this->get()->getResult();
 	}
-	public function getAllSaleWhere($ket){
-		if($ket == "General"){
+	public function getAllSaleWhere($ket)
+	{
+		if ($ket == "General") {
 			$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,sales.*');
 			$this->join('members', 'members.id = sales.member_id');
 			$this->join('users', 'users.id = sales.user_id');
-			$this->where('sales.sale_ket','General');
+			$this->where('sales.sale_ket', 'General');
 			return $this->get()->getResult();
-		}else{
+		} else {
 			$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,sales.*');
 			$this->join('members', 'members.id = sales.member_id');
 			$this->join('users', 'users.id = sales.user_id');

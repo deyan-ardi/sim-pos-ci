@@ -300,6 +300,54 @@ class GeneralTransaction extends BaseController
 		}
 	}
 
+	public function add_handling_report()
+	{
+		if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+			if (!empty($this->request->getPost('handling'))) {
+				$id_transaksi = $this->request->getPost('id_transaksi');
+			} else {
+				$id_transaksi = get_cookie('transaction');
+			}
+			$find = $this->m_sale->where('id', $id_transaksi)->find();
+
+			$save = $this->m_sale->save([
+				'id' => $id_transaksi,
+				'sale_handling' => $this->request->getPost('handling_tot'),
+				'sale_total' => $this->request->getPost('handling_tot') + $find[0]->sale_total,
+			]);
+			if ($save) {
+				// echo json_encode(array("status" => TRUE));
+				return redirect()->to('/transaction-general/report/search?sale_code=' . $find[0]->sale_code)->withCookies();
+			} else {
+				// echo json_encode(array("status" => FALSE));
+				return redirect()->to('/transaction-general/report/search?sale_code=' . $find[0]->sale_code)->withCookies();
+			}
+		}
+	}
+	public function add_handling()
+	{
+		if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+			if (!empty($this->request->getPost('handling'))) {
+				$id_transaksi = $this->request->getPost('id_transaksi');
+			} else {
+				$id_transaksi = get_cookie('transaction');
+			}
+			$find = $this->m_sale->where('id', $id_transaksi)->find();
+
+			$save = $this->m_sale->save([
+				'id' => $id_transaksi,
+				'sale_handling' => $this->request->getPost('handling_tot'),
+				'sale_total' => $this->request->getPost('handling_tot') + $find[0]->sale_total,
+			]);
+			if ($save) {
+				// echo json_encode(array("status" => TRUE));
+				return redirect()->to('/transaction-general')->withCookies();
+			} else {
+				// echo json_encode(array("status" => FALSE));
+				return redirect()->to('/transaction-general')->withCookies();
+			}
+		}
+	}
 	public function report()
 	{
 		$data = [
