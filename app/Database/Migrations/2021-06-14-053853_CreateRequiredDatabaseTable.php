@@ -264,6 +264,7 @@ class CreateRequiredDatabaseTable extends Migration
 			'key'   	   		=> ['type' => 'varchar', 'constraint' => 100],
 			'value'   	   		=> ['type' => 'text', 'null' => true],
 			'position'   	   	=> ['type' => 'varchar','constraint' => 100, 'null' => true],
+			'header'   	   		=> ['type' => 'varchar', 'constraint' => 100, 'null' => true],
 			'created_at'       	=> ['type' => 'datetime', 'null' => true],
 			'updated_at'       	=> ['type' => 'datetime', 'null' => true],
 		]);
