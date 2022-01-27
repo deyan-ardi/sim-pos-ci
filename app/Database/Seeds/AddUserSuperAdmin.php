@@ -80,5 +80,24 @@ class AddUserSuperAdmin extends Seeder
 			'updated_at' => date('Y-m-d H:i:s'),
 		];
 		$this->db->table('pphs')->insert($data_pph);
+
+		for($i = 1;$i<= 4; $i++){
+			if($i == 1){
+				$key = 'kiri';
+			}else if($i == 2){
+				$key = 'tengah';
+			}else if($i == 3){
+				$key = 'kanan';
+			}else if($i == 4){
+				$key = 'note';
+			}
+
+			$data_invoice = [
+				'key' => $key,
+				'value' => '',
+			];
+			
+			$this->db->table('invoice_settings')->insert($data_invoice);
+		}
 	}
 }

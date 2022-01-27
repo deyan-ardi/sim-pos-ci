@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\InvoiceSettingModel;
 use App\Models\ItemModel;
 use App\Models\MemberModel;
 use App\Models\PphModel;
@@ -21,6 +22,7 @@ class Transaction extends BaseController
 		$this->m_member = new MemberModel();
 		$this->m_user = new UserModel();
 		$this->m_pph = new PphModel();
+		$this->m_invoice = new InvoiceSettingModel();
 	}
 	public function index()
 	{
@@ -250,12 +252,22 @@ class Transaction extends BaseController
 				if ($save_update_status) {
 					$find_member = $this->m_member->find($find_sale[0]->member_id);
 					$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+					$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+					$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+					$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+					$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+					$note = $this->m_invoice->where('key', 'note')->first();
 					$data = [
 						'detail' => $find_detail,
 						'sale' => $find_sale,
 						'pph' => $pph_model,
 						'member' => $find_member,
 						'user' => $find_user,
+						'ttd_kiri' => $ttd_kiri,
+						'ttd_tengah' => $ttd_tengah,
+						'ttd_kanan' => $ttd_kanan,
+						'ttd_bawah' => $ttd_bawah,
+						'note' => $note,
 					];
 					// return view('Admin/page/invoice_transaction', $data);
 					set_cookie('transaction', false, -900);
@@ -368,12 +380,22 @@ class Transaction extends BaseController
 				$find_member = $this->m_member->find($find_sale[0]->member_id);
 				$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
 				$pph_model = $this->m_pph->getAllPPh();
+				$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+				$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+				$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+				$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+				$note = $this->m_invoice->where('key', 'note')->first();
 				$data = [
 					'detail' => $find_detail,
 					'sale' => $find_sale,
 					'pph' => $pph_model,
 					'member' => $find_member,
 					'user' => $find_user,
+					'ttd_kiri' => $ttd_kiri,
+					'ttd_tengah' => $ttd_tengah,
+					'ttd_kanan' => $ttd_kanan,
+					'ttd_bawah' => $ttd_bawah,
+					'note' => $note,
 				];
 				// return view('Admin/page/invoice_transaction', $data);
 				set_cookie('transaction', false, 900);
@@ -599,12 +621,22 @@ class Transaction extends BaseController
 					if ($save_update_status) {
 						$find_member = $this->m_member->find($find_sale[0]->member_id);
 						$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+						$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+						$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+						$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+						$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+						$note = $this->m_invoice->where('key', 'note')->first();
 						$data = [
 							'detail' => $find_detail,
 							'sale' => $find_sale,
 							'pph' => $pph_model,
 							'member' => $find_member,
 							'user' => $find_user,
+							'ttd_kiri' => $ttd_kiri,
+							'ttd_tengah' => $ttd_tengah,
+							'ttd_kanan' => $ttd_kanan,
+							'ttd_bawah' => $ttd_bawah,
+							'note' => $note,
 						];
 						// return view('Admin/page/invoice_transaction', $data);
 						set_cookie('transaction', false, 900);
@@ -631,12 +663,13 @@ class Transaction extends BaseController
 		}
 	}
 
-	public function pph()
+	public function pengaturan()
 	{
 		if (in_groups('SUPER ADMIN') || in_groups('KASIR')) {
 
 			$data = [
 				'pph' => $this->m_pph->getAllPPh(),
+				'invoice' => $this->m_invoice->findAll(),
 				'validation' => $this->validate,
 			];
 			if (!empty($this->request->getPost('update_status_order'))) {
@@ -646,16 +679,72 @@ class Transaction extends BaseController
 				]);
 				if ($save) {
 					session()->setFlashdata('berhasil', 'PPh Berhasil Diperbaharui');
-					return redirect()->to('/transaction/pph')->withCookies();
+					return redirect()->to('/transaction/pengaturan')->withCookies();
 				} else {
 					session()->setFlashdata('gagal', 'PPh Gagal Diperbaharui');
-					return redirect()->to('/transaction/pph')->withCookies();
+					return redirect()->to('/transaction/pengaturan')->withCookies();
+				}
+			} else if (!empty($this->request->getPost('update_pengaturan'))) {
+				if ($this->request->getPost('pengaturan') == '' || empty($this->request->getPost('pengaturan'))) {
+					$value = NULL;
+					$posisi = NULL;
+					$header = NULL;
+				} else {
+					$value = ucWords($this->request->getPost('pengaturan'));
+					$posisi = ucWords($this->request->getPost('posisi'));
+					$header = ucWords($this->request->getPost('header'));
+				}
+
+				$save = $this->m_invoice->save([
+					'id' => $this->request->getPost('id_order'),
+					'value' => $value,
+					'position' => $posisi,
+					'header' => $header
+				]);
+				if ($save) {
+					session()->setFlashdata('berhasil', 'Pengaturan Berhasil Diperbaharui');
+					return redirect()->to('/transaction/pengaturan')->withCookies();
+				} else {
+					session()->setFlashdata('gagal', 'Pengaturan Gagal Diperbaharui');
+					return redirect()->to('/transaction/pengaturan')->withCookies();
 				}
 			} else {
-				return view('Admin/page/pph', $data);
+				return view('Admin/page/pengaturan', $data);
 			}
 		} else {
 			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 		}
 	}
+	// public function invoice()
+	// {
+
+	// 	$find_detail = $this->m_sale_detail->getAllSaleDetail(25);
+	// 	$find_sale = $this->m_sale->getAllSale(25);
+	// 	if (!empty($find_sale)) {
+	// 		$count_member = $this->m_sale->where('member_id', $find_sale[0]->user_id)->countAll();
+	// 	} else {
+	// 		$count_member = null;
+	// 	}
+	// 	$pph_model = $this->m_pph->getAllPPh();
+	// 	$find_member = $this->m_member->find($find_sale[0]->member_id);
+	// 	$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+	// 	$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+	// 	$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+	// 	$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+	// 	$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+	// 	$note = $this->m_invoice->where('key', 'note')->first();
+	// 	$data = [
+	// 		'detail' => $find_detail,
+	// 		'sale' => $find_sale,
+	// 		'pph' => $pph_model,
+	// 		'member' => $find_member,
+	// 		'user' => $find_user,
+	// 		'ttd_kiri' => $ttd_kiri,
+	// 		'ttd_tengah' => $ttd_tengah,
+	// 		'ttd_kanan' => $ttd_kanan,
+	// 		'ttd_bawah' => $ttd_bawah,
+	// 		'note' => $note,
+	// 	];
+	// 	return view('Admin/page/invoice_transaction', $data);
+	// }
 }

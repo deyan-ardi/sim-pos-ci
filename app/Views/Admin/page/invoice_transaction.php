@@ -204,26 +204,90 @@
                     endforeach; ?>
                 <?php endif; ?>
                 <tr>
-                    <td colspan="5">SUB TOTAL</td>
+                    <td colspan="5">SUB TOTAL I</td>
                     <td class="total">Rp. <?= format_rupiah($total); ?></td>
-                </tr>
-                <tr>
-                    <td colspan="5">PPh</td>
-                    <td class="total"><?= $pph[0]->pph_value; ?> %</td>
                 </tr>
                 <tr>
                     <td colspan="5">DISKON MEMBER</td>
                     <td class="total"><?= $member->member_discount; ?> %</td>
                 </tr>
                 <tr>
-                    <td colspan="5">TOTAL</td>
+                    <?php
+                    $disk = ($total * $sale[0]->sale_discount) / 100;
+                    $sub_tot_2 = $total - $disk;
+                    ?>
+                    <td colspan="5">SUB TOTAL II</td>
+                    <td class="total">Rp. <?= format_rupiah($sub_tot_2); ?></td>
+                </tr>
+                <tr>
+                    <td colspan="5">Handling & Final Connecting</td>
+                    <td class="total">Rp. <?= format_rupiah($sale[0]->sale_handling); ?></td>
+                </tr>
+                <tr>
+                    <td colspan="5">SUB TOTAL III</td>
+                    <td class="total">Rp. <?= format_rupiah($sub_tot_2 + $sale[0]->sale_handling); ?></td>
+                </tr>
+                <tr>
+                    <td colspan="5">PPh</td>
+                    <td class="total"><?= $pph[0]->pph_value; ?> %</td>
+                </tr>
+                <tr>
+                    <td colspan="5">GRAND TOTAL</td>
                     <td class="grand total">Rp. <?= format_rupiah($sale[0]->sale_total); ?></td>
                 </tr>
             </tbody>
         </table>
         <div id="notices">
             <div>NOTE:</div>
-            <div class="notice">Silahkan simpan bukti transaksi ini sebagai syarat untuk mendapatkan garansi</div>
+            <?php if (!empty($note->value)) : ?>
+                <div class="notice"><?= $note->value; ?></div>
+            <?php else : ?>
+                <div class="notice">Silahkan simpan bukti transaksi ini sebagai syarat untuk mendapatkan garansi</div>
+            <?php endif; ?>
+        </div>
+        <div id="ttd" style="margin-top:45px">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="text-align: left;">
+                        <h4><?= !empty($ttd_kiri->header) ? $ttd_kiri->header : ""; ?></h4>
+                    </td>
+                    <td style="text-align: center;">
+                        <h4><?= !empty($ttd_tengah->header) ? $ttd_tengah->header : ""; ?></h4>
+                    </td>
+                    <td style="text-align: right;">
+                        <h4><?= !empty($ttd_kanan->header) ? $ttd_kanan->header : ""; ?></h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td style=" text-align: left;padding-top: 4em;">
+                        <h4><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : ""; ?></u></h4>
+                        <h5><?= !empty($ttd_kiri->position) ? "(" . $ttd_kiri->position . ")" : ""; ?></h5>
+                    </td>
+
+                    <td style="text-align: center;padding-top: 4em;">
+                        <h4><u><?= !empty($ttd_tengah->value) ? $ttd_tengah->value : ""; ?></u></h4>
+                        <h5><?= !empty($ttd_tengah->position) ? "(" . $ttd_tengah->position . ")" : ""; ?></h5>
+                    </td>
+
+                    <td style="text-align: right;padding-top: 4em;">
+                        <h4><u><?= !empty($ttd_kanan->value) ? $ttd_kanan->value : ""; ?></u></h4>
+                        <h5><?= !empty($ttd_kanan->position) ? "(" . $ttd_kanan->position . ")" : ""; ?></h5>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%; margin-top:2rem">
+                <tr>
+                    <td style="text-align: center;" colspan="3">
+                        <h4><?= !empty($ttd_bawah->header) ? $ttd_bawah->header : ""; ?></h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td style=" text-align: center;padding-top: 4em;" colspan="3">
+                        <h4><u><?= !empty($ttd_bawah->value) ? $ttd_bawah->value : ""; ?></u></h4>
+                        <h5><?= !empty($ttd_bawah->position) ? "(" . $ttd_bawah->position . ")" : ""; ?></h5>
+                    </td>
+                </tr>
+            </table>
         </div>
     </main>
     <footer>

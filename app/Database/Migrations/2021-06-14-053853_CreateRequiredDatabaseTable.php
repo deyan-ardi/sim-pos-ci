@@ -102,9 +102,9 @@ class CreateRequiredDatabaseTable extends Migration
 		*/
 		$this->forge->addField([
 			'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-			'item_image'	   => ['type' => 'varchar', 'null' => true,'constraint' => 255],
-			'item_code'   	   => ['type' => 'varchar', 'null' => true,'constraint' => 50],
-			'item_name'   	   => ['type' => 'varchar', 'null' => true,'constraint' => 255],
+			'item_image'	   => ['type' => 'varchar', 'null' => true, 'constraint' => 255],
+			'item_code'   	   => ['type' => 'varchar', 'null' => true, 'constraint' => 50],
+			'item_name'   	   => ['type' => 'varchar', 'null' => true, 'constraint' => 255],
 			'item_merk'		   => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
 			'item_type'   	   => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
 			'item_weight' 	   => ['type' => 'float', 'null' => true],
@@ -117,13 +117,13 @@ class CreateRequiredDatabaseTable extends Migration
 			'item_sale' 	   => ['type' => 'float', 'null' => true],
 			'item_profit' 	   => ['type' => 'float', 'null' => true],
 			'item_description' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-			'item_warehouse_a' => ['type' => 'int', 'null' => true,'default' => 0],
-			'item_warehouse_b' => ['type' => 'int', 'null' => true,'default' => 0],
-			'item_warehouse_c' => ['type' => 'int', 'null' => true,'default' => 0],
-			'item_warehouse_d' => ['type' => 'int', 'null' => true,'default' => 0],
+			'item_warehouse_a' => ['type' => 'int', 'null' => true, 'default' => 0],
+			'item_warehouse_b' => ['type' => 'int', 'null' => true, 'default' => 0],
+			'item_warehouse_c' => ['type' => 'int', 'null' => true, 'default' => 0],
+			'item_warehouse_d' => ['type' => 'int', 'null' => true, 'default' => 0],
 			'item_stock' 	   => ['type' => 'int', 'null' => true],
-			'category_id'      => ['type' => 'int', 'null' => true,'constraint' => 11, 'unsigned' => true],
-			'supplier_id'      => ['type' => 'int', 'null' => true,'constraint' => 11, 'unsigned' => true],
+			'category_id'      => ['type' => 'int', 'null' => true, 'constraint' => 11, 'unsigned' => true],
+			'supplier_id'      => ['type' => 'int', 'null' => true, 'constraint' => 11, 'unsigned' => true],
 			'created_at'       => ['type' => 'datetime', 'null' => true],
 			'updated_at'       => ['type' => 'datetime', 'null' => true],
 			'deleted_at'       => ['type' => 'datetime', 'null' => true],
@@ -140,12 +140,13 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->addField([
 			'id'               	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
 			'sale_code'   	   	=> ['type' => 'varchar', 'constraint' => 50],
+			'sale_handling'   	=> ['type' => 'float'],
 			'sale_total'   	   	=> ['type' => 'float'],
 			'sale_pay'   	   	=> ['type' => 'float'],
 			'sale_discount' 	=> ['type' => 'float'],
 			'sale_profit' 		=> ['type' => 'float'],
 			'sale_status' 		=> ['type' => 'int'],
-			'sale_ket'			=> ['type' => 'varchar','constraint' => 50,'null' => true],
+			'sale_ket'			=> ['type' => 'varchar', 'constraint' => 50, 'null' => true],
 			'user_id'      		=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'member_id'      	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
 			'created_at'       	=> ['type' => 'datetime', 'null' => true],
@@ -255,6 +256,19 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->addKey('id', true);
 		$this->forge->createTable('pphs', true);
 
+		/* 
+		Invoice Settings
+		*/
+		$this->forge->addField([
+			'id'               	=> ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+			'key'   	   		=> ['type' => 'varchar', 'constraint' => 100],
+			'value'   	   		=> ['type' => 'text', 'null' => true],
+			'position'   	   	=> ['type' => 'varchar','constraint' => 100, 'null' => true],
+			'created_at'       	=> ['type' => 'datetime', 'null' => true],
+			'updated_at'       	=> ['type' => 'datetime', 'null' => true],
+		]);
+		$this->forge->addKey('id', true);
+		$this->forge->createTable('invoice_settings', true);
 	}
 
 
@@ -269,5 +283,6 @@ class CreateRequiredDatabaseTable extends Migration
 		$this->forge->dropTable('pphs', true);
 		$this->forge->dropTable('orders', true);
 		$this->forge->dropTable('order_details', true);
+		$this->forge->dropTable('invoice_settings', true);
 	}
 }

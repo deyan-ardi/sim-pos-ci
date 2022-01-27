@@ -112,8 +112,8 @@ $routes->group('transaction', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespa
 	$routes->post('report/search', 'Transaction::search');
 	$routes->delete('report/search', 'Transaction::search');
 	$routes->get('report/search', 'Transaction::search');
-	$routes->get('pph', 'Transaction::pph');
-	$routes->patch('pph', 'Transaction::pph');
+	$routes->get('pengaturan', 'Transaction::pengaturan');
+	$routes->patch('pengaturan', 'Transaction::pengaturan');
 });
 
 $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], function ($routes) {
