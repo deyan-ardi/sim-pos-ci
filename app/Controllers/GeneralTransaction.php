@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\InvoiceSettingModel;
 use App\Models\ItemModel;
 use App\Models\MemberModel;
 use App\Models\PphModel;
@@ -21,6 +22,8 @@ class GeneralTransaction extends BaseController
 		$this->m_member = new MemberModel();
 		$this->m_user = new UserModel();
 		$this->m_pph = new PphModel();
+		$this->m_invoice = new InvoiceSettingModel();
+
 	}
 	public function index()
 	{
@@ -32,9 +35,9 @@ class GeneralTransaction extends BaseController
 		} else {
 			$find_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction-general'));
 			$find_sale = $this->m_sale->getAllSale(get_cookie('transaction-general'));
-			if(!empty($find_sale)){
-				$count_member = $this->m_sale->where('member_id',$find_sale[0]->user_id)->countAll();
-			}else{
+			if (!empty($find_sale)) {
+				$count_member = $this->m_sale->where('member_id', $find_sale[0]->user_id)->countAll();
+			} else {
 				$count_member = null;
 			}
 		}
@@ -65,6 +68,7 @@ class GeneralTransaction extends BaseController
 					'sale_total' => 0,
 					'sale_pay' => 0,
 					'sale_discount' => $find_member->member_discount,
+					'sale_handling' => NULL,
 					'sale_profit' => 0,
 					'sale_status' => 0,
 					'sale_ket' => 'General',
@@ -103,15 +107,10 @@ class GeneralTransaction extends BaseController
 						} else {
 							// Perhitungan Total Belanjar
 							$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
-							$discount = $detail * $find_sale[0]->sale_discount / 100;
-							// $detail_total = $detail - $discount;
-							$pph = $detail * $pph_model[0]->pph_value / 100;
-							$detail_total = $detail - $discount + $pph;
-							$total_sale = $find_sale[0]->sale_total + $detail_total;
 
 							// Total Keuntungan
 							$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
-							$total_profit = $find_sale[0]->sale_profit + $profit_per_item - $discount;
+							$total_profit = $find_sale[0]->sale_profit + $profit_per_item;
 							// $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
 							$save_sale_detail = $this->m_sale_detail->save([
 								'detail_total' => $detail,
@@ -126,9 +125,23 @@ class GeneralTransaction extends BaseController
 									'item_stock' => $stock_sisa,
 								]);
 								if ($save_item) {
+
+									// Perhitungan Belanja Baru
+									$get_all = $this->m_sale_detail->where('sale_id', get_cookie('transaction-general'))->findAll();
+									$sub_tot_1 = 0;
+									foreach ($get_all as $detail) {
+										$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+									}
+									$discount = $sub_tot_1 * $find_sale[0]->sale_discount / 100;
+									$sub_tot_2 = $sub_tot_1 - $discount;
+									$sub_tot_3 = $find_sale[0]->sale_handling + $sub_tot_2;
+									$pph = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+									$grand_total = $sub_tot_3 + $pph;
+									// End Perhitungan Belanja Baru
+
 									$save_sale = $this->m_sale->save([
 										'id' => get_cookie('transaction-general'),
-										'sale_total' => $total_sale,
+										'sale_total' => $grand_total,
 										// 'sale_discount' => $total_discount,
 										'sale_profit' => $total_profit,
 									]);
@@ -201,15 +214,11 @@ class GeneralTransaction extends BaseController
 
 				// Perhitungan Total Belanjar
 				$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
-				$discount = $detail * $find_sale[0]->sale_discount / 100;
-				// $detail_total = $detail - $discount;
-				$pph = $detail * $pph_model[0]->pph_value / 100;
-				$detail_total = $detail - $discount + $pph;
-				$total_sale = $find_sale[0]->sale_total - $detail_total;
+
 
 				// Total Keuntungan
 				$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
-				$total_profit = $find_sale[0]->sale_profit - $profit_per_item + $discount;
+				$total_profit = $find_sale[0]->sale_profit - $profit_per_item;
 				// Perlu input itu ada stoknya, sale_total,sale_profit
 				// Pertama ubah stocknya
 				$save_update_stock = $this->m_item->save([
@@ -217,20 +226,35 @@ class GeneralTransaction extends BaseController
 					'item_stock' => $stock_sisa,
 				]);
 				if ($save_update_stock) {
-					$save_update_sale = $this->m_sale->save([
-						'id' => $detail_sale->sale_id,
-						'sale_total' => $total_sale,
-						'sale_profit' => $total_profit,
-					]);
-					if ($save_update_sale) {
-						if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
+					if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
+
+						// Perhitungan Belanja Baru
+						$get_all = $this->m_sale_detail->where('sale_id', get_cookie('transaction-general'))->findAll();
+						$sub_tot_1 = 0;
+						foreach ($get_all as $detail) {
+							$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+						}
+						$discount = $sub_tot_1 * $find_sale[0]->sale_discount / 100;
+						$sub_tot_2 = $sub_tot_1 - $discount;
+						$sub_tot_3 = $find_sale[0]->sale_handling + $sub_tot_2;
+						$pph = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+						$grand_total = $sub_tot_3 + $pph;
+						// End Perhitungan Belanja Baru
+
+						$save_update_sale = $this->m_sale->save([
+							'id' => $detail_sale->sale_id,
+							'sale_total' => $grand_total,
+							'sale_profit' => $total_profit,
+						]);
+
+						if ($save_update_sale) {
 							return redirect()->to('/transaction-general')->withCookies();
 						} else {
-							session()->setFlashdata('gagal', 'Gagal Menghapus Barang');
+							session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi');
 							return redirect()->to('/transaction-general')->withCookies();
 						}
 					} else {
-						session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi');
+						session()->setFlashdata('gagal', 'Gagal Menghapus Barang');
 						return redirect()->to('/transaction-general')->withCookies();
 					}
 				} else {
@@ -250,12 +274,22 @@ class GeneralTransaction extends BaseController
 				if ($save_update_status) {
 					$find_member = $this->m_member->find($find_sale[0]->member_id);
 					$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+					$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+					$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+					$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+					$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+					$note = $this->m_invoice->where('key', 'note')->first();
 					$data = [
 						'detail' => $find_detail,
-						'pph' => $pph_model,
 						'sale' => $find_sale,
+						'pph' => $pph_model,
 						'member' => $find_member,
 						'user' => $find_user,
+						'ttd_kiri' => $ttd_kiri,
+						'ttd_tengah' => $ttd_tengah,
+						'ttd_kanan' => $ttd_kanan,
+						'ttd_bawah' => $ttd_bawah,
+						'note' => $note,
 					];
 					// return view('Admin/page/invoice_transaction', $data);
 					set_cookie('transaction-general', false, 900);
@@ -302,18 +336,32 @@ class GeneralTransaction extends BaseController
 
 	public function add_handling_report()
 	{
-		if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+		if (get_cookie('transaction-general') || !empty($this->request->getPost('handling'))) {
 			if (!empty($this->request->getPost('handling'))) {
 				$id_transaksi = $this->request->getPost('id_transaksi');
 			} else {
-				$id_transaksi = get_cookie('transaction');
+				$id_transaksi = get_cookie('transaction-general');
 			}
 			$find = $this->m_sale->where('id', $id_transaksi)->find();
+			$pph_model = $this->m_pph->getAllPPh();
+
+			// Perhitungan Belanja Baru
+			$get_all = $this->m_sale_detail->where('sale_id', $id_transaksi)->findAll();
+			$sub_tot_1 = 0;
+			foreach ($get_all as $detail) {
+				$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+			}
+			$discount = $sub_tot_1 * $find[0]->sale_discount / 100;
+			$sub_tot_2 = $sub_tot_1 - $discount;
+			$sub_tot_3 = $this->request->getPost('handling_tot') + $sub_tot_2;
+			$pph = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+			$grand_total = $sub_tot_3 + $pph;
+			// End Perhitungan Belanja Baru
 
 			$save = $this->m_sale->save([
 				'id' => $id_transaksi,
 				'sale_handling' => $this->request->getPost('handling_tot'),
-				'sale_total' => $this->request->getPost('handling_tot') + $find[0]->sale_total,
+				'sale_total' => $grand_total,
 			]);
 			if ($save) {
 				// echo json_encode(array("status" => TRUE));
@@ -326,19 +374,34 @@ class GeneralTransaction extends BaseController
 	}
 	public function add_handling()
 	{
-		if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+		if (get_cookie('transaction-general') || !empty($this->request->getPost('handling'))) {
 			if (!empty($this->request->getPost('handling'))) {
 				$id_transaksi = $this->request->getPost('id_transaksi');
 			} else {
-				$id_transaksi = get_cookie('transaction');
+				$id_transaksi = get_cookie('transaction-general');
 			}
 			$find = $this->m_sale->where('id', $id_transaksi)->find();
+			$pph_model = $this->m_pph->getAllPPh();
+
+			// Perhitungan Belanja Baru
+			$get_all = $this->m_sale_detail->where('sale_id', $id_transaksi)->findAll();
+			$sub_tot_1 = 0;
+			foreach ($get_all as $detail) {
+				$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+			}
+			$discount = $sub_tot_1 * $find[0]->sale_discount / 100;
+			$sub_tot_2 = $sub_tot_1 - $discount;
+			$sub_tot_3 = $this->request->getPost('handling_tot') + $sub_tot_2;
+			$pph = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+			$grand_total = $sub_tot_3 + $pph;
+			// End Perhitungan Belanja Baru
 
 			$save = $this->m_sale->save([
 				'id' => $id_transaksi,
 				'sale_handling' => $this->request->getPost('handling_tot'),
-				'sale_total' => $this->request->getPost('handling_tot') + $find[0]->sale_total,
+				'sale_total' => $grand_total,
 			]);
+
 			if ($save) {
 				// echo json_encode(array("status" => TRUE));
 				return redirect()->to('/transaction-general')->withCookies();
@@ -365,12 +428,22 @@ class GeneralTransaction extends BaseController
 				$find_member = $this->m_member->find($find_sale[0]->member_id);
 				$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
 				$pph_model = $this->m_pph->getAllPPh();
+				$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+				$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+				$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+				$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+				$note = $this->m_invoice->where('key', 'note')->first();
 				$data = [
 					'detail' => $find_detail,
 					'sale' => $find_sale,
 					'pph' => $pph_model,
 					'member' => $find_member,
 					'user' => $find_user,
+					'ttd_kiri' => $ttd_kiri,
+					'ttd_tengah' => $ttd_tengah,
+					'ttd_kanan' => $ttd_kanan,
+					'ttd_bawah' => $ttd_bawah,
+					'note' => $note,
 				];
 				// return view('Admin/page/invoice_transaction', $data);
 				set_cookie('transaction-general', false, 900);
@@ -463,15 +536,10 @@ class GeneralTransaction extends BaseController
 							} else {
 								// Perhitungan Total Belanjar
 								$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
-								$discount = $detail * $find_sale[0]->sale_discount / 100;
-								// $detail_total = $detail - $discount;
-								$pph = $detail * $pph_model[0]->pph_value / 100;
-								$detail_total = $detail - $discount + $pph;
-								$total_sale = $find_sale[0]->sale_total + $detail_total;
 
 								// Total Keuntungan
 								$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
-								$total_profit = $find_sale[0]->sale_profit + $profit_per_item - $discount;
+								$total_profit = $find_sale[0]->sale_profit + $profit_per_item;
 								// $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
 								$save_sale_detail = $this->m_sale_detail->save([
 									'detail_total' => $detail,
@@ -486,10 +554,23 @@ class GeneralTransaction extends BaseController
 										'item_stock' => $stock_sisa,
 									]);
 									if ($save_item) {
+
+										// Perhitungan Belanja Baru
+										$get_all = $this->m_sale_detail->where('sale_id', $find_sale_code[0]->id)->findAll();
+										$sub_tot_1 = 0;
+										foreach ($get_all as $detail) {
+											$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+										}
+										$discount = $sub_tot_1 * $find_sale[0]->sale_discount / 100;
+										$sub_tot_2 = $sub_tot_1 - $discount;
+										$sub_tot_3 = $find_sale[0]->sale_handling + $sub_tot_2;
+										$pph = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+										$grand_total = $sub_tot_3 + $pph;
+										// End Perhitungan Belanja Baru
+
 										$save_sale = $this->m_sale->save([
 											'id' => $find_sale_code[0]->id,
-											'sale_total' => $total_sale,
-											// 'sale_discount' => $total_discount,
+											'sale_total' => $grand_total,
 											'sale_profit' => $total_profit,
 										]);
 										if ($save_sale) {
@@ -550,14 +631,10 @@ class GeneralTransaction extends BaseController
 
 					// Perhitungan Total Belanjar
 					$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
-					$discount = $detail * $find_sale[0]->sale_discount / 100;
-					$pph = $detail * 10/100;
-					$detail_total = $detail - $discount + $pph;
-					$total_sale = $find_sale[0]->sale_total - $detail_total;
 
 					// Total Keuntungan
 					$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
-					$total_profit = $find_sale[0]->sale_profit - $profit_per_item + $discount;
+					$total_profit = $find_sale[0]->sale_profit - $profit_per_item;
 
 					// Perlu input itu ada stoknya, sale_total,sale_profit
 					// Pertama ubah stocknya
@@ -566,20 +643,35 @@ class GeneralTransaction extends BaseController
 						'item_stock' => $stock_sisa,
 					]);
 					if ($save_update_stock) {
-						$save_update_sale = $this->m_sale->save([
-							'id' => $detail_sale->sale_id,
-							'sale_total' => $total_sale,
-							'sale_profit' => $total_profit,
-						]);
-						if ($save_update_sale) {
-							if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
+
+						if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
+							// Perhitungan Belanja Baru
+							$get_all = $this->m_sale_detail->where('sale_id', $find_sale_code[0]->id)->findAll();
+							$sub_tot_1 = 0;
+							foreach ($get_all as $detail) {
+								$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+							}
+							$discount = $sub_tot_1 * $find_sale[0]->sale_discount / 100;
+							$sub_tot_2 = $sub_tot_1 - $discount;
+							$sub_tot_3 = $find_sale[0]->sale_handling + $sub_tot_2;
+							$pph = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+							$grand_total = $sub_tot_3 + $pph;
+							// End Perhitungan Belanja Baru
+
+							$save_update_sale = $this->m_sale->save([
+								'id' => $detail_sale->sale_id,
+								'sale_total' => $grand_total,
+								'sale_profit' => $total_profit,
+							]);
+
+							if ($save_update_sale) {
 								return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 							} else {
-								session()->setFlashdata('gagal', 'Gagal Menghapus Item Barang Yang Dipilih');
+								session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi Yang Dipilih');
 								return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 							}
 						} else {
-							session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi Yang Dipilih');
+							session()->setFlashdata('gagal', 'Gagal Menghapus Item Barang Yang Dipilih');
 							return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
 						}
 					} else {
@@ -595,12 +687,22 @@ class GeneralTransaction extends BaseController
 					if ($save_update_status) {
 						$find_member = $this->m_member->find($find_sale[0]->member_id);
 						$find_user = $this->m_user->getUserRole($find_sale[0]->user_id);
+						$ttd_kiri = $this->m_invoice->where('key', 'kiri')->first();
+						$ttd_tengah = $this->m_invoice->where('key', 'tengah')->first();
+						$ttd_kanan = $this->m_invoice->where('key', 'kanan')->first();
+						$ttd_bawah = $this->m_invoice->where('key', 'bawah')->first();
+						$note = $this->m_invoice->where('key', 'note')->first();
 						$data = [
 							'detail' => $find_detail,
 							'sale' => $find_sale,
 							'pph' => $pph_model,
 							'member' => $find_member,
 							'user' => $find_user,
+							'ttd_kiri' => $ttd_kiri,
+							'ttd_tengah' => $ttd_tengah,
+							'ttd_kanan' => $ttd_kanan,
+							'ttd_bawah' => $ttd_bawah,
+							'note' => $note,
 						];
 						// return view('Admin/page/invoice_transaction', $data);
 						set_cookie('transaction-general', false, 900);

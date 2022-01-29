@@ -159,7 +159,7 @@ Transaksi Barang - Menu Kasir
                                                 <div class="row justify-content-center">
                                                     <div class="col-12">
                                                         <h4 class="text-center mb-4">Transaksi dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
-                                                        <a href="<?= base_url(); ?>/transaction" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
+                                                        <a href="<?= base_url(); ?>/transaction-general" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
                                                         <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
                                                             <?php csrf_field() ?>
                                                             <input type="hidden" name="_key" value="download">

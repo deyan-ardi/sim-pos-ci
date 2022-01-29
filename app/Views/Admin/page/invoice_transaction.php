@@ -154,8 +154,13 @@
                     <div>
                         <h5>CUSTOMER :</h5>
                         <div>Kode Member : <?= $member->member_code; ?></div>
+                        <div><?= date("d F Y H:i:s", strtotime($sale[0]->updated_at)); ?> WITA</div>
                         <div><?= $member->member_name; ?></div>
-                        <div>0<?= $member->member_contact; ?></div>
+                        <?php if ($sale[0]->sale_ket == "project") : ?>
+                            <div><?= $member->member_company; ?></div>
+                            <div><?= $member->member_job; ?></div>
+                            <div>0<?= $member->member_contact; ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="card-success" style="color:white;">
                         <h4>SUKSES</h4>
@@ -291,7 +296,7 @@
         </div>
     </main>
     <footer>
-        Invoice ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= $user[0]['username']; ?> Pada Tanggal <?= date("d F Y H:i:s", strtotime($sale[0]->created_at)); ?> WITA
+        Invoice ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= $user[0]['username']; ?> Pada Tanggal <?= date("d F Y H:i:s"); ?> WITA
     </footer>
 </body>
 
