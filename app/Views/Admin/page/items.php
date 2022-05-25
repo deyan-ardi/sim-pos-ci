@@ -551,8 +551,8 @@ Data Item Barang
                 <form action="" method="POST" enctype="multipart/form-data">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <input type="file" accept=".png,.jpg,.jpeg" class="form-control <?= $validation->getError('item_image') ? "is-invalid" : ""; ?>" name="item_image" required>
-                        <small id="file" class="form-text text-muted">File maksimal 1 Mb, bertipe .jpg, .png. atau
+                        <input type="file" accept=".png,.jpg,.jpeg" class="form-control <?= $validation->getError('item_image') ? "is-invalid" : ""; ?>" name="item_image">
+                        <small id="file" class="form-text text-muted">Bersifat opsional, file maksimal 1 Mb, bertipe .jpg, .png. atau
                             .jpeg</small>
                         <div class="invalid-feedback">
                             <?= $validation->getError("item_image"); ?>

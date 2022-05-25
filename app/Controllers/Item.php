@@ -31,39 +31,135 @@ class Item extends BaseController
 			'validation' => $this->validate,
 		];
 		if (!empty($this->request->getPost('input_items'))) {
-			$formSubmit = $this->validate([
-				'item_image' =>	'uploaded[item_image]|max_size[item_image,1048]|mime_in[item_image,image/png,image/jpg,image/jpeg]|ext_in[item_image,jpg,jpeg,png]',
-				'item_code' => 'required|max_length[25]',
-				'item_name' => 'required|max_length[200]',
-				'item_merk' => 'permit_empty|max_length[200]',
-				'item_type' => 'permit_empty|max_length[200]',
-				'item_weight' => 'permit_empty',
-				'item_length' => 'permit_empty',
-				'item_width' => 'permit_empty',
-				'item_height' => 'permit_empty',
-				'item_discount' => 'permit_empty',
-				'item_hpp' => 'permit_empty|integer',
-				'item_stock_a' => 'required|integer',
-				'item_stock_b' => 'required|integer',
-				'item_stock_c' => 'required|integer',
-				'item_stock_d' => 'required|integer',
-				'item_sale' => 'permit_empty',
-				'item_description' => 'permit_empty|max_length[500]',
-				'category' => 'required|integer',
-				'supplier' => 'required|integer',
-			]);
+			if ($this->request->getFile('item_image')->getError() == 0) {
+				$formSubmit = $this->validate([
+					'item_image' =>	'uploaded[item_image]|max_size[item_image,1048]|mime_in[item_image,image/png,image/jpg,image/jpeg]|ext_in[item_image,jpg,jpeg,png]',
+					'item_code' => 'required|max_length[25]',
+					'item_name' => 'required|max_length[200]',
+					'item_merk' => 'permit_empty|max_length[200]',
+					'item_type' => 'permit_empty|max_length[200]',
+					'item_weight' => 'permit_empty',
+					'item_length' => 'permit_empty',
+					'item_width' => 'permit_empty',
+					'item_height' => 'permit_empty',
+					'item_discount' => 'permit_empty',
+					'item_hpp' => 'permit_empty|integer',
+					'item_stock_a' => 'required|integer',
+					'item_stock_b' => 'required|integer',
+					'item_stock_c' => 'required|integer',
+					'item_stock_d' => 'required|integer',
+					'item_sale' => 'permit_empty',
+					'item_description' => 'permit_empty|max_length[500]',
+					'category' => 'required|integer',
+					'supplier' => 'required|integer',
+				]);
+			} else {
+				$formSubmit = $this->validate([
+					'item_code' => 'required|max_length[25]',
+					'item_name' => 'required|max_length[200]',
+					'item_merk' => 'permit_empty|max_length[200]',
+					'item_type' => 'permit_empty|max_length[200]',
+					'item_weight' => 'permit_empty',
+					'item_length' => 'permit_empty',
+					'item_width' => 'permit_empty',
+					'item_height' => 'permit_empty',
+					'item_discount' => 'permit_empty',
+					'item_hpp' => 'permit_empty|integer',
+					'item_stock_a' => 'required|integer',
+					'item_stock_b' => 'required|integer',
+					'item_stock_c' => 'required|integer',
+					'item_stock_d' => 'required|integer',
+					'item_sale' => 'permit_empty',
+					'item_description' => 'permit_empty|max_length[500]',
+					'category' => 'required|integer',
+					'supplier' => 'required|integer',
+				]);
+			}
 			if (!$formSubmit) {
 				return redirect()->to('/items')->withInput();
 			} else {
-				$fotoProduk = $this->request->getFile('item_image');
-				$namaProduk = $fotoProduk->getRandomName();
+				if ($this->request->getFile('item_image')->getError() == 0) {
+					$fotoProduk = $this->request->getFile('item_image');
+					$namaProduk = $fotoProduk->getRandomName();
 
-				$fotoProduk->move('upload/produk', $namaProduk);
-				$move = $this->crop
-					->withFile('upload/produk/' . $namaProduk)
-					->fit(200, 200, 'center')
-					->save('upload/produk/' . $namaProduk);
-				if ($move) {
+					$fotoProduk->move('upload/produk', $namaProduk);
+					$move = $this->crop
+						->withFile('upload/produk/' . $namaProduk)
+						->fit(200, 200, 'center')
+						->save('upload/produk/' . $namaProduk);
+					if ($move) {
+						// Perhitungan discount
+						$before = $this->request->getPost('item_sale');
+						if (empty($this->request->getPost('item_discount'))) {
+							$bil_dis = 0;
+						} else {
+							$bil_dis = $this->request->getPost('item_discount');
+						}
+						$discount = ($before * $bil_dis) / 100;
+						$after = $before - $discount;
+						$profit = $after - $this->request->getPost('item_hpp');
+						if ($profit <= 0) {
+							$profit = 0;
+						}
+						$total = $this->request->getPost('item_stock_a') + $this->request->getPost('item_stock_b') + $this->request->getPost('item_stock_c') + $this->request->getPost('item_stock_d');
+						if (in_groups('GUDANG')) {
+							$save = $this->m_item->save([
+								'item_image' => $namaProduk,
+								'item_code' => $this->request->getPost('item_code'),
+								'item_name' => ucWords($this->request->getPost('item_name')),
+								'item_merk' => ucWords($this->request->getPost('item_merk')),
+								'item_type' =>  ucWords($this->request->getPost('item_type')),
+								'item_weight' => $this->request->getPost('item_weight'),
+								'item_length' => $this->request->getPost('item_length'),
+								'item_width' => $this->request->getPost('item_width'),
+								'item_height' => $this->request->getPost('item_height'),
+								'item_warehouse_a' => $this->request->getPost('item_stock_a'),
+								'item_warehouse_b' => $this->request->getPost('item_stock_b'),
+								'item_warehouse_c' => $this->request->getPost('item_stock_c'),
+								'item_warehouse_d' => $this->request->getPost('item_stock_d'),
+								'item_stock' => $total,
+								'item_description' => ucWords($this->request->getPost('item_description')),
+								'category_id' => $this->request->getPost('category'),
+								'supplier_id' => $this->request->getPost('supplier'),
+							]);
+						} else {
+							$save = $this->m_item->save([
+								'item_image' => $namaProduk,
+								'item_code' => $this->request->getPost('item_code'),
+								'item_name' => ucWords($this->request->getPost('item_name')),
+								'item_merk' => ucWords($this->request->getPost('item_merk')),
+								'item_type' =>  ucWords($this->request->getPost('item_type')),
+								'item_weight' => $this->request->getPost('item_weight'),
+								'item_length' => $this->request->getPost('item_length'),
+								'item_width' => $this->request->getPost('item_width'),
+								'item_height' => $this->request->getPost('item_height'),
+								'item_warehouse_a' => $this->request->getPost('item_stock_a'),
+								'item_warehouse_b' => $this->request->getPost('item_stock_b'),
+								'item_warehouse_c' => $this->request->getPost('item_stock_c'),
+								'item_warehouse_d' => $this->request->getPost('item_stock_d'),
+								'item_stock' => $total,
+								'item_hpp' => $this->request->getPost('item_hpp'),
+								'item_before_sale' => $this->request->getPost('item_sale'),
+								'item_discount' => $this->request->getPost('item_discount'),
+								'item_sale' => $after,
+								'item_profit' => $profit,
+								'item_description' => ucWords($this->request->getPost('item_description')),
+								'category_id' => $this->request->getPost('category'),
+								'supplier_id' => $this->request->getPost('supplier'),
+							]);
+						}
+						if ($save) {
+							session()->setFlashdata('berhasil', 'Data Produk Baru Berhasil Ditambahkan');
+							return redirect()->to('/items')->withCookies();
+						} else {
+							session()->setFlashdata('gagal', 'Data Produk Gagal Ditambahkan');
+							return redirect()->to('/items')->withCookies();
+						}
+					} else {
+						session()->setFlashdata('gagal', 'File Gagal Dipindahkan Ke Server');
+						return redirect()->to('/items')->withCookies();
+					}
+				} else {
 					// Perhitungan discount
 					$before = $this->request->getPost('item_sale');
 					if (empty($this->request->getPost('item_discount'))) {
@@ -80,7 +176,6 @@ class Item extends BaseController
 					$total = $this->request->getPost('item_stock_a') + $this->request->getPost('item_stock_b') + $this->request->getPost('item_stock_c') + $this->request->getPost('item_stock_d');
 					if (in_groups('GUDANG')) {
 						$save = $this->m_item->save([
-							'item_image' => $namaProduk,
 							'item_code' => $this->request->getPost('item_code'),
 							'item_name' => ucWords($this->request->getPost('item_name')),
 							'item_merk' => ucWords($this->request->getPost('item_merk')),
@@ -100,7 +195,6 @@ class Item extends BaseController
 						]);
 					} else {
 						$save = $this->m_item->save([
-							'item_image' => $namaProduk,
 							'item_code' => $this->request->getPost('item_code'),
 							'item_name' => ucWords($this->request->getPost('item_name')),
 							'item_merk' => ucWords($this->request->getPost('item_merk')),
@@ -131,9 +225,6 @@ class Item extends BaseController
 						session()->setFlashdata('gagal', 'Data Produk Gagal Ditambahkan');
 						return redirect()->to('/items')->withCookies();
 					}
-				} else {
-					session()->setFlashdata('gagal', 'File Gagal Dipindahkan Ke Server');
-					return redirect()->to('/items')->withCookies();
 				}
 			}
 		} else if (!empty($this->request->getPost('update_items'))) {
@@ -401,23 +492,23 @@ class Item extends BaseController
 				'item_outs' => $item_out_filter,
 			];
 			if (!empty($this->request->getPost('export_out'))) {
-                if ($this->request->getGet('tanggal_awal') != null && $this->request->getGet('tanggal_akhir') != null) {
-                    $item_out_filter = $this->m_sale->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
-                    $data_in = [
-                        'ket' => 'BARANG KELUAR',
-                        'barang' => $item_out_filter,
+				if ($this->request->getGet('tanggal_awal') != null && $this->request->getGet('tanggal_akhir') != null) {
+					$item_out_filter = $this->m_sale->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
+					$data_in = [
+						'ket' => 'BARANG KELUAR',
+						'barang' => $item_out_filter,
 						'awal' => $this->request->getGet('tanggal_awal'),
 						'akhir' => $this->request->getGet('tanggal_akhir'),
-                    ];
-            
-                    $mpdf = new \Mpdf\Mpdf();
-                    $html = view('Admin/page/invoice_barang_keluar', $data_in);
-                    $mpdf->WriteHTML($html);
-                    $mpdf->showImageErrors = true;
-                    $this->response->setHeader('Content-Type', 'application/pdf');
-                    $mpdf->Output('Data Barang Masuk.pdf', 'I');
-                }
-			} else if($this->request->getPost('export_in')){
+					];
+
+					$mpdf = new \Mpdf\Mpdf();
+					$html = view('Admin/page/invoice_barang_keluar', $data_in);
+					$mpdf->WriteHTML($html);
+					$mpdf->showImageErrors = true;
+					$this->response->setHeader('Content-Type', 'application/pdf');
+					$mpdf->Output('Data Barang Masuk.pdf', 'I');
+				}
+			} else if ($this->request->getPost('export_in')) {
 				$data_in = [
 					'ket' => 'BARANG MASUK',
 					'barang' => $item_in_filter,
@@ -430,7 +521,7 @@ class Item extends BaseController
 				$mpdf->showImageErrors = true;
 				$this->response->setHeader('Content-Type', 'application/pdf');
 				$mpdf->Output('Data Barang Masuk.pdf', 'I');
-			}else{
+			} else {
 				return view('Admin/page/report-items', $data);
 			}
 		} else if (!empty($this->request->getPost('export_out'))) {
