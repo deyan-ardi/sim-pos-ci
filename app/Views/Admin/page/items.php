@@ -5,14 +5,9 @@ Data Item Barang
 
 <?= $this->section('footer'); ?>
 <!-- datatable Js -->
-<script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
-<script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
-    $(".delete-button").on("click", function(e) {
-        e.preventDefault();
-        var self = $(this);
-        var nama = $(this).attr("data-nama");
-        var formId = $(this).attr("data-formid");
+    const deleteButton = (formId, nama) => {
         swal({
                 title: "Hapus Item Barang Dengan Kode " + nama + "?",
                 text: "Informasi Yang Terkait Dengan Data Ini Akan Hilang Secara Permanen",
@@ -22,7 +17,7 @@ Data Item Barang
             })
             .then((result) => {
                 if (result) {
-                    $("#" + formId).submit();
+                    $("#submit-" + formId).submit();
                 } else {
                     swal({
                         title: "File Aman !",
@@ -31,9 +26,284 @@ Data Item Barang
                     });
                 }
             });
+    };
+
+    $(document).ready(function() {
+        var table = $('#yajra-datatables').DataTable({
+            processing: true, //Feature control the processing indicator.
+            serverSide: true, //Feature control DataTables' server-side processing mode.
+            order: [],
+            ajax: {
+                url: '<?= base_url('items/getItemAll'); ?>',
+            },
+            columns: [{
+                    data: 'row_number',
+                    name: 'row_number',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'item_image',
+                    name: 'item_image',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Gambar";
+                        }
+                        return '<img src="<?= base_url(); ?>/upload/produk/' + o + '" alt="Gambar Produk" width="50%">'
+                    },
+                },
+                {
+                    data: 'item_code',
+                    name: 'item_code'
+                },
+                {
+                    data: 'item_name',
+                    name: 'item_name'
+                },
+                {
+                    data: 'item_merk',
+                    name: 'item_merk',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Merek";
+                        }
+                        return o;
+                    }
+                },
+                {
+                    data: 'item_type',
+                    name: 'item_type',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Type";
+                        }
+                        return o;
+                    }
+                },
+                {
+                    data: 'item_weight',
+                    name: 'item_weight',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Kg';
+                    }
+                },
+                {
+                    data: 'item_length',
+                    name: 'item_length',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Meter';
+                    }
+                },
+                {
+                    data: 'item_width',
+                    name: 'item_width',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Meter';
+                    }
+                },
+                {
+                    data: 'item_height',
+                    name: 'item_height',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Meter';
+                    }
+                },
+                {
+                    data: 'item_description',
+                    name: 'item_description',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Deskripsi";
+                        } else {
+                            return o;
+                        }
+                    }
+                },
+                {
+                    data: 'item_warehouse_a',
+                    name: 'item_warehouse_a',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_warehouse_b',
+                    name: 'item_warehouse_b',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_warehouse_c',
+                    name: 'item_warehouse_c',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_warehouse_d',
+                    name: 'item_warehouse_d',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_stock',
+                    name: 'item_stock',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                <?php if (!in_groups('GUDANG')) : ?> {
+                        data: 'item_hpp',
+                        name: 'item_hpp',
+                        render: function(o) {
+                            return format_rupiah(o);
+                        }
+                    },
+                    {
+                        data: 'item_before_sale',
+                        name: 'item_before_sale',
+                        render: function(o) {
+                            return format_rupiah(o);
+                        }
+                    },
+                    {
+                        data: 'item_discount',
+                        name: 'item_discount',
+                        render: function(o) {
+                            return format_rupiah(o);
+                        }
+                    },
+                    {
+                        data: 'item_sale',
+                        name: 'item_sale',
+                        render: function(o) {
+                            return format_rupiah(o);
+                        }
+                    },
+                    {
+                        data: 'item_profit',
+                        name: 'item_profit',
+                        render: function(o) {
+                            return format_rupiah(o);
+
+                        }
+                    },
+                <?php endif; ?> {
+                    data: 'category_name',
+                    name: 'category_name',
+                },
+                {
+                    data: 'supplier_name',
+                    name: 'supplier_name',
+                },
+                {
+                    data: 'updated_at',
+                    name: 'updated_at',
+                    searchable: false,
+                    render: function(o) {
+                        const options = {
+                            timeZone: "Asia/Makassar",
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                            hour12: false,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        };
+                        const new_date = new Date(o);
+                        return new_date.toLocaleTimeString("en-US", options) + " WITA";
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    searchable: false,
+                    render: function(o) {
+                        <?php if (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
+                            const action =
+                                `<div class="row justify-content-center">
+                                <!-- Posisi Barang Button -->
+                                <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updatePosisi-` + o.id +
+                                `"><i class="feather icon-box" title="Posisi Barang" data-toggle="tooltip"></i></button>
+
+                                <!-- Update Button Modal -->							
+                                <button type="button" onclick="update(` + o.id +
+                                `)" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-` + o.id +
+                                `"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
+
+                                <!-- Delete -->
+                                <form action="" id="submit-` + o.id +
+                                `" method="POST">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                    <input type="hidden" name="id_item" value="` + o.id + `">
+                                    <input type="hidden" name="delete_items" value="delete">
+                                    <button type="button" onclick="deleteButton(` + o.id +
+                                `,'` + o.item_code +
+                                `')" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                </form>
+                            </div>`;
+                        <?php else : ?>
+                            const action =
+                                `<div class="row justify-content-center">
+                                <!-- Update Button Modal -->							
+                                <button type="button" onclick="update(` + o.id +
+                                `)" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-` + o.id +
+                                `"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
+
+                                <!-- Delete -->
+                                <form action="" id="submit-` + o.id +
+                                `" method="POST">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                    <input type="hidden" name="id_item" value="` + o.id + `">
+                                    <input type="hidden" name="delete_items" value="delete">
+                                    <button type="button" onclick="deleteButton(` + o.id +
+                                `,'` + o.item_code +
+                                `')" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                </form>
+                            </div>`;
+                        <?php endif; ?>
+                        return action;
+                    }
+                },
+            ],
+            columnDefs: [{
+                targets: [0],
+                orderable: false,
+            }, ]
+        });
     });
-</script>
-<script>
+
     $(document).ready(function() {
         $('#item_id').selectize({
             sortField: 'text'
@@ -62,7 +332,7 @@ Data Item Barang
 
 <?= $this->section('header'); ?>
 <!-- data tables css -->
-<link rel="stylesheet" href="<?= base_url(); ?>/assets/plugins/data-tables/css/datatables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 
 <?= $this->endSection(); ?>
 
@@ -101,7 +371,7 @@ Data Item Barang
                                     <div class="card-body">
                                         <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Tambahkan Barang</button>
                                         <div class="dt-responsive table-responsive">
-                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <table id="yajra-datatables" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -135,67 +405,7 @@ Data Item Barang
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
-                                                    $i = 1;
-                                                    foreach ($items as $c) : ?>
-                                                        <tr>
-                                                            <td><?= $i++; ?></td>
-                                                            <td><img src="<?= base_url(); ?>/upload/produk/<?= $c->item_image; ?>" alt="Gambar Produk" width="50%">
-                                                            </td>
-                                                            <td><?= $c->item_code; ?></td>
-                                                            <td><?= $c->item_name; ?></td>
-                                                            <td>
-                                                                <?= !empty($c->item_merk) ? $c->item_merk : "Kosong"; ?>
-                                                            </td>
-                                                            <td><?= !empty($c->item_type) ? $c->item_type : "Kosong"; ?>
-                                                            </td>
-                                                            <td><?= $c->item_weight; ?> Kg</td>
-                                                            <td><?= $c->item_length; ?> Meter</td>
-                                                            <td><?= $c->item_width; ?> Meter</td>
-                                                            <td><?= $c->item_height; ?> Meter</td>
-                                                            <td><?= !empty($c->item_description) ? $c->item_description : "Kosong"; ?>
-                                                            </td>
-                                                            <td><?= $c->item_warehouse_a; ?> Buah</td>
-                                                            <td><?= $c->item_warehouse_b; ?> Buah</td>
-                                                            <td><?= $c->item_warehouse_c; ?> Buah</td>
-                                                            <td><?= $c->item_warehouse_d; ?> Buah</td>
-                                                            <td><?= $c->item_stock; ?> Buah</td>
-                                                            <?php if (!in_groups('GUDANG')) : ?>
-                                                                <td>Rp. <?= format_rupiah($c->item_hpp); ?></td>
-                                                                <td>Rp. <?= format_rupiah($c->item_before_sale); ?></td>
-                                                                <td><?= format_rupiah($c->item_discount); ?> %</td>
-                                                                <td>Rp. <?= format_rupiah($c->item_sale); ?></td>
-                                                                <td>Rp. <?= format_rupiah($c->item_profit); ?></td>
-                                                            <?php endif; ?>
-                                                            <td><?= $c->category_name; ?></td>
-                                                            <td><?= $c->supplier_name; ?></td>
-                                                            <td>
-                                                                <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
-                                                            </td>
-                                                            <td>
-                                                                <div class="row justify-content-center">
-                                                                    <!-- Posisi Barang Button -->
-                                                                    <?php if (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
-                                                                        <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updatePosisi-<?= $c->id; ?>"><i class="feather icon-box" title="Posisi Barang" data-toggle="tooltip"></i></button>
 
-                                                                    <?php endif; ?>
-
-                                                                    <!-- Update Button Modal -->
-                                                                    <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
-
-                                                                    <!-- Delete -->
-                                                                    <form action="" id="<?= $c->id; ?>" method="POST">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                                        <input type="hidden" name="id_item" value="<?= $c->id; ?>">
-                                                                        <input type="hidden" name="delete_items" value="delete">
-                                                                        <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->item_code ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                    </form>
-
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    <?php endforeach; ?>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -227,7 +437,6 @@ Data Item Barang
                                                         <th>Diubah Terakhir</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
-
                                                     </tr>
                                                 </tfoot>
                                             </table>

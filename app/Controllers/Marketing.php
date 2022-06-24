@@ -7,6 +7,7 @@ use App\Models\ItemModel;
 use App\Models\OrderDetailModel;
 use App\Models\OrderModel;
 use App\Models\RequestOrderModel;
+use Hermawan\DataTables\DataTable;
 
 class Marketing extends BaseController
 {
@@ -19,6 +20,19 @@ class Marketing extends BaseController
 		$this->m_order = new OrderModel();
 		$this->crop = \Config\Services::image();
 	}
+	public function ajaxDatatables()
+	{
+		$db = db_connect();
+		$item = $db->table('items')
+		->select('items.id, items.item_image, items.item_code, items.item_name, items.item_merk, items.item_type, items.item_weight, items.item_length, items.item_width, items.item_before_sale, items.item_discount, items.item_sale, items.item_description, items.item_warehouse_a, items.item_warehouse_b, items.item_warehouse_c, items.item_warehouse_d, items.item_stock, items.updated_at, suppliers.supplier_name, item_categories.category_name')
+		->join('item_categories', 'item_categories.id = items.category_id')
+		->join('suppliers', 'suppliers.id = items.supplier_id');
+		return DataTable::of($item)
+			->addNumbering('row_number')
+			->toJson(true);
+	}
+
+
 	public function index()
 	{
 		$data = [

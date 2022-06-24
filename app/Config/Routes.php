@@ -34,7 +34,7 @@ $routes->setAutoRoute(true);
 $routes->group('/', ['filter' => 'role:SUPER ADMIN, KASIR, ATASAN, GUDANG, MARKETING, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Home::index');
 	$routes->get('home-page', 'Home::index');
-	$routes->get('profile-setting','Home::profile');
+	$routes->get('profile-setting', 'Home::profile');
 	$routes->patch('profile-setting', 'Home::profile');
 });
 
@@ -45,8 +45,9 @@ $routes->group('categories', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'
 	$routes->post('/', 'Category::index');
 });
 
-$routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'],['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Item::index');
+	$routes->get('getItemAll', 'Item::ajaxDatatables');
 	$routes->post('/', 'Item::index');
 	$routes->patch('/', 'Item::index');
 	$routes->delete('/', 'Item::index');
@@ -64,7 +65,7 @@ $routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR, MARKETING'], ['
 	$routes->delete('/', 'Member::index');
 });
 
-$routes->group('users', ['filter' => 'role:SUPER ADMIN'],['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('users', ['filter' => 'role:SUPER ADMIN'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'User::index');
 	$routes->post('/', 'User::index');
 	$routes->patch('/', 'User::index');
@@ -91,6 +92,7 @@ $routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING']
 
 $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('/', 'Marketing::index');
+	$routes->get('order-items/getItemAll', 'Marketing::ajaxDatatables');
 	$routes->get('view-orders', 'Marketing::view_order');
 	$routes->get('order-items', 'Marketing::order');
 	$routes->get('list-orders', 'Marketing::list_orders');

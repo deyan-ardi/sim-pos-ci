@@ -6,9 +6,9 @@ use App\Controllers\BaseController;
 use App\Models\ItemCategoryModel;
 use App\Models\ItemModel;
 use App\Models\OrderModel;
-use App\Models\RequestOrderModel;
 use App\Models\SaleModel;
 use App\Models\SupplierModel;
+use Hermawan\DataTables\DataTable;
 
 class Item extends BaseController
 {
@@ -22,6 +22,23 @@ class Item extends BaseController
 		$this->m_order = new OrderModel();
 		$this->m_sale = new SaleModel();
 	}
+
+	public function ajaxDatatables()
+	{
+		$db = db_connect();
+		$item = $db->table('items')
+			->select('items.id, items.item_image, items.item_code, items.item_name, items.item_merk, items.item_type, items.item_weight, items.item_length, items.item_width, items.item_hpp, items.item_before_sale, items.item_discount, items.item_sale, items.item_profit, items.item_description, items.item_warehouse_a, items.item_warehouse_b, items.item_warehouse_c, items.item_warehouse_d, items.item_stock, items.updated_at, suppliers.supplier_name, item_categories.category_name')
+			->join('item_categories', 'item_categories.id = items.category_id')
+			->join('suppliers', 'suppliers.id = items.supplier_id');
+		return DataTable::of($item)
+			->add('action', function ($row) {
+				$action = $row;
+				return $action;
+			})
+			->addNumbering('row_number')
+			->toJson(true);
+	}
+
 	public function index()
 	{
 		$data = [
@@ -458,16 +475,15 @@ class Item extends BaseController
 		} else if (!empty($this->request->getPost('delete_items'))) {
 			$find = $this->m_item->find($this->request->getPost('id_item'));
 			if (!empty($find)) {
-				if (unlink('upload/produk/' . $find->item_image)) {
-					if ($this->m_item->delete($this->request->getPost('id_item'))) {
-						session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Dihapus');
-						return redirect()->to('/items')->withCookies();
-					} else {
-						session()->setFlashdata('gagal', 'Data Produk Gagal Dihapus');
-						return redirect()->to('/items')->withCookies();
-					}
+				if (!empty($find->item_image)) {
+					unlink('upload/produk/' . $find->item_image);
+				}
+
+				if ($this->m_item->delete($this->request->getPost('id_item'))) {
+					session()->setFlashdata('berhasil', 'Data Produk Yang Dipilih Berhasil Dihapus');
+					return redirect()->to('/items')->withCookies();
 				} else {
-					session()->setFlashdata('gagal', 'Gagal Mengahapus Gambar Produk di Server');
+					session()->setFlashdata('gagal', 'Data Produk Gagal Dihapus');
 					return redirect()->to('/items')->withCookies();
 				}
 			} else {

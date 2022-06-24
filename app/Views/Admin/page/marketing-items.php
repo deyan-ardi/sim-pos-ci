@@ -8,29 +8,213 @@ Data Item Barang
 <script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
 <script type="text/javascript">
-    $(".delete-button").on("click", function(e) {
-        e.preventDefault();
-        var self = $(this);
-        var nama = $(this).attr("data-nama");
-        var formId = $(this).attr("data-formid");
-        swal({
-                title: "Hapus Item Barang Dengan Kode " + nama + "?",
-                text: "Informasi Yang Terkait Dengan Data Ini Akan Hilang Secara Permanen",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((result) => {
-                if (result) {
-                    $("#" + formId).submit();
-                } else {
-                    swal({
-                        title: "File Aman !",
-                        text: "Data Item Barang Dengan Kode " + nama + " Batal Dihapus",
-                        icon: "info",
-                    });
-                }
-            });
+    $(document).ready(function() {
+        var table = $('#yajra-datatables').DataTable({
+            processing: true,
+            serverSide: true,
+            order: [],
+            ajax: {
+                url: '<?= base_url('marketing/order-items/getItemAll'); ?>',
+            },
+            columns: [{
+                    data: 'row_number',
+                    name: 'row_number',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'item_image',
+                    name: 'item_image',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Gambar";
+                        }
+                        return '<img src="<?= base_url(); ?>/upload/produk/' + o + '" alt="Gambar Produk" width="50%">'
+                    },
+                },
+                {
+                    data: 'item_code',
+                    name: 'item_code'
+                },
+                {
+                    data: 'item_name',
+                    name: 'item_name'
+                },
+                {
+                    data: 'item_merk',
+                    name: 'item_merk',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Merek";
+                        }
+                        return o;
+                    }
+                },
+                {
+                    data: 'item_type',
+                    name: 'item_type',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Type";
+                        }
+                        return o;
+                    }
+                },
+                {
+                    data: 'item_weight',
+                    name: 'item_weight',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Kg';
+                    }
+                },
+                {
+                    data: 'item_length',
+                    name: 'item_length',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Meter';
+                    }
+                },
+                {
+                    data: 'item_width',
+                    name: 'item_width',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Meter';
+                    }
+                },
+                {
+                    data: 'item_height',
+                    name: 'item_height',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Meter';
+                    }
+                },
+                {
+                    data: 'item_description',
+                    name: 'item_description',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            return "Tidak Ada Deskripsi";
+                        } else {
+                            return o;
+                        }
+                    }
+                },
+                {
+                    data: 'item_warehouse_a',
+                    name: 'item_warehouse_a',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_warehouse_b',
+                    name: 'item_warehouse_b',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_warehouse_c',
+                    name: 'item_warehouse_c',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_warehouse_d',
+                    name: 'item_warehouse_d',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_stock',
+                    name: 'item_stock',
+                    render: function(o) {
+                        if (o == null || o == "") {
+                            o = 0;
+                        }
+                        return o + ' Buah';
+                    }
+                },
+                {
+                    data: 'item_before_sale',
+                    name: 'item_before_sale',
+                    render: function(o) {
+                        return format_rupiah(o);
+                    }
+                },
+                {
+                    data: 'item_discount',
+                    name: 'item_discount',
+                    render: function(o) {
+                        return format_rupiah(o);
+                    }
+                },
+                {
+                    data: 'item_sale',
+                    name: 'item_sale',
+                    render: function(o) {
+                        return format_rupiah(o);
+                    }
+                },
+
+                {
+                    data: 'category_name',
+                    name: 'category_name',
+                },
+                {
+                    data: 'supplier_name',
+                    name: 'supplier_name',
+                },
+                {
+                    data: 'updated_at',
+                    name: 'updated_at',
+                    searchable: false,
+                    render: function(o) {
+                        const options = {
+                            timeZone: "Asia/Makassar",
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                            hour12: false,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        };
+                        const new_date = new Date(o);
+                        return new_date.toLocaleTimeString("en-US", options) + " WITA";
+                    }
+                },
+            ],
+            columnDefs: [{
+                targets: [0],
+                orderable: false,
+            }, ]
+        });
     });
 </script>
 <?= $this->endSection(); ?>
@@ -75,7 +259,7 @@ Data Item Barang
                                     </div>
                                     <div class="card-body">
                                         <div class="dt-responsive table-responsive">
-                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <table id="yajra-datatables" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -104,41 +288,7 @@ Data Item Barang
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
-                                                    $i = 1;
-                                                    foreach ($items as $c) : ?>
-                                                        <tr>
-                                                            <td><?= $i++; ?></td>
-                                                            <td><img src="<?= base_url(); ?>/upload/produk/<?= $c->item_image; ?>" alt="Gambar Produk" width="50%">
-                                                            </td>
-                                                            <td><?= $c->item_code; ?></td>
-                                                            <td><?= $c->item_name; ?></td>
-                                                            <td>
-                                                                <?= !empty($c->item_merk) ? $c->item_merk : "Kosong"; ?>
-                                                            </td>
-                                                            <td><?= !empty($c->item_type) ? $c->item_type : "Kosong"; ?>
-                                                            </td>
-                                                            <td><?= $c->item_weight; ?> Kg</td>
-                                                            <td><?= $c->item_length; ?> Meter</td>
-                                                            <td><?= $c->item_width; ?> Meter</td>
-                                                            <td><?= $c->item_height; ?> Meter</td>
-                                                            <td><?= !empty($c->item_description) ? $c->item_description : "Kosong"; ?>
-                                                            </td>
-                                                            <td><?= $c->item_warehouse_a; ?> Buah</td>
-                                                            <td><?= $c->item_warehouse_b; ?> Buah</td>
-                                                            <td><?= $c->item_warehouse_c; ?> Buah</td>
-                                                            <td><?= $c->item_warehouse_d; ?> Buah</td>
-                                                            <td><?= $c->item_stock; ?> Buah</td>
-                                                            <td>Rp. <?= format_rupiah($c->item_before_sale); ?></td>
-                                                            <td><?= format_rupiah($c->item_discount); ?> %</td>
-                                                            <td>Rp. <?= format_rupiah($c->item_sale); ?></td>
-                                                            <td><?= $c->category_name; ?></td>
-                                                            <td><?= $c->supplier_name; ?></td>
-                                                            <td>
-                                                                <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
-                                                            </td>
-                                                        </tr>
-                                                    <?php endforeach; ?>
+
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
