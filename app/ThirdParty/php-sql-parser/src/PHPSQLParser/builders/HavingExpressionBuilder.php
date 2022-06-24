@@ -31,43 +31,45 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * This class implements the builder for expressions within the HAVING part. 
+ * This class implements the builder for expressions within the HAVING part.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  Ian Barker <ian@theorganicagency.com>
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class HavingExpressionBuilder extends WhereExpressionBuilder {
-
-    protected function buildHavingExpression($parsed) {
+class HavingExpressionBuilder extends WhereExpressionBuilder
+{
+    protected function buildHavingExpression($parsed)
+    {
         return $this->build($parsed);
     }
 
-    protected function buildHavingBracketExpression($parsed) {
+    protected function buildHavingBracketExpression($parsed)
+    {
         $builder = new HavingBracketExpressionBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::EXPRESSION) {
-            return "";
+            return '';
         }
-        $sql = "";
+        $sql = '';
+
         foreach ($parsed['sub_tree'] as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->buildColRef($v);
@@ -79,16 +81,13 @@ class HavingExpressionBuilder extends WhereExpressionBuilder {
             $sql .= $this->buildHavingBracketExpression($v);
             $sql .= $this->buildUserVariable($v);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('HAVING expression subtree', $k, $v, 'expr_type');
             }
 
-            $sql .= " ";
+            $sql .= ' ';
         }
 
-        $sql = substr($sql, 0, -1);
-        return $sql;
+        return substr($sql, 0, -1);
     }
-
 }
-?>

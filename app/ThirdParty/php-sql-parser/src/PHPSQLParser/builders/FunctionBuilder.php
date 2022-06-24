@@ -31,85 +31,103 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2015 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * This class implements the builder for function calls. 
+ * This class implements the builder for function calls.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class FunctionBuilder implements Builder {
-
-    protected function buildAlias($parsed) {
+class FunctionBuilder implements Builder
+{
+    protected function buildAlias($parsed)
+    {
         $builder = new AliasBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildColRef($parsed) {
+    protected function buildColRef($parsed)
+    {
         $builder = new ColumnReferenceBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildConstant($parsed) {
+    protected function buildConstant($parsed)
+    {
         $builder = new ConstantBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildReserved($parsed) {
+    protected function buildReserved($parsed)
+    {
         $builder = new ReservedBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function isReserved($parsed) {
+    protected function isReserved($parsed)
+    {
         $builder = new ReservedBuilder();
+
         return $builder->isReserved($parsed);
     }
-    
-    protected function buildSelectExpression($parsed) {
+
+    protected function buildSelectExpression($parsed)
+    {
         $builder = new SelectExpressionBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildSelectBracketExpression($parsed) {
+    protected function buildSelectBracketExpression($parsed)
+    {
         $builder = new SelectBracketExpressionBuilder();
+
         return $builder->build($parsed);
     }
-    
-    protected function buildSubQuery($parsed) {
+
+    protected function buildSubQuery($parsed)
+    {
         $builder = new SubQueryBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildUserVariableExpression($parsed) {
+    protected function buildUserVariableExpression($parsed)
+    {
         $builder = new UserVariableBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if (($parsed['expr_type'] !== ExpressionType::AGGREGATE_FUNCTION)
             && ($parsed['expr_type'] !== ExpressionType::SIMPLE_FUNCTION)
             && ($parsed['expr_type'] !== ExpressionType::CUSTOM_FUNCTION)) {
-            return "";
+            return '';
         }
 
         if ($parsed['sub_tree'] === false) {
-            return $parsed['base_expr'] . "()" . $this->buildAlias($parsed);
+            return $parsed['base_expr'] . '()' . $this->buildAlias($parsed);
         }
 
-        $sql = "";
+        $sql = '';
+
         foreach ($parsed['sub_tree'] as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->build($v);
@@ -121,14 +139,13 @@ class FunctionBuilder implements Builder {
             $sql .= $this->buildSelectExpression($v);
             $sql .= $this->buildUserVariableExpression($v);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('function subtree', $k, $v, 'expr_type');
             }
 
-            $sql .= ($this->isReserved($v) ? " " : ",");
+            $sql .= ($this->isReserved($v) ? ' ' : ',');
         }
-        return $parsed['base_expr'] . "(" . substr($sql, 0, -1) . ")" . $this->buildAlias($parsed);
-    }
 
+        return $parsed['base_expr'] . '(' . substr($sql, 0, -1) . ')' . $this->buildAlias($parsed);
+    }
 }
-?>

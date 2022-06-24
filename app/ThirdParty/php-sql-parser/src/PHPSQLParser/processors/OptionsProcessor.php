@@ -32,46 +32,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
  * This class processes the statement options.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class OptionsProcessor extends AbstractProcessor {
-
-    public function process($tokens) {
-        $resultList = array();
+class OptionsProcessor extends AbstractProcessor
+{
+    public function process($tokens)
+    {
+        $resultList = [];
 
         foreach ($tokens as $token) {
-
             $tokenList = $this->splitSQLIntoTokens($token);
-            $result = array();
+            $result    = [];
 
             foreach ($tokenList as $reserved) {
                 $trim = trim($reserved);
                 if ($trim === '') {
                     continue;
                 }
-                $result[] = array('expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim);
+                $result[] = ['expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim];
             }
-            $resultList[] = array('expr_type' => ExpressionType::EXPRESSION, 'base_expr' => trim($token),
-                                  'sub_tree' => $result);
+            $resultList[] = ['expr_type' => ExpressionType::EXPRESSION, 'base_expr' => trim($token),
+                'sub_tree'               => $result, ];
         }
 
         return $resultList;
     }
 }
-
-?>

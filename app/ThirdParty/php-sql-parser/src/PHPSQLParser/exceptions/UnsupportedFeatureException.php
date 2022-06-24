@@ -32,38 +32,37 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\exceptions;
+
 use Exception;
 
 /**
  * This exception will occur in the PHPSQLCreator, if the creator finds
- * a field name, which is unknown. The developers have created some 
- * additional output of the parser, but the creator class has not been 
+ * a field name, which is unknown. The developers have created some
+ * additional output of the parser, but the creator class has not been
  * enhanced. Please open an issue in such a case.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class UnsupportedFeatureException extends Exception {
-
+class UnsupportedFeatureException extends Exception
+{
     protected $key;
 
-    public function __construct($key) {
+    public function __construct($key)
+    {
         $this->key = $key;
-        parent::__construct($key . " not implemented.", 20);
+        parent::__construct($key . ' not implemented.', 20);
     }
 
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 }
-
-?>

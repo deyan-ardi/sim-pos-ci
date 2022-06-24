@@ -32,11 +32,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\builders;
@@ -45,19 +44,21 @@ namespace PHPSQLParser\builders;
  * This class implements the builder for the DROP INDEX statement. You can overwrite
  * all functions to achieve another handling.
  */
-class DropIndexBuilder implements Builder {
+class DropIndexBuilder implements Builder
+{
+    protected function buildIndexTable($parsed)
+    {
+        $builder = new DropIndexTableBuilder();
 
-	protected function buildIndexTable($parsed) {
-		$builder = new DropIndexTableBuilder();
-		return $builder->build($parsed);
-	}
-
-    public function build(array $parsed) {
-        $sql = $parsed['name'];
-	    $sql = trim($sql);
-	    $sql .= ' ' . $this->buildIndexTable($parsed);
-        return trim($sql);
+        return $builder->build($parsed);
     }
 
+    public function build(array $parsed)
+    {
+        $sql = $parsed['name'];
+        $sql = trim($sql);
+        $sql .= ' ' . $this->buildIndexTable($parsed);
+
+        return trim($sql);
+    }
 }
-?>

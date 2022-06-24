@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\ItemModel;
 use App\Models\OrderDetailModel;
 use App\Models\OrderModel;
@@ -11,404 +10,411 @@ use App\Models\SupplierModel;
 
 class Supplier extends BaseController
 {
-	public function __construct()
-	{
-		$this->validate = \Config\Services::validation();
-		$this->m_supplier = new SupplierModel();
-		$this->m_item = new ItemModel();
-		$this->m_request_order = new RequestOrderModel();
-		$this->m_order = new OrderModel();
-		$this->m_order_detail = new OrderDetailModel();
-	}
-	public function index()
-	{
-		if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) {
-			$data = [
-				'supplier' => $this->m_supplier->findAll(),
-				'validation' => $this->validate,
-			];
-			if (!empty($this->request->getPost('input_supplier'))) {
-				$formSubmit = $this->validate([
-					'supplier_name' => 'required|max_length[200]',
-					'supplier_contact' => 'required|is_natural',
-					'supplier_email' => 'required|valid_email',
-					'supplier_alamat' => 'required',
-					'supplier_description' => 'required|max_length[500]',
-				]);
-				if (!$formSubmit) {
-					return redirect()->to('/suppliers')->withInput();
-				} else {
-					$save = $this->m_supplier->save([
-						'supplier_name' => ucWords($this->request->getPost('supplier_name')),
-						'supplier_contact' => $this->request->getPost('supplier_contact'),
-						'supplier_email' => $this->request->getPost('supplier_email'),
-						'supplier_address' => ucWords($this->request->getPost('supplier_alamat')),
-						'supplier_description' => ucWords($this->request->getPost('supplier_description')),
-					]);
-					if ($save) {
-						session()->setFlashdata('berhasil', 'Supplier Baru Berhasil Ditambahkan');
-						return redirect()->to('/suppliers')->withCookies();
-					} else {
-						session()->setFlashdata('gagal', 'Gagal Menambahkan Supplier');
-						return redirect()->to('/suppliers')->withCookies();
-					}
-				}
-			} else if (!empty($this->request->getPost('update_supplier'))) {
-				$formSubmit = $this->validate([
-					'supplier_name_up' => 'required|max_length[200]',
-					'supplier_contact_up' => 'required|is_natural',
-					'supplier_email_up' => 'required|valid_email',
-					'supplier_alamat_up' => 'required',
-					'supplier_description_up' => 'required|max_length[500]',
-				]);
-				if (!$formSubmit) {
-					return redirect()->to('/suppliers')->withInput();
-				} else {
-					$save = $this->m_supplier->save([
-						'id' => $this->request->getPost('id_supplier'),
-						'supplier_name' => ucWords($this->request->getPost('supplier_name_up')),
-						'supplier_contact' => $this->request->getPost('supplier_contact_up'),
-						'supplier_email' => $this->request->getPost('supplier_email_up'),
-						'supplier_address' => ucWords($this->request->getPost('supplier_alamat_up')),
-						'supplier_description' => ucWords($this->request->getPost('supplier_description_up')),
-					]);
-					if ($save) {
-						session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Diubah');
-						return redirect()->to('/suppliers')->withCookies();
-					} else {
-						session()->setFlashdata('gagal', 'Gagal Mengubah Supplier');
-						return redirect()->to('/suppliers')->withCookies();
-					}
-				}
-			} else if (!empty($this->request->getPost('delete_supplier'))) {
-				$find = $this->m_supplier->find($this->request->getPost('id_supplier'));
-				$find_relation = $this->m_item->where('supplier_id', $find->id)->findAll();
+    public function __construct()
+    {
+        $this->validate        = \Config\Services::validation();
+        $this->m_supplier      = new SupplierModel();
+        $this->m_item          = new ItemModel();
+        $this->m_request_order = new RequestOrderModel();
+        $this->m_order         = new OrderModel();
+        $this->m_order_detail  = new OrderDetailModel();
+    }
 
-				if (!empty($find)) {
-					if (!empty($find_relation)) {
-						foreach ($find_relation as $r) {
-							unlink('upload/produk/' . $r->item_image);
-						}
-						$status = true;
-					} else {
-						$status = true;
-					}
-					if ($status) {
-						if ($this->m_supplier->delete($this->request->getPost('id_supplier'))) {
-							session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Dihapus');
-							return redirect()->to('/suppliers')->withCookies();
-						} else {
-							session()->setFlashdata('gagal', 'Gagal Menghapus Supplier');
-							return redirect()->to('/suppliers')->withCookies();
-						}
-					}
-				} else {
-					session()->setFlashdata('gagal', 'Gagal Menemukan Data Supplier');
-					return redirect()->to('/suppliers')->withCookies();
-				}
-			} else {
-				return view('Admin/page/suppliers', $data);
-			}
-		} else {
-			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-		}
-	}
+    public function index()
+    {
+        if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) {
+            $data = [
+                'supplier'   => $this->m_supplier->findAll(),
+                'validation' => $this->validate,
+            ];
+            if (! empty($this->request->getPost('input_supplier'))) {
+                $formSubmit = $this->validate([
+                    'supplier_name'        => 'required|max_length[200]',
+                    'supplier_contact'     => 'required|is_natural',
+                    'supplier_email'       => 'required|valid_email',
+                    'supplier_alamat'      => 'required',
+                    'supplier_description' => 'required|max_length[500]',
+                ]);
+                if (! $formSubmit) {
+                    return redirect()->to('/suppliers')->withInput();
+                }
+                $save = $this->m_supplier->save([
+                    'supplier_name'        => ucwords($this->request->getPost('supplier_name')),
+                    'supplier_contact'     => $this->request->getPost('supplier_contact'),
+                    'supplier_email'       => $this->request->getPost('supplier_email'),
+                    'supplier_address'     => ucwords($this->request->getPost('supplier_alamat')),
+                    'supplier_description' => ucwords($this->request->getPost('supplier_description')),
+                ]);
+                if ($save) {
+                    session()->setFlashdata('berhasil', 'Supplier Baru Berhasil Ditambahkan');
 
-	public function order()
-	{
-		$data = [
-			'order' => $this->m_order->getAllOrder(),
-			'validation' => $this->validate,
-			'supplier' => $this->m_supplier->findAll(),
-		];
-		if (!empty($this->request->getPost('input_order'))) {
-			$formSubmit = $this->validate([
-				'supplier_name' => 'required',
-			]);
-			if (!$formSubmit) {
-				return redirect()->to('/suppliers/order-items')->withInput();
-			} else {
-				$string = "0123456789BCDFGHJKLMNPQRSTVWXYZ";
-				$token = substr(str_shuffle($string), 0, 10);
-				$save = $this->m_order->save([
-					'order_code' => $token,
-					'order_total_quantity' => '0',
-					'order_total_item' => '0',
-					'order_status' => '1',
-					'user_id' => user()->id,
-					'supplier_id' => $this->request->getPost('supplier_name'),
-				]);
-				if ($save) {
-					session()->setFlashdata('berhasil', 'Permintaan Order Barang Berhasil Dibuat');
-					return redirect()->to('/suppliers/order-items')->withCookies();
-				} else {
-					session()->setFlashdata('gagal', 'Gagal Menambahkan Order Barang');
-					return redirect()->to('/suppliers/order-items')->withCookies();
-				}
-			}
-		} else if (!empty($this->request->getPost('update_status_order'))) {
-			// Disini ada perkondisian untuk menghitung 
-			$formSubmit = $this->validate([
-				'order_name_up' => 'required',
-			]);
-			if (!$formSubmit) {
-				return redirect()->to('/suppliers/order-items')->withInput();
-			} else {
-				if ($this->request->getPost('order_name_up') == 8) {
-					$order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
-					foreach ($order_data as $o) {
-						$find_item = $this->m_item->getAllItem($o->item_id);
-						$total = $find_item[0]->item_stock + $o->detail_quantity;
-						$warehouse_a = $find_item[0]->item_warehouse_a + $o->detail_quantity;
-						$this->m_item->save([
-							'id' => $find_item[0]->id,
-							'item_warehouse_a' => $warehouse_a,
-							'item_stock' => $total,
-						]);
-					}
-				}
-				$save = $this->m_order->save([
-					'id' => $this->request->getPost('id_order'),
-					'order_status' => $this->request->getPost('order_name_up'),
-				]);
-				if ($save) {
-					session()->setFlashdata('berhasil', 'Status Order Berhasil Diperbaharui');
-					return redirect()->to('/suppliers/order-items')->withCookies();
-				} else {
-					session()->setFlashdata('gagal', 'Status Order Gagal Diperbaharui');
-					return redirect()->to('/suppliers/order-items')->withCookies();
-				}
-			}
-		} else if (!empty($this->request->getPost('delete_order'))) {
-			// Disini ada perkondisian untuk menghitung 
-			$find = $this->m_order->find($this->request->getPost('id_order'));
-			if (!empty($find)) {
-				if ($this->m_order->delete($this->request->getPost('id_order'))) {
-					session()->setFlashdata('berhasil', 'Permintaan Order Barang Yang Dipilih Berhasil Dihapus');
-					return redirect()->to('/suppliers/order-items')->withCookies();
-				} else {
-					session()->setFlashdata('gagal', 'Permintaan Order Barang Yang Dipilih Gagal Dihapus');
-					return redirect()->to('/suppliers/order-items')->withCookies();
-				}
-			} else {
-				session()->setFlashdata('gagal', 'Kode Order Gagal Ditemukan');
-				return redirect()->to('/suppliers/order-items')->withCookies();
-			}
-		} else {
-			return view('Admin/page/supplier_order', $data);
-		}
-	}
+                    return redirect()->to('/suppliers')->withCookies();
+                }
+                session()->setFlashdata('gagal', 'Gagal Menambahkan Supplier');
 
-	public function create_order()
-	{
-		if (!empty($this->request->getGet('order_code'))) {
-			$find = $this->m_order->getAllOrder(null, $this->request->getGet('order_code'));
-			if (!empty($find)) {
-				$data = [
-					'supplier' => $find,
-					'validation' => $this->validate,
-					'count_order' => $this->m_order->where('supplier_id', $find[0]->supplier_id)->countAllResults(),
-					'order' => $this->m_order_detail->getAllOrder($find[0]->id),
-					'item' => $this->m_item->getAllItem(null, $find[0]->supplier_id),
-				];
-				if ($this->request->getPost('input_order')) {
-					$formSubmit = $this->validate([
-						'item_name' => 'required',
-						'item_quantity' => 'required|integer',
-					]);
-					if (!$formSubmit) {
-						return redirect()->to('/suppliers/order-items')->withInput();
-					} else {
-						$check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name'))->where('order_id', $this->request->getPost('id_order'))->findAll();
-						if (empty($check_item)) {
-							$save = $this->m_order_detail->save([
-								'detail_quantity' => $this->request->getPost('item_quantity'),
-								'user_id' => user()->id,
-								'order_id' => $this->request->getPost('id_order'),
-								'item_id' => $this->request->getPost('item_name'),
-							]);
-							if ($save) {
-								$count = $this->m_order_detail->getAllOrder($find[0]->id);
-								$i = 0;
-								$total_item = 0;
-								foreach ($count as $c) {
-									$i++;
-									$total_item = $total_item + $c->detail_quantity;
-								}
-								$save_count = $this->m_order->save([
-									'id' => $find[0]->id,
-									'order_total_quantity' => $i,
-									'order_total_item' => $total_item,
-								]);
-								if ($save_count) {
-									session()->setFlashdata('berhasil', 'Pesanan Baru Berhasil Dibuat');
-									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-								} else {
-									session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat');
-									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-								}
-							} else {
-								session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat');
-								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-							}
-						} else {
-							session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat, Produk Yang Dipilih Sudah Ada Di List Pesanan');
-							return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-						}
-					}
-				} else if ($this->request->getPost('update_order')) {
-					$formSubmit = $this->validate([
-						'item_name_up' => 'required',
-						'item_quantity_up' => 'required|integer',
-					]);
-					if (!$formSubmit) {
-						return redirect()->to('/suppliers/order-items')->withInput();
-					} else {
-						$find_order = $this->m_order_detail->find($this->request->getPost('id_order_detail'));
-						// dd($find->item_id == $this->request->getPost('item_name_up'));
-						if ($find_order->item_id == $this->request->getPost('item_name_up')) {
-							$status = true;
-						} else {
-							$check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name_up'))->where('order_id', $this->request->getPost('id_order'))->findAll();
-							if (empty($check_item)) {
-								$status = true;
-							} else {
-								$status = false;
-							}
-						}
-						if ($status) {
-							$save = $this->m_order_detail->save([
-								'id' => $this->request->getPost('id_order_detail'),
-								'detail_quantity' => $this->request->getPost('item_quantity_up'),
-								'user_id' => user()->id,
-								'order_id' => $this->request->getPost('id_order'),
-								'item_id' => $this->request->getPost('item_name_up'),
-							]);
-							if ($save) {
-								$count = $this->m_order_detail->getAllOrder($find[0]->id);
-								$i = 0;
-								$total_item = 0;
-								foreach ($count as $c) {
-									$i++;
-									$total_item = $total_item + $c->detail_quantity;
-								}
-								$save_count = $this->m_order->save([
-									'id' => $find[0]->id,
-									'order_total_quantity' => $i,
-									'order_total_item' => $total_item,
-								]);
-								if ($save_count) {
-									session()->setFlashdata('berhasil', 'Pesanan Yang Dipilih Berhasil Diperbaharui');
-									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-								} else {
-									session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Diperbaharui');
-									return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-								}
-							} else {
-								session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Diperbaharui');
-								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-							}
-						} else {
-							session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat, Produk Yang Dipilih Sudah Ada Di List Pesanan');
-							return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-						}
-					}
-				} else if ($this->request->getPost('delete_order')) {
-					$find_order = $this->m_order_detail->find($this->request->getPost('id_order'));
-					if (!empty($find_order)) {
-						if ($this->m_order_detail->delete($this->request->getPost('id_order'))) {
-							$count = $this->m_order_detail->getAllOrder($find[0]->id);
-							$i = 0;
-							$total_item = 0;
-							foreach ($count as $c) {
-								$i++;
-								$total_item = $total_item + $c->detail_quantity;
-							}
-							$save_count = $this->m_order->save([
-								'id' => $find[0]->id,
-								'order_total_quantity' => $i,
-								'order_total_item' => $total_item,
-							]);
-							if ($save_count) {
-								session()->setFlashdata('berhasil', 'Pesanan Yang Dipilih Berhasil Dihapus');
-								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-							} else {
-								session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Dihapus');
-								return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-							}
-						} else {
-							session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Dihapus');
-							return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-						}
-					} else {
-						session()->setFlashdata('gagal', 'Data Pesanan Gagal Ditemukan');
-						return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-					}
-				} else {
-					return view('Admin/page/create_orders', $data);
-				}
-			} else {
-				session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');
-				return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
-			}
-		} else {
-			return redirect()->to('/suppliers/order-items')->withCookies();
-		}
-	}
+                return redirect()->to('/suppliers')->withCookies();
+            } elseif (! empty($this->request->getPost('update_supplier'))) {
+                $formSubmit = $this->validate([
+                    'supplier_name_up'        => 'required|max_length[200]',
+                    'supplier_contact_up'     => 'required|is_natural',
+                    'supplier_email_up'       => 'required|valid_email',
+                    'supplier_alamat_up'      => 'required',
+                    'supplier_description_up' => 'required|max_length[500]',
+                ]);
+                if (! $formSubmit) {
+                    return redirect()->to('/suppliers')->withInput();
+                }
+                $save = $this->m_supplier->save([
+                    'id'                   => $this->request->getPost('id_supplier'),
+                    'supplier_name'        => ucwords($this->request->getPost('supplier_name_up')),
+                    'supplier_contact'     => $this->request->getPost('supplier_contact_up'),
+                    'supplier_email'       => $this->request->getPost('supplier_email_up'),
+                    'supplier_address'     => ucwords($this->request->getPost('supplier_alamat_up')),
+                    'supplier_description' => ucwords($this->request->getPost('supplier_description_up')),
+                ]);
+                if ($save) {
+                    session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Diubah');
 
-	public function export_pdf()
-	{
+                    return redirect()->to('/suppliers')->withCookies();
+                }
+                session()->setFlashdata('gagal', 'Gagal Mengubah Supplier');
 
-		$find = $this->m_order->find($this->request->getPost('id_order'));
-		$find_order = $this->m_order_detail->getAllOrder($find->id);
-		$find_supplier = $this->m_supplier->find($find->supplier_id);
-		$data = [
-			'order' => $find,
-			'detail' => $find_order,
-			'supplier' => $find_supplier,
-		];
-		$mpdf = new \Mpdf\Mpdf();
-		$html = view('Admin/page/invoice_order', $data);
-		$mpdf->WriteHTML($html);
-		$mpdf->showImageErrors = true;
-		$this->response->setHeader('Content-Type', 'application/pdf');
-		$mpdf->Output('Invoice Order.pdf', 'I');
-		// return view('');
-	}
+                return redirect()->to('/suppliers')->withCookies();
+            } elseif (! empty($this->request->getPost('delete_supplier'))) {
+                $find          = $this->m_supplier->find($this->request->getPost('id_supplier'));
+                $find_relation = $this->m_item->where('supplier_id', $find->id)->findAll();
 
-	public function view_order()
-	{
-		if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) {
+                if (! empty($find)) {
+                    if (! empty($find_relation)) {
+                        foreach ($find_relation as $r) {
+                            unlink('upload/produk/' . $r->item_image);
+                        }
+                        $status = true;
+                    } else {
+                        $status = true;
+                    }
+                    if ($status) {
+                        if ($this->m_supplier->delete($this->request->getPost('id_supplier'))) {
+                            session()->setFlashdata('berhasil', 'Supplier Yang Dipilih Berhasil Dihapus');
 
-			$data = [
-				'request_order' => $this->m_request_order->getAllOrder(),
-				'item' => $this->m_item->getAllItem(),
-				'validation' => $this->validate,
-			];
-			if (!empty($this->request->getPost('update_status_order'))) {
-				$formSubmit = $this->validate([
-					'request_status' => 'required|integer',
-				]);
-				if (!$formSubmit) {
-					return redirect()->to('/suppliers/view-orders')->withInput();
-				} else {
-					$save = $this->m_request_order->save([
-						'id' => $this->request->getPost('id_order'),
-						'request_status' => $this->request->getPost('request_status'),
-					]);
-					if ($save) {
-						session()->setFlashdata('berhasil', 'Status Permintaan Order Barang Berhasil Diperbaharui');
-						return redirect()->to('/suppliers/view-orders')->withCookies();
-					} else {
-						session()->setFlashdata('gagal', 'Gagal Memperbaharui Status Order Barang');
-						return redirect()->to('/suppliers/view-orders')->withCookies();
-					}
-				}
-			} else {
-				return view('Admin/page/list_request_order', $data);
-			}
-		} else {
-			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-		}
-	}
+                            return redirect()->to('/suppliers')->withCookies();
+                        }
+                        session()->setFlashdata('gagal', 'Gagal Menghapus Supplier');
+
+                        return redirect()->to('/suppliers')->withCookies();
+                    }
+                } else {
+                    session()->setFlashdata('gagal', 'Gagal Menemukan Data Supplier');
+
+                    return redirect()->to('/suppliers')->withCookies();
+                }
+            } else {
+                return view('Admin/page/suppliers', $data);
+            }
+        } else {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+    }
+
+    public function order()
+    {
+        $data = [
+            'order'      => $this->m_order->getAllOrder(),
+            'validation' => $this->validate,
+            'supplier'   => $this->m_supplier->findAll(),
+        ];
+        if (! empty($this->request->getPost('input_order'))) {
+            $formSubmit = $this->validate([
+                'supplier_name' => 'required',
+            ]);
+            if (! $formSubmit) {
+                return redirect()->to('/suppliers/order-items')->withInput();
+            }
+            $string = '0123456789BCDFGHJKLMNPQRSTVWXYZ';
+            $token  = substr(str_shuffle($string), 0, 10);
+            $save   = $this->m_order->save([
+                'order_code'           => $token,
+                'order_total_quantity' => '0',
+                'order_total_item'     => '0',
+                'order_status'         => '1',
+                'user_id'              => user()->id,
+                'supplier_id'          => $this->request->getPost('supplier_name'),
+            ]);
+            if ($save) {
+                session()->setFlashdata('berhasil', 'Permintaan Order Barang Berhasil Dibuat');
+
+                return redirect()->to('/suppliers/order-items')->withCookies();
+            }
+            session()->setFlashdata('gagal', 'Gagal Menambahkan Order Barang');
+
+            return redirect()->to('/suppliers/order-items')->withCookies();
+        } elseif (! empty($this->request->getPost('update_status_order'))) {
+            // Disini ada perkondisian untuk menghitung
+            $formSubmit = $this->validate([
+                'order_name_up' => 'required',
+            ]);
+            if (! $formSubmit) {
+                return redirect()->to('/suppliers/order-items')->withInput();
+            }
+            if ($this->request->getPost('order_name_up') === 8) {
+                $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
+
+                foreach ($order_data as $o) {
+                    $find_item   = $this->m_item->getAllItem($o->item_id);
+                    $total       = $find_item[0]->item_stock + $o->detail_quantity;
+                    $warehouse_a = $find_item[0]->item_warehouse_a + $o->detail_quantity;
+                    $this->m_item->save([
+                        'id'               => $find_item[0]->id,
+                        'item_warehouse_a' => $warehouse_a,
+                        'item_stock'       => $total,
+                    ]);
+                }
+            }
+            $save = $this->m_order->save([
+                'id'           => $this->request->getPost('id_order'),
+                'order_status' => $this->request->getPost('order_name_up'),
+            ]);
+            if ($save) {
+                session()->setFlashdata('berhasil', 'Status Order Berhasil Diperbaharui');
+
+                return redirect()->to('/suppliers/order-items')->withCookies();
+            }
+            session()->setFlashdata('gagal', 'Status Order Gagal Diperbaharui');
+
+            return redirect()->to('/suppliers/order-items')->withCookies();
+        } elseif (! empty($this->request->getPost('delete_order'))) {
+            // Disini ada perkondisian untuk menghitung
+            $find = $this->m_order->find($this->request->getPost('id_order'));
+            if (! empty($find)) {
+                if ($this->m_order->delete($this->request->getPost('id_order'))) {
+                    session()->setFlashdata('berhasil', 'Permintaan Order Barang Yang Dipilih Berhasil Dihapus');
+
+                    return redirect()->to('/suppliers/order-items')->withCookies();
+                }
+                session()->setFlashdata('gagal', 'Permintaan Order Barang Yang Dipilih Gagal Dihapus');
+
+                return redirect()->to('/suppliers/order-items')->withCookies();
+            }
+            session()->setFlashdata('gagal', 'Kode Order Gagal Ditemukan');
+
+            return redirect()->to('/suppliers/order-items')->withCookies();
+        }
+
+        return view('Admin/page/supplier_order', $data);
+    }
+
+    public function create_order()
+    {
+        if (! empty($this->request->getGet('order_code'))) {
+            $find = $this->m_order->getAllOrder(null, $this->request->getGet('order_code'));
+            if (! empty($find)) {
+                $data = [
+                    'supplier'    => $find,
+                    'validation'  => $this->validate,
+                    'count_order' => $this->m_order->where('supplier_id', $find[0]->supplier_id)->countAllResults(),
+                    'order'       => $this->m_order_detail->getAllOrder($find[0]->id),
+                    'item'        => $this->m_item->getAllItem(null, $find[0]->supplier_id),
+                ];
+                if ($this->request->getPost('input_order')) {
+                    $formSubmit = $this->validate([
+                        'item_name'     => 'required',
+                        'item_quantity' => 'required|integer',
+                    ]);
+                    if (! $formSubmit) {
+                        return redirect()->to('/suppliers/order-items')->withInput();
+                    }
+                    $check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name'))->where('order_id', $this->request->getPost('id_order'))->findAll();
+                    if (empty($check_item)) {
+                        $save = $this->m_order_detail->save([
+                            'detail_quantity' => $this->request->getPost('item_quantity'),
+                            'user_id'         => user()->id,
+                            'order_id'        => $this->request->getPost('id_order'),
+                            'item_id'         => $this->request->getPost('item_name'),
+                        ]);
+                        if ($save) {
+                            $count      = $this->m_order_detail->getAllOrder($find[0]->id);
+                            $i          = 0;
+                            $total_item = 0;
+
+                            foreach ($count as $c) {
+                                $i++;
+                                $total_item = $total_item + $c->detail_quantity;
+                            }
+                            $save_count = $this->m_order->save([
+                                'id'                   => $find[0]->id,
+                                'order_total_quantity' => $i,
+                                'order_total_item'     => $total_item,
+                            ]);
+                            if ($save_count) {
+                                session()->setFlashdata('berhasil', 'Pesanan Baru Berhasil Dibuat');
+
+                                return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                            }
+                            session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat');
+
+                            return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                        }
+                        session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat');
+
+                        return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                    }
+                    session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat, Produk Yang Dipilih Sudah Ada Di List Pesanan');
+
+                    return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                } elseif ($this->request->getPost('update_order')) {
+                    $formSubmit = $this->validate([
+                        'item_name_up'     => 'required',
+                        'item_quantity_up' => 'required|integer',
+                    ]);
+                    if (! $formSubmit) {
+                        return redirect()->to('/suppliers/order-items')->withInput();
+                    }
+                    $find_order = $this->m_order_detail->find($this->request->getPost('id_order_detail'));
+                    // dd($find->item_id == $this->request->getPost('item_name_up'));
+                    if ($find_order->item_id === $this->request->getPost('item_name_up')) {
+                        $status = true;
+                    } else {
+                        $check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name_up'))->where('order_id', $this->request->getPost('id_order'))->findAll();
+                        if (empty($check_item)) {
+                            $status = true;
+                        } else {
+                            $status = false;
+                        }
+                    }
+                    if ($status) {
+                        $save = $this->m_order_detail->save([
+                            'id'              => $this->request->getPost('id_order_detail'),
+                            'detail_quantity' => $this->request->getPost('item_quantity_up'),
+                            'user_id'         => user()->id,
+                            'order_id'        => $this->request->getPost('id_order'),
+                            'item_id'         => $this->request->getPost('item_name_up'),
+                        ]);
+                        if ($save) {
+                            $count      = $this->m_order_detail->getAllOrder($find[0]->id);
+                            $i          = 0;
+                            $total_item = 0;
+
+                            foreach ($count as $c) {
+                                $i++;
+                                $total_item = $total_item + $c->detail_quantity;
+                            }
+                            $save_count = $this->m_order->save([
+                                'id'                   => $find[0]->id,
+                                'order_total_quantity' => $i,
+                                'order_total_item'     => $total_item,
+                            ]);
+                            if ($save_count) {
+                                session()->setFlashdata('berhasil', 'Pesanan Yang Dipilih Berhasil Diperbaharui');
+
+                                return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                            }
+                            session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Diperbaharui');
+
+                            return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                        }
+                        session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Diperbaharui');
+
+                        return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                    }
+                    session()->setFlashdata('gagal', 'Pesanan Gagal Dibuat, Produk Yang Dipilih Sudah Ada Di List Pesanan');
+
+                    return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                } elseif ($this->request->getPost('delete_order')) {
+                    $find_order = $this->m_order_detail->find($this->request->getPost('id_order'));
+                    if (! empty($find_order)) {
+                        if ($this->m_order_detail->delete($this->request->getPost('id_order'))) {
+                            $count      = $this->m_order_detail->getAllOrder($find[0]->id);
+                            $i          = 0;
+                            $total_item = 0;
+
+                            foreach ($count as $c) {
+                                $i++;
+                                $total_item = $total_item + $c->detail_quantity;
+                            }
+                            $save_count = $this->m_order->save([
+                                'id'                   => $find[0]->id,
+                                'order_total_quantity' => $i,
+                                'order_total_item'     => $total_item,
+                            ]);
+                            if ($save_count) {
+                                session()->setFlashdata('berhasil', 'Pesanan Yang Dipilih Berhasil Dihapus');
+
+                                return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                            }
+                            session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Dihapus');
+
+                            return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                        }
+                        session()->setFlashdata('gagal', 'Pesanan Yang Dipilih Gagal Dihapus');
+
+                        return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                    }
+                    session()->setFlashdata('gagal', 'Data Pesanan Gagal Ditemukan');
+
+                    return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                }
+
+                return view('Admin/page/create_orders', $data);
+            }
+            session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');
+
+            return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
+        }
+
+        return redirect()->to('/suppliers/order-items')->withCookies();
+    }
+
+    public function export_pdf()
+    {
+        $find          = $this->m_order->find($this->request->getPost('id_order'));
+        $find_order    = $this->m_order_detail->getAllOrder($find->id);
+        $find_supplier = $this->m_supplier->find($find->supplier_id);
+        $data          = [
+            'order'    => $find,
+            'detail'   => $find_order,
+            'supplier' => $find_supplier,
+        ];
+        $mpdf = new \Mpdf\Mpdf();
+        $html = view('Admin/page/invoice_order', $data);
+        $mpdf->WriteHTML($html);
+        $mpdf->showImageErrors = true;
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output('Invoice Order.pdf', 'I');
+        // return view('');
+    }
+
+    public function view_order()
+    {
+        if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) {
+            $data = [
+                'request_order' => $this->m_request_order->getAllOrder(),
+                'item'          => $this->m_item->getAllItem(),
+                'validation'    => $this->validate,
+            ];
+            if (! empty($this->request->getPost('update_status_order'))) {
+                $formSubmit = $this->validate([
+                    'request_status' => 'required|integer',
+                ]);
+                if (! $formSubmit) {
+                    return redirect()->to('/suppliers/view-orders')->withInput();
+                }
+                $save = $this->m_request_order->save([
+                    'id'             => $this->request->getPost('id_order'),
+                    'request_status' => $this->request->getPost('request_status'),
+                ]);
+                if ($save) {
+                    session()->setFlashdata('berhasil', 'Status Permintaan Order Barang Berhasil Diperbaharui');
+
+                    return redirect()->to('/suppliers/view-orders')->withCookies();
+                }
+                session()->setFlashdata('gagal', 'Gagal Memperbaharui Status Order Barang');
+
+                return redirect()->to('/suppliers/view-orders')->withCookies();
+            }
+
+            return view('Admin/page/list_request_order', $data);
+        }
+
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
 }

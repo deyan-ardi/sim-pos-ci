@@ -33,32 +33,31 @@
 namespace PHPSQLParser\processors;
 
 /**
- * 
  * This class processes the GROUP-BY statements.
- * 
- * @author arothe
- * 
  */
-class GroupByProcessor extends OrderByProcessor {
-
-    public function process($tokens, $select = array()) {
-        $out = array();
+class GroupByProcessor extends OrderByProcessor
+{
+    public function process($tokens, $select = [])
+    {
+        $out       = [];
         $parseInfo = $this->initParseInfo();
 
-        if (!$tokens) {
+        if (! $tokens) {
             return false;
         }
 
         foreach ($tokens as $token) {
             $trim = strtoupper(trim($token));
+
             switch ($trim) {
             case ',':
                 $parsed = $this->processOrderExpression($parseInfo, $select);
                 unset($parsed['direction']);
 
-                $out[] = $parsed;
+                $out[]     = $parsed;
                 $parseInfo = $this->initParseInfo();
                 break;
+
             default:
                 $parseInfo['base_expr'] .= $token;
             }
@@ -71,4 +70,3 @@ class GroupByProcessor extends OrderByProcessor {
         return $out;
     }
 }
-?>

@@ -32,24 +32,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class mixedQuotesTest extends \PHPUnit\Framework\TestCase {
-
-    public function testMixedQuotes() {
+/**
+ * @internal
+ */
+final class mixedQuotesTest extends \PHPUnit\Framework\TestCase
+{
+    public function testMixedQuotes()
+    {
         $parser = new PHPSQLParser();
 
         $sql = 'SELECT ISNULL(\'"\') AS foo FROM bar;';
         $parser->parse($sql);
 
-        $this->assertEquals('\'"\'', $parser->parsed['SELECT'][0]['sub_tree'][0]['base_expr'], "Mixed quotes test failed");
+        $this->assertSame('\'"\'', $parser->parsed['SELECT'][0]['sub_tree'][0]['base_expr'], 'Mixed quotes test failed');
     }
 }

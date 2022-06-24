@@ -32,19 +32,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class FromTest extends \PHPUnit\Framework\TestCase {
-
-    public function testFrom1() {
+/**
+ * @internal
+ */
+final class fromTest extends \PHPUnit\Framework\TestCase
+{
+    public function testFrom1()
+    {
         $parser = new PHPSQLParser();
 
         $sql = 'SELECT c1
@@ -53,12 +57,13 @@ class FromTest extends \PHPUnit\Framework\TestCase {
         $parser->parse($sql);
         $p = $parser->parsed;
 
-        $this->assertEquals(3, count($p));
-        $this->assertEquals(1, count($p['FROM']));
-        $this->assertEquals('an_alias', $p['FROM'][0]['alias']['name']);
+        $this->assertCount(3, $p);
+        $this->assertCount(1, $p['FROM']);
+        $this->assertSame('an_alias', $p['FROM'][0]['alias']['name']);
     }
 
-    public function testFrom2() {
+    public function testFrom2()
+    {
         $sql = 'select DISTINCT 1+2   c1, 1+ 2 as
         `c2`, sum(c2),sum(c3) as sum_c3,"Status" = CASE
                 WHEN quantity > 0 THEN \'in stock\'
@@ -67,17 +72,16 @@ class FromTest extends \PHPUnit\Framework\TestCase {
         , t4.c1, (select c1+c2 from t1 inner_t1 limit 1) as subquery into @a1, @a2, @a3 from t1 the_t1 left outer join t2 using(c1,c2) join t3 as tX ON tX.c1 = the_t1.c1 join t4 t4_x using(x) where c1 = 1 and c2 in (1,2,3, "apple") and exists ( select 1 from some_other_table another_table where x > 1) and ("zebra" = "orange" or 1 = 1) group by 1, 2 having sum(c2) > 1 ORDER BY 2, c1 DESC LIMIT 0, 10 into outfile "/xyz" FOR UPDATE LOCK IN SHARE MODE';
 
         $parser = new PHPSQLParser($sql);
-        $p=$parser->parsed;
+        $p      = $parser->parsed;
 
-        $this->assertEquals(8, count($p['SELECT']), 'seven selects');
-        $this->assertEquals('DISTINCT', $p['SELECT'][0]['base_expr']);
-        $this->assertEquals('c1', $p['SELECT'][1]['alias']['name']);
-        $this->assertEquals('`c2`', $p['SELECT'][2]['alias']['name']);
-        $this->assertEquals(false, $p['SELECT'][3]['alias'], 'no alias on sum(c2)');
-        $this->assertEquals('sum_c3', $p['SELECT'][4]['alias']['name']);
-        $this->assertEquals('case_statement', $p['SELECT'][5]['alias']['name'], 'case statement');
-        $this->assertEquals(false, $p['SELECT'][6]['alias'], 'no alias on t4.c1');
-        $this->assertEquals('subquery', $p['SELECT'][7]['alias']['name']);
+        $this->assertCount(8, $p['SELECT'], 'seven selects');
+        $this->assertSame('DISTINCT', $p['SELECT'][0]['base_expr']);
+        $this->assertSame('c1', $p['SELECT'][1]['alias']['name']);
+        $this->assertSame('`c2`', $p['SELECT'][2]['alias']['name']);
+        $this->assertFalse($p['SELECT'][3]['alias'], 'no alias on sum(c2)');
+        $this->assertSame('sum_c3', $p['SELECT'][4]['alias']['name']);
+        $this->assertSame('case_statement', $p['SELECT'][5]['alias']['name'], 'case statement');
+        $this->assertFalse($p['SELECT'][6]['alias'], 'no alias on t4.c1');
+        $this->assertSame('subquery', $p['SELECT'][7]['alias']['name']);
     }
 }
-?>

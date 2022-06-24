@@ -31,26 +31,30 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class joinTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testJoin() {
-        $sql = " SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url  FROM SURVEYS AS a INNER JOIN SURVEYS_LANGUAGESETTINGS on (surveyls_survey_id=a.sid and surveyls_language=a.language)  order by active DESC, surveyls_title";
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'join.sql', false);
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class joinTest extends \PHPUnit\Framework\TestCase
+{
+    public function testJoin()
+    {
+        $sql      = ' SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url  FROM SURVEYS AS a INNER JOIN SURVEYS_LANGUAGESETTINGS on (surveyls_survey_id=a.sid and surveyls_language=a.language)  order by active DESC, surveyls_title';
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'join.sql', false);
         $this->assertSame($expected, $created, 'a join');
     }
 }
-

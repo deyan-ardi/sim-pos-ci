@@ -31,28 +31,31 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class Issue120Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue120() {
-        $sql = "(
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue120Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue120()
+    {
+        $sql = '(
         SELECT CNAME
         FROM COCKTAIL
-        )";
-        $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue120.serialized');
-        $this->assertEquals($expected, $p, 'parentheses around select');
+        )';
+        $parser   = new PHPSQLParser($sql, true);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue120.serialized');
+        $this->assertSame($expected, $p, 'parentheses around select');
     }
 }
-?>

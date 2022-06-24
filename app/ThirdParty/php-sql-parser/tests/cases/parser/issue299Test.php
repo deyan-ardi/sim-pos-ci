@@ -32,25 +32,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue299Test extends \PHPUnit\Framework\TestCase
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue299Test extends \PHPUnit\Framework\TestCase
 {
     public function testIssue299()
     {
         $parser = new PHPSQLParser();
-        $sql = 'SELECT (1 + 2) AS THREE, (1 + 3) AS FOUR';
+        $sql    = 'SELECT (1 + 2) AS THREE, (1 + 3) AS FOUR';
         $parser->parse($sql, true);
         $creator = new PHPSQLCreator($parser->parsed);
-        $this->assertEquals(
+        $this->assertSame(
             'SELECT (1 + 2) AS THREE, (1 + 3) AS FOUR',
             $creator->created
         );

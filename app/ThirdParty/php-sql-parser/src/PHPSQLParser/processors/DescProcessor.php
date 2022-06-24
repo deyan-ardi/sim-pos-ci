@@ -33,16 +33,12 @@
 namespace PHPSQLParser\processors;
 
 /**
- * 
  * This class processes the DESC statement.
- * 
- * @author arothe
- * 
  */
-class DescProcessor extends ExplainProcessor {
-
-    protected function isStatement($keys, $needle = "DESC") {
+class DescProcessor extends ExplainProcessor
+{
+    protected function isStatement($keys, $needle = 'DESC')
+    {
         return parent::isStatement($keys, $needle);
     }
 }
-?>

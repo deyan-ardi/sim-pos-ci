@@ -31,32 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
 
-use PHPUnit\Framework\TestCase;
 use PHPSQLParser\PHPSQLParser;
+use PHPUnit\Framework\TestCase;
 
-class issue95Test extends TestCase
+/**
+ * @internal
+ */
+final class issue95Test extends TestCase
 {
     public function testIssue95()
     {
-        $sql="SELECT * FROM ((SELECT 1 AS `ID`) UNION (SELECT 2 AS `ID`)) AS `Tmp`";
+        $sql = 'SELECT * FROM ((SELECT 1 AS `ID`) UNION (SELECT 2 AS `ID`)) AS `Tmp`';
 
         try {
-        	$parser = new PHPSQLParser($sql);
-        } catch (UnableToCalculatePositionException $e) {}
+            $parser = new PHPSQLParser($sql);
+        } catch (UnableToCalculatePositionException $e) {
+        }
 
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue95.serialized');
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue95.serialized');
 
-        $this->assertEquals($expected, $p, 'union within the from clause');
+        $this->assertSame($expected, $p, 'union within the from clause');
     }
 }
-

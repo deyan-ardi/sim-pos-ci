@@ -32,30 +32,33 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2015 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
 
 use PHPSQLParser\PHPSQLParser;
 
-class IssueGit183TestTest extends \PHPSQLParser\Test\AbstractTestCase {
-	
-	public function testIssueGit183() {
-		$query = "SELECT *
+/**
+ * @internal
+ */
+final class issue_git183Test extends \PHPSQLParser\Test\AbstractTestCase
+{
+    public function testIssueGit183()
+    {
+        $query = 'SELECT *
 FROM SC_CATALOG_DETAIL_REG CD
 INNER JOIN MASTER_ITEM_LOOKUP IL
 ON to_number( CD.STYLE ) = to_number( IL.SKU_NUM )
-				";
-		$parser = new PHPSQLParser ();
-		$parser->addCustomFunction("to_number");
-		$p = $parser->parse ( $query, true );
-		$expected = getExpectedValue ( dirname ( __FILE__ ), 'issue_git183.serialized' );
-		$this->assertEquals ( $expected, $p, "Oracle\'s to_number");
-	}
+				';
+        $parser = new PHPSQLParser();
+        $parser->addCustomFunction('to_number');
+        $p        = $parser->parse($query, true);
+        $expected = getExpectedValue(__DIR__, 'issue_git183.serialized');
+        $this->assertSame($expected, $p, "Oracle\\'s to_number");
+    }
 }
-?>

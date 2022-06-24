@@ -31,25 +31,24 @@
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * 
  * This class processes column-lists.
- * 
- * @author arothe
- * 
  */
-class ColumnListProcessor extends AbstractProcessor {
+class ColumnListProcessor extends AbstractProcessor
+{
+    public function process($tokens)
+    {
+        $columns = explode(',', $tokens);
+        $cols    = [];
 
-    public function process($tokens) {
-        $columns = explode(",", $tokens);
-        $cols = array();
         foreach ($columns as $k => $v) {
-            $cols[] = array('expr_type' => ExpressionType::COLREF, 'base_expr' => trim($v),
-                            'no_quotes' => $this->revokeQuotation($v));
+            $cols[] = ['expr_type' => ExpressionType::COLREF, 'base_expr' => trim($v),
+                'no_quotes'        => $this->revokeQuotation($v), ];
         }
+
         return $cols;
     }
 }
-?>

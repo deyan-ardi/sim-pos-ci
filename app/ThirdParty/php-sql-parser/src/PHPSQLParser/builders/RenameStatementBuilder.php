@@ -31,56 +31,59 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
- * This class implements the builder for the RENAME statement. 
+ * This class implements the builder for the RENAME statement.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class RenameStatementBuilder implements Builder {
-
-    protected function buildReserved($parsed) {
+class RenameStatementBuilder implements Builder
+{
+    protected function buildReserved($parsed)
+    {
         $builder = new ReservedBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function processSourceAndDestTable($v) {
-        if (!isset($v['source']) || !isset($v['destination'])) {
+    protected function processSourceAndDestTable($v)
+    {
+        if (! isset($v['source']) || ! isset($v['destination'])) {
             return '';
         }
+
         return $v['source']['base_expr'] . ' TO ' . $v['destination']['base_expr'] . ',';
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $rename = $parsed['RENAME'];
-        $sql = '';
+        $sql    = '';
+
         foreach ($rename['sub_tree'] as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->buildReserved($v);
             $sql .= $this->processSourceAndDestTable($v);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('RENAME subtree', $k, $v, 'expr_type');
             }
 
             $sql .= ' ';
         }
         $sql = trim('RENAME ' . $sql);
-        return (substr($sql, -1) === ',' ? substr($sql, 0, -1) : $sql);
+
+        return substr($sql, -1) === ',' ? substr($sql, 0, -1) : $sql;
     }
 }
-
-?>

@@ -31,28 +31,28 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue69Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue69() {
-
-
-        $sql = "select * from table1 where col1<>col2 or col3 is null";
-        $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue69.serialized');
-        $this->assertEquals($expected, $p, 'col is null should not fail.');
-
+/**
+ * @internal
+ */
+final class issue69Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue69()
+    {
+        $sql      = 'select * from table1 where col1<>col2 or col3 is null';
+        $parser   = new PHPSQLParser($sql, true);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue69.serialized');
+        $this->assertSame($expected, $p, 'col is null should not fail.');
     }
 }
-

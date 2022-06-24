@@ -31,43 +31,43 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class positionsTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testPositions() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class positionsTest extends \PHPUnit\Framework\TestCase
+{
+    public function testPositions()
+    {
         $parser = new PHPSQLParser();
 
         $sql = 'SELECT colA hello From test t';
-        $p = $parser->parse($sql, true);
-        $this->assertEquals(7, $p['SELECT'][0]['position'], 'position of column');
-        $this->assertEquals(12, $p['SELECT'][0]['alias']['position'], 'position of column alias');
-        $this->assertEquals(23, $p['FROM'][0]['position'], 'position of table');
-        $this->assertEquals(28, $p['FROM'][0]['alias']['position'], 'position of table alias');
-
+        $p   = $parser->parse($sql, true);
+        $this->assertSame(7, $p['SELECT'][0]['position'], 'position of column');
+        $this->assertSame(12, $p['SELECT'][0]['alias']['position'], 'position of column alias');
+        $this->assertSame(23, $p['FROM'][0]['position'], 'position of table');
+        $this->assertSame(28, $p['FROM'][0]['alias']['position'], 'position of table alias');
 
         $sql = "SELECT colA hello From test\nt";
-        $p = $parser->parse($sql, true);
-        $this->assertEquals(7, $p['SELECT'][0]['position'], 'position of column');
-        $this->assertEquals(12, $p['SELECT'][0]['alias']['position'], 'position of column alias');
-        $this->assertEquals(23, $p['FROM'][0]['position'], 'position of table');
-        $this->assertEquals(28, $p['FROM'][0]['alias']['position'], 'position of table alias');
+        $p   = $parser->parse($sql, true);
+        $this->assertSame(7, $p['SELECT'][0]['position'], 'position of column');
+        $this->assertSame(12, $p['SELECT'][0]['alias']['position'], 'position of column alias');
+        $this->assertSame(23, $p['FROM'][0]['position'], 'position of table');
+        $this->assertSame(28, $p['FROM'][0]['alias']['position'], 'position of table alias');
 
-
-        $sql = "SELECT a.*, c.*, u.users_name FROM SURVEYS as a  INNER JOIN SURVEYS_LANGUAGESETTINGS as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language  INNER JOIN USERS as u ON (u.uid=a.owner_id)  ORDER BY surveyls_title";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'positions1.serialized');
-        $this->assertEquals($expected, $p, 'a long query with join and order clauses');
-
+        $sql      = 'SELECT a.*, c.*, u.users_name FROM SURVEYS as a  INNER JOIN SURVEYS_LANGUAGESETTINGS as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language  INNER JOIN USERS as u ON (u.uid=a.owner_id)  ORDER BY surveyls_title';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'positions1.serialized');
+        $this->assertSame($expected, $p, 'a long query with join and order clauses');
     }
 }
-

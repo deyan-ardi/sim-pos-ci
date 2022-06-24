@@ -32,29 +32,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue322Test extends \PHPUnit\Framework\TestCase
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue322Test extends \PHPUnit\Framework\TestCase
 {
     /**
      * @doesNotPerformAssertions
      */
-	public function testIssue322()
-	{
-        $sql = "SELECT IF(createdAt >= CURRENT_DATE(), '1', '0') FROM f_another_table WHERE id in(SELECT id FROM f_table WHERE createdAt > NOW())";
-		$parser = new PHPSQLParser();
-		$parsed = $parser->parse($sql, true);
-		$creator = new PHPSQLCreator();
-		$sql = $creator->create($parsed);
-		//echo $sql;
+    public function testIssue322()
+    {
+        $sql     = "SELECT IF(createdAt >= CURRENT_DATE(), '1', '0') FROM f_another_table WHERE id in(SELECT id FROM f_table WHERE createdAt > NOW())";
+        $parser  = new PHPSQLParser();
+        $parsed  = $parser->parse($sql, true);
+        $creator = new PHPSQLCreator();
+        $sql     = $creator->create($parsed);
+        //echo $sql;
     }
 }
-

@@ -66,12 +66,9 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - email : marketing@ganatech.id
 - password : 12345678
 
-## Codeigniter Fitur In This Project
-Last Updated : 27 Juni 2021
-- Menu Kasir
-- Print PDF
-- Master Data
-- Multiple Login User
+## Primary Tools
+- Datatables Server Side
+- Codeigniter 4 Standar PHP Fixing
 
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

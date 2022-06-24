@@ -31,34 +31,34 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue79Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue79() {
+/**
+ * @internal
+ */
+final class issue79Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue79()
+    {
+        $sql      = 'SELECT * FROM `users` WHERE id_user=@ID_USER';
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue79a.serialized');
+        $this->assertSame($expected, $p, 'user variables');
 
-
-        $sql = "SELECT * FROM `users` WHERE id_user=@ID_USER";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue79a.serialized');
-        $this->assertEquals($expected, $p, 'user variables');
-
-        $sql = "SELECT (@aa:=id) AS a, (@aa+3) AS b FROM tbl_name HAVING b=5";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue79b.serialized');
-        $this->assertEquals($expected, $p, 'user variables with alias and assignment');
-
+        $sql      = 'SELECT (@aa:=id) AS a, (@aa+3) AS b FROM tbl_name HAVING b=5';
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue79b.serialized');
+        $this->assertSame($expected, $p, 'user variables with alias and assignment');
     }
 }
-

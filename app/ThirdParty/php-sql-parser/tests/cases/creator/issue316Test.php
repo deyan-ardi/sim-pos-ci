@@ -32,25 +32,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue316Test extends \PHPUnit\Framework\TestCase
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue316Test extends \PHPUnit\Framework\TestCase
 {
     public function testIssue299()
     {
         $parser = new PHPSQLParser();
-        $sql = 'SELECT myField WHERE (myField IN (SELECT otherField FROM otherTable))';
+        $sql    = 'SELECT myField WHERE (myField IN (SELECT otherField FROM otherTable))';
         $parser->parse($sql, true);
         $creator = new PHPSQLCreator($parser->parsed);
-        $this->assertEquals(
+        $this->assertSame(
             'SELECT myField WHERE (myField IN (SELECT otherField FROM otherTable))',
             $creator->created
         );

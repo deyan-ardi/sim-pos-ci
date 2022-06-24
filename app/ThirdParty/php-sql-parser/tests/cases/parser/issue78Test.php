@@ -31,49 +31,49 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue78Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue78() {
-
-
+/**
+ * @internal
+ */
+final class issue78Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue78()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "EXPLAIN EXTENDED SELECT * FROM foo.bar";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue78a.serialized');
-        $this->assertEquals($expected, $p, 'explain select');
+        $sql      = 'EXPLAIN EXTENDED SELECT * FROM foo.bar';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue78a.serialized');
+        $this->assertSame($expected, $p, 'explain select');
 
-        $sql = "EXPLAIN SELECT * FROM foo.bar";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue78b.serialized');
-        $this->assertEquals($expected, $p, 'explain select');
+        $sql      = 'EXPLAIN SELECT * FROM foo.bar';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue78b.serialized');
+        $this->assertSame($expected, $p, 'explain select');
 
-        $sql = "EXPLAIN foo bar";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue78c.serialized');
-        $this->assertEquals($expected, $p, 'explain table');
+        $sql      = 'EXPLAIN foo bar';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue78c.serialized');
+        $this->assertSame($expected, $p, 'explain table');
 
-        $sql = "DESCRIBE foo bar%";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue78d.serialized');
-        $this->assertEquals($expected, $p, 'describe table');
+        $sql      = 'DESCRIBE foo bar%';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue78d.serialized');
+        $this->assertSame($expected, $p, 'describe table');
 
-        $sql = "DESC FORMAT = JSON DELETE FROM tableA WHERE x=1";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue78e.serialized');
-        $this->assertEquals($expected, $p, 'describe delete');
-
+        $sql      = 'DESC FORMAT = JSON DELETE FROM tableA WHERE x=1';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue78e.serialized');
+        $this->assertSame($expected, $p, 'describe delete');
     }
 }
-

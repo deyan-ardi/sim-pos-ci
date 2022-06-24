@@ -32,38 +32,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
  * This class processes the ORDER-BY statements.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class OrderByProcessor extends AbstractProcessor {
-
-    protected function processSelectExpression($unparsed) {
+class OrderByProcessor extends AbstractProcessor
+{
+    protected function processSelectExpression($unparsed)
+    {
         $processor = new SelectExpressionProcessor($this->options);
+
         return $processor->process($unparsed);
     }
 
-    protected function initParseInfo() {
-        return array('base_expr' => "", 'dir' => "ASC", 'expr_type' => ExpressionType::EXPRESSION);
+    protected function initParseInfo()
+    {
+        return ['base_expr' => '', 'dir' => 'ASC', 'expr_type' => ExpressionType::EXPRESSION];
     }
 
-    protected function processOrderExpression(&$parseInfo, $select) {
+    protected function processOrderExpression(&$parseInfo, $select)
+    {
         $parseInfo['base_expr'] = trim($parseInfo['base_expr']);
 
-        if ($parseInfo['base_expr'] === "") {
+        if ($parseInfo['base_expr'] === '') {
             return false;
         }
 
@@ -85,44 +87,48 @@ class OrderByProcessor extends AbstractProcessor {
         }
 
         if ($parseInfo['expr_type'] === ExpressionType::EXPRESSION) {
-            $expr = $this->processSelectExpression($parseInfo['base_expr']);
+            $expr              = $this->processSelectExpression($parseInfo['base_expr']);
             $expr['direction'] = $parseInfo['dir'];
             unset($expr['alias']);
+
             return $expr;
         }
 
-        $result = array();
+        $result              = [];
         $result['expr_type'] = $parseInfo['expr_type'];
         $result['base_expr'] = $parseInfo['base_expr'];
         if (isset($parseInfo['no_quotes'])) {
             $result['no_quotes'] = $parseInfo['no_quotes'];
         }
         $result['direction'] = $parseInfo['dir'];
+
         return $result;
     }
 
-    public function process($tokens, $select = array()) {
-        $out = array();
+    public function process($tokens, $select = [])
+    {
+        $out       = [];
         $parseInfo = $this->initParseInfo();
 
-        if (!$tokens) {
+        if (! $tokens) {
             return false;
         }
 
         foreach ($tokens as $token) {
             $upper = strtoupper(trim($token));
+
             switch ($upper) {
             case ',':
-                $out[] = $this->processOrderExpression($parseInfo, $select);
+                $out[]     = $this->processOrderExpression($parseInfo, $select);
                 $parseInfo = $this->initParseInfo();
                 break;
 
             case 'DESC':
-                $parseInfo['dir'] = "DESC";
+                $parseInfo['dir'] = 'DESC';
                 break;
 
             case 'ASC':
-                $parseInfo['dir'] = "ASC";
+                $parseInfo['dir'] = 'ASC';
                 break;
 
             default:
@@ -136,7 +142,7 @@ class OrderByProcessor extends AbstractProcessor {
         }
 
         $out[] = $this->processOrderExpression($parseInfo, $select);
+
         return $out;
     }
 }
-?>

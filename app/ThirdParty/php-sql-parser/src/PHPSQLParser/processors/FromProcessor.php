@@ -32,65 +32,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
- * @author    George Schneeloch <noisecapella@gmail.com>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
  * This class processes the FROM statement.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
- * @author  Marco Th. <marco64th@gmail.com>
- * @author  George Schneeloch <noisecapella@gmail.com>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class FromProcessor extends AbstractProcessor {
-
-    protected function processExpressionList($unparsed) {
+class FromProcessor extends AbstractProcessor
+{
+    protected function processExpressionList($unparsed)
+    {
         $processor = new ExpressionListProcessor($this->options);
+
         return $processor->process($unparsed);
     }
 
-    protected function processColumnList($unparsed) {
+    protected function processColumnList($unparsed)
+    {
         $processor = new ColumnListProcessor($this->options);
+
         return $processor->process($unparsed);
     }
 
-    protected function processSQLDefault($unparsed) {
+    protected function processSQLDefault($unparsed)
+    {
         $processor = new DefaultProcessor($this->options);
+
         return $processor->process($unparsed);
     }
 
-    protected function initParseInfo($parseInfo = false) {
+    protected function initParseInfo($parseInfo = false)
+    {
         // first init
         if ($parseInfo === false) {
-            $parseInfo = array('join_type' => "", 'saved_join_type' => "JOIN");
+            $parseInfo = ['join_type' => '', 'saved_join_type' => 'JOIN'];
         }
         // loop init
-        return array('expression' => "", 'token_count' => 0, 'table' => "", 'no_quotes' => "", 'alias' => false,
-                     'hints' => array(), 'join_type' => "", 'next_join_type' => "",
-                     'saved_join_type' => $parseInfo['saved_join_type'], 'ref_type' => false, 'ref_expr' => false,
-                     'base_expr' => false, 'sub_tree' => false, 'subquery' => "");
+        return ['expression'  => '', 'token_count' => 0, 'table' => '', 'no_quotes' => '', 'alias' => false,
+            'hints'           => [], 'join_type' => '', 'next_join_type' => '',
+            'saved_join_type' => $parseInfo['saved_join_type'], 'ref_type' => false, 'ref_expr' => false,
+            'base_expr'       => false, 'sub_tree' => false, 'subquery' => '', ];
     }
 
-    protected function processFromExpression(&$parseInfo) {
-        $res = array();
+    protected function processFromExpression(&$parseInfo)
+    {
+        $res = [];
 
-        if ($parseInfo['hints'] === array()) {
+        if ($parseInfo['hints'] === []) {
             $parseInfo['hints'] = false;
         }
 
         // exchange the join types (join_type is save now, saved_join_type holds the next one)
-        $parseInfo['join_type'] = $parseInfo['saved_join_type']; // initialized with JOIN
-        $parseInfo['saved_join_type'] = ($parseInfo['next_join_type'] ? $parseInfo['next_join_type'] : 'JOIN');
+        $parseInfo['join_type']       = $parseInfo['saved_join_type']; // initialized with JOIN
+        $parseInfo['saved_join_type'] = ($parseInfo['next_join_type'] ?: 'JOIN');
 
         // we have a reg_expr, so we have to parse it
         if ($parseInfo['ref_expr'] !== false) {
@@ -99,13 +102,13 @@ class FromProcessor extends AbstractProcessor {
             // here we can get a comma separated list
             foreach ($unparsed as $k => $v) {
                 if ($this->isCommaToken($v)) {
-                    $unparsed[$k] = "";
+                    $unparsed[$k] = '';
                 }
             }
             if ($parseInfo['ref_type'] === 'USING') {
-            	// unparsed has only one entry, the column list
-            	$ref = $this->processColumnList($this->removeParenthesisFromStart($unparsed[0]));
-            	$ref = array(array('expr_type' => ExpressionType::COLUMN_LIST, 'base_expr' => $unparsed[0], 'sub_tree' => $ref));
+                // unparsed has only one entry, the column list
+                $ref = $this->processColumnList($this->removeParenthesisFromStart($unparsed[0]));
+                $ref = [['expr_type' => ExpressionType::COLUMN_LIST, 'base_expr' => $unparsed[0], 'sub_tree' => $ref]];
             } else {
                 $ref = $this->processExpressionList($unparsed);
             }
@@ -113,68 +116,70 @@ class FromProcessor extends AbstractProcessor {
         }
 
         // there is an expression, we have to parse it
-        if (substr(trim($parseInfo['table']), 0, 1) == '(') {
+        if (substr(trim($parseInfo['table']), 0, 1) === '(') {
             $parseInfo['expression'] = $this->removeParenthesisFromStart($parseInfo['table']);
 
-            if (preg_match("/^\\s*(-- [\\w\\s]+\\n)?\\s*SELECT/i", $parseInfo['expression'])) {
+            if (preg_match('/^\\s*(-- [\\w\\s]+\\n)?\\s*SELECT/i', $parseInfo['expression'])) {
                 $parseInfo['sub_tree'] = $this->processSQLDefault($parseInfo['expression']);
-                $res['expr_type'] = ExpressionType::SUBQUERY;
+                $res['expr_type']      = ExpressionType::SUBQUERY;
             } else {
-                $tmp = $this->splitSQLIntoTokens($parseInfo['expression']);
+                $tmp            = $this->splitSQLIntoTokens($parseInfo['expression']);
                 $unionProcessor = new UnionProcessor($this->options);
-                $unionQueries = $unionProcessor->process($tmp);
+                $unionQueries   = $unionProcessor->process($tmp);
 
                 // If there was no UNION or UNION ALL in the query, then the query is
                 // stored at $queries[0].
-                if (!empty($unionQueries) && !UnionProcessor::isUnion($unionQueries)) {
+                if (! empty($unionQueries) && ! UnionProcessor::isUnion($unionQueries)) {
                     $sub_tree = $this->process($unionQueries[0]);
-                }
-                else {
+                } else {
                     $sub_tree = $unionQueries;
                 }
                 $parseInfo['sub_tree'] = $sub_tree;
-                $res['expr_type'] = ExpressionType::TABLE_EXPRESSION;
+                $res['expr_type']      = ExpressionType::TABLE_EXPRESSION;
             }
         } else {
             $res['expr_type'] = ExpressionType::TABLE;
-            $res['table'] = $parseInfo['table'];
+            $res['table']     = $parseInfo['table'];
             $res['no_quotes'] = $this->revokeQuotation($parseInfo['table']);
         }
 
-        $res['alias'] = $parseInfo['alias'];
-        $res['hints'] = $parseInfo['hints'];
-        $res['join_type'] = $parseInfo['join_type'];
-        $res['ref_type'] = $parseInfo['ref_type'];
+        $res['alias']      = $parseInfo['alias'];
+        $res['hints']      = $parseInfo['hints'];
+        $res['join_type']  = $parseInfo['join_type'];
+        $res['ref_type']   = $parseInfo['ref_type'];
         $res['ref_clause'] = $parseInfo['ref_expr'];
-        $res['base_expr'] = trim($parseInfo['expression']);
-        $res['sub_tree'] = $parseInfo['sub_tree'];
+        $res['base_expr']  = trim($parseInfo['expression']);
+        $res['sub_tree']   = $parseInfo['sub_tree'];
+
         return $res;
     }
 
-    public function process($tokens) {
-        $parseInfo = $this->initParseInfo();
-        $expr = array();
+    public function process($tokens)
+    {
+        $parseInfo      = $this->initParseInfo();
+        $expr           = [];
         $token_category = '';
-        $prevToken = '';
+        $prevToken      = '';
 
         $skip_next = false;
-        $i = 0;
+        $i         = 0;
 
         foreach ($tokens as $token) {
             $upper = strtoupper(trim($token));
 
-            if ($skip_next && $token !== "") {
+            if ($skip_next && $token !== '') {
                 $parseInfo['token_count']++;
                 $skip_next = false;
+
                 continue;
-            } else {
-                if ($skip_next) {
-                    continue;
-                }
+            }
+            if ($skip_next) {
+                continue;
             }
 
             if ($this->isCommentToken($token)) {
                 $expr[] = parent::processComment($token);
+
                 continue;
             }
 
@@ -188,7 +193,7 @@ class FromProcessor extends AbstractProcessor {
             case 'OUTER':
             case 'JOIN':
                 if ($token_category === 'LEFT' || $token_category === 'RIGHT' || $token_category === 'NATURAL') {
-                    $token_category = '';
+                    $token_category              = '';
                     $parseInfo['next_join_type'] = strtoupper(trim($prevToken)); // it seems to be a join
                 }
                 break;
@@ -197,8 +202,9 @@ class FromProcessor extends AbstractProcessor {
             case 'RIGHT':
             case 'NATURAL':
                 $token_category = $upper;
-                $prevToken = $token;
+                $prevToken      = $token;
                 $i++;
+
                 continue 2;
 
             default:
@@ -206,14 +212,13 @@ class FromProcessor extends AbstractProcessor {
                     if ($upper === '') {
                         $prevToken .= $token;
                         break;
-                    } else {
-                        $token_category = '';     // it seems to be a function
-                        $parseInfo['expression'] .= $prevToken;
-                        if ($parseInfo['ref_type'] !== false) { // all after ON / USING
-                            $parseInfo['ref_expr'] .= $prevToken;
-                        }
-                        $prevToken = '';
                     }
+                    $token_category = '';     // it seems to be a function
+                    $parseInfo['expression'] .= $prevToken;
+                    if ($parseInfo['ref_type'] !== false) { // all after ON / USING
+                        $parseInfo['ref_expr'] .= $prevToken;
+                    }
+                    $prevToken = '';
                 }
                 $parseInfo['expression'] .= $token;
                 if ($parseInfo['ref_type'] !== false) { // all after ON / USING
@@ -224,21 +229,23 @@ class FromProcessor extends AbstractProcessor {
 
             if ($upper === '') {
                 $i++;
+
                 continue;
             }
 
             switch ($upper) {
             case 'AS':
-                $parseInfo['alias'] = array('as' => true, 'name' => "", 'base_expr' => $token);
+                $parseInfo['alias'] = ['as' => true, 'name' => '', 'base_expr' => $token];
                 $parseInfo['token_count']++;
-                $n = 1;
-                $str = "";
-                while ($str === "" && isset($tokens[$i + $n])) {
-                    $parseInfo['alias']['base_expr'] .= ($tokens[$i + $n] === "" ? " " : $tokens[$i + $n]);
+                $n   = 1;
+                $str = '';
+
+                while ($str === '' && isset($tokens[$i + $n])) {
+                    $parseInfo['alias']['base_expr'] .= ($tokens[$i + $n] === '' ? ' ' : $tokens[$i + $n]);
                     $str = trim($tokens[$i + $n]);
-                    ++$n;
+                    $n++;
                 }
-                $parseInfo['alias']['name'] = $str;
+                $parseInfo['alias']['name']      = $str;
                 $parseInfo['alias']['no_quotes'] = $this->revokeQuotation($str);
                 $parseInfo['alias']['base_expr'] = trim($parseInfo['alias']['base_expr']);
                 break;
@@ -246,19 +253,22 @@ class FromProcessor extends AbstractProcessor {
             case 'IGNORE':
             case 'USE':
             case 'FORCE':
-                $token_category = 'IDX_HINT';
+                $token_category                    = 'IDX_HINT';
                 $parseInfo['hints'][]['hint_type'] = $upper;
+
                 continue 2;
 
             case 'KEY':
             case 'INDEX':
                 if ($token_category === 'CREATE') {
                     $token_category = $upper; // TODO: what is it for a statement?
+
                     continue 2;
                 }
                 if ($token_category === 'IDX_HINT') {
                     $cur_hint = (count($parseInfo['hints']) - 1);
-                    $parseInfo['hints'][$cur_hint]['hint_type'] .= " " . $upper;
+                    $parseInfo['hints'][$cur_hint]['hint_type'] .= ' ' . $upper;
+
                     continue 2;
                 }
                 break;
@@ -266,8 +276,9 @@ class FromProcessor extends AbstractProcessor {
             case 'USING':
             case 'ON':
                 $parseInfo['ref_type'] = $upper;
-                $parseInfo['ref_expr'] = "";
+                $parseInfo['ref_expr'] = '';
 
+                // no break
             case 'CROSS':
             case 'INNER':
             case 'OUTER':
@@ -281,26 +292,27 @@ class FromProcessor extends AbstractProcessor {
                 break;
 
             case 'STRAIGHT_JOIN':
-                $parseInfo['next_join_type'] = "STRAIGHT_JOIN";
+                $parseInfo['next_join_type'] = 'STRAIGHT_JOIN';
                 if ($parseInfo['subquery']) {
-                    $parseInfo['sub_tree'] = $this->parse($this->removeParenthesisFromStart($parseInfo['subquery']));
+                    $parseInfo['sub_tree']   = $this->parse($this->removeParenthesisFromStart($parseInfo['subquery']));
                     $parseInfo['expression'] = $parseInfo['subquery'];
                 }
 
-                $expr[] = $this->processFromExpression($parseInfo);
+                $expr[]    = $this->processFromExpression($parseInfo);
                 $parseInfo = $this->initParseInfo($parseInfo);
                 break;
 
             case ',':
                 $parseInfo['next_join_type'] = 'CROSS';
 
+                // no break
             case 'JOIN':
                 if ($parseInfo['subquery']) {
-                    $parseInfo['sub_tree'] = $this->parse($this->removeParenthesisFromStart($parseInfo['subquery']));
+                    $parseInfo['sub_tree']   = $this->parse($this->removeParenthesisFromStart($parseInfo['subquery']));
                     $parseInfo['expression'] = $parseInfo['subquery'];
                 }
 
-                $expr[] = $this->processFromExpression($parseInfo);
+                $expr[]    = $this->processFromExpression($parseInfo);
                 $parseInfo = $this->initParseInfo($parseInfo);
                 break;
 
@@ -308,21 +320,21 @@ class FromProcessor extends AbstractProcessor {
                 // TODO: enhance it, so we can have base_expr to calculate the position of the keywords
                 // build a subtree under "hints"
                 if ($token_category === 'IDX_HINT') {
-                    $token_category = '';
-                    $cur_hint = (count($parseInfo['hints']) - 1);
+                    $token_category                             = '';
+                    $cur_hint                                   = (count($parseInfo['hints']) - 1);
                     $parseInfo['hints'][$cur_hint]['hint_list'] = $token;
                     break;
                 }
 
                 if ($parseInfo['token_count'] === 0) {
-                    if ($parseInfo['table'] === "") {
-                        $parseInfo['table'] = $token;
+                    if ($parseInfo['table'] === '') {
+                        $parseInfo['table']     = $token;
                         $parseInfo['no_quotes'] = $this->revokeQuotation($token);
                     }
-                } else if ($parseInfo['token_count'] === 1) {
-                    $parseInfo['alias'] = array('as' => false, 'name' => trim($token),
-                                                'no_quotes' => $this->revokeQuotation($token),
-                                                'base_expr' => trim($token));
+                } elseif ($parseInfo['token_count'] === 1) {
+                    $parseInfo['alias'] = ['as' => false, 'name' => trim($token),
+                        'no_quotes'             => $this->revokeQuotation($token),
+                        'base_expr'             => trim($token), ];
                 }
                 $parseInfo['token_count']++;
                 break;
@@ -331,9 +343,7 @@ class FromProcessor extends AbstractProcessor {
         }
 
         $expr[] = $this->processFromExpression($parseInfo);
+
         return $expr;
     }
-
 }
-
-?>

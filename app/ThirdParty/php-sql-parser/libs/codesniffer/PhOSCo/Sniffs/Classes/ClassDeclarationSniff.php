@@ -5,12 +5,11 @@
  * PHP version 5
  *
  * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
- * @author    Marc McIntyre <mmcintyre@squiz.net>
+ *
  * @copyright 2006-2012 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @link      http://pear.php.net/package/PHP_CodeSniffer
+ *
+ * @see      http://pear.php.net/package/PHP_CodeSniffer
  */
 
 /**
@@ -19,16 +18,16 @@
  * Checks the declaration of the class is correct.
  *
  * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
- * @author    Marc McIntyre <mmcintyre@squiz.net>
+ *
  * @copyright 2006-2012 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ *
  * @version   Release: 1.5.1
- * @link      http://pear.php.net/package/PHP_CodeSniffer
+ *
+ * @see      http://pear.php.net/package/PHP_CodeSniffer
  */
-class PhOSCo_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniffer_Sniff {
-
+class PhOSCo_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniffer_Sniff
+{
     /**
      * The number of spaces code should be indented.
      *
@@ -41,37 +40,40 @@ class PhOSCo_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniffer_Sni
      *
      * @return array
      */
-    public function register() {
-        return array(T_CLASS, T_INTERFACE,);
-
+    public function register()
+    {
+        return [T_CLASS, T_INTERFACE];
     }//end register()
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param integer              $stackPtr  The position of the current token in the
+     * @param int                  $stackPtr  The position of the current token in the
      *                                        stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
-        $tokens = $phpcsFile->getTokens();
-        $errorData = array($tokens[$stackPtr]['content']);
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        $tokens    = $phpcsFile->getTokens();
+        $errorData = [$tokens[$stackPtr]['content']];
 
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             $error = 'Possible parse error: %s missing opening or closing brace';
             $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
+
             return;
         }
 
-        $curlyBrace = $tokens[$stackPtr]['scope_opener'];
+        $curlyBrace  = $tokens[$stackPtr]['scope_opener'];
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($curlyBrace - 1), $stackPtr, true);
-        $classLine = $tokens[$lastContent]['line'];
-        $braceLine = $tokens[$curlyBrace]['line'];
+        $classLine   = $tokens[$lastContent]['line'];
+        $braceLine   = $tokens[$curlyBrace]['line'];
         if ($braceLine !== $classLine) {
             $error = 'Opening brace of a %s must be on the same line as the definition';
             $phpcsFile->addError($error, $curlyBrace, 'OpenBraceNewLine', $errorData);
+
             return;
         }
 
@@ -81,19 +83,15 @@ class PhOSCo_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniffer_Sni
                 $spaces = 0;
             } else {
                 $blankSpace = substr($prevContent, strpos($prevContent, $phpcsFile->eolChar));
-                $spaces = strlen($blankSpace);
+                $spaces     = strlen($blankSpace);
             }
 
             $expected = 1;
             if ($spaces !== $expected) {
                 $error = 'Expected %s spaces before opening brace; %s found';
-                $data = array($expected, $spaces,);
+                $data  = [$expected, $spaces];
                 $phpcsFile->addError($error, $curlyBrace, 'SpaceBeforeBrace', $data);
             }
         }
-
     }//end process()
-
 }//end class
-
-?>

@@ -31,65 +31,79 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
- * This class implements the builder for the SHOW statement. 
+ * This class implements the builder for the SHOW statement.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class ShowBuilder implements Builder {
-
-    protected function buildTable($parsed, $delim) {
+class ShowBuilder implements Builder
+{
+    protected function buildTable($parsed, $delim)
+    {
         $builder = new TableBuilder();
+
         return $builder->build($parsed, $delim);
     }
 
-    protected function buildFunction($parsed) {
+    protected function buildFunction($parsed)
+    {
         $builder = new FunctionBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildProcedure($parsed) {
+    protected function buildProcedure($parsed)
+    {
         $builder = new ProcedureBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildDatabase($parsed) {
+    protected function buildDatabase($parsed)
+    {
         $builder = new DatabaseBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildEngine($parsed) {
+    protected function buildEngine($parsed)
+    {
         $builder = new EngineBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildConstant($parsed) {
+    protected function buildConstant($parsed)
+    {
         $builder = new ConstantBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildReserved($parsed) {
+    protected function buildReserved($parsed)
+    {
         $builder = new ReservedBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $show = $parsed['SHOW'];
-        $sql = "";
+        $sql  = '';
+
         foreach ($show as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->buildReserved($v);
@@ -100,15 +114,15 @@ class ShowBuilder implements Builder {
             $sql .= $this->buildFunction($v);
             $sql .= $this->buildTable($v, 0);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('SHOW', $k, $v, 'expr_type');
             }
 
-            $sql .= " ";
+            $sql .= ' ';
         }
 
         $sql = substr($sql, 0, -1);
-        return "SHOW " . $sql;
+
+        return 'SHOW ' . $sql;
     }
 }
-?>

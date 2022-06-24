@@ -31,32 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue104Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue104() {
-        $sql = "SELECT a.*
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue104Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue104()
+    {
+        $sql = 'SELECT a.*
         FROM iuz6l_menu_types AS a
         LEFT JOIN iuz6l_menu AS b ON b.menutype = a.menutype AND b.home != 0
         LEFT JOIN iuz6l_languages AS l ON (l.lang_code = language)
-        WHERE (b.client_id = 0 OR b.client_id IS NULL)";
+        WHERE (b.client_id = 0 OR b.client_id IS NULL)';
 
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue104.sql', false);
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue104.sql', false);
         $this->assertSame($expected, $created, 'ref clause parentheses');
-
     }
 }
-

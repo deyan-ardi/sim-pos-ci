@@ -31,36 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue60Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue60() {
-
-
-        $sql = "SELECT id, password
-        FROM users";
+/**
+ * @internal
+ */
+final class issue60Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue60()
+    {
+        $sql = 'SELECT id, password
+        FROM users';
         $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
+        $p      = $parser->parsed;
         $this->assertSame(11, $p['SELECT'][1]['position'], 'wrong usage of keyword password');
         $this->assertSame('colref', $p['SELECT'][1]['expr_type'], 'password should be a colref here');
 
-
-        $sql = "SET PASSWORD = PASSWORD('haha')";
+        $sql    = "SET PASSWORD = PASSWORD('haha')";
         $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
+        $p      = $parser->parsed;
         $this->assertSame('colref', $p['SET'][0]['sub_tree'][0]['expr_type'], 'set the password column of mysql.user');
         $this->assertSame('function', $p['SET'][0]['sub_tree'][2]['expr_type'], 'set password value');
-
     }
 }
-

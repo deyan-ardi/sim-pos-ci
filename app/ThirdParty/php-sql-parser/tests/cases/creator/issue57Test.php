@@ -31,32 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue57Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue57() {
-        $sql = "SELECT a.*, SUM(b.home) AS home,b.language,l.image,l.sef,l.title_native
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue57Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue57()
+    {
+        $sql = 'SELECT a.*, SUM(b.home) AS home,b.language,l.image,l.sef,l.title_native
         FROM iuz6l_menu_types AS a
         LEFT JOIN iuz6l_menu AS b ON b.menutype = a.menutype AND b.home != 0
         LEFT JOIN iuz6l_languages AS l ON l.lang_code = language
         WHERE (b.client_id = 0 OR b.client_id IS NULL)
-        GROUP BY a.id, a.menutype, a.description, a.title, b.menutype,b.language,l.image,l.sef,l.title_native";
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue57.sql', false);
+        GROUP BY a.id, a.menutype, a.description, a.title, b.menutype,b.language,l.image,l.sef,l.title_native';
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue57.sql', false);
         $this->assertSame($expected, $created, 'constants in ref-clause');
-
     }
 }
-

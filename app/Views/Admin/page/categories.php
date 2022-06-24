@@ -91,6 +91,7 @@ Data Kategori Barang
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($category as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -100,7 +101,7 @@ Data Kategori Barang
                                                             </td>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if (!in_groups('GUDANG')) : ?>
+                                                                    <?php if (! in_groups('GUDANG')) : ?>
 
                                                                         <!-- Update Button Modal -->
                                                                         <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Kategori" data-toggle="tooltip"></i></button>
@@ -119,9 +120,9 @@ Data Kategori Barang
                                                                                             <?= csrf_field(); ?>
                                                                                             <input type="hidden" name="_method" value="PATCH">
                                                                                             <input type="hidden" name="id_category" value="<?= $c->id; ?>">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('category_update') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="category_update" placeholder="Nama Kategori" value="<?= (old('category_update')) ? old('category_update') : $c->category_name; ?>">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('category_update') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="category_update" placeholder="Nama Kategori" value="<?= (old('category_update')) ?: $c->category_name; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("category_update"); ?>
+                                                                                                <?= $validation->getError('category_update'); ?>
                                                                                             </div>
                                                                                             <div class="modal-footer">
                                                                                                 <button type="submit" name="update_category" value="update" class="btn btn-primary">Simpan
@@ -187,9 +188,9 @@ Data Kategori Barang
             <div class="modal-body">
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
-                    <input type="text" class="form-control <?= $validation->getError('category') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="category" required placeholder="Nama Kategori" value="<?= (old('category')) ? old('category') : ""; ?>">
+                    <input type="text" class="form-control <?= $validation->getError('category') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="category" required placeholder="Nama Kategori" value="<?= (old('category')) ?: ''; ?>">
                     <div class="invalid-feedback">
-                        <?= $validation->getError("category"); ?>
+                        <?= $validation->getError('category'); ?>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="submit_category" value="submit" class="btn btn-primary">Simpan</button>

@@ -31,15 +31,15 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
@@ -47,42 +47,52 @@ use PHPSQLParser\utils\ExpressionType;
  * This class implements the builder for the object list of a DROP statement.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class DropExpressionBuilder implements Builder {
-
-    protected function buildTable($parsed, $index) {
+class DropExpressionBuilder implements Builder
+{
+    protected function buildTable($parsed, $index)
+    {
         $builder = new TableBuilder();
+
         return $builder->build($parsed, $index);
     }
 
-    protected function buildDatabase($parsed) {
+    protected function buildDatabase($parsed)
+    {
         $builder = new DatabaseBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildSchema($parsed) {
+    protected function buildSchema($parsed)
+    {
         $builder = new SchemaBuilder();
+
         return $builder->build($parsed);
     }
-    
-    protected function buildTemporaryTable($parsed) {
+
+    protected function buildTemporaryTable($parsed)
+    {
         $builder = new TempTableBuilder();
+
         return $builder->build($parsed);
     }
-    
-    protected function buildView($parsed) {
+
+    protected function buildView($parsed)
+    {
         $builder = new ViewBuilder();
+
         return $builder->build($parsed);
     }
-    
-    public function build(array $parsed) {
+
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::EXPRESSION) {
-            return "";
+            return '';
         }
         $sql = '';
+
         foreach ($parsed['sub_tree'] as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->buildTable($v, 0);
@@ -91,13 +101,13 @@ class DropExpressionBuilder implements Builder {
             $sql .= $this->buildDatabase($v);
             $sql .= $this->buildTemporaryTable($v, 0);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('DROP object-list subtree', $k, $v, 'expr_type');
             }
 
             $sql .= ', ';
         }
+
         return substr($sql, 0, -2);
     }
 }
-?>

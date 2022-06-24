@@ -31,34 +31,34 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue80Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue80() {
-
-
-        $sql = "SELECT * FROM `model` WHERE `marker`='this_model' ORDER BY `test`";
-        $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue80a.serialized');
-        $this->assertEquals($expected, $p, 'quoted column names');
+/**
+ * @internal
+ */
+final class issue80Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue80()
+    {
+        $sql      = "SELECT * FROM `model` WHERE `marker`='this_model' ORDER BY `test`";
+        $parser   = new PHPSQLParser($sql, true);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue80a.serialized');
+        $this->assertSame($expected, $p, 'quoted column names');
 
         $sql = "SELECT x+3 `test` FROM `model` WHERE `marker`='this_model' ORDER BY `test`";
         $parser->parse($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue80b.serialized');
-        $this->assertEquals($expected, $p, 'quoted names and aliases');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue80b.serialized');
+        $this->assertSame($expected, $p, 'quoted names and aliases');
     }
 }
-

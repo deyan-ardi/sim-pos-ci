@@ -31,54 +31,62 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
 
-class AliasesTest extends \PHPUnit\Framework\TestCase {
-	
-	protected $parser;
-	
-	/**
-	 * @before
-	 * Executed before each test
-	 */
-	protected function setup(): void {
-		$this->parser = new PHPSQLParser();
-	}
+/**
+ * @internal
+ */
+final class aliasesTest extends \PHPUnit\Framework\TestCase
+{
+    protected $parser;
 
-    public function testAlias1() {
-        $sql = 'SELECT colA * colB From test t';
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'alias1.serialized');
-        $this->assertEquals($expected, $p, 'multiply columns with table alias');
+    /**
+     * @before
+     * Executed before each test
+     */
+    protected function setup(): void
+    {
+        $this->parser = new PHPSQLParser();
     }
-    
-    public function testAlias2() {
-        $sql = 'select colA colA from test';
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'alias2.serialized');
-        $this->assertEquals($expected, $p, 'alias named like the column');
+
+    public function testAlias1()
+    {
+        $sql      = 'SELECT colA * colB From test t';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'alias1.serialized');
+        $this->assertSame($expected, $p, 'multiply columns with table alias');
     }
-    
-    public function testAlias3() {
-        $sql = 'SELECT (select colA AS a from test t) colA From example as b';
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'alias3.serialized');
-        $this->assertEquals($expected, $p, 'sub-query within selection with alias');
+
+    public function testAlias2()
+    {
+        $sql      = 'select colA colA from test';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'alias2.serialized');
+        $this->assertSame($expected, $p, 'alias named like the column');
     }
-    
-    public function testAlias4() {
-        $sql = 'SELECT (select colA AS a from testA) + (select colB b from testB) From tableC x';
-        $p = $this->parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'alias4.serialized');
-        $this->assertEquals($expected, $p, 'add two sub-query results');
+
+    public function testAlias3()
+    {
+        $sql      = 'SELECT (select colA AS a from test t) colA From example as b';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'alias3.serialized');
+        $this->assertSame($expected, $p, 'sub-query within selection with alias');
+    }
+
+    public function testAlias4()
+    {
+        $sql      = 'SELECT (select colA AS a from testA) + (select colB b from testB) From tableC x';
+        $p        = $this->parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'alias4.serialized');
+        $this->assertSame($expected, $p, 'add two sub-query results');
     }
 }
-?>

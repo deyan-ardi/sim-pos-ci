@@ -31,32 +31,34 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class issue51Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue51() {
-
-
+/**
+ * @internal
+ */
+final class issue51Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue51()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "SELECT CAST( 12 AS decimal( 9, 3 ) )";
+        $sql = 'SELECT CAST( 12 AS decimal( 9, 3 ) )';
         $parser->parse($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue51.serialized');
-        $this->assertEquals($expected, $p, 'should not die if query contains cast expression');
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue51.serialized');
+        $this->assertSame($expected, $p, 'should not die if query contains cast expression');
 
         $creator = new PHPSQLCreator($p);
-        $this->assertEquals('SELECT CAST(12 AS decimal (9 , 3))', $creator->created);
+        $this->assertSame('SELECT CAST(12 AS decimal (9 , 3))', $creator->created);
     }
 }
-

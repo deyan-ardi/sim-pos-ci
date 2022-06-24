@@ -31,27 +31,30 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class issue79Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue79() {
-        $sql = "SELECT * FROM `users` WHERE id_user=@ID_USER";
-        $parser = new PHPSQLParser($sql, true);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue79a.sql', false);
+/**
+ * @internal
+ */
+final class issue79Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue79()
+    {
+        $sql      = 'SELECT * FROM `users` WHERE id_user=@ID_USER';
+        $parser   = new PHPSQLParser($sql, true);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue79a.sql', false);
         $this->assertSame($expected, $created, 'User variable within WHERE clause');
-
     }
 }
-

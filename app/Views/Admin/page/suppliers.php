@@ -93,6 +93,7 @@ Data Supplier Barang
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($supplier as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -124,33 +125,33 @@ Data Supplier Barang
                                                                                         <input type="hidden" name="_method" value="PATCH">
                                                                                         <input type="hidden" name="id_supplier" value="<?= $c->id; ?>">
                                                                                         <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_name_up" required placeholder="Nama Supplier" value="<?= (old('supplier_name_up')) ? old('supplier_name_up') : $c->supplier_name; ?>">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_name_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_name_up" required placeholder="Nama Supplier" value="<?= (old('supplier_name_up')) ?: $c->supplier_name; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("supplier_name_up"); ?>
+                                                                                                <?= $validation->getError('supplier_name_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_contact_up" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact_up')) ? old('supplier_contact_up') : $c->supplier_contact; ?>">
+                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_contact_up" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact_up')) ?: $c->supplier_contact; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("supplier_contact_up"); ?>
+                                                                                                <?= $validation->getError('supplier_contact_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="email" class="form-control <?= $validation->getError('supplier_email_up') ? "is-invalid" : ""; ?>" name="supplier_email_up" required placeholder="Email Supplier" value="<?= (old('supplier_email_up')) ? old('supplier_email_up') : $c->supplier_email; ?>">
+                                                                                            <input type="email" class="form-control <?= $validation->getError('supplier_email_up') ? 'is-invalid' : ''; ?>" name="supplier_email_up" required placeholder="Email Supplier" value="<?= (old('supplier_email_up')) ?: $c->supplier_email; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("supplier_email_up"); ?>
+                                                                                                <?= $validation->getError('supplier_email_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_alamat_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_alamat_up" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat_up')) ? old('supplier_alamat_up') : $c->supplier_address; ?>">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_alamat_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_alamat_up" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat_up')) ?: $c->supplier_address; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("supplier_alamat_up"); ?>
+                                                                                                <?= $validation->getError('supplier_alamat_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <textarea class="form-control <?= $validation->getError('supplier_description_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_description_up" required placeholder="Deskripsi Supplier"><?= (old('supplier_description_up')) ? old('supplier_description_up') : $c->supplier_description; ?></textarea>
+                                                                                            <textarea class="form-control <?= $validation->getError('supplier_description_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_description_up" required placeholder="Deskripsi Supplier"><?= (old('supplier_description_up')) ?: $c->supplier_description; ?></textarea>
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("supplier_description_up"); ?>
+                                                                                                <?= $validation->getError('supplier_description_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="modal-footer">
@@ -221,33 +222,33 @@ Data Supplier Barang
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('supplier_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_name" required placeholder="Nama Supplier" value="<?= (old('supplier_name')) ? old('supplier_name') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('supplier_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_name" required placeholder="Nama Supplier" value="<?= (old('supplier_name')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("supplier_name"); ?>
+                            <?= $validation->getError('supplier_name'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_contact" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact')) ? old('supplier_contact') : ""; ?>">
+                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_contact" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("supplier_contact"); ?>
+                            <?= $validation->getError('supplier_contact'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control <?= $validation->getError('supplier_email') ? "is-invalid" : ""; ?>" name="supplier_email" required placeholder="Email Supplier" value="<?= (old('supplier_email')) ? old('supplier_email') : ""; ?>">
+                        <input type="email" class="form-control <?= $validation->getError('supplier_email') ? 'is-invalid' : ''; ?>" name="supplier_email" required placeholder="Email Supplier" value="<?= (old('supplier_email')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("supplier_email"); ?>
+                            <?= $validation->getError('supplier_email'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('supplier_alamat') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_alamat" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat')) ? old('supplier_alamat') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('supplier_alamat') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_alamat" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("supplier_alamat"); ?>
+                            <?= $validation->getError('supplier_alamat'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control <?= $validation->getError('supplier_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="supplier_description" required placeholder="Deskripsi Supplier" value="<?= (old('supplier_description')) ? old('supplier_description') : ""; ?>"></textarea>
+                        <textarea class="form-control <?= $validation->getError('supplier_description') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_description" required placeholder="Deskripsi Supplier" value="<?= (old('supplier_description')) ?: ''; ?>"></textarea>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("supplier_description"); ?>
+                            <?= $validation->getError('supplier_description'); ?>
                         </div>
                     </div>
                     <div class="modal-footer">

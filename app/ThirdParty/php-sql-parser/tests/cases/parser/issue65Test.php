@@ -31,28 +31,28 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue65Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue65() {
-
-
-        $sql = "select i1, count(*) cnt from test.s1 group by i1";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue65.serialized');
-        $this->assertEquals($expected, $p, 'It treats the alias as a colref.');
-
+/**
+ * @internal
+ */
+final class issue65Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue65()
+    {
+        $sql      = 'select i1, count(*) cnt from test.s1 group by i1';
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue65.serialized');
+        $this->assertSame($expected, $p, 'It treats the alias as a colref.');
     }
 }
-

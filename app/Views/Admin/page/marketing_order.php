@@ -106,6 +106,7 @@ Request Order Barang
                                                 <tbody>
                                                     <?php
                                                     $tot = 1;
+
                                                     foreach ($request_order as $c) : ?>
                                                         <tr>
                                                             <td><?= $tot++; ?></td>
@@ -116,16 +117,16 @@ Request Order Barang
                                                             <td><?= $c->request_description; ?></td>
                                                             <td><?= $c->request_total; ?> Buah</td>
                                                             <td><?= $c->username; ?></td>
-                                                            <?php if ($c->request_status == 0) : ?>
+                                                            <?php if ($c->request_status === 0) : ?>
                                                                 <td><a href="" class="btn btn-warning btn-sm">Draft</a></td>
-                                                            <?php elseif ($c->request_status == 2) : ?>
+                                                            <?php elseif ($c->request_status === 2) : ?>
                                                                 <td><a href="" class="btn btn-danger btn-sm">Permintaan Ditolak</a></td>
                                                             <?php else : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Permintaan Diterima</a></td>
                                                             <?php endif; ?>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if ($c->request_status == 0) : ?>
+                                                                    <?php if ($c->request_status === 0) : ?>
                                                                         <!-- Set Status Button Modal -->
                                                                         <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Permintaan Order" data-toggle="tooltip"></i></button>
 
@@ -144,29 +145,29 @@ Request Order Barang
                                                                                             <input type="hidden" name="_method" value="PATCH">
                                                                                             <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                                             <div class="form-group">
-                                                                                                <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="item_name" required>
+                                                                                                <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="item_name" required>
                                                                                                     <?php foreach ($item as $i) : ?>
-                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id == $c->item_id ? "selected" : "" ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
+                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id === $c->item_id ? 'selected' : '' ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
                                                                                                     <?php endforeach; ?>
                                                                                                 </select>
                                                                                                 <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError("item_name"); ?>
+                                                                                                    <?= $validation->getError('item_name'); ?>
                                                                                                 </div>
                                                                                             </div>
 
                                                                                             <div class="form-group">
-                                                                                                <textarea class="form-control <?= $validation->getError('request_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required> <?= $c->request_description; ?> </textarea>
+                                                                                                <textarea class="form-control <?= $validation->getError('request_description') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required> <?= $c->request_description; ?> </textarea>
                                                                                                 <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError("request_description"); ?>
+                                                                                                    <?= $validation->getError('request_description'); ?>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="form-group input-group search-form">
-                                                                                                <input type="number" min="0" class="form-control <?= $validation->getError('order_total') ? "is-invalid" : ""; ?>" name="order_total" placeholder="Jumlah Order" required value="<?= (old('order_total')) ? old('order_total') : $c->request_total; ?>">
+                                                                                                <input type="number" min="0" class="form-control <?= $validation->getError('order_total') ? 'is-invalid' : ''; ?>" name="order_total" placeholder="Jumlah Order" required value="<?= (old('order_total')) ?: $c->request_total; ?>">
                                                                                                 <div class="input-group-append">
                                                                                                     <span class="input-group-text bg-transparent">Buah</span>
                                                                                                 </div>
                                                                                                 <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError("order_total"); ?>
+                                                                                                    <?= $validation->getError('order_total'); ?>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="modal-footer">
@@ -180,7 +181,7 @@ Request Order Barang
                                                                         </div>
                                                                     <?php endif; ?>
                                                                     <!-- Delete -->
-                                                                    <?php if ($c->request_status != 1) : ?>
+                                                                    <?php if ($c->request_status !== 1) : ?>
                                                                         <form action="" id="<?= $c->id; ?>" method="POST">
                                                                             <?= csrf_field(); ?>
                                                                             <input type="hidden" name="_method" value="DELETE" />
@@ -236,29 +237,29 @@ Request Order Barang
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <select id="item_id" class="form-control <?= $validation->getError('item_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="item_name" required>
+                        <select id="item_id" class="form-control <?= $validation->getError('item_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="item_name" required>
                             <option value="">Pilih Item Barang</option>
                             <?php foreach ($item as $i) : ?>
                                 <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
                             <?php endforeach; ?>
                         </select>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("item_name"); ?>
+                            <?= $validation->getError('item_name'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control <?= $validation->getError('request_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required></textarea>
+                        <textarea class="form-control <?= $validation->getError('request_description') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required></textarea>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("request_description"); ?>
+                            <?= $validation->getError('request_description'); ?>
                         </div>
                     </div>
                     <div class="form-group input-group search-form">
-                        <input type="number" min="0" class="form-control <?= $validation->getError('order_total') ? "is-invalid" : ""; ?>" name="order_total" placeholder="Jumlah Order" required value="<?= (old('order_total')) ? old('order_total') : ""; ?>">
+                        <input type="number" min="0" class="form-control <?= $validation->getError('order_total') ? 'is-invalid' : ''; ?>" name="order_total" placeholder="Jumlah Order" required value="<?= (old('order_total')) ?: ''; ?>">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent">Buah</span>
                         </div>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("order_total"); ?>
+                            <?= $validation->getError('order_total'); ?>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -31,57 +31,56 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue74Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue74() {
-
-
+/**
+ * @internal
+ */
+final class issue74Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue74()
+    {
         $parser = new PHPSQLParser();
 
         // DROP {DATABASE | SCHEMA} [IF EXISTS] db_name
-        $sql = "DROP DATABASE blah";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue74a.serialized');
-        $this->assertEquals($expected, $p, 'drop database statement');
+        $sql      = 'DROP DATABASE blah';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue74a.serialized');
+        $this->assertSame($expected, $p, 'drop database statement');
 
-        $sql = "DROP SCHEMA blah";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue74b.serialized');
-        $this->assertEquals($expected, $p, 'drop schema statement');
+        $sql      = 'DROP SCHEMA blah';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue74b.serialized');
+        $this->assertSame($expected, $p, 'drop schema statement');
 
-        $sql = "DROP DATABASE IF EXISTS blah";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue74c.serialized');
-        $this->assertEquals($expected, $p, 'drop database if exists statement');
+        $sql      = 'DROP DATABASE IF EXISTS blah';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue74c.serialized');
+        $this->assertSame($expected, $p, 'drop database if exists statement');
 
-        $sql = "DROP SCHEMA IF EXISTS blah";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue74d.serialized');
-        $this->assertEquals($expected, $p, 'drop schema if exists statement');
-
+        $sql      = 'DROP SCHEMA IF EXISTS blah';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue74d.serialized');
+        $this->assertSame($expected, $p, 'drop schema if exists statement');
 
         // DROP [TEMPORARY] TABLE [IF EXISTS] tbl_name [, tbl_name] ... [RESTRICT | CASCADE]
-        $sql = "DROP TABLE blah1, blah2 RESTRICT";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue74e.serialized');
-        $this->assertEquals($expected, $p, 'drop table-list statement');
+        $sql      = 'DROP TABLE blah1, blah2 RESTRICT';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue74e.serialized');
+        $this->assertSame($expected, $p, 'drop table-list statement');
 
-        $sql = "DROP TEMPORARY TABLE IF EXISTS blah1, blah2 CASCADE";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue74f.serialized');
-        $this->assertEquals($expected, $p, 'drop temporary table-list if exists statement');
-
+        $sql      = 'DROP TEMPORARY TABLE IF EXISTS blah1, blah2 CASCADE';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue74f.serialized');
+        $this->assertSame($expected, $p, 'drop temporary table-list if exists statement');
     }
 }
-

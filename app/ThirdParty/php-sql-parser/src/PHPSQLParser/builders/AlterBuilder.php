@@ -1,13 +1,12 @@
 <?php
+
 namespace PHPSQLParser\builders;
 
 /**
  * This class implements the builder for the [DELETE] part. You can overwrite
  * all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
 class AlterBuilder implements Builder
 {
@@ -20,16 +19,14 @@ class AlterBuilder implements Builder
                 continue;
             }
 
-            if (substr($term, 0, 1) === '(' ||
-                strpos($term, "\n") !== false) {
+            if (substr($term, 0, 1) === '('
+                || strpos($term, "\n") !== false) {
                 $sql = rtrim($sql);
             }
 
             $sql .= $term . ' ';
         }
 
-        $sql = rtrim($sql);
-
-        return $sql;
+        return rtrim($sql);
     }
 }

@@ -32,11 +32,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
@@ -45,19 +44,18 @@ namespace PHPSQLParser\processors;
  * This class processes the DELETE statements.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class DeleteProcessor extends AbstractProcessor {
-
-    public function process($tokens) {
-        $tables = array();
-        $del = $tokens['DELETE'];
+class DeleteProcessor extends AbstractProcessor
+{
+    public function process($tokens)
+    {
+        $tables = [];
+        $del    = $tokens['DELETE'];
 
         foreach ($tokens['DELETE'] as $expression) {
-            if (strtoupper($expression) !== 'DELETE' && trim($expression, " \t\n\r\0\x0B.*") !== ""
-                && !$this->isCommaToken($expression)) {
+            if (strtoupper($expression) !== 'DELETE' && trim($expression, " \t\n\r\0\x0B.*") !== ''
+                && ! $this->isCommaToken($expression)) {
                 $tables[] = trim($expression, " \t\n\r\0\x0B.*");
             }
         }
@@ -70,15 +68,15 @@ class DeleteProcessor extends AbstractProcessor {
             unset($tokens['USING']);
         }
 
-        $options = array();
+        $options = [];
         if (isset($tokens['OPTIONS'])) {
             $options = $tokens['OPTIONS'];
             unset($tokens['OPTIONS']);
         }
 
-        $tokens['DELETE'] = array('options' => (empty($options) ? false : $options),
-                                  'tables' => (empty($tables) ? false : $tables));
+        $tokens['DELETE'] = ['options' => (empty($options) ? false : $options),
+            'tables'                   => (empty($tables) ? false : $tables), ];
+
         return $tokens;
     }
 }
-?>

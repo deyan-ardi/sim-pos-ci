@@ -31,35 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue34Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue34() {
-
-
+/**
+ * @internal
+ */
+final class issue34Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue34()
+    {
         $parser = new PHPSQLParser();
-        $sql = "SELECT * FROM cache as t";
+        $sql    = 'SELECT * FROM cache as t';
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue34a.serialized');
-        $this->assertEquals($expected, $p, 'SELECT statement with keyword CACHE as tablename');
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue34a.serialized');
+        $this->assertSame($expected, $p, 'SELECT statement with keyword CACHE as tablename');
 
-        $sql = "INSERT INTO CACHE VALUES (1);";
+        $sql = 'INSERT INTO CACHE VALUES (1);';
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue34b.serialized');
-        $this->assertEquals($expected, $p, 'INSERT statement with keyword CACHE as tablename');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue34b.serialized');
+        $this->assertSame($expected, $p, 'INSERT statement with keyword CACHE as tablename');
     }
 }
-

@@ -31,12 +31,11 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
@@ -45,33 +44,38 @@ namespace PHPSQLParser\builders;
  * This class implements the builder for the whole Update statement. You can overwrite
  * all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class UpdateStatementBuilder implements Builder {
-
-    protected function buildWHERE($parsed) {
+class UpdateStatementBuilder implements Builder
+{
+    protected function buildWHERE($parsed)
+    {
         $builder = new WhereBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildSET($parsed) {
+    protected function buildSET($parsed)
+    {
         $builder = new SetBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildUPDATE($parsed) {
+    protected function buildUPDATE($parsed)
+    {
         $builder = new UpdateBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
-        $sql = $this->buildUPDATE($parsed['UPDATE']) . " " . $this->buildSET($parsed['SET']);
+    public function build(array $parsed)
+    {
+        $sql = $this->buildUPDATE($parsed['UPDATE']) . ' ' . $this->buildSET($parsed['SET']);
         if (isset($parsed['WHERE'])) {
-            $sql .= " " . $this->buildWHERE($parsed['WHERE']);
+            $sql .= ' ' . $this->buildWHERE($parsed['WHERE']);
         }
+
         return $sql;
     }
 }
-?>

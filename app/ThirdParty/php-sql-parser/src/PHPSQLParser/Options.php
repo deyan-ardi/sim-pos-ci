@@ -1,18 +1,18 @@
 <?php
-/**
- * @author     mfris
- *
- */
 
 namespace PHPSQLParser;
 
-/**
- *
- * @author  mfris
- * @package PHPSQLParser
- */
 final class Options
 {
+    /**
+     * @const string
+     */
+    public const CONSISTENT_SUB_TREES = 'consistent_sub_trees';
+
+    /**
+     * @const string
+     */
+    public const ANSI_QUOTES = 'ansi_quotes';
 
     /**
      * @var array
@@ -20,19 +20,7 @@ final class Options
     private $options;
 
     /**
-     * @const string
-     */
-    const CONSISTENT_SUB_TREES = 'consistent_sub_trees';
-
-    /**
-     * @const string
-     */
-    const ANSI_QUOTES = 'ansi_quotes';
-
-    /**
      * Options constructor.
-     *
-     * @param array $options
      */
     public function __construct(array $options)
     {
@@ -44,7 +32,7 @@ final class Options
      */
     public function getConsistentSubtrees()
     {
-        return (isset($this->options[self::CONSISTENT_SUB_TREES]) && $this->options[self::CONSISTENT_SUB_TREES]);
+        return isset($this->options[self::CONSISTENT_SUB_TREES]) && $this->options[self::CONSISTENT_SUB_TREES];
     }
 
     /**
@@ -52,6 +40,6 @@ final class Options
      */
     public function getANSIQuotes()
     {
-        return (isset($this->options[self::ANSI_QUOTES]) && $this->options[self::ANSI_QUOTES]);
+        return isset($this->options[self::ANSI_QUOTES]) && $this->options[self::ANSI_QUOTES];
     }
 }

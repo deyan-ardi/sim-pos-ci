@@ -31,29 +31,29 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue30Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue30() {
-
-
+/**
+ * @internal
+ */
+final class issue30Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue30()
+    {
         $parser = new PHPSQLParser();
-        $sql = "SELECT foo.a FROM test foo WHERE RIGHT(REPLACE(foo.bar,'(0',''),7) = 'a'";
+        $sql    = "SELECT foo.a FROM test foo WHERE RIGHT(REPLACE(foo.bar,'(0',''),7) = 'a'";
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue30.serialized');
-        $this->assertEquals($expected, $p, 'parenthesis within string literals within function parameter list');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue30.serialized');
+        $this->assertSame($expected, $p, 'parenthesis within string literals within function parameter list');
     }
 }
-

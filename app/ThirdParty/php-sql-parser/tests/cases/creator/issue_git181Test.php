@@ -32,30 +32,30 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2015 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
 
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
-
-class IssueGit181TestTest extends \PHPSQLParser\Test\AbstractTestCase {
-	
-	public function testIssueGit181() {
-		$query = "
+/**
+ * @internal
+ */
+final class issue_git181Test extends \PHPSQLParser\Test\AbstractTestCase
+{
+    public function testIssueGit181()
+    {
+        $query = '
 		SELECT NOW() AS today
-		";
+		';
 
-		$p = $this->parser->parse($query, true);
-		$created = $this->creator->create($p);
-		
-		$expected = getExpectedValue ( dirname ( __FILE__ ), 'issue_git181.sql', false );
-		$this->assertEquals ( $expected, $created, 'no alias after functions without parameters' );
-	}
+        $p       = $this->parser->parse($query, true);
+        $created = $this->creator->create($p);
+
+        $expected = getExpectedValue(__DIR__, 'issue_git181.sql', false);
+        $this->assertSame($expected, $created, 'no alias after functions without parameters');
+    }
 }
-?>

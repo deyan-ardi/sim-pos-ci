@@ -31,12 +31,11 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
@@ -45,34 +44,38 @@ namespace PHPSQLParser\builders;
  * This class implements the builder for the CREATE TABLE statement. You can overwrite
  * all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class CreateTableBuilder implements Builder {
-
-    protected function buildCreateTableDefinition($parsed) {
+class CreateTableBuilder implements Builder
+{
+    protected function buildCreateTableDefinition($parsed)
+    {
         $builder = new CreateTableDefinitionBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildCreateTableOptions($parsed) {
+    protected function buildCreateTableOptions($parsed)
+    {
         $builder = new CreateTableOptionsBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildCreateTableSelectOption($parsed) {
+    protected function buildCreateTableSelectOption($parsed)
+    {
         $builder = new CreateTableSelectOptionBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = $parsed['name'];
         $sql .= $this->buildCreateTableDefinition($parsed);
         $sql .= $this->buildCreateTableOptions($parsed);
         $sql .= $this->buildCreateTableSelectOption($parsed);
+
         return $sql;
     }
-
 }
-?>

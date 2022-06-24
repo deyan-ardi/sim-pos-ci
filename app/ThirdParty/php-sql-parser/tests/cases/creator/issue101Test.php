@@ -31,28 +31,31 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class issue101Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue101() {
-        $sql = "SELECT tab.col AS `tab.col`, tab2.col AS `tab2.col` FROM tab, tab2";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $creator = new PHPSQLCreator();
-        $created = $creator->create($p);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue101.sql', false);
+/**
+ * @internal
+ */
+final class issue101Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue101()
+    {
+        $sql      = 'SELECT tab.col AS `tab.col`, tab2.col AS `tab2.col` FROM tab, tab2';
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $creator  = new PHPSQLCreator();
+        $created  = $creator->create($p);
+        $expected = getExpectedValue(__DIR__, 'issue101.sql', false);
         $this->assertSame($expected, $created, 'alias with quotes');
-
     }
 }
-

@@ -31,36 +31,40 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class TableOptionsTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testTableOptions1() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class tableoptionsTest extends \PHPUnit\Framework\TestCase
+{
+    public function testTableOptions1()
+    {
         $parser = new PHPSQLParser();
-        $sql = "CREATE TABLE hohoho () AUTO_INCREMENT = 1 DEFAULT CHARACTER SET _utf8 PASSWORD 'test123'";
+        $sql    = "CREATE TABLE hohoho () AUTO_INCREMENT = 1 DEFAULT CHARACTER SET _utf8 PASSWORD 'test123'";
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'tableoptions1.serialized');
-        $this->assertEquals($expected, $p, 'CREATE TABLE statement with table options');
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'tableoptions1.serialized');
+        $this->assertSame($expected, $p, 'CREATE TABLE statement with table options');
     }
-    
-    public function testTableOptions2() {
+
+    public function testTableOptions2()
+    {
         // TODO: the union statement within the CREATE TABLE has not been parsed
         $parser = new PHPSQLParser();
-        $sql = "CREATE TABLE hohoho () UNION (tableA, tableB,tableC)";
+        $sql    = 'CREATE TABLE hohoho () UNION (tableA, tableB,tableC)';
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'tableoptions2.serialized');
-        $this->assertEquals($expected, $p, 'CREATE TABLE statement with UNION table option');
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'tableoptions2.serialized');
+        $this->assertSame($expected, $p, 'CREATE TABLE statement with UNION table option');
     }
 }
-?>

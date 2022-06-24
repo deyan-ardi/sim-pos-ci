@@ -31,19 +31,18 @@
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- *
  * This class processes the SELECT expressions.
- *
- * @author arothe
- *
  */
-class SelectExpressionProcessor extends AbstractProcessor {
-
-    protected function processExpressionList($unparsed) {
+class SelectExpressionProcessor extends AbstractProcessor
+{
+    protected function processExpressionList($unparsed)
+    {
         $processor = new ExpressionListProcessor($this->options);
+
         return $processor->process($unparsed);
     }
 
@@ -51,9 +50,12 @@ class SelectExpressionProcessor extends AbstractProcessor {
      * This fuction processes each SELECT clause.
      * We determine what (if any) alias
      * is provided, and we set the type of expression.
+     *
+     * @param mixed $expression
      */
-    public function process($expression) {
-        $tokens = $this->splitSQLIntoTokens($expression);
+    public function process($expression)
+    {
+        $tokens      = $this->splitSQLIntoTokens($expression);
         $token_count = count($tokens);
         if ($token_count === 0) {
             return null;
@@ -64,36 +66,38 @@ class SelectExpressionProcessor extends AbstractProcessor {
          * If AS is found, then the next non-whitespace token is captured as the alias.
          * The tokens after (and including) the AS are removed.
          */
-        $base_expr = "";
-        $stripped = array();
-        $capture = false;
-        $alias = false;
+        $base_expr = '';
+        $stripped  = [];
+        $capture   = false;
+        $alias     = false;
         $processed = false;
 
-        for ($i = 0; $i < $token_count; ++$i) {
+        for ($i = 0; $i < $token_count; $i++) {
             $token = $tokens[$i];
             $upper = strtoupper($token);
 
             if ($upper === 'AS') {
-                $alias = array('as' => true, "name" => "", "base_expr" => $token);
-                $tokens[$i] = "";
-                $capture = true;
+                $alias      = ['as' => true, 'name' => '', 'base_expr' => $token];
+                $tokens[$i] = '';
+                $capture    = true;
+
                 continue;
             }
 
-            if (!$this->isWhitespaceToken($upper)) {
+            if (! $this->isWhitespaceToken($upper)) {
                 $stripped[] = $token;
             }
 
             // we have an explicit AS, next one can be the alias
             // but also a comment!
             if ($capture) {
-                if (!$this->isWhitespaceToken($upper) && !$this->isCommentToken($upper)) {
+                if (! $this->isWhitespaceToken($upper) && ! $this->isCommentToken($upper)) {
                     $alias['name'] .= $token;
                     array_pop($stripped);
                 }
                 $alias['base_expr'] .= $token;
-                $tokens[$i] = "";
+                $tokens[$i] = '';
+
                 continue;
             }
 
@@ -103,7 +107,7 @@ class SelectExpressionProcessor extends AbstractProcessor {
         if ($alias) {
             // remove quotation from the alias
             $alias['no_quotes'] = $this->revokeQuotation($alias['name']);
-            $alias['name'] = trim($alias['name']);
+            $alias['name']      = trim($alias['name']);
             $alias['base_expr'] = trim($alias['base_expr']);
         }
 
@@ -114,7 +118,7 @@ class SelectExpressionProcessor extends AbstractProcessor {
         // we remove the last token, if it is a colref,
         // it can be an alias without an AS
         $last = array_pop($stripped);
-        if (!$alias && $this->isColumnReference($last)) {
+        if (! $alias && $this->isColumnReference($last)) {
 
             // TODO: it can be a comment, don't use array_pop
 
@@ -123,11 +127,10 @@ class SelectExpressionProcessor extends AbstractProcessor {
 
             if ($this->isReserved($prev) || $this->isConstant($prev) || $this->isAggregateFunction($prev)
                     || $this->isFunction($prev) || $this->isExpression($prev) || $this->isSubQuery($prev)
-                    || $this->isColumnReference($prev) || $this->isBracketExpression($prev)|| $this->isCustomFunction($prev)) {
-
-                $alias = array('as' => false, 'name' => trim($last['base_expr']),
-                               'no_quotes' => $this->revokeQuotation($last['base_expr']),
-                               'base_expr' => trim($last['base_expr']));
+                    || $this->isColumnReference($prev) || $this->isBracketExpression($prev) || $this->isCustomFunction($prev)) {
+                $alias = ['as'  => false, 'name' => trim($last['base_expr']),
+                    'no_quotes' => $this->revokeQuotation($last['base_expr']),
+                    'base_expr' => trim($last['base_expr']), ];
                 // remove the last token
                 array_pop($tokens);
             }
@@ -142,24 +145,23 @@ class SelectExpressionProcessor extends AbstractProcessor {
         // in all other cases we use "EXPRESSION" as global type
         $type = ExpressionType::EXPRESSION;
         if (count($processed) === 1) {
-            if (!$this->isSubQuery($processed[0])) {
-                $type = $processed[0]['expr_type'];
+            if (! $this->isSubQuery($processed[0])) {
+                $type      = $processed[0]['expr_type'];
                 $base_expr = $processed[0]['base_expr'];
-                $no_quotes = isset($processed[0]['no_quotes']) ? $processed[0]['no_quotes'] : null;
+                $no_quotes = $processed[0]['no_quotes'] ?? null;
                 $processed = $processed[0]['sub_tree']; // it can be FALSE
             }
         }
 
-        $result = array();
+        $result              = [];
         $result['expr_type'] = $type;
-        $result['alias'] = $alias;
+        $result['alias']     = $alias;
         $result['base_expr'] = trim($base_expr);
-        if (!empty($no_quotes)) {
+        if (! empty($no_quotes)) {
             $result['no_quotes'] = $no_quotes;
         }
         $result['sub_tree'] = (empty($processed) ? false : $processed);
+
         return $result;
     }
-
 }
-?>

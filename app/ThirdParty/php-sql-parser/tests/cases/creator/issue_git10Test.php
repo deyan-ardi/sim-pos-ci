@@ -32,34 +32,33 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
 
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
-
-class Issue_Git10Test extends \PHPSQLParser\Test\AbstractTestCase {
-	
-	public function testIssueGit10() {
-		$query = "SELECT
+/**
+ * @internal
+ */
+final class issue_git10Test extends \PHPSQLParser\Test\AbstractTestCase
+{
+    public function testIssueGit10()
+    {
+        $query = "SELECT
 REPLACE( f.web_program,'\n', '' ) AS web_program,
 id AS change_id
 FROM
 file f
 HAVING
 change_id > :change_id";
-		
-		$p = $this->parser->parse ( $query );
-		$created = $this->creator->create ( $p );
-		$expected = getExpectedValue ( dirname ( __FILE__ ), 'issue_git10.sql', false );
-		$this->assertSame ( $expected, $created, 'alias references should work in HAVING clauses' );
-	}
-}
 
-?>
+        $p        = $this->parser->parse($query);
+        $created  = $this->creator->create($p);
+        $expected = getExpectedValue(__DIR__, 'issue_git10.sql', false);
+        $this->assertSame($expected, $created, 'alias references should work in HAVING clauses');
+    }
+}

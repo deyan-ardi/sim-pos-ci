@@ -68,16 +68,16 @@ Pengaturan Profil
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
                                                         <label class="form-label">Nama Pengguna:</label>
-                                                        <input type="text" style="text-transform: capitalize;" value="<?= (old('username')) ? old('username') : user()->username; ?>" class="form-control <?= $validation->getError('username') ? "is-invalid" : ""; ?>" name="username" required placeholder="Nama Lengkap">
+                                                        <input type="text" style="text-transform: capitalize;" value="<?= (old('username')) ?: user()->username; ?>" class="form-control <?= $validation->getError('username') ? 'is-invalid' : ''; ?>" name="username" required placeholder="Nama Lengkap">
                                                         <div class="invalid-feedback">
-                                                            <?= $validation->getError("username"); ?>
+                                                            <?= $validation->getError('username'); ?>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="form-label">Nomor Whatsapp:</label>
-                                                        <input type="number" min="0" name="user_number" value="<?= (old('user_number')) ? old('user_number') : user()->user_number; ?>" maxlength="15" class="form-control <?= $validation->getError('user_number') ? "is-invalid" : ""; ?>" placeholder="Kontak Whatsapp">
+                                                        <input type="number" min="0" name="user_number" value="<?= (old('user_number')) ?: user()->user_number; ?>" maxlength="15" class="form-control <?= $validation->getError('user_number') ? 'is-invalid' : ''; ?>" placeholder="Kontak Whatsapp">
                                                         <div class="invalid-feedback">
-                                                            <?= $validation->getError("user_number"); ?>
+                                                            <?= $validation->getError('user_number'); ?>
                                                         </div>
                                                         <small class="form-text text-muted">Jangan menggunakan format +62</small>
                                                     </div>
@@ -86,12 +86,12 @@ Pengaturan Profil
                                                     <div class="col-lg-6">
                                                         <label class="form-label">Kata Sandi Baru:</label>
                                                         <div class="input-group search-form">
-                                                            <input type="password" class="form-control <?= $validation->getError('password') ? "is-invalid" : ""; ?>" name="password" placeholder="********">
+                                                            <input type="password" class="form-control <?= $validation->getError('password') ? 'is-invalid' : ''; ?>" name="password" placeholder="********">
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text bg-transparent"><i class="feather icon-lock"></i></span>
                                                             </div>
                                                             <div class="invalid-feedback">
-                                                                <?= $validation->getError("password"); ?>
+                                                                <?= $validation->getError('password'); ?>
                                                             </div>
                                                         </div>
                                                         <small class="form-text text-muted">Opsional, silahkan isi kata sandi jika anda ingin mengganti</small>
@@ -99,12 +99,12 @@ Pengaturan Profil
                                                     <div class="col-lg-6">
                                                         <label class="form-label">Ulang Kata Sandi Baru:</label>
                                                         <div class="input-group search-form">
-                                                            <input type="password" class="form-control <?= $validation->getError('re_password') ? "is-invalid" : ""; ?>" name="re_password" placeholder="********">
+                                                            <input type="password" class="form-control <?= $validation->getError('re_password') ? 'is-invalid' : ''; ?>" name="re_password" placeholder="********">
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text bg-transparent"><i class="feather icon-lock"></i></span>
                                                             </div>
                                                             <div class="invalid-feedback">
-                                                                <?= $validation->getError("re_password"); ?>
+                                                                <?= $validation->getError('re_password'); ?>
                                                             </div>
                                                         </div>
                                                         <small class="form-text text-muted">Opsional, silahkan isi ulang kata sandi jika anda ingin mengganti</small>
@@ -114,9 +114,9 @@ Pengaturan Profil
                                                     <div class="col-lg-6">
                                                         <label class="form-label">Foto Profil</label>
                                                         <div>
-                                                            <input type="file" id="file" accept=".jpg, .png, .jpeg" name="user_image" onchange="previewImg()" class=" form-control <?= $validation->getError('user_image') ? "is-invalid" : ""; ?>">
+                                                            <input type="file" id="file" accept=".jpg, .png, .jpeg" name="user_image" onchange="previewImg()" class=" form-control <?= $validation->getError('user_image') ? 'is-invalid' : ''; ?>">
                                                             <div class="invalid-feedback">
-                                                                <?= $validation->getError("user_image"); ?>
+                                                                <?= $validation->getError('user_image'); ?>
                                                             </div>
                                                         </div>
                                                         <small class="form-text text-muted">Opsional, jika ingin mengganti pastikan file berformat .jpg,.png, atau .jpeg dengan ukuran maksimal 1 Mb</small>

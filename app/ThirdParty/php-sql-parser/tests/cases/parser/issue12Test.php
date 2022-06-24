@@ -31,29 +31,29 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue12Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue12() {
-
-
+/**
+ * @internal
+ */
+final class issue12Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue12()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "SELECT SQL_CALC_FOUND_ROWS SmTable.*, MATCH (SmTable.fulltextsearch_keyword) AGAINST ('google googles' WITH QUERY EXPANSION) AS keyword_score FROM SmTable WHERE SmTable.status = 'A' AND (SmTable.country_id = 1 AND SmTable.state_id = 10) AND MATCH (SmTable.fulltextsearch_keyword) AGAINST ('google googles') ORDER BY SmTable.level DESC, keyword_score DESC LIMIT 0,10";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue12.serialized');
-        $this->assertEquals($expected, $p, 'issue 12');
-
+        $sql      = "SELECT SQL_CALC_FOUND_ROWS SmTable.*, MATCH (SmTable.fulltextsearch_keyword) AGAINST ('google googles' WITH QUERY EXPANSION) AS keyword_score FROM SmTable WHERE SmTable.status = 'A' AND (SmTable.country_id = 1 AND SmTable.state_id = 10) AND MATCH (SmTable.fulltextsearch_keyword) AGAINST ('google googles') ORDER BY SmTable.level DESC, keyword_score DESC LIMIT 0,10";
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'issue12.serialized');
+        $this->assertSame($expected, $p, 'issue 12');
     }
 }
-

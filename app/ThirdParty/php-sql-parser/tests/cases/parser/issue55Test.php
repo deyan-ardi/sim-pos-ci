@@ -31,36 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue55Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue55() {
-
-
+/**
+ * @internal
+ */
+final class issue55Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue55()
+    {
         $parser = new PHPSQLParser();
-        $sql = "GROUP BY a, b, table.c";
+        $sql    = 'GROUP BY a, b, table.c';
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue55a.serialized');
-        $this->assertEquals($expected, $p, 'partial SQL statement - group by clause');
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue55a.serialized');
+        $this->assertSame($expected, $p, 'partial SQL statement - group by clause');
 
-
-        $sql = "ORDER BY a ASC, b DESC, table.c ASC";
+        $sql = 'ORDER BY a ASC, b DESC, table.c ASC';
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue55b.serialized');
-        $this->assertEquals($expected, $p, 'partial SQL statement - order by clause');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue55b.serialized');
+        $this->assertSame($expected, $p, 'partial SQL statement - order by clause');
     }
 }
-

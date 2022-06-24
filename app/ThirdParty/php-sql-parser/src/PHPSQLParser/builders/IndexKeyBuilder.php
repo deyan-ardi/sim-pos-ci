@@ -31,67 +31,75 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * This class implements the builder for the index key part of a CREATE TABLE statement. 
+ * This class implements the builder for the index key part of a CREATE TABLE statement.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class IndexKeyBuilder implements Builder {
-
-    protected function buildReserved($parsed) {
+class IndexKeyBuilder implements Builder
+{
+    protected function buildReserved($parsed)
+    {
         $builder = new ReservedBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildConstant($parsed) {
+    protected function buildConstant($parsed)
+    {
         $builder = new ConstantBuilder();
+
         return $builder->build($parsed);
     }
-    
-    protected function buildIndexType($parsed) {
+
+    protected function buildIndexType($parsed)
+    {
         $builder = new IndexTypeBuilder();
+
         return $builder->build($parsed);
     }
-    
-    protected function buildColumnList($parsed) {
+
+    protected function buildColumnList($parsed)
+    {
         $builder = new ColumnListBuilder();
+
         return $builder->build($parsed);
     }
-    
-    public function build(array $parsed) {
+
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::INDEX) {
-            return "";
+            return '';
         }
-        $sql = "";
+        $sql = '';
+
         foreach ($parsed['sub_tree'] as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->buildReserved($v);
             $sql .= $this->buildColumnList($v);
             $sql .= $this->buildConstant($v);
-            $sql .= $this->buildIndexType($v);            
+            $sql .= $this->buildIndexType($v);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('CREATE TABLE index key subtree', $k, $v, 'expr_type');
             }
 
-            $sql .= " ";
+            $sql .= ' ';
         }
+
         return substr($sql, 0, -1);
     }
 }
-?>

@@ -32,11 +32,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
@@ -44,45 +43,47 @@ namespace PHPSQLParser\processors;
 /**
  * This class processes the incoming sql string.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class DefaultProcessor extends AbstractProcessor {
-
-    protected function isUnion($tokens) {
+class DefaultProcessor extends AbstractProcessor
+{
+    protected function isUnion($tokens)
+    {
         return UnionProcessor::isUnion($tokens);
     }
 
-    protected function processUnion($tokens) {
+    protected function processUnion($tokens)
+    {
         // this is the highest level lexical analysis. This is the part of the
         // code which finds UNION and UNION ALL query parts
         $processor = new UnionProcessor($this->options);
+
         return $processor->process($tokens);
     }
 
-    protected function processSQL($tokens) {
+    protected function processSQL($tokens)
+    {
         $processor = new SQLProcessor($this->options);
+
         return $processor->process($tokens);
     }
 
-    public function process($sql) {
-
+    public function process($sql)
+    {
         $inputArray = $this->splitSQLIntoTokens($sql);
-        $queries = $this->processUnion($inputArray);
+        $queries    = $this->processUnion($inputArray);
 
         // If there was no UNION or UNION ALL in the query, then the query is
         // stored at $queries[0].
-        if (!empty($queries) && !$this->isUnion($queries)) {
+        if (! empty($queries) && ! $this->isUnion($queries)) {
             $queries = $this->processSQL($queries[0]);
         }
 
         return $queries;
     }
 
-    public function revokeQuotation($sql) {
+    public function revokeQuotation($sql)
+    {
         return parent::revokeQuotation($sql);
     }
 }
-
-?>

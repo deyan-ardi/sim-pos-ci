@@ -138,16 +138,16 @@
 <body>
     <header class="clearfix">
         <?php
-        if ($sortir == 1) {
-            $ket = "Keseluruhan";
-        } else if ($sortir == 2) {
-            $ket = "Tahun " . date('Y');
-        } else if ($sortir == 3) {
-            $ket = "Bulan " . date('F Y');
-        } else if ($sortir == 4) {
-            $ket = "Hari Ini,Tanggal " . date('d F Y');
+        if ($sortir === 1) {
+            $ket = 'Keseluruhan';
+        } elseif ($sortir === 2) {
+            $ket = 'Tahun ' . date('Y');
+        } elseif ($sortir === 3) {
+            $ket = 'Bulan ' . date('F Y');
+        } elseif ($sortir === 4) {
+            $ket = 'Hari Ini,Tanggal ' . date('d F Y');
         } else {
-            $ket = "Tanggal " . date('d F Y', strtotime($tgl_dari)) . " - " . date('d F Y', strtotime($tgl_sampai));
+            $ket = 'Tanggal ' . date('d F Y', strtotime($tgl_dari)) . ' - ' . date('d F Y', strtotime($tgl_sampai));
         }
         ?>
         <h1>LAPORAN TRANSAKSI <?= strtoupper($ket); ?></h1>
@@ -182,10 +182,10 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
-                $v = 1;
+                $i                = 1;
+                $v                = 1;
                 $total_keuntungan = 0;
-                $total_transaksi = 0;
+                $total_transaksi  = 0;
                 ?>
                 <?php if (empty($detail)) : ?>
                     <tr>
@@ -203,7 +203,7 @@
                             <td>Rp. <?= format_rupiah($t->sale_total); ?></td>
                             <td>Rp. <?= format_rupiah($t->sale_profit); ?></td>
                             <td><?= $t->username; ?></td>
-                            <?php if ($t->sale_status == 0) : ?>
+                            <?php if ($t->sale_status === 0) : ?>
                                 <td>
                                     DRAFT
                                 </td>
@@ -211,14 +211,14 @@
                                 <?php
                                 $v++;
                                 $total_keuntungan = $total_keuntungan + $t->sale_profit;
-                                $total_transaksi = $total_transaksi + $t->sale_total;
+                                $total_transaksi  = $total_transaksi + $t->sale_total;
                                 ?>
                                 <td>
                                     SUKSES
                                 </td>
                             <?php endif; ?>
                             <td>
-                                <?= CodeIgniter\I18n\Time::parse($t->updated_at)->toLocalizedString('d MMM yyyy, H:m');    ?> WITA
+                                <?= CodeIgniter\I18n\Time::parse($t->updated_at)->toLocalizedString('d MMM yyyy, H:m'); ?> WITA
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -250,7 +250,7 @@
         </div>
     </main>
     <footer>
-        Laporan Transaksi ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= user()->username ?> Pada Tanggal <?= date("d F Y H:i:s") ?> WITA
+        Laporan Transaksi ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= user()->username ?> Pada Tanggal <?= date('d F Y H:i:s') ?> WITA
     </footer>
 </body>
 

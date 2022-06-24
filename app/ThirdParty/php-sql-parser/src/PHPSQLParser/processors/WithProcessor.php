@@ -31,79 +31,82 @@
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- *
  * This class processes Oracle's WITH statements.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class WithProcessor extends AbstractProcessor {
+class WithProcessor extends AbstractProcessor
+{
+    protected function processTopLevel($sql)
+    {
+        $processor = new DefaultProcessor($this->options);
 
-    protected function processTopLevel($sql) {
-    	$processor = new DefaultProcessor($this->options);
-    	return $processor->process($sql);
+        return $processor->process($sql);
     }
 
-    protected function buildTableName($token) {
-    	return array('expr_type' => ExpressionType::TEMPORARY_TABLE, 'name'=>$token, 'base_expr' => $token, 'no_quotes' => $this->revokeQuotation($token));
+    protected function buildTableName($token)
+    {
+        return ['expr_type' => ExpressionType::TEMPORARY_TABLE, 'name' => $token, 'base_expr' => $token, 'no_quotes' => $this->revokeQuotation($token)];
     }
 
-    public function process($tokens) {
-    	$out = array();
-        $resultList = array();
-        $category = '';
-        $base_expr = '';
-        $prev = '';
+    public function process($tokens)
+    {
+        $out        = [];
+        $resultList = [];
+        $category   = '';
+        $base_expr  = '';
+        $prev       = '';
 
         foreach ($tokens as $token) {
-        	$base_expr .= $token;
+            $base_expr .= $token;
             $upper = strtoupper(trim($token));
 
             if ($this->isWhitespaceToken($token)) {
                 continue;
             }
 
-			$trim = trim($token);
+            $trim = trim($token);
+
             switch ($upper) {
 
             case 'AS':
-            	if ($prev !== 'TABLENAME') {
-            		// error or tablename is AS
-            		$resultList[] = $this->buildTableName($trim);
-            		$category = 'TABLENAME';
-            		break;
-            	}
+                if ($prev !== 'TABLENAME') {
+                    // error or tablename is AS
+                    $resultList[] = $this->buildTableName($trim);
+                    $category     = 'TABLENAME';
+                    break;
+                }
 
-            	$resultList[] = array('expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim);
-            	$category = $upper;
+                $resultList[] = ['expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim];
+                $category     = $upper;
                 break;
 
             case ',':
-            	// ignore
-            	$base_expr = '';
-            	break;
+                // ignore
+                $base_expr = '';
+                break;
 
             default:
                 switch ($prev) {
-                	case 'AS':
-                		// it follows a parentheses pair
-                		$subtree = $this->processTopLevel($this->removeParenthesisFromStart($token));
-                		$resultList[] = array('expr_type' => ExpressionType::BRACKET_EXPRESSION, 'base_expr' => $trim, 'sub_tree' => $subtree);
+                    case 'AS':
+                        // it follows a parentheses pair
+                        $subtree      = $this->processTopLevel($this->removeParenthesisFromStart($token));
+                        $resultList[] = ['expr_type' => ExpressionType::BRACKET_EXPRESSION, 'base_expr' => $trim, 'sub_tree' => $subtree];
 
-                		$out[] = array('expr_type' => ExpressionType::SUBQUERY_FACTORING, 'base_expr' => trim($base_expr), 'sub_tree' => $resultList);
-                		$resultList = array();
-                		$category = '';
-                	break;
+                        $out[]      = ['expr_type' => ExpressionType::SUBQUERY_FACTORING, 'base_expr' => trim($base_expr), 'sub_tree' => $resultList];
+                        $resultList = [];
+                        $category   = '';
+                    break;
 
-                	case '':
-                		// we have the name of the table
-                		$resultList[] = $this->buildTableName($trim);
-                		$category = 'TABLENAME';
-                		break;
+                    case '':
+                        // we have the name of the table
+                        $resultList[] = $this->buildTableName($trim);
+                        $category     = 'TABLENAME';
+                        break;
 
                 default:
                 // ignore
@@ -113,7 +116,7 @@ class WithProcessor extends AbstractProcessor {
             }
             $prev = $category;
         }
+
         return $out;
     }
 }
-?>

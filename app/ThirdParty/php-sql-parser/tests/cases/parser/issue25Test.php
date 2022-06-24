@@ -31,29 +31,29 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue25Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue25() {
-
-
+/**
+ * @internal
+ */
+final class issue25Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue25()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "SELECT * FROM contacts WHERE contacts.id IN (SELECT email_addr_bean_rel.bean_id FROM email_addr_bean_rel, email_addresses WHERE email_addresses.id = email_addr_bean_rel.email_address_id AND email_addr_bean_rel.deleted = 0 AND email_addr_bean_rel.bean_module = 'Contacts' AND email_addresses.email_address IN (\"test@example.com\"))";
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue25.serialized');
-        $this->assertEquals($expected, $p, 'parenthesis problem on issue 25');
-
+        $sql      = "SELECT * FROM contacts WHERE contacts.id IN (SELECT email_addr_bean_rel.bean_id FROM email_addr_bean_rel, email_addresses WHERE email_addresses.id = email_addr_bean_rel.email_address_id AND email_addr_bean_rel.deleted = 0 AND email_addr_bean_rel.bean_module = 'Contacts' AND email_addresses.email_address IN (\"test@example.com\"))";
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'issue25.serialized');
+        $this->assertSame($expected, $p, 'parenthesis problem on issue 25');
     }
 }
-

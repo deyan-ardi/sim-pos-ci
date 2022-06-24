@@ -31,28 +31,31 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class issue132Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue132() {
-        $query = "select (c1 - c2) AS c3 from t1";
-        $parser = new PHPSQLParser();
-        $p = $parser->parse($query);
-        $creator = new PHPSQLCreator();
-        $created = $creator->create($p);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue132.sql', false);
+/**
+ * @internal
+ */
+final class issue132Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue132()
+    {
+        $query    = 'select (c1 - c2) AS c3 from t1';
+        $parser   = new PHPSQLParser();
+        $p        = $parser->parse($query);
+        $creator  = new PHPSQLCreator();
+        $created  = $creator->create($p);
+        $expected = getExpectedValue(__DIR__, 'issue132.sql', false);
         $this->assertSame($expected, $created, 'lost alias of expression');
-
     }
 }
-

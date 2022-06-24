@@ -31,38 +31,40 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class deleteTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testDelete() {
-        $sql = "delete from testA as a where a.id = 1";
-        $parser = new PHPSQLParser();
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'delete1.serialized');
-        $this->assertEquals($expected, $p, 'simple delete statement');
+/**
+ * @internal
+ */
+final class deleteTest extends \PHPUnit\Framework\TestCase
+{
+    public function testDelete()
+    {
+        $sql      = 'delete from testA as a where a.id = 1';
+        $parser   = new PHPSQLParser();
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'delete1.serialized');
+        $this->assertSame($expected, $p, 'simple delete statement');
 
-        $sql = "DELETE t1, t2 FROM t1 INNER JOIN t2 INNER JOIN t3 WHERE t1.id=t2.id AND t2.id=t3.id";
-        $parser = new PHPSQLParser();
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'delete2.serialized');
-        $this->assertEquals($expected, $p, 'multi-table delete statement');
+        $sql      = 'DELETE t1, t2 FROM t1 INNER JOIN t2 INNER JOIN t3 WHERE t1.id=t2.id AND t2.id=t3.id';
+        $parser   = new PHPSQLParser();
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'delete2.serialized');
+        $this->assertSame($expected, $p, 'multi-table delete statement');
 
-        $sql = "DELETE FROM t1.*, t2.* USING t1 INNER JOIN t2 INNER JOIN t3 WHERE t1.id=t2.id AND t2.id=t3.id;";
-        $parser = new PHPSQLParser();
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'delete3.serialized');
-        $this->assertEquals($expected, $p, 'multi-table delete statement with using');
-
+        $sql      = 'DELETE FROM t1.*, t2.* USING t1 INNER JOIN t2 INNER JOIN t3 WHERE t1.id=t2.id AND t2.id=t3.id;';
+        $parser   = new PHPSQLParser();
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'delete3.serialized');
+        $this->assertSame($expected, $p, 'multi-table delete statement with using');
     }
 }
-

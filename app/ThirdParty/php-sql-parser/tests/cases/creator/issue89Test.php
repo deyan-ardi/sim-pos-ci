@@ -31,32 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue89Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue89() {
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue89Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue89()
+    {
         $sql = "select ut.id, ut.numero_cartella, ut.nome, ut.cognome, floor(DATEDIFF(de.`data`,ut.data_di_nascita)/365) as eta,
         sx.valore as sesso, cd.valore as diagnosi_prevalente, co.valore as consapevolezza,
         DATEDIFF(de.`data`,az.data_inizio_assistenza) as durata_assistenza_giorni, ld.valore as luogo_decesso,
         ca.valore as carico_assistenza, if(sa.id is null, null,if(sa.fkey_cod_care_giver_interno__con_chi_vive=1,'si','no')) as vive_solo,
         sn.valore as oltre_70
         from gen_cms_utenti ut";
-        $parser = new PHPSQLParser($sql, true);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue89.sql', false);
+        $parser   = new PHPSQLParser($sql, true);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue89.sql', false);
         $this->assertSame($expected, $created, 'functions');
-
     }
 }
-

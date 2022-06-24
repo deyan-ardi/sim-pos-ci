@@ -31,51 +31,57 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    George Schneeloch <george_schneeloch@hms.harvard.edu>
+ *
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
-use Analog\Analog;
+use PHPSQLParser\PHPSQLParser;
 
-class UnionTest extends \PHPUnit\Framework\TestCase {
-
-    public function testUnion1() {
+/**
+ * @internal
+ */
+final class unionTest extends \PHPUnit\Framework\TestCase
+{
+    public function testUnion1()
+    {
         $parser = new PHPSQLParser();
 
         $sql = 'SELECT colA From test a
         union
-        SELECT colB from test 
+        SELECT colB from test
         as b';
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $expected = getExpectedValue(dirname(__FILE__), 'union1.sql', false);
-        $this->assertEquals($expected, $creator->created, 'simple union');
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $expected = getExpectedValue(__DIR__, 'union1.sql', false);
+        $this->assertSame($expected, $creator->created, 'simple union');
     }
-    
-    public function testUnion2() {
+
+    public function testUnion2()
+    {
         // TODO: the order-by clause has not been parsed
         $parser = new PHPSQLParser();
-        $sql = '(SELECT colA From test a)
+        $sql    = '(SELECT colA From test a)
                 union all
                 (SELECT colB from test b) order by 1';
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $expected = getExpectedValue(dirname(__FILE__), 'union2.sql', false);
-        $this->assertEquals($expected, $creator->created, 'mysql union with order-by');
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $expected = getExpectedValue(__DIR__, 'union2.sql', false);
+        $this->assertSame($expected, $creator->created, 'mysql union with order-by');
     }
-    public function testUnion3() {
-        $sql = "SELECT x FROM ((SELECT y FROM  z  WHERE (y > 2) ) UNION ALL (SELECT a FROM z WHERE (y < 2))) as f ";
-        $parser = new PHPSQLParser();
-	$creator = new PHPSQLCreator();
-        $parsed = $parser->parse($sql);
-	$created = $creator->create($parsed);
-        $expected = getExpectedValue(dirname(__FILE__), 'union3.sql', false);
-        $this->assertEquals($expected, $created, 'complicated mysql union');
+
+    public function testUnion3()
+    {
+        $sql      = 'SELECT x FROM ((SELECT y FROM  z  WHERE (y > 2) ) UNION ALL (SELECT a FROM z WHERE (y < 2))) as f ';
+        $parser   = new PHPSQLParser();
+        $creator  = new PHPSQLCreator();
+        $parsed   = $parser->parse($sql);
+        $created  = $creator->create($parsed);
+        $expected = getExpectedValue(__DIR__, 'union3.sql', false);
+        $this->assertSame($expected, $created, 'complicated mysql union');
     }
 }
-?>

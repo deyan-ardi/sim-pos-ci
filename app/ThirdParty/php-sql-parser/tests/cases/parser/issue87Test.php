@@ -31,36 +31,36 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue87Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue87() {
-
+/**
+ * @internal
+ */
+final class issue87Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue87()
+    {
+        $parser = new PHPSQLParser();
+        $sql    = 'RENAME TABLE a TO b';
+        $parser->parse($sql, true);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue87a.serialized');
+        $this->assertSame($expected, $p, 'rename table');
 
         $parser = new PHPSQLParser();
-        $sql = "RENAME TABLE a TO b";
+        $sql    = 'RENAME TABLE a TO b, `c` to `a`, foo.bar to hello.world';
         $parser->parse($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue87a.serialized');
-        $this->assertEquals($expected, $p, 'rename table');
-
-        $parser = new PHPSQLParser();
-        $sql = "RENAME TABLE a TO b, `c` to `a`, foo.bar to hello.world";
-        $parser->parse($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue87b.serialized');
-        $this->assertEquals($expected, $p, 'rename multiple tables');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue87b.serialized');
+        $this->assertSame($expected, $p, 'rename multiple tables');
     }
 }
-

@@ -40,14 +40,14 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-notification">
                             <div class="pro-head">
-                                <?php if (!empty(user()->user_image)) : ?>
+                                <?php if (! empty(user()->user_image)) : ?>
                                     <img class="img-radius" src="<?= base_url(); ?>/upload/user/<?= user()->user_image; ?>" alt="Profile-user">
                                 <?php else : ?>
                                     <img class="img-radius" src="<?= base_url(); ?>/upload/user/user-default.jpg" alt="Profile-user">
 
                                 <?php endif; ?>
                                 <span>
-                                    <span class="text-muted"><?= ucWords(user()->username); ?></span>
+                                    <span class="text-muted"><?= ucwords(user()->username); ?></span>
                                     <span class="h6"><?= strtolower(user()->email); ?></span>
                                 </span>
                             </div>

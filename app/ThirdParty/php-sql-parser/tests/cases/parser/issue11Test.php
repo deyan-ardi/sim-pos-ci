@@ -31,30 +31,30 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue11Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue11() {
+/**
+ * @internal
+ */
+final class issue11Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue11()
+    {
+        $test  = str_repeat('0', 18000);
+        $query = "UPDATE club SET logo='{$test}' WHERE id=1";
 
-
-        $test    = str_repeat('0', 18000);
-        $query  = "UPDATE club SET logo='$test' WHERE id=1";
-         
-        $parser = new PHPSQLParser();
-        $p = $parser->parse($query);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue11.serialized');
-        $this->assertEquals($expected, $p, 'very long statement');
-
+        $parser   = new PHPSQLParser();
+        $p        = $parser->parse($query);
+        $expected = getExpectedValue(__DIR__, 'issue11.serialized');
+        $this->assertSame($expected, $p, 'very long statement');
     }
 }
-

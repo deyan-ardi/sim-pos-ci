@@ -31,42 +31,44 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
 
 /**
- * This class implements the builder for the SHOW statement. 
+ * This class implements the builder for the SHOW statement.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class ShowStatementBuilder implements Builder {
-
-    protected function buildWHERE($parsed) {
+class ShowStatementBuilder implements Builder
+{
+    protected function buildWHERE($parsed)
+    {
         $builder = new WhereBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildSHOW($parsed) {
+    protected function buildSHOW($parsed)
+    {
         $builder = new ShowBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = $this->buildSHOW($parsed);
         if (isset($parsed['WHERE'])) {
-            $sql .= " " . $this->buildWHERE($parsed['WHERE']);
+            $sql .= ' ' . $this->buildWHERE($parsed['WHERE']);
         }
+
         return $sql;
     }
 }
-?>

@@ -33,26 +33,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\lexer;
+
 use PHPSQLParser\exceptions\InvalidParameterException;
 
 /**
  * This class splits the SQL string into little parts, which the parser can
  * use to build the result array.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class PHPSQLLexer {
-
+class PHPSQLLexer
+{
     protected $splitters;
 
     /**
@@ -60,7 +58,8 @@ class PHPSQLLexer {
      *
      * It initializes some fields.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->splitters = new LexerSplitter();
     }
 
@@ -70,18 +69,21 @@ class PHPSQLLexer {
      * @param string $haystack
      * @param string $needle
      *
-     * @return boolean true, if the parameter $haystack ends with the character sequences $needle, false otherwise
+     * @return bool true, if the parameter $haystack ends with the character sequences $needle, false otherwise
      */
-    protected function endsWith($haystack, $needle) {
+    protected function endsWith($haystack, $needle)
+    {
         $length = strlen($needle);
-        if ($length == 0) {
+        if ($length === 0) {
             return true;
         }
-        return (substr($haystack, -$length) === $needle);
+
+        return substr($haystack, -$length) === $needle;
     }
 
-    public function split($sql) {
-        if (!is_string($sql)) {
+    public function split($sql)
+    {
+        if (! is_string($sql)) {
             throw new InvalidParameterException($sql);
         }
         $tokens = preg_split($this->splitters->getSplittersRegexPattern(), $sql, 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
@@ -92,58 +94,59 @@ class PHPSQLLexer {
         $tokens = $this->balanceParenthesis($tokens);
         $tokens = $this->concatUserDefinedVariables($tokens);
         $tokens = $this->concatScientificNotations($tokens);
-        $tokens = $this->concatNegativeNumbers($tokens);
-        return $tokens;
+
+        return $this->concatNegativeNumbers($tokens);
     }
 
-    protected function concatNegativeNumbers($tokens) {
+    protected function concatNegativeNumbers($tokens)
+    {
+        $i            = 0;
+        $cnt          = count($tokens);
+        $possibleSign = true;
 
-    	$i = 0;
-    	$cnt = count($tokens);
-    	$possibleSign = true;
+        while ($i < $cnt) {
+            if (! isset($tokens[$i])) {
+                $i++;
 
-    	while ($i < $cnt) {
+                continue;
+            }
 
-    		if (!isset($tokens[$i])) {
-    			$i++;
-    			continue;
-    		}
+            $token = $tokens[$i];
 
-    		$token = $tokens[$i];
+            // a sign is also possible on the first position of the tokenlist
+            if ($possibleSign === true) {
+                if ($token === '-' || $token === '+') {
+                    if (is_numeric($tokens[$i + 1])) {
+                        $tokens[$i + 1] = $token . $tokens[$i + 1];
+                        unset($tokens[$i]);
+                    }
+                }
+                $possibleSign = false;
 
-    		// a sign is also possible on the first position of the tokenlist
-    		if ($possibleSign === true) {
-				if ($token === '-' || $token === '+') {
-					if (is_numeric($tokens[$i + 1])) {
-						$tokens[$i + 1] = $token . $tokens[$i + 1];
-						unset($tokens[$i]);
-					}
-				}
-				$possibleSign = false;
-				continue;
-    		}
+                continue;
+            }
 
-    		// TODO: we can have sign of a number after "(" and ",", are others possible?
-    		if (substr($token, -1, 1) === "," || substr($token, -1, 1) === "(") {
-    			$possibleSign = true;
-    		}
+            // TODO: we can have sign of a number after "(" and ",", are others possible?
+            if (substr($token, -1, 1) === ',' || substr($token, -1, 1) === '(') {
+                $possibleSign = true;
+            }
 
-    		$i++;
-   		}
+            $i++;
+        }
 
-   		return array_values($tokens);
+        return array_values($tokens);
     }
 
-    protected function concatScientificNotations($tokens) {
-
-        $i = 0;
-        $cnt = count($tokens);
+    protected function concatScientificNotations($tokens)
+    {
+        $i          = 0;
+        $cnt        = count($tokens);
         $scientific = false;
 
         while ($i < $cnt) {
-
-            if (!isset($tokens[$i])) {
+            if (! isset($tokens[$i])) {
                 $i++;
+
                 continue;
             }
 
@@ -153,14 +156,14 @@ class PHPSQLLexer {
                 if ($token === '-' || $token === '+') {
                     $tokens[$i - 1] .= $tokens[$i];
                     $tokens[$i - 1] .= $tokens[$i + 1];
-                    unset($tokens[$i]);
-                    unset($tokens[$i + 1]);
+                    unset($tokens[$i], $tokens[$i + 1]);
 
                 } elseif (is_numeric($token)) {
                     $tokens[$i - 1] .= $tokens[$i];
                     unset($tokens[$i]);
                 }
                 $scientific = false;
+
                 continue;
             }
 
@@ -174,15 +177,16 @@ class PHPSQLLexer {
         return array_values($tokens);
     }
 
-    protected function concatUserDefinedVariables($tokens) {
-        $i = 0;
-        $cnt = count($tokens);
+    protected function concatUserDefinedVariables($tokens)
+    {
+        $i       = 0;
+        $cnt     = count($tokens);
         $userdef = false;
 
         while ($i < $cnt) {
-
-            if (!isset($tokens[$i])) {
+            if (! isset($tokens[$i])) {
                 $i++;
+
                 continue;
             }
 
@@ -191,12 +195,12 @@ class PHPSQLLexer {
             if ($userdef !== false) {
                 $tokens[$userdef] .= $token;
                 unset($tokens[$i]);
-                if ($token !== "@") {
+                if ($token !== '@') {
                     $userdef = false;
                 }
             }
 
-            if ($userdef === false && $token === "@") {
+            if ($userdef === false && $token === '@') {
                 $userdef = $i;
             }
 
@@ -206,19 +210,19 @@ class PHPSQLLexer {
         return array_values($tokens);
     }
 
-    protected function concatComments($tokens) {
-
-        $i = 0;
-        $cnt = count($tokens);
-        $comment = false;
+    protected function concatComments($tokens)
+    {
+        $i         = 0;
+        $cnt       = count($tokens);
+        $comment   = false;
         $backTicks = [];
         $in_string = false;
-        $inline = false;
+        $inline    = false;
 
         while ($i < $cnt) {
-
-            if (!isset($tokens[$i])) {
+            if (! isset($tokens[$i])) {
                 $i++;
+
                 continue;
             }
 
@@ -229,9 +233,9 @@ class PHPSQLLexer {
              * If so inline comments are not valid.
              */
             if ($comment === false && $this->isBacktick($token)) {
-                if (!empty($backTicks)) {
+                if (! empty($backTicks)) {
                     $lastBacktick = array_pop($backTicks);
-                    if ($lastBacktick != $token) {
+                    if ($lastBacktick !== $token) {
                         $backTicks[] = $lastBacktick; // Re-add last back tick
                         $backTicks[] = $token;
                     }
@@ -240,10 +244,10 @@ class PHPSQLLexer {
                 }
             }
 
-            if($comment === false && ($token == "\"" || $token == "'")) {
-                $in_string = !$in_string;
+            if ($comment === false && ($token === '"' || $token === "'")) {
+                $in_string = ! $in_string;
             }
-            if(!$in_string) {
+            if (! $in_string) {
                 if ($comment !== false) {
                     if ($inline === true && ($token === "\n" || $token === "\r\n")) {
                         $comment = false;
@@ -251,24 +255,24 @@ class PHPSQLLexer {
                         unset($tokens[$i]);
                         $tokens[$comment] .= $token;
                     }
-                    if ($inline === false && ($token === "*/")) {
+                    if ($inline === false && ($token === '*/')) {
                         $comment = false;
                     }
                 }
 
-                if (($comment === false) && ($token === "--") && empty($backTicks)) {
+                if (($comment === false) && ($token === '--') && empty($backTicks)) {
                     $comment = $i;
-                    $inline = true;
+                    $inline  = true;
                 }
 
-                if (($comment === false) && (substr($token, 0, 1) === "#") && empty($backTicks)) {
+                if (($comment === false) && (substr($token, 0, 1) === '#') && empty($backTicks)) {
                     $comment = $i;
-                    $inline = true;
+                    $inline  = true;
                 }
 
-                if (($comment === false) && ($token === "/*")) {
+                if (($comment === false) && ($token === '/*')) {
                     $comment = $i;
-                    $inline = false;
+                    $inline  = false;
                 }
             }
 
@@ -278,17 +282,20 @@ class PHPSQLLexer {
         return array_values($tokens);
     }
 
-    protected function isBacktick($token) {
-        return ($token === "'" || $token === "\"" || $token === "`");
+    protected function isBacktick($token)
+    {
+        return $token === "'" || $token === '"' || $token === '`';
     }
 
-    protected function balanceBackticks($tokens) {
-        $i = 0;
+    protected function balanceBackticks($tokens)
+    {
+        $i   = 0;
         $cnt = count($tokens);
-        while ($i < $cnt) {
 
-            if (!isset($tokens[$i])) {
+        while ($i < $cnt) {
+            if (! isset($tokens[$i])) {
                 $i++;
+
                 continue;
             }
 
@@ -306,14 +313,15 @@ class PHPSQLLexer {
 
     // backticks are not balanced within one token, so we have
     // to re-combine some tokens
-    protected function balanceCharacter($tokens, $idx, $char) {
-
+    protected function balanceCharacter($tokens, $idx, $char)
+    {
         $token_count = count($tokens);
-        $i = $idx + 1;
-        while ($i < $token_count) {
+        $i           = $idx + 1;
 
-            if (!isset($tokens[$i])) {
+        while ($i < $token_count) {
+            if (! isset($tokens[$i])) {
                 $i++;
+
                 continue;
             }
 
@@ -327,6 +335,7 @@ class PHPSQLLexer {
 
             $i++;
         }
+
         return array_values($tokens);
     }
 
@@ -337,26 +346,30 @@ class PHPSQLLexer {
      * 1. If the current token ends with a dot, we will add the next token
      * 2. If the next token starts with a dot, we will add it to the previous token
      *
+     * @param mixed $tokens
      */
-    protected function concatColReferences($tokens) {
-
+    protected function concatColReferences($tokens)
+    {
         $cnt = count($tokens);
-        $i = 0;
-        while ($i < $cnt) {
+        $i   = 0;
 
-            if (!isset($tokens[$i])) {
+        while ($i < $cnt) {
+            if (! isset($tokens[$i])) {
                 $i++;
+
                 continue;
             }
 
-            if ($tokens[$i][0] === ".") {
+            if ($tokens[$i][0] === '.') {
 
                 // concat the previous tokens, till the token has been changed
-                $k = $i - 1;
+                $k   = $i - 1;
                 $len = strlen($tokens[$i]);
-                while (($k >= 0) && ($len == strlen($tokens[$i]))) {
-                    if (!isset($tokens[$k])) { // FIXME: this can be wrong if we have schema . table . column
+
+                while (($k >= 0) && ($len === strlen($tokens[$i]))) {
+                    if (! isset($tokens[$k])) { // FIXME: this can be wrong if we have schema . table . column
                         $k--;
+
                         continue;
                     }
                     $tokens[$i] = $tokens[$k] . $tokens[$i];
@@ -365,14 +378,16 @@ class PHPSQLLexer {
                 }
             }
 
-            if ($this->endsWith($tokens[$i], '.') && !is_numeric($tokens[$i])) {
+            if ($this->endsWith($tokens[$i], '.') && ! is_numeric($tokens[$i])) {
 
                 // concat the next tokens, till the token has been changed
-                $k = $i + 1;
+                $k   = $i + 1;
                 $len = strlen($tokens[$i]);
-                while (($k < $cnt) && ($len == strlen($tokens[$i]))) {
-                    if (!isset($tokens[$k])) {
+
+                while (($k < $cnt) && ($len === strlen($tokens[$i]))) {
+                    if (! isset($tokens[$k])) {
                         $k++;
+
                         continue;
                     }
                     $tokens[$i] .= $tokens[$k];
@@ -387,12 +402,13 @@ class PHPSQLLexer {
         return array_values($tokens);
     }
 
-    protected function concatEscapeSequences($tokens) {
+    protected function concatEscapeSequences($tokens)
+    {
         $tokenCount = count($tokens);
-        $i = 0;
-        while ($i < $tokenCount) {
+        $i          = 0;
 
-            if ($this->endsWith($tokens[$i], "\\")) {
+        while ($i < $tokenCount) {
+            if ($this->endsWith($tokens[$i], '\\')) {
                 $i++;
                 if (isset($tokens[$i])) {
                     $tokens[$i - 1] .= $tokens[$i];
@@ -401,18 +417,23 @@ class PHPSQLLexer {
             }
             $i++;
         }
+
         return array_values($tokens);
     }
 
-    protected function balanceParenthesis($tokens) {
+    protected function balanceParenthesis($tokens)
+    {
         $token_count = count($tokens);
-        $i = 0;
+        $i           = 0;
+
         while ($i < $token_count) {
             if ($tokens[$i] !== '(') {
                 $i++;
+
                 continue;
             }
             $count = 1;
+
             for ($n = $i + 1; $n < $token_count; $n++) {
                 $token = $tokens[$n];
                 if ($token === '(') {
@@ -430,8 +451,7 @@ class PHPSQLLexer {
             }
             $i = $n;
         }
+
         return array_values($tokens);
     }
 }
-
-?>

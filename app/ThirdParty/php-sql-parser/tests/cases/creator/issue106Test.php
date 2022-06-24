@@ -31,20 +31,25 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue106Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue106() {
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue106Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue106()
+    {
         $sql = "SELECT dbo.fn_GetDayOfWeekMonIs0(DATEADD(SECOND, -21600, calls_cstm.date_logged_c)) AS 'Date'
         FROM calls
         LEFT JOIN calls_cstm ON calls.id = calls_cstm.id_c
@@ -59,12 +64,10 @@ class issue106Test extends \PHPUnit\Framework\TestCase {
         GROUP BY dbo.fn_GetDayOfWeekMonIs0(DATEADD(SECOND, -21600, calls_cstm.date_logged_c))
         ORDER BY dbo.fn_GetDayOfWeekMonIs0(DATEADD(SECOND, -21600, calls_cstm.date_logged_c)) ASC";
 
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue106.sql', false);
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue106.sql', false);
         $this->assertSame($expected, $created, 'function within group-by');
-
     }
 }
-

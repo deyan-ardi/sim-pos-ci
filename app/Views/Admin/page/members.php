@@ -96,6 +96,7 @@ Data Pelanggan Project
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($member as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -105,7 +106,7 @@ Data Pelanggan Project
                                                             <td><?= $c->member_company; ?></td>
                                                             <td><?= $c->member_job; ?></td>
                                                             <td><?= $c->member_email; ?></td>
-                                                            <td><?= !empty($c->member_description) ? $c->member_description : "Kosong"; ?></td>
+                                                            <td><?= ! empty($c->member_description) ? $c->member_description : 'Kosong'; ?></td>
                                                             <td><?= $c->member_discount; ?> %</td>
                                                             <td>
                                                                 <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
@@ -115,7 +116,7 @@ Data Pelanggan Project
                                                                     <!-- Update Button Modal -->
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id ?>"><i class="feather icon-edit" title="Ubah Member" data-toggle="tooltip"></i></button>
 
-                                                                    <?php if ($c->member_status == 0) : ?>
+                                                                    <?php if ($c->member_status === 0) : ?>
                                                                         <!-- Delete -->
                                                                         <form action="" id="<?= $c->id ?>" method="POST">
                                                                             <?= csrf_field(); ?>
@@ -183,48 +184,48 @@ Data Pelanggan Project
                             <input type="text" class="form-control" required disabled value="<?= $c->member_code; ?>">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name_up')) ? old('member_name_up') : $c->member_name; ?>">
+                            <input type="text" class="form-control <?= $validation->getError('member_name_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_name_up" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name_up')) ?: $c->member_name; ?>">
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_name_up"); ?>
+                                <?= $validation->getError('member_name_up'); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact_up" required placeholder="Kontak Member" value="<?= (old('member_contact_up')) ? old('member_contact_up') :  $c->member_contact; ?>">
+                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_contact_up" required placeholder="Kontak Member" value="<?= (old('member_contact_up')) ?: $c->member_contact; ?>">
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_contact_up"); ?>
+                                <?= $validation->getError('member_contact_up'); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control <?= $validation->getError('member_company_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_company_up" required placeholder="Nama Perusahaan" value="<?= (old('member_company_up')) ? old('member_company_up') : $c->member_company; ?>">
+                            <input type="text" class="form-control <?= $validation->getError('member_company_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_company_up" required placeholder="Nama Perusahaan" value="<?= (old('member_company_up')) ?: $c->member_company; ?>">
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_company_up"); ?>
+                                <?= $validation->getError('member_company_up'); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control <?= $validation->getError('member_job_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_job_up" required placeholder="Jabatan Pelanggan" value="<?= (old('member_job_up')) ? old('member_job_up') : $c->member_job; ?>">
+                            <input type="text" class="form-control <?= $validation->getError('member_job_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_job_up" required placeholder="Jabatan Pelanggan" value="<?= (old('member_job_up')) ?: $c->member_job; ?>">
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_job_up"); ?>
+                                <?= $validation->getError('member_job_up'); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control <?= $validation->getError('member_email_up') ? "is-invalid" : ""; ?>" name="member_email_up" required placeholder="Email Pelanggan" value="<?= (old('member_email_up')) ? old('member_email_up') : $c->member_email; ?>">
+                            <input type="email" class="form-control <?= $validation->getError('member_email_up') ? 'is-invalid' : ''; ?>" name="member_email_up" required placeholder="Email Pelanggan" value="<?= (old('member_email_up')) ?: $c->member_email; ?>">
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_email_up"); ?>
+                                <?= $validation->getError('member_email_up'); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control <?= $validation->getError('member_description_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description_up" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description_up')) ? old('member_description_up') : $c->member_description; ?>"></textarea>
+                            <textarea class="form-control <?= $validation->getError('member_description_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_description_up" placeholder="Deskripsi Member (Opsional)" value="<?= (old('member_description_up')) ?: $c->member_description; ?>"></textarea>
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_description_up"); ?>
+                                <?= $validation->getError('member_description_up'); ?>
                             </div>
                         </div>
                         <div class="input-group search-form form-group">
-                            <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount_up" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount_up')) ? old('member_discount_up') : $c->member_discount; ?>">
+                            <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_discount_up" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount_up')) ?: $c->member_discount; ?>">
                             <div class="input-group-append">
                                 <span class="input-group-text bg-transparent">%</span>
                             </div>
                             <div class="invalid-feedback">
-                                <?= $validation->getError("member_discount_up"); ?>
+                                <?= $validation->getError('member_discount_up'); ?>
                             </div>
                         </div>
 
@@ -251,48 +252,48 @@ Data Pelanggan Project
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('member_name') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_name" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name')) ? old('member_name') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('member_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_name" required placeholder="Nama Pelanggan Project" value="<?= (old('member_name')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_name"); ?>
+                            <?= $validation->getError('member_name'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_contact" required placeholder="Kontak Pelanggan" value="<?= (old('member_contact')) ? old('member_contact') : ""; ?>">
+                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('member_contact') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_contact" required placeholder="Kontak Pelanggan" value="<?= (old('member_contact')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_contact"); ?>
+                            <?= $validation->getError('member_contact'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('member_company') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_company" required placeholder="Nama Perusahaan" value="<?= (old('member_company')) ? old('member_company') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('member_company') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_company" required placeholder="Nama Perusahaan" value="<?= (old('member_company')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_company"); ?>
+                            <?= $validation->getError('member_company'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('member_job') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_job" required placeholder="Jabatan Pelanggan" value="<?= (old('member_job')) ? old('member_job') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('member_job') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_job" required placeholder="Jabatan Pelanggan" value="<?= (old('member_job')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_job"); ?>
+                            <?= $validation->getError('member_job'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control <?= $validation->getError('member_email') ? "is-invalid" : ""; ?>" name="member_email" required placeholder="Email Pelanggan" value="<?= (old('member_email')) ? old('member_email') : ""; ?>">
+                        <input type="email" class="form-control <?= $validation->getError('member_email') ? 'is-invalid' : ''; ?>" name="member_email" required placeholder="Email Pelanggan" value="<?= (old('member_email')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_email"); ?>
+                            <?= $validation->getError('member_email'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control <?= $validation->getError('member_description') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_description" placeholder="Deskripsi Pelanggan (Opsional)" value="<?= (old('member_description')) ? old('member_description') : ""; ?>"></textarea>
+                        <textarea class="form-control <?= $validation->getError('member_description') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_description" placeholder="Deskripsi Pelanggan (Opsional)" value="<?= (old('member_description')) ?: ''; ?>"></textarea>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_description"); ?>
+                            <?= $validation->getError('member_description'); ?>
                         </div>
                     </div>
                     <div class="input-group search-form form-group">
-                        <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="member_discount" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount')) ? old('member_discount') : ""; ?>">
+                        <input type="number" min="0" max="100" step="0.01" class="form-control <?= $validation->getError('member_discount') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="member_discount" placeholder="Diskon Dalam Persen (Opsional)" value="<?= (old('member_discount')) ?: ''; ?>">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent">%</span>
                         </div>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("member_discount"); ?>
+                            <?= $validation->getError('member_discount'); ?>
                         </div>
                     </div>
                     <div class="modal-footer">

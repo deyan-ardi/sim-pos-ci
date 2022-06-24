@@ -31,30 +31,32 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class gtltopTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testGtltop() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class gtltopTest extends \PHPUnit\Framework\TestCase
+{
+    public function testGtltop()
+    {
         $parser = new PHPSQLParser();
 
         $sql = 'SELECT c1
                   from some_table an_alias
         	where d>=0 and d>0 and d>1 and d>-1 and d<2 and d<>0  or d <> 0 or d<>"test1" or d <> "test2";';
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'gtltop.serialized');
-        $this->assertEquals($expected, $p, 'a lot of where clauses');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'gtltop.serialized');
+        $this->assertSame($expected, $p, 'a lot of where clauses');
     }
 }
-

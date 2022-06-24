@@ -31,45 +31,50 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue63Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue63a() {
-        $sql = "SELECT col FROM table1 GROUP BY col";
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue63a.sql', false);
+namespace PHPSQLParser\Test\Creator;
+
+use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue63Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue63a()
+    {
+        $sql      = 'SELECT col FROM table1 GROUP BY col';
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue63a.sql', false);
         $this->assertSame($expected, $created, 'group by with colref fails.');
     }
-    
-    public function testIssue63b() {
-        $sql = "SELECT col AS somealias FROM table ORDER BY somealias LIMIT 1";
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue63b.sql', false);
+
+    public function testIssue63b()
+    {
+        $sql      = 'SELECT col AS somealias FROM table ORDER BY somealias LIMIT 1';
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue63b.sql', false);
         $this->assertSame($expected, $created, 'ORDER BY alias fails.');
     }
-    
-    public function testIssue63c() {
-        $sql = "SELECT * FROM table LIMIT 1";
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue63c.sql', false);
-        $this->assertSame($expected, $created, 'LIMIT is ignored in output.');
 
+    public function testIssue63c()
+    {
+        $sql      = 'SELECT * FROM table LIMIT 1';
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'issue63c.sql', false);
+        $this->assertSame($expected, $created, 'LIMIT is ignored in output.');
     }
 }
-

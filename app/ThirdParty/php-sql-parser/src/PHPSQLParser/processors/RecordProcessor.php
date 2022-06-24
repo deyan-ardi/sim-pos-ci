@@ -33,11 +33,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
@@ -45,27 +44,28 @@ namespace PHPSQLParser\processors;
 /**
  * This class processes records of an INSERT statement.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class RecordProcessor extends AbstractProcessor {
-
-    protected function processExpressionList($unparsed) {
+class RecordProcessor extends AbstractProcessor
+{
+    protected function processExpressionList($unparsed)
+    {
         $processor = new ExpressionListProcessor($this->options);
+
         return $processor->process($unparsed);
     }
 
-    public function process($unparsed) {
+    public function process($unparsed)
+    {
         $unparsed = $this->removeParenthesisFromStart($unparsed);
-        $values = $this->splitSQLIntoTokens($unparsed);
+        $values   = $this->splitSQLIntoTokens($unparsed);
 
         foreach ($values as $k => $v) {
             if ($this->isCommaToken($v)) {
-                $values[$k] = "";
+                $values[$k] = '';
             }
         }
+
         return $this->processExpressionList($values);
     }
 }
-?>

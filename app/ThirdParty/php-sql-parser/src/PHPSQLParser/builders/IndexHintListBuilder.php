@@ -31,40 +31,40 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
 
 /**
- * This class implements the builder for index hint lists. 
+ * This class implements the builder for index hint lists.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class IndexHintListBuilder implements Builder {
-
-    public function hasHint($parsed) {
+class IndexHintListBuilder implements Builder
+{
+    public function hasHint($parsed)
+    {
         return isset($parsed['hints']);
     }
 
     // TODO: the hint list should be enhanced to get base_expr fro position calculation
-    public function build(array $parsed) {
-        if (!isset($parsed['hints']) || $parsed['hints'] === false) {
-            return "";
+    public function build(array $parsed)
+    {
+        if (! isset($parsed['hints']) || $parsed['hints'] === false) {
+            return '';
         }
-        $sql = "";
+        $sql = '';
+
         foreach ($parsed['hints'] as $k => $v) {
-            $sql .= $v['hint_type'] . " " . $v['hint_list'] . " ";
+            $sql .= $v['hint_type'] . ' ' . $v['hint_list'] . ' ';
         }
-        return " " . substr($sql, 0, -1);
+
+        return ' ' . substr($sql, 0, -1);
     }
 }
-?>

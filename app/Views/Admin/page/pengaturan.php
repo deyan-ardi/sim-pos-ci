@@ -61,6 +61,7 @@ Pengaturan Transaksi
                                                 <tbody>
                                                     <?php
                                                     $tot = 1;
+
                                                     foreach ($pph as $c) : ?>
                                                         <tr>
                                                             <td><?= $tot++; ?></td>
@@ -117,14 +118,14 @@ Pengaturan Transaksi
                                                     foreach ($invoice as $i => $c) : ?>
                                                         <tr>
                                                             <td><?= $i + 1; ?></td>
-                                                            <?php if ($c->key == "kiri" || $c->key == "tengah" || $c->key == "kanan" || $c->key == "bawah") : ?>
-                                                                <td>Konfigurasi TTD Bagian <?= ucWords($c->key); ?></td>
+                                                            <?php if ($c->key === 'kiri' || $c->key === 'tengah' || $c->key === 'kanan' || $c->key === 'bawah') : ?>
+                                                                <td>Konfigurasi TTD Bagian <?= ucwords($c->key); ?></td>
                                                             <?php else : ?>
-                                                                <td><?= ucWords($c->key); ?></td>
+                                                                <td><?= ucwords($c->key); ?></td>
                                                             <?php endif; ?>
-                                                            <td><?= empty($c->value) ? "Belum Disetel" : $c->value; ?></td>
-                                                            <td><?= empty($c->position) ? "Belum Disetel" : $c->position; ?></td>
-                                                            <td><?= empty($c->header) ? "Belum Disetel" : $c->header; ?></td>
+                                                            <td><?= empty($c->value) ? 'Belum Disetel' : $c->value; ?></td>
+                                                            <td><?= empty($c->position) ? 'Belum Disetel' : $c->position; ?></td>
+                                                            <td><?= empty($c->header) ? 'Belum Disetel' : $c->header; ?></td>
                                                             <td>
                                                                 <div class="row justify-content-center">
                                                                     <!-- Set Status Button Modal -->
@@ -177,12 +178,12 @@ Pengaturan Transaksi
                         <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                         <div class="form-group">
                             <div class="form-group input-group search-form">
-                                <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('pph') ? "is-invalid" : ""; ?>" name="pph" placeholder="Nilai PPh" required value="<?= (old('pph')) ? old('pph') : $c->pph_value; ?>">
+                                <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('pph') ? 'is-invalid' : ''; ?>" name="pph" placeholder="Nilai PPh" required value="<?= (old('pph')) ?: $c->pph_value; ?>">
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-transparent">%</span>
                                 </div>
                                 <div class="invalid-feedback">
-                                    <?= $validation->getError("pph"); ?>
+                                    <?= $validation->getError('pph'); ?>
                                 </div>
                             </div>
                         </div>
@@ -211,34 +212,34 @@ Pengaturan Transaksi
                         <input type="hidden" name="_method" value="PATCH">
                         <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                         <div class="form-group">
-                            <?php if ($c->key == "kiri" || $c->key == "tengah" || $c->key == "kanan" || $c->key == "bawah") : ?>
-                                <input type="text" class="form-control" disabled value="Konfigurasi TTD Bagian <?= ucWords($c->key); ?>">
+                            <?php if ($c->key === 'kiri' || $c->key === 'tengah' || $c->key === 'kanan' || $c->key === 'bawah') : ?>
+                                <input type="text" class="form-control" disabled value="Konfigurasi TTD Bagian <?= ucwords($c->key); ?>">
                             <?php else : ?>
-                                <input type="text" class="form-control" disabled value="<?= ucWords($c->key); ?>">
+                                <input type="text" class="form-control" disabled value="<?= ucwords($c->key); ?>">
                             <?php endif; ?>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control <?= $validation->getError('pengaturan') ? "is-invalid" : ""; ?>" name="pengaturan" placeholder="Nilai Pengaturan" value="<?= (old('pengaturan')) ? old('pengaturan') : $c->value; ?>">
+                            <input type="text" class="form-control <?= $validation->getError('pengaturan') ? 'is-invalid' : ''; ?>" name="pengaturan" placeholder="Nilai Pengaturan" value="<?= (old('pengaturan')) ?: $c->value; ?>">
 
                             <div class="invalid-feedback">
-                                <?= $validation->getError("pengaturan"); ?>
+                                <?= $validation->getError('pengaturan'); ?>
                             </div>
                             <small>Kosongkan untuk mendisable pengaturan</small>
                         </div>
-                        <?php if ($c->key == "kiri" || $c->key == "tengah" || $c->key == "kanan" || $c->key == "bawah") : ?>
+                        <?php if ($c->key === 'kiri' || $c->key === 'tengah' || $c->key === 'kanan' || $c->key === 'bawah') : ?>
                             <div class="form-group">
-                                <input type="text" class="form-control <?= $validation->getError('posisi') ? "is-invalid" : ""; ?>" name="posisi" placeholder="Nilai Posisi" value="<?= (old('posisi')) ? old('posisi') : $c->position; ?>">
+                                <input type="text" class="form-control <?= $validation->getError('posisi') ? 'is-invalid' : ''; ?>" name="posisi" placeholder="Nilai Posisi" value="<?= (old('posisi')) ?: $c->position; ?>">
 
                                 <div class="invalid-feedback">
-                                    <?= $validation->getError("posisi"); ?>
+                                    <?= $validation->getError('posisi'); ?>
                                 </div>
                                 <small>Kosongkan untuk mendisable posisi jabatan di TTD</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control <?= $validation->getError('header') ? "is-invalid" : ""; ?>" name="header" placeholder="Nilai Header" value="<?= (old('header')) ? old('header') : $c->header; ?>">
+                                <input type="text" class="form-control <?= $validation->getError('header') ? 'is-invalid' : ''; ?>" name="header" placeholder="Nilai Header" value="<?= (old('header')) ?: $c->header; ?>">
 
                                 <div class="invalid-feedback">
-                                    <?= $validation->getError("header"); ?>
+                                    <?= $validation->getError('header'); ?>
                                 </div>
                                 <small>Kosongkan untuk mendisable header TTD</small>
                             </div>

@@ -31,27 +31,29 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class dropTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testDrop() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class dropTest extends \PHPUnit\Framework\TestCase
+{
+    public function testDrop()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "drop table if exists xyz cascade";
-        $p = $parser->parse($sql, true);
-        $expected = getExpectedValue(dirname(__FILE__), 'drop.serialized');
-        $this->assertEquals($expected, $p, 'drop table statement');
-
+        $sql      = 'drop table if exists xyz cascade';
+        $p        = $parser->parse($sql, true);
+        $expected = getExpectedValue(__DIR__, 'drop.serialized');
+        $this->assertSame($expected, $p, 'drop table statement');
     }
 }
-

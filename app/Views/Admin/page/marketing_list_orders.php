@@ -17,9 +17,9 @@ Tambahkan Order
 
 <?= $this->section('main'); ?>
 <?= $item_count = 0; ?>
-<?php foreach($item as $i){
+<?php foreach ($item as $i) {
     $item_count++;
-} ?> 
+} ?>
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
@@ -67,8 +67,9 @@ Tambahkan Order
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $i = 1;
+                                                        $i           = 1;
                                                         $total_order = 0;
+
                                                         foreach ($order as $c) : ?>
                                                             <tr>
                                                                 <td><?= $i++; ?></td>

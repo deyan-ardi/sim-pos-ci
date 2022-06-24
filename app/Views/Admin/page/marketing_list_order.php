@@ -69,6 +69,7 @@ Order Barang Supplier
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($order as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -84,21 +85,21 @@ Order Barang Supplier
                                                             <td>
                                                                 <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                             </td>
-                                                            <?php if ($c->order_status == 1) : ?>
+                                                            <?php if ($c->order_status === 1) : ?>
                                                                 <td><a href="" class="btn btn-warning btn-sm">Request Diterima</a></td>
-                                                            <?php elseif ($c->order_status == 2) : ?>
+                                                            <?php elseif ($c->order_status === 2) : ?>
                                                                 <td><a href="" class="btn btn-info btn-sm">Persetujuan</a></td>
-                                                            <?php elseif ($c->order_status == 3) : ?>
+                                                            <?php elseif ($c->order_status === 3) : ?>
                                                                 <td><a href="" class="btn btn-info btn-sm">Order Keluar</a></td>
-                                                            <?php elseif ($c->order_status == 4) : ?>
+                                                            <?php elseif ($c->order_status === 4) : ?>
                                                                 <td><a href="" class="btn btn-info btn-sm">Invoice Masuk</a></td>
-                                                            <?php elseif ($c->order_status == 5) : ?>
+                                                            <?php elseif ($c->order_status === 5) : ?>
                                                                 <td><a href="" class="btn btn-info btn-sm">Produksi</a></td>
-                                                            <?php elseif ($c->order_status == 6) : ?>
+                                                            <?php elseif ($c->order_status === 6) : ?>
                                                                 <td><a href="" class="btn btn-info btn-sm">Dikirim Supplier</a></td>
-                                                            <?php elseif ($c->order_status == 7) : ?>
+                                                            <?php elseif ($c->order_status === 7) : ?>
                                                                 <td><a href="" class="btn btn-info btn-sm">Diterima Gudang</a></td>
-                                                            <?php elseif ($c->order_status == 8) : ?>
+                                                            <?php elseif ($c->order_status === 8) : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Selesai</a></td>
                                                             <?php else : ?>
                                                                 <td><a href="" class="btn btn-danger btn-sm">Pengembalian</a></td>

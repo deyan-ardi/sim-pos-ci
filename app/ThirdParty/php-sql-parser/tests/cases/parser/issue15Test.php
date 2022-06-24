@@ -31,29 +31,29 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue15Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue15() {
-
-
+/**
+ * @internal
+ */
+final class issue15Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue15()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "select usr_id, usr_login, case id_tipousuario when 1 then 'Usuario CVE' when 2 then concat('Usuario Vendedor -', codigovendedor, '-') when 3 then concat('Usuario Vendedor Meson (', codigovendedor, ')') end tipousuario, CONCAT( usr_nombres, ' ', usr_apellidos ) as nom_com, cod_local from usuarios where usr_estado <> 2 order by 3, 1, 4";
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue15.serialized');
-        $this->assertEquals($expected, $p, 'parenthesis problem on issue 15');
-
+        $sql      = "select usr_id, usr_login, case id_tipousuario when 1 then 'Usuario CVE' when 2 then concat('Usuario Vendedor -', codigovendedor, '-') when 3 then concat('Usuario Vendedor Meson (', codigovendedor, ')') end tipousuario, CONCAT( usr_nombres, ' ', usr_apellidos ) as nom_com, cod_local from usuarios where usr_estado <> 2 order by 3, 1, 4";
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'issue15.serialized');
+        $this->assertSame($expected, $p, 'parenthesis problem on issue 15');
     }
 }
-

@@ -5,11 +5,11 @@
  * PHP version 5
  *
  * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
+ *
  * @copyright 2006-2012 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @link      http://pear.php.net/package/PHP_CodeSniffer
+ *
+ * @see      http://pear.php.net/package/PHP_CodeSniffer
  */
 
 /**
@@ -18,23 +18,22 @@
  * Ensure multi-line IF conditions are defined correctly.
  *
  * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
+ *
  * @copyright 2006-2012 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ *
  * @version   Release: 1.5.1
- * @link      http://pear.php.net/package/PHP_CodeSniffer
+ *
+ * @see      http://pear.php.net/package/PHP_CodeSniffer
  */
 class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_CodeSniffer_Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
      * @var int
      */
     public $indent = 4;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -43,13 +42,11 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
      */
     public function register()
     {
-        return array(
-                T_IF,
-                T_ELSEIF,
-               );
-
+        return [
+            T_IF,
+            T_ELSEIF,
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -67,6 +64,7 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
         // We need to work out how far indented the if statement
         // itself is, so we can work out how far to indent conditions.
         $statementIndent = 0;
+
         for ($i = ($stackPtr - 1); $i >= 0; $i--) {
             if ($tokens[$i]['line'] !== $tokens[$stackPtr]['line']) {
                 $i++;
@@ -84,6 +82,7 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
         $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
         $lastLine     = $tokens[$openBracket]['line'];
+
         for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
             if ($tokens[$i]['line'] !== $lastLine) {
                 if ($tokens[$i]['line'] === $tokens[$closeBracket]['line']) {
@@ -111,16 +110,16 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
 
                 if ($expectedIndent !== $foundIndent) {
                     $error = 'Multi-line IF statement not indented correctly; expected %s spaces but found %s';
-                    $data  = array(
-                              $expectedIndent,
-                              $foundIndent,
-                             );
+                    $data  = [
+                        $expectedIndent,
+                        $foundIndent,
+                    ];
                     $phpcsFile->addError($error, $i, 'Alignment', $data);
                 }
 
                 if ($tokens[$i]['line'] !== $tokens[$closeBracket]['line']) {
                     $next = $phpcsFile->findNext(T_WHITESPACE, $i, null, true);
-                    if (in_array($tokens[$next]['code'], PHP_CodeSniffer_Tokens::$booleanOperators) === false) {
+                    if (in_array($tokens[$next]['code'], PHP_CodeSniffer_Tokens::$booleanOperators, true) === false) {
                         $error = 'Each line in a multi-line IF statement must begin with a boolean operator';
                         $phpcsFile->addError($error, $i, 'StartWithBoolean');
                     }
@@ -136,6 +135,7 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
                     // have their own indentation rules.
                     $i        = $tokens[$next]['parenthesis_closer'];
                     $lastLine = $tokens[$i]['line'];
+
                     continue;
                 }
             }
@@ -150,20 +150,20 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
         // The opening brace needs to be one space away from the closing parenthesis.
         if ($tokens[($closeBracket + 1)]['code'] !== T_WHITESPACE) {
             $length = 0;
-        } else if ($tokens[($closeBracket + 1)]['content'] === $phpcsFile->eolChar) {
+        } elseif ($tokens[($closeBracket + 1)]['content'] === $phpcsFile->eolChar) {
             $length = -1;
         } else {
             $length = strlen($tokens[($closeBracket + 1)]['content']);
         }
 
         if ($length !== 1) {
-            $data = array($length);
+            $data = [$length];
             $code = 'SpaceBeforeOpenBrace';
 
             $error = 'There must be a single space between the closing parenthesis and the opening brace of a multi-line IF statement; found ';
             if ($length === -1) {
                 $error .= 'newline';
-                $code   = 'NewlineBeforeOpenBrace';
+                $code = 'NewlineBeforeOpenBrace';
             } else {
                 $error .= '%s spaces';
             }
@@ -180,10 +180,5 @@ class PhOSCo_Sniffs_ControlStructures_MultiLineConditionSniff implements PHP_Cod
             $error = 'There must be a single space between the closing parenthesis and the opening brace of a multi-line IF statement';
             $phpcsFile->addError($error, $next, 'NoSpaceBeforeOpenBrace');
         }
-
     }//end process()
-
-
 }//end class
-
-?>

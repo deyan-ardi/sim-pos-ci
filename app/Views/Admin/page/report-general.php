@@ -93,6 +93,7 @@ Laporan Transaksi
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($transaksi as $t) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -101,7 +102,7 @@ Laporan Transaksi
                                                             <td><?= $t->member_name; ?></td>
                                                             <td>Rp. <?= format_rupiah($t->sale_total); ?></td>
                                                             <td><?= $t->username; ?></td>
-                                                            <?php if ($t->sale_status == 0) : ?>
+                                                            <?php if ($t->sale_status === 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
                                                             <?php else : ?>
                                                                 <td><button type="button" class="btn btn-success btn-sm"> Sukses</button></td>
@@ -111,7 +112,7 @@ Laporan Transaksi
                                                             </td>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if ($t->sale_status == 0) : ?>
+                                                                    <?php if ($t->sale_status === 0) : ?>
                                                                         <a href="<?= base_url(); ?>/transaction-general/report/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
                                                                     <?php else : ?>
                                                                         <form action="" target="_blank" method="POST">

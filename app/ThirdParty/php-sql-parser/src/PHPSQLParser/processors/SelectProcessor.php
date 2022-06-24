@@ -33,24 +33,22 @@
 namespace PHPSQLParser\processors;
 
 /**
- * 
  * This class processes the SELECT statements.
- * 
- * @author arothe
- * 
  */
-class SelectProcessor extends SelectExpressionProcessor {
+class SelectProcessor extends SelectExpressionProcessor
+{
+    public function process($tokens)
+    {
+        $expression     = '';
+        $expressionList = [];
 
-    public function process($tokens) {
-        $expression = "";
-        $expressionList = array();
         foreach ($tokens as $token) {
             if ($this->isCommaToken($token)) {
-                $expression = parent::process(trim($expression));
+                $expression          = parent::process(trim($expression));
                 $expression['delim'] = ',';
-                $expressionList[] = $expression;
-                $expression = "";
-            } else if ($this->isCommentToken($token)) {
+                $expressionList[]    = $expression;
+                $expression          = '';
+            } elseif ($this->isCommentToken($token)) {
                 $expressionList[] = parent::processComment($token);
             } else {
                 switch (strtoupper($token)) {
@@ -66,10 +64,10 @@ class SelectProcessor extends SelectExpressionProcessor {
                 case 'SQL_SMALL_RESULT':
                 case 'SQL_BIG_RESULT':
                 case 'SQL_BUFFER_RESULT':
-                    $expression = parent::process(trim($token));
+                    $expression          = parent::process(trim($token));
                     $expression['delim'] = ' ';
-                    $expressionList[] = $expression;
-                    $expression = "";
+                    $expressionList[]    = $expression;
+                    $expression          = '';
                     break;
 
                 default:
@@ -78,11 +76,11 @@ class SelectProcessor extends SelectExpressionProcessor {
             }
         }
         if ($expression) {
-            $expression = parent::process(trim($expression));
+            $expression          = parent::process(trim($expression));
             $expression['delim'] = false;
-            $expressionList[] = $expression;
+            $expressionList[]    = $expression;
         }
+
         return $expressionList;
     }
 }
-?>

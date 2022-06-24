@@ -147,7 +147,7 @@
                         <div>Jl. Mertasari Jl. Suwung Batan Kendal No.68 F, Sidakarya, <br /> Denpasar Selatan, Kota Denpasar, Bali</div>
                         <div>(0361) 710984</div>
                         <div><a href="mailto:dintara.kitchen@gmail.com">dintara.kitchen@gmail.com</a></div>
-                        <?php if (!empty($awal) && !empty($akhir)) : ?>
+                        <?php if (! empty($awal) && ! empty($akhir)) : ?>
                             <div>Data dari <?= $awal; ?> sampai <?= $akhir; ?></div>
                         <?php else : ?>
                             <div>Keseluruhan Data</div>
@@ -174,8 +174,8 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
-                $total_item = 0;
+                $i           = 1;
+                $total_item  = 0;
                 $total_order = 0;
                 ?>
                 <?php if (empty($barang)) : ?>
@@ -217,7 +217,7 @@
         </table>
     </main>
     <footer>
-        Laporan Transaksi ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= user()->username ?> Pada Tanggal <?= date("d F Y H:i:s") ?> WITA
+        Laporan Transaksi ini sah dikeluarkan oleh PT Dapur Inspirasi Nusantara, <br> Dicetak Oleh <?= user()->username ?> Pada Tanggal <?= date('d F Y H:i:s') ?> WITA
     </footer>
 </body>
 

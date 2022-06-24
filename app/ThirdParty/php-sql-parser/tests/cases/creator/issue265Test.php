@@ -7,10 +7,13 @@
 
 namespace PHPSQLParser\Test\Creator;
 
-use PHPSQLParser\PHPSQLParser;
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class Issue265Test extends \PHPUnit\Framework\TestCase
+/**
+ * @internal
+ */
+final class issue265Test extends \PHPUnit\Framework\TestCase
 {
     /*
      * https://github.com/greenlion/PHP-SQL-Parser/issues/265
@@ -18,11 +21,11 @@ class Issue265Test extends \PHPUnit\Framework\TestCase
      */
     public function testIssue265()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS example (`type` varchar (255) CHARACTER SET utf8 NOT NULL) DEFAULT CHARACTER SET utf8";
+        $sql = 'CREATE TABLE IF NOT EXISTS example (`type` varchar (255) CHARACTER SET utf8 NOT NULL) DEFAULT CHARACTER SET utf8';
 
         $parser  = new PHPSQLParser($sql);
         $creator = new PHPSQLCreator($parser->parsed);
 
-        $this->assertEquals($creator->created, $sql, 'CHARACTER SET utf8');
+        $this->assertSame($creator->created, $sql, 'CHARACTER SET utf8');
     }
 }

@@ -31,25 +31,28 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\utils\ExpressionType;
 
-class Issue138Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue138() {
-        $sql = "SELECT ivoid, access_url, name, ucd, description FROM rr.capability NATURAL JOIN rr.interface NATURAL JOIN rr.table_column NATURAL JOIN rr.res_table WHERE standard_id='ivo://ivoa.net/std/TAP' AND 1=ivo_hasword(table_description, 'quasar') AND ucd='phot.mag;em.opt.V'";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue138.serialized');
-        $this->assertEquals($expected, $p, 'NATURAL JOIN should not be an alias');
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class issue138Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue138()
+    {
+        $sql      = "SELECT ivoid, access_url, name, ucd, description FROM rr.capability NATURAL JOIN rr.interface NATURAL JOIN rr.table_column NATURAL JOIN rr.res_table WHERE standard_id='ivo://ivoa.net/std/TAP' AND 1=ivo_hasword(table_description, 'quasar') AND ucd='phot.mag;em.opt.V'";
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue138.serialized');
+        $this->assertSame($expected, $p, 'NATURAL JOIN should not be an alias');
     }
 }
-

@@ -31,40 +31,39 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
 
 /**
- * This class implements the builder for aliases. 
+ * This class implements the builder for aliases.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class AliasBuilder implements Builder {
-
-    public function hasAlias($parsed) {
+class AliasBuilder implements Builder
+{
+    public function hasAlias($parsed)
+    {
         return isset($parsed['alias']);
     }
 
-    public function build(array $parsed) {
-        if (!isset($parsed['alias']) || $parsed['alias'] === false) {
-            return "";
+    public function build(array $parsed)
+    {
+        if (! isset($parsed['alias']) || $parsed['alias'] === false) {
+            return '';
         }
-        $sql = "";
+        $sql = '';
         if ($parsed['alias']['as']) {
-            $sql .= " AS";
+            $sql .= ' AS';
         }
-        $sql .= " " . $parsed['alias']['name'];
+        $sql .= ' ' . $parsed['alias']['name'];
+
         return $sql;
     }
 }
-?>

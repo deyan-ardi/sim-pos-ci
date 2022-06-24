@@ -21,7 +21,7 @@ Transaksi Barang - Menu Kasir
     const ajax_send = () => {
         // console.log(event.key === "Enter");
         if (event.key === "Enter") {
-            var url = "<?php echo base_url() . "/GeneralTransaction/validation_payment" ?>"
+            var url = "<?= base_url() . '/GeneralTransaction/validation_payment' ?>"
             $.ajax({
                 url: url,
                 type: "POST",
@@ -146,7 +146,7 @@ Transaksi Barang - Menu Kasir
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if ($find_sale[0]->sale_status == 1) : ?>
+                        <?php if ($find_sale[0]->sale_status === 1) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
@@ -206,7 +206,7 @@ Transaksi Barang - Menu Kasir
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col-6">
-                                                                            <input type="text" class="form-control" disabled value="<?= $find_sale[0]->member_code . " - " . $find_sale[0]->member_name; ?>">
+                                                                            <input type="text" class="form-control" disabled value="<?= $find_sale[0]->member_code . ' - ' . $find_sale[0]->member_name; ?>">
                                                                         </div>
                                                                         <div class="col-6">
                                                                             <input type="text" class="form-control" disabled value="Diskon General Member <?= $find_sale[0]->member_discount; ?> %">
@@ -217,7 +217,7 @@ Transaksi Barang - Menu Kasir
                                                                     <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? "is-invalid" : ""; ?>">
+                                                                    <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? 'is-invalid' : ''; ?>">
                                                                         <option value="">--Pilih Barang--</option>
                                                                         <?php foreach ($item as $i) : ?>
                                                                             <?php if ($i->item_stock <= 0) : ?>
@@ -228,16 +228,16 @@ Transaksi Barang - Menu Kasir
                                                                         <?php endforeach; ?>
                                                                     </select>
                                                                     <div class="invalid-feedback">
-                                                                        <?= $validation->getError("item_barang"); ?>
+                                                                        <?= $validation->getError('item_barang'); ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="input-group search-form">
-                                                                    <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? "is-invalid" : ""; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ? old('item_quantity') : ""; ?>">
+                                                                    <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? 'is-invalid' : ''; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ?: ''; ?>">
                                                                     <div class="input-group-append">
                                                                         <span class="input-group-text bg-transparent">Buah</span>
                                                                     </div>
                                                                     <div class="invalid-feedback">
-                                                                        <?= $validation->getError("item_quantity"); ?>
+                                                                        <?= $validation->getError('item_quantity'); ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -267,21 +267,22 @@ Transaksi Barang - Menu Kasir
                                                                         <th>Harga</th>
                                                                         <th>Jumlah</th>
                                                                         <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
-                                                                            <?php $colspan = 3; ?>
+                                                                            <?php $colspan     = 3; ?>
                                                                             <?php $colspan_all = 3; ?>
 
                                                                             <th class="text-center"><i class="feather icon-settings"></i>
                                                                             </th>
                                                                         <?php else : ?>
                                                                             <?php $colspan_all = 2; ?>
-                                                                            <?php $colspan = 3; ?>
+                                                                            <?php $colspan     = 3; ?>
                                                                         <?php endif; ?>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
-                                                                    $i = 1;
+                                                                    $i           = 1;
                                                                     $total_order = 0;
+
                                                                     foreach ($transaction as $d) :
                                                                     ?>
                                                                         <tr>
@@ -307,7 +308,7 @@ Transaksi Barang - Menu Kasir
                                                                             endforeach; ?>
                                                                 </tbody>
                                                                 <tfoot>
-                                                                    <?php if (!empty($find_sale[0]->sale_handling)) : ?>
+                                                                    <?php if (! empty($find_sale[0]->sale_handling)) : ?>
                                                                         <tr>
                                                                             <th colspan="<?= $colspan_all; ?>" rowspan="9"></th>
                                                                             <th>Sub Total I</th>
@@ -319,7 +320,7 @@ Transaksi Barang - Menu Kasir
                                                                         </tr>
                                                                         <tr>
                                                                             <?php
-                                                                            $disk = ($total_order * $find_sale[0]->sale_discount) / 100;
+                                                                            $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
                                                                             $sub_tot_2 = $total_order - $disk;
                                                                             ?>
                                                                             <th>Sub Total II</th>
@@ -343,7 +344,7 @@ Transaksi Barang - Menu Kasir
                                                                             <th>Grand Total</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                         </tr>
-                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
+                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && ! empty($transaction)) : ?>
 
                                                                             <tr>
                                                                                 <th>Bayar</th>
@@ -380,7 +381,7 @@ Transaksi Barang - Menu Kasir
                                                                         </tr>
                                                                         <tr>
                                                                             <?php
-                                                                            $disk = ($total_order * $find_sale[0]->sale_discount) / 100;
+                                                                            $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
                                                                             $sub_tot_2 = $total_order - $disk;
                                                                             ?>
                                                                             <th>Sub Total II</th>
@@ -411,10 +412,10 @@ Transaksi Barang - Menu Kasir
                                                             </table>
                                                         </div>
                                                         <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total) {
-                                                            $disabled = "disabled";
-                                                        } else {
-                                                            $disabled = "";
-                                                        } ?>
+                                                                                $disabled = 'disabled';
+                                                                            } else {
+                                                                                $disabled = '';
+                                                                            } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
                                                                 <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">

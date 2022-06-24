@@ -6,25 +6,26 @@ use CodeIgniter\Model;
 
 class PphModel extends Model
 {
-	protected $table                = 'pphs';
-	protected $primaryKey           = 'id';
-	protected $useAutoIncrement     = true;
-	protected $insertID             = 0;
-	protected $returnType           = PphModel::class;
-	protected $useSoftDeletes       = false;
-	protected $allowedFields        = ['pph_value'];
+    protected $table            = 'pphs';
+    protected $primaryKey       = 'id';
+    protected $useAutoIncrement = true;
+    protected $insertID         = 0;
+    protected $returnType       = PphModel::class;
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = ['pph_value'];
 
-	// Dates
-	protected $useTimestamps        = true;
+    // Dates
+    protected $useTimestamps = true;
 
-	// Validation
-	protected $validationRules      = [
-		'pph_value' => 'required',
-	];
-	protected $validationMessages   = [];
-	protected $skipValidation       = false;
+    // Validation
+    protected $validationRules = [
+        'pph_value' => 'required',
+    ];
+    protected $validationMessages = [];
+    protected $skipValidation     = false;
 
-	public function getAllPPh(){
-		return $this->select('*')->get()->getResult();
-	}
+    public function getAllPPh()
+    {
+        return $this->select('*')->get()->getResult();
+    }
 }

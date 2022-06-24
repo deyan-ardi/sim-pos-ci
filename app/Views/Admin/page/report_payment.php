@@ -16,7 +16,7 @@ Laporan Keuangan PT Dapur Inspirasi Nusantara
 <!-- dashboard-custom js -->
 <script src="<?= base_url(); ?>/assets/js/pages/dashboard-sale.js"></script>
 <script>
-    let status = "<?php echo $sortir ?>"
+    let status = "<?= $sortir ?>"
     if (status == 5) {
         document.querySelector('.form-custom').style.display = "";
         document.querySelector('.show-custom').required = "true";
@@ -25,7 +25,7 @@ Laporan Keuangan PT Dapur Inspirasi Nusantara
         document.querySelector('.show-custom').required = "";
     }
     const check_value = (v) => {
-        let status = "<?php echo $sortir ?>"
+        let status = "<?= $sortir ?>"
         if (v == 5) {
             document.querySelector('.form-custom').style.display = "";
             document.querySelector('.show-custom').required = "true";
@@ -51,16 +51,16 @@ Laporan Keuangan PT Dapur Inspirasi Nusantara
 
 <?= $this->section('main'); ?>
 <?php
-if ($sortir == 1) {
-    $ket = "Keseluruhan";
-} else if ($sortir == 2) {
-    $ket = "Tahun " . date('Y');
-} else if ($sortir == 3) {
-    $ket = "Bulan " . date('F Y');
-} else if ($sortir == 4) {
-    $ket = "Hari Ini,Tanggal " . date('d F Y');
+if ($sortir === 1) {
+    $ket = 'Keseluruhan';
+} elseif ($sortir === 2) {
+    $ket = 'Tahun ' . date('Y');
+} elseif ($sortir === 3) {
+    $ket = 'Bulan ' . date('F Y');
+} elseif ($sortir === 4) {
+    $ket = 'Hari Ini,Tanggal ' . date('d F Y');
 } else {
-    $ket = "Tanggal " . date('d F Y', strtotime($tgl_dari)) . " - " . date('d F Y', strtotime($tgl_sampai));
+    $ket = 'Tanggal ' . date('d F Y', strtotime($tgl_dari)) . ' - ' . date('d F Y', strtotime($tgl_sampai));
 }
 ?>
 <!-- [ Main Content ] start -->
@@ -93,8 +93,9 @@ if ($sortir == 1) {
                             <?php
                             $v = 0;
                             $n = 0;
+
                             foreach ($transaksi as $all) {
-                                if ($all->sale_status == 1) {
+                                if ($all->sale_status === 1) {
                                     $v++;
                                 } else {
                                     $n++;
@@ -104,10 +105,11 @@ if ($sortir == 1) {
                             <?php
                             $j = 0;
                             $s = 0;
+
                             foreach ($order as $all) {
-                                if ($all->order_status == 8) {
+                                if ($all->order_status === 8) {
                                     $s++;
-                                } 
+                                }
                                 $j++;
                             }
                             ?>
@@ -157,7 +159,7 @@ if ($sortir == 1) {
                                 </div>
                             </div>
                             <!-- support-section1 end -->
-                          
+
                             <!-- support-section2 end -->
                             <div class="col-sm-12">
                                 <div class="card">
@@ -171,7 +173,7 @@ if ($sortir == 1) {
                                             <form action="" method="POST" target="_blank">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="id_sortir" value="<?= $sortir; ?>">
-                                                <?php if ($tgl_dari != null && $tgl_sampai != null) : ?>
+                                                <?php if ($tgl_dari !== null && $tgl_sampai !== null) : ?>
                                                     <input type="hidden" name="dari" value="<?= $tgl_dari; ?>">
                                                     <input type="hidden" name="sampai" value="<?= $tgl_sampai; ?>">
                                                 <?php endif; ?>
@@ -198,10 +200,10 @@ if ($sortir == 1) {
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $i = 1;
-                                                    $v = 1;
+                                                    $i                = 1;
+                                                    $v                = 1;
                                                     $total_keuntungan = 0;
-                                                    $total_transaksi = 0;
+                                                    $total_transaksi  = 0;
                                                     ?>
                                                     <?php foreach ($transaksi as $t) : ?>
                                                         <tr>
@@ -213,18 +215,18 @@ if ($sortir == 1) {
                                                             <td>Rp. <?= format_rupiah($t->sale_profit); ?></td>
                                                             <td><?= $t->username; ?></td>
                                                             <td>Transaksi <?= $t->sale_ket; ?></td>
-                                                            <?php if ($t->sale_status == 0) : ?>
+                                                            <?php if ($t->sale_status === 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
                                                             <?php else : ?>
                                                                 <?php
                                                                 $v++;
                                                                 $total_keuntungan = $total_keuntungan + $t->sale_profit;
-                                                                $total_transaksi = $total_transaksi + $t->sale_total;
+                                                                $total_transaksi  = $total_transaksi + $t->sale_total;
                                                                 ?>
                                                                 <td><button type="button" class="btn btn-success btn-sm"> Sukses</button></td>
                                                             <?php endif; ?>
                                                             <td>
-                                                                <?= CodeIgniter\I18n\Time::parse($t->updated_at)->toLocalizedString('d MMM yyyy, H:m');    ?> WITA
+                                                                <?= CodeIgniter\I18n\Time::parse($t->updated_at)->toLocalizedString('d MMM yyyy, H:m'); ?> WITA
                                                             </td>
                                                             <td>
                                                                 <form action="" target="_blank" method="POST">
@@ -285,31 +287,31 @@ if ($sortir == 1) {
                 <form id="form" action="" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <select name="order" required onchange="check_value(this.value)" id="order" class="form-control <?= $validation->getError('order') ? "is-invalid" : ""; ?>">
-                            <option value="1" <?= $sortir == 1 ? "selected" : "" ?>>Berdasarkan Keseluruhan</option>
-                            <option value="2" <?= $sortir == 2 ? "selected" : "" ?>>Berdasarkan Tahun Ini</option>
-                            <option value="3" <?= $sortir == 3 ? "selected" : "" ?>>Berdasarkan Bulan Ini</option>
-                            <option value="4" <?= $sortir == 4 ? "selected" : "" ?>>Berdasarkan Hari Ini</option>
-                            <option value="5" <?= $sortir == 5 ? "selected" : "" ?>>Kustom Sortir</option>
+                        <select name="order" required onchange="check_value(this.value)" id="order" class="form-control <?= $validation->getError('order') ? 'is-invalid' : ''; ?>">
+                            <option value="1" <?= $sortir === 1 ? 'selected' : '' ?>>Berdasarkan Keseluruhan</option>
+                            <option value="2" <?= $sortir === 2 ? 'selected' : '' ?>>Berdasarkan Tahun Ini</option>
+                            <option value="3" <?= $sortir === 3 ? 'selected' : '' ?>>Berdasarkan Bulan Ini</option>
+                            <option value="4" <?= $sortir === 4 ? 'selected' : '' ?>>Berdasarkan Hari Ini</option>
+                            <option value="5" <?= $sortir === 5 ? 'selected' : '' ?>>Kustom Sortir</option>
                         </select>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("order"); ?>
+                            <?= $validation->getError('order'); ?>
                         </div>
                     </div>
                     <div class="form-custom">
                         <div class="form-group">
                             <label for="dari">Dari Tanggal : </label>
-                            <input id="dari" type="date" class="form-control show-custom <?= $validation->getError('tgl_dari') ? "is-invalid" : ""; ?>" value="<?= date($tgl_dari); ?>" name="tgl_dari">
+                            <input id="dari" type="date" class="form-control show-custom <?= $validation->getError('tgl_dari') ? 'is-invalid' : ''; ?>" value="<?= date($tgl_dari); ?>" name="tgl_dari">
                             <div class="invalid-feedback">
-                                <?= $validation->getError("tgl_dari"); ?>
+                                <?= $validation->getError('tgl_dari'); ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-group" id="sampai-form">
                                 <label for="sampai">Sampai Tanggal :</label>
-                                <input type="date" class="form-control show-custom <?= $validation->getError('tgl_sampai') ? "is-invalid" : ""; ?>" value="<?= date($tgl_sampai); ?>" name="tgl_sampai">
+                                <input type="date" class="form-control show-custom <?= $validation->getError('tgl_sampai') ? 'is-invalid' : ''; ?>" value="<?= date($tgl_sampai); ?>" name="tgl_sampai">
                                 <div class="invalid-feedback">
-                                    <?= $validation->getError("tgl_sampai"); ?>
+                                    <?= $validation->getError('tgl_sampai'); ?>
                                 </div>
                             </div>
                         </div>

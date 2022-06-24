@@ -33,17 +33,12 @@
 namespace PHPSQLParser\processors;
 
 /**
- * 
  * This class processes the DUPLICATE statements.
- * 
- * @author arothe
- * 
  */
-class DuplicateProcessor extends SetProcessor {
-
-    public function process($tokens, $isUpdate = false) {
+class DuplicateProcessor extends SetProcessor
+{
+    public function process($tokens, $isUpdate = false)
+    {
         return parent::process($tokens, $isUpdate);
     }
-
 }
-?>

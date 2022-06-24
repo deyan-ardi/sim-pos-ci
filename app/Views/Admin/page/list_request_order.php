@@ -68,6 +68,7 @@ Request Order Barang
                                                 <tbody>
                                                     <?php
                                                     $tot = 1;
+
                                                     foreach ($request_order as $c) : ?>
                                                         <tr>
                                                             <td><?= $tot++; ?></td>
@@ -78,9 +79,9 @@ Request Order Barang
                                                             <td><?= $c->request_description; ?></td>
                                                             <td><?= $c->request_total; ?> Buah</td>
                                                             <td><?= $c->username; ?></td>
-                                                            <?php if ($c->request_status == 0) : ?>
+                                                            <?php if ($c->request_status === 0) : ?>
                                                                 <td><a href="" class="btn btn-warning btn-sm">Draft</a></td>
-                                                            <?php elseif ($c->request_status == 2) : ?>
+                                                            <?php elseif ($c->request_status === 2) : ?>
                                                                 <td><a href="" class="btn btn-danger btn-sm">Permintaan Ditolak</a></td>
                                                             <?php else : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Permintaan Diterima</a></td>
@@ -105,13 +106,13 @@ Request Order Barang
                                                                                         <input type="hidden" name="_method" value="PATCH">
                                                                                         <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                                         <div class="form-group">
-                                                                                            <select class="form-control <?= $validation->getError('request_status') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="request_status" required>
+                                                                                            <select class="form-control <?= $validation->getError('request_status') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="request_status" required>
                                                                                                 <option value="">Status Request Order</option>
-                                                                                                <option value="1" <?= $c->request_status == 1 ? "selected" : ""; ?>>Request Diterima</option>
-                                                                                                <option value="2" <?= $c->request_status == 2 ? "selected" : ""; ?>>Request Ditolak</option>
+                                                                                                <option value="1" <?= $c->request_status === 1 ? 'selected' : ''; ?>>Request Diterima</option>
+                                                                                                <option value="2" <?= $c->request_status === 2 ? 'selected' : ''; ?>>Request Ditolak</option>
                                                                                             </select>
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("request_status"); ?>
+                                                                                                <?= $validation->getError('request_status'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="modal-footer">

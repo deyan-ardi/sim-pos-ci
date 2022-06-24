@@ -31,24 +31,27 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class unionWithParenthesisTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testZero() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class unionWithParenthesisTest extends \PHPUnit\Framework\TestCase
+{
+    public function testZero()
+    {
         $parser = new PHPSQLParser();
-        $sql = 'SELECT a FROM b UNION SELECT a FROM b WHERE (foo IS NOT NULL)';
+        $sql    = 'SELECT a FROM b UNION SELECT a FROM b WHERE (foo IS NOT NULL)';
         $parser->parse($sql);
-        $this->assertEquals('(foo IS NOT NULL)', $parser->parsed['UNION'][1]['WHERE'][0]['base_expr']);
+        $this->assertSame('(foo IS NOT NULL)', $parser->parsed['UNION'][1]['WHERE'][0]['base_expr']);
     }
 }
-

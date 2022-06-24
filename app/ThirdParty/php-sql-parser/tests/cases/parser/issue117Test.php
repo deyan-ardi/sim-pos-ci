@@ -31,32 +31,34 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
 
 use PHPSQLParser\PHPSQLParser;
-use Analog\Analog;
 use PHPUnit\Framework\TestCase;
 
-class Issue117Test extends TestCase
+/**
+ * @internal
+ */
+final class issue117Test extends TestCase
 {
     public function testIssue117()
     {
         // TODO: not solved, ORDER BY has been lost
-        $sql = "(((SELECT x FROM table)) ORDER BY x)";
+        $sql = '(((SELECT x FROM table)) ORDER BY x)';
         //$sql = "(SELECT x FROM table) ORDER BY x";
         $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
+        $p      = $parser->parsed;
 
-        $expected = getExpectedValue(dirname(__FILE__), 'issue117.serialized');
+        $expected = getExpectedValue(__DIR__, 'issue117.serialized');
 
-        $this->assertEquals($expected, $p, 'parentheses on the first position of statement');
+        $this->assertSame($expected, $p, 'parentheses on the first position of statement');
     }
 }
 

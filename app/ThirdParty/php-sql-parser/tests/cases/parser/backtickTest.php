@@ -31,37 +31,38 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class backtickTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testBacktick() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class backtickTest extends \PHPUnit\Framework\TestCase
+{
+    public function testBacktick()
+    {
         $parser = new PHPSQLParser();
 
         $sql = 'SELECT c1.`some_column` or `c1`.`another_column` or c1.`some column` as `an alias`
                   from some_table an_alias group by `an alias`, `alias2`;';
         $parser->parse($sql);
         $p = $parser->parsed;
-        $this->assertEquals('`an alias`', $parser->parsed['SELECT'][0]['alias']['name']);
-        $this->assertEquals('c1.`some column`', $parser->parsed['SELECT'][0]['sub_tree'][4]['base_expr']);
-        $this->assertEquals('alias', $parser->parsed['GROUP'][0]['expr_type']);
-
+        $this->assertSame('`an alias`', $parser->parsed['SELECT'][0]['alias']['name']);
+        $this->assertSame('c1.`some column`', $parser->parsed['SELECT'][0]['sub_tree'][4]['base_expr']);
+        $this->assertSame('alias', $parser->parsed['GROUP'][0]['expr_type']);
 
         $sql = "INSERT INTO test (`name`) VALUES ('ben\\'s test containing an escaped quote')";
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'backtick1.serialized');
-        $this->assertEquals($expected, $p, "issue 35: ben's test");
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'backtick1.serialized');
+        $this->assertSame($expected, $p, "issue 35: ben's test");
     }
 }
-

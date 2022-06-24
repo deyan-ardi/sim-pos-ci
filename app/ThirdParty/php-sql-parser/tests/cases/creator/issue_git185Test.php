@@ -32,32 +32,32 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2015 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
 
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
-
-class IssueGit185TestTest extends \PHPSQLParser\Test\AbstractTestCase {
-	
-	public function testIssueGit185() {
-		$query = "
+/**
+ * @internal
+ */
+final class issue_git185Test extends \PHPSQLParser\Test\AbstractTestCase
+{
+    public function testIssueGit185()
+    {
+        $query = "
 		SELECT seen, id, name, cep, date_format(created,'%d/%m/%Y %h:%i:%s') as created
         FROM user
         WHERE approved = 0 and canceled = 0
 		";
 
-		$p = $this->parser->parse($query, true);
-		$created = $this->creator->create($p);
-	
-		$expected = getExpectedValue ( dirname ( __FILE__ ), 'issue_git185.sql', false );
-		$this->assertEquals ( $expected, $created, 'haha' );
-	}
+        $p       = $this->parser->parse($query, true);
+        $created = $this->creator->create($p);
+
+        $expected = getExpectedValue(__DIR__, 'issue_git185.sql', false);
+        $this->assertSame($expected, $created, 'haha');
+    }
 }
-?>

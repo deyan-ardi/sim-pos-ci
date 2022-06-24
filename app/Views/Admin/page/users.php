@@ -94,6 +94,7 @@ Data User Sistem
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($user as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -104,9 +105,9 @@ Data User Sistem
                                                             <?php endif; ?>
                                                             <td><?= $c->email; ?></td>
                                                             <td><?= $c->username; ?></td>
-                                                            <td><?= !empty($c->user_number) ? $c->user_number : "Kosong"; ?></td>
-                                                            <td><?= ucWords(strtolower($c->name)); ?></td>
-                                                            <?php if ($c->active == 1) : ?>
+                                                            <td><?= ! empty($c->user_number) ? $c->user_number : 'Kosong'; ?></td>
+                                                            <td><?= ucwords(strtolower($c->name)); ?></td>
+                                                            <?php if ($c->active === 1) : ?>
                                                                 <td><button type="button" class="btn btn-icon btn-success"><i class="feather icon-check-circle" title="User Aktif" data-toggle="tooltip"></i></button></td>
                                                             <?php else : ?>
                                                                 <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-alert-triangle" title="User Tidak Aktif" data-toggle="tooltip"></i></button></td>
@@ -134,55 +135,55 @@ Data User Sistem
                                                                                         <input type="hidden" name="_method" value="PATCH">
                                                                                         <input type="hidden" name="id_user" value="<?= $c->userid; ?>">
                                                                                         <div class="form-group">
-                                                                                            <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image_up') ? "is-invalid" : ""; ?>" name="user_image_up">
+                                                                                            <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image_up') ? 'is-invalid' : ''; ?>" name="user_image_up">
                                                                                             <small id="file" class="form-text text-muted">Bersifat Opsional, jika ingin menambahkan silahkan sesuaikan foto profil yang diupload <br> maksimal 1 Mb, bertipe .jpg, .png. atau
                                                                                                 .jpeg</small>
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("user_image_up"); ?>
+                                                                                                <?= $validation->getError('user_image_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="email" class="form-control <?= $validation->getError('email_up') ? "is-invalid" : ""; ?>" name="email_up" required placeholder="Email User" value="<?= (old('email_up')) ? old('email_up') : $c->email; ?>">
+                                                                                            <input type="email" class="form-control <?= $validation->getError('email_up') ? 'is-invalid' : ''; ?>" name="email_up" required placeholder="Email User" value="<?= (old('email_up')) ?: $c->email; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("email_up"); ?>
+                                                                                                <?= $validation->getError('email_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('username_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="username_up" required placeholder="Nama User" value="<?= (old('username_up')) ? old('username_up') : $c->username; ?>">
+                                                                                            <input type="text" class="form-control <?= $validation->getError('username_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="username_up" required placeholder="Nama User" value="<?= (old('username_up')) ?: $c->username; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("username_up"); ?>
+                                                                                                <?= $validation->getError('username_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number_up') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="user_number_up" placeholder="Kontak User (Opsional)" value="<?= (old('user_number_up')) ? old('user_number_up') : $c->user_number; ?>">
+                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="user_number_up" placeholder="Kontak User (Opsional)" value="<?= (old('user_number_up')) ?: $c->user_number; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("user_number_up"); ?>
+                                                                                                <?= $validation->getError('user_number_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="password" class="form-control <?= $validation->getError('password_up') ? "is-invalid" : ""; ?>" name="password_up" placeholder="Kata Sandi Akun" value="<?= (old('password_up')) ? old('password_up') : ""; ?>">
+                                                                                            <input type="password" class="form-control <?= $validation->getError('password_up') ? 'is-invalid' : ''; ?>" name="password_up" placeholder="Kata Sandi Akun" value="<?= (old('password_up')) ?: ''; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("password_up"); ?>
+                                                                                                <?= $validation->getError('password_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <input type="password" class="form-control <?= $validation->getError('password_confirm_up') ? "is-invalid" : ""; ?>" name="password_confirm_up" placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm_up')) ? old('password_confirm_up') : ""; ?>">
+                                                                                            <input type="password" class="form-control <?= $validation->getError('password_confirm_up') ? 'is-invalid' : ''; ?>" name="password_confirm_up" placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm_up')) ?: ''; ?>">
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("password_confirm_up"); ?>
+                                                                                                <?= $validation->getError('password_confirm_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group">
-                                                                                            <select class="form-control <?= $validation->getError('group_up') ? "is-invalid" : ""; ?>" name="group_up">
+                                                                                            <select class="form-control <?= $validation->getError('group_up') ? 'is-invalid' : ''; ?>" name="group_up">
                                                                                                 <option value="">Pilih Hak Akses</option>
-                                                                                                <option value="1" <?= $c->name == "KASIR" ? "selected" : ""; ?>>Kasir</option>
-                                                                                                <option value="2" <?= $c->name == "GUDANG" ? "selected" : ""; ?>>Gudang</option>
-                                                                                                <option value="3" <?= $c->name == "SUPER ADMIN" ? "selected" : ""; ?>>Super Admin</option>
-                                                                                                <option value="4" <?= $c->name == "ATASAN" ? "selected" : ""; ?>>Atasan</option>
-                                                                                                <option value="5" <?= $c->name == "PURCHASING" ? "selected" : ""; ?>>Purchasing</option>
-                                                                                                <option value="6" <?= $c->name == "MARKETING" ? "selected" : ""; ?>>Marketing</option>
+                                                                                                <option value="1" <?= $c->name === 'KASIR' ? 'selected' : ''; ?>>Kasir</option>
+                                                                                                <option value="2" <?= $c->name === 'GUDANG' ? 'selected' : ''; ?>>Gudang</option>
+                                                                                                <option value="3" <?= $c->name === 'SUPER ADMIN' ? 'selected' : ''; ?>>Super Admin</option>
+                                                                                                <option value="4" <?= $c->name === 'ATASAN' ? 'selected' : ''; ?>>Atasan</option>
+                                                                                                <option value="5" <?= $c->name === 'PURCHASING' ? 'selected' : ''; ?>>Purchasing</option>
+                                                                                                <option value="6" <?= $c->name === 'MARKETING' ? 'selected' : ''; ?>>Marketing</option>
                                                                                             </select>
                                                                                             <div class="invalid-feedback">
-                                                                                                <?= $validation->getError("group_up"); ?>
+                                                                                                <?= $validation->getError('group_up'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="modal-footer">
@@ -254,45 +255,45 @@ Data User Sistem
                 <form action="" method="POST" enctype="multipart/form-data">
                     <?= csrf_field(); ?>
                     <div class="form-group">
-                        <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image') ? "is-invalid" : ""; ?>" name="user_image">
+                        <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image') ? 'is-invalid' : ''; ?>" name="user_image">
                         <small id="file" class="form-text text-muted">Bersifat Opsional, jika ingin menambahkan silahkan sesuaikan foto profil yang diupload maksimal 1 Mb, bertipe .jpg, .png. atau
                             .jpeg</small>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("user_image"); ?>
+                            <?= $validation->getError('user_image'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control <?= $validation->getError('email') ? "is-invalid" : ""; ?>" name="email" required placeholder="Email User" value="<?= (old('email')) ? old('email') : ""; ?>">
+                        <input type="email" class="form-control <?= $validation->getError('email') ? 'is-invalid' : ''; ?>" name="email" required placeholder="Email User" value="<?= (old('email')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("email"); ?>
+                            <?= $validation->getError('email'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control <?= $validation->getError('username') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="username" required placeholder="Nama User" value="<?= (old('username')) ? old('username') : ""; ?>">
+                        <input type="text" class="form-control <?= $validation->getError('username') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="username" required placeholder="Nama User" value="<?= (old('username')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("username"); ?>
+                            <?= $validation->getError('username'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number') ? "is-invalid" : ""; ?>" style="text-transform: capitalize;" name="user_number" placeholder="Kontak User (Opsional)" value="<?= (old('user_number')) ? old('user_number') : ""; ?>">
+                        <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="user_number" placeholder="Kontak User (Opsional)" value="<?= (old('user_number')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("user_number"); ?>
+                            <?= $validation->getError('user_number'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control <?= $validation->getError('password') ? "is-invalid" : ""; ?>" name="password" required placeholder="Kata Sandi Akun" value="<?= (old('password')) ? old('password') : ""; ?>">
+                        <input type="password" class="form-control <?= $validation->getError('password') ? 'is-invalid' : ''; ?>" name="password" required placeholder="Kata Sandi Akun" value="<?= (old('password')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("password"); ?>
+                            <?= $validation->getError('password'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control <?= $validation->getError('password_confirm') ? "is-invalid" : ""; ?>" name="password_confirm" required placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm')) ? old('password_confirm') : ""; ?>">
+                        <input type="password" class="form-control <?= $validation->getError('password_confirm') ? 'is-invalid' : ''; ?>" name="password_confirm" required placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm')) ?: ''; ?>">
                         <div class="invalid-feedback">
-                            <?= $validation->getError("password_confirm"); ?>
+                            <?= $validation->getError('password_confirm'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <select class="form-control <?= $validation->getError('group') ? "is-invalid" : ""; ?>" name="group">
+                        <select class="form-control <?= $validation->getError('group') ? 'is-invalid' : ''; ?>" name="group">
                             <option value="">Pilih Hak Akses</option>
                             <option value="1">Kasir</option>
                             <option value="2">Gudang</option>
@@ -302,7 +303,7 @@ Data User Sistem
                             <option value="6">Marketing</option>
                         </select>
                         <div class="invalid-feedback">
-                            <?= $validation->getError("group"); ?>
+                            <?= $validation->getError('group'); ?>
                         </div>
                     </div>
                     <div class="modal-footer">

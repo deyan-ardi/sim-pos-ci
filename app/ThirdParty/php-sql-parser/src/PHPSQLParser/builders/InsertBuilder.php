@@ -31,54 +31,64 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
- * This class implements the builder for the [INSERT] statement parts. 
+ * This class implements the builder for the [INSERT] statement parts.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class InsertBuilder implements Builder {
-
-    protected function buildTable($parsed) {
+class InsertBuilder implements Builder
+{
+    protected function buildTable($parsed)
+    {
         $builder = new TableBuilder();
+
         return $builder->build($parsed, 0);
     }
 
-    protected function buildSubQuery($parsed) {
+    protected function buildSubQuery($parsed)
+    {
         $builder = new SubQueryBuilder();
+
         return $builder->build($parsed, 0);
     }
 
-    protected function buildReserved($parsed) {
+    protected function buildReserved($parsed)
+    {
         $builder = new ReservedBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildBracketExpression($parsed) {
+    protected function buildBracketExpression($parsed)
+    {
         $builder = new SelectBracketExpressionBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildColumnList($parsed) {
+    protected function buildColumnList($parsed)
+    {
         $builder = new InsertColumnListBuilder();
+
         return $builder->build($parsed, 0);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = '';
+
         foreach ($parsed as $k => $v) {
             $len = strlen($sql);
             $sql .= $this->buildTable($v);
@@ -87,14 +97,13 @@ class InsertBuilder implements Builder {
             $sql .= $this->buildReserved($v);
             $sql .= $this->buildBracketExpression($v);
 
-            if ($len == strlen($sql)) {
+            if ($len === strlen($sql)) {
                 throw new UnableToCreateSQLException('INSERT', $k, $v, 'expr_type');
             }
 
-            $sql .= " ";
+            $sql .= ' ';
         }
+
         return 'INSERT ' . substr($sql, 0, -1);
     }
-
 }
-?>

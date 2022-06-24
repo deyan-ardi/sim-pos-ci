@@ -31,12 +31,11 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
@@ -45,36 +44,41 @@ namespace PHPSQLParser\builders;
  * This class implements the builder for the whole Create statement. You can overwrite
  * all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class CreateStatementBuilder implements Builder {
-
-    protected function buildLIKE($parsed) {
+class CreateStatementBuilder implements Builder
+{
+    protected function buildLIKE($parsed)
+    {
         $builder = new LikeBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildSelectStatement($parsed) {
+    protected function buildSelectStatement($parsed)
+    {
         $builder = new SelectStatementBuilder();
+
         return $builder->build($parsed);
     }
 
-    protected function buildCREATE($parsed) {
+    protected function buildCREATE($parsed)
+    {
         $builder = new CreateBuilder();
+
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = $this->buildCREATE($parsed);
         if (isset($parsed['LIKE'])) {
-            $sql .= " " . $this->buildLIKE($parsed['LIKE']);
+            $sql .= ' ' . $this->buildLIKE($parsed['LIKE']);
         }
         if (isset($parsed['SELECT'])) {
-            $sql .= " " . $this->buildSelectStatement($parsed);
+            $sql .= ' ' . $this->buildSelectStatement($parsed);
         }
+
         return $sql;
     }
 }
-?>

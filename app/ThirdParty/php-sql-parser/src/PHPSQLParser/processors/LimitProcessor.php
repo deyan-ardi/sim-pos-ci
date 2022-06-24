@@ -32,54 +32,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
 
 /**
  * This class processes the LIMIT statements.
- * 
- * @author  André Rothe <andre.rothe@phosco.info>
+ *
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * 
  */
-class LimitProcessor extends AbstractProcessor {
+class LimitProcessor extends AbstractProcessor
+{
+    public function process($tokens)
+    {
+        $rowcount = '';
+        $offset   = '';
 
-    public function process($tokens) {
-        $rowcount = "";
-        $offset = "";
-
-        $comma = -1;
+        $comma    = -1;
         $exchange = false;
-        
-        $comments = array();
-        
+
+        $comments = [];
+
         foreach ($tokens as &$token) {
             if ($this->isCommentToken($token)) {
-                 $comments[] = parent::processComment($token);
-                 $token = '';
+                $comments[] = parent::processComment($token);
+                $token      = '';
             }
         }
-        
-        for ($i = 0; $i < count($tokens); ++$i) {
+
+        for ($i = 0; $i < count($tokens); $i++) {
             $trim = strtoupper(trim($tokens[$i]));
-            if ($trim === ",") {
+            if ($trim === ',') {
                 $comma = $i;
                 break;
             }
-            if ($trim === "OFFSET") {
-                $comma = $i;
+            if ($trim === 'OFFSET') {
+                $comma    = $i;
                 $exchange = true;
                 break;
             }
         }
 
-        for ($i = 0; $i < $comma; ++$i) {
+        for ($i = 0; $i < $comma; $i++) {
             if ($exchange) {
                 $rowcount .= $tokens[$i];
             } else {
@@ -87,7 +85,7 @@ class LimitProcessor extends AbstractProcessor {
             }
         }
 
-        for ($i = $comma + 1; $i < count($tokens); ++$i) {
+        for ($i = $comma + 1; $i < count($tokens); $i++) {
             if ($exchange) {
                 $offset .= $tokens[$i];
             } else {
@@ -95,11 +93,11 @@ class LimitProcessor extends AbstractProcessor {
             }
         }
 
-        $return = array('offset' => trim($offset), 'rowcount' => trim($rowcount));
+        $return = ['offset' => trim($offset), 'rowcount' => trim($rowcount)];
         if (count($comments)) {
             $return['comments'] = $comments;
         }
+
         return $return;
     }
 }
-?>

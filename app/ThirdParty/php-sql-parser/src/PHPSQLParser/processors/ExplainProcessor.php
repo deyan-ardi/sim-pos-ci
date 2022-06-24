@@ -32,43 +32,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
  * This class processes the EXPLAIN statements.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class ExplainProcessor extends AbstractProcessor {
-
-    protected function isStatement($keys, $needle = "EXPLAIN") {
-        $pos = array_search($needle, $keys);
+class ExplainProcessor extends AbstractProcessor
+{
+    protected function isStatement($keys, $needle = 'EXPLAIN')
+    {
+        $pos = array_search($needle, $keys, true);
         if (isset($keys[$pos + 1])) {
-            return in_array($keys[$pos + 1], array('SELECT', 'DELETE', 'INSERT', 'REPLACE', 'UPDATE'), true);
+            return in_array($keys[$pos + 1], ['SELECT', 'DELETE', 'INSERT', 'REPLACE', 'UPDATE'], true);
         }
+
         return false;
     }
 
     // TODO: refactor that function
-    public function process($tokens, $keys = array()) {
-
-        $base_expr = "";
-        $expr = array();
-        $currCategory = "";
+    public function process($tokens, $keys = [])
+    {
+        $base_expr    = '';
+        $expr         = [];
+        $currCategory = '';
 
         if ($this->isStatement($keys)) {
             foreach ($tokens as $token) {
-
                 $trim = trim($token);
                 $base_expr .= $token;
 
@@ -82,20 +81,20 @@ class ExplainProcessor extends AbstractProcessor {
 
                 case 'EXTENDED':
                 case 'PARTITIONS':
-                    return array('expr_type' => ExpressionType::RESERVED, 'base_expr' => $token);
+                    return ['expr_type' => ExpressionType::RESERVED, 'base_expr' => $token];
                     break;
 
                 case 'FORMAT':
                     if ($currCategory === '') {
                         $currCategory = $upper;
-                        $expr[] = array('expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim);
+                        $expr[]       = ['expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim];
                     }
                     // else?
                     break;
 
                 case '=':
                     if ($currCategory === 'FORMAT') {
-                        $expr[] = array('expr_type' => ExpressionType::OPERATOR, 'base_expr' => $trim);
+                        $expr[] = ['expr_type' => ExpressionType::OPERATOR, 'base_expr' => $trim];
                     }
                     // else?
                     break;
@@ -103,9 +102,10 @@ class ExplainProcessor extends AbstractProcessor {
                 case 'TRADITIONAL':
                 case 'JSON':
                     if ($currCategory === 'FORMAT') {
-                        $expr[] = array('expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim);
-                        return array('expr_type' => ExpressionType::EXPRESSION, 'base_expr' => trim($base_expr),
-                                     'sub_tree' => $expr);
+                        $expr[] = ['expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim];
+
+                        return ['expr_type' => ExpressionType::EXPRESSION, 'base_expr' => trim($base_expr),
+                            'sub_tree'      => $expr, ];
                     }
                     // else?
                     break;
@@ -115,11 +115,11 @@ class ExplainProcessor extends AbstractProcessor {
                     break;
                 }
             }
+
             return empty($expr) ? null : $expr;
         }
 
         foreach ($tokens as $token) {
-
             $trim = trim($token);
 
             if ($trim === '') {
@@ -130,22 +130,21 @@ class ExplainProcessor extends AbstractProcessor {
 
             case 'TABLENAME':
                 $currCategory = 'WILD';
-                $expr[] = array('expr_type' => ExpressionType::COLREF, 'base_expr' => $trim,
-                                'no_quotes' => $this->revokeQuotation($trim));
+                $expr[]       = ['expr_type' => ExpressionType::COLREF, 'base_expr' => $trim,
+                    'no_quotes'              => $this->revokeQuotation($trim), ];
                 break;
 
             case '':
                 $currCategory = 'TABLENAME';
-                $expr[] = array('expr_type' => ExpressionType::TABLE, 'table' => $trim,
-                                'no_quotes' => $this->revokeQuotation($trim), 'alias' => false, 'base_expr' => $trim);
+                $expr[]       = ['expr_type' => ExpressionType::TABLE, 'table' => $trim,
+                    'no_quotes'              => $this->revokeQuotation($trim), 'alias' => false, 'base_expr' => $trim, ];
                 break;
 
             default:
                 break;
             }
         }
+
         return empty($expr) ? null : $expr;
     }
 }
-
-?>

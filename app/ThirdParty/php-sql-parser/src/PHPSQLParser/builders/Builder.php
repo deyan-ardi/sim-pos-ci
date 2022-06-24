@@ -31,12 +31,11 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
@@ -45,19 +44,17 @@ namespace PHPSQLParser\builders;
  * A builder can create a part of an SQL statement. The necessary information
  * are provided by the function parameter as array. This array is a subtree
  * of the PHPSQLParser output.
- * 
- * @author  André Rothe <andre.rothe@phosco.info>
+ *
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  */
-interface Builder {
+interface Builder
+{
     /**
      * Builds a part of an SQL statement.
-     * 
+     *
      * @param array $parsed a subtree of the PHPSQLParser output array
-     * 
+     *
      * @return A string, which contains a part of an SQL statement.
      */
     public function build(array $parsed);
 }
-
-?>

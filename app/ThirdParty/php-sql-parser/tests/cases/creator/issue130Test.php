@@ -31,28 +31,31 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class issue130Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue130() {
-        $query = "select * from t1 order by c2-c1";
-        $parser = new PHPSQLParser();
-        $p = $parser->parse($query);
-        $creator = new PHPSQLCreator();
-        $created = $creator->create($p);
-        $expected = getExpectedValue(dirname(__FILE__), 'issue130.sql', false);
+/**
+ * @internal
+ */
+final class issue130Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue130()
+    {
+        $query    = 'select * from t1 order by c2-c1';
+        $parser   = new PHPSQLParser();
+        $p        = $parser->parse($query);
+        $creator  = new PHPSQLCreator();
+        $created  = $creator->create($p);
+        $expected = getExpectedValue(__DIR__, 'issue130.sql', false);
         $this->assertSame($expected, $created, 'expressions within the ORDER-BY clause');
-
     }
 }
-

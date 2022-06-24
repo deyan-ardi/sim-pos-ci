@@ -31,37 +31,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
  * This class implements the builder for the table part of a DROP INDEX statement.
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class DropIndexTableBuilder implements Builder {
-
-    public function build(array $parsed) {
-        if (!isset($parsed['on']) || $parsed['on'] === false) {
+class DropIndexTableBuilder implements Builder
+{
+    public function build(array $parsed)
+    {
+        if (! isset($parsed['on']) || $parsed['on'] === false) {
             return '';
         }
         $table = $parsed['on'];
         if ($table['expr_type'] !== ExpressionType::TABLE) {
             return '';
         }
+
         return 'ON ' . $table['name'];
     }
-
 }
-?>

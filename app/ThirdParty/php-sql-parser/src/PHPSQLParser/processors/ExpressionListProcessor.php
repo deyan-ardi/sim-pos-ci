@@ -32,37 +32,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   SVN: $Id$
  *
+ * @version   SVN: $Id$
  */
 
 namespace PHPSQLParser\processors;
-use PHPSQLParser\utils\ExpressionType;
+
 use PHPSQLParser\utils\ExpressionToken;
+use PHPSQLParser\utils\ExpressionType;
 use PHPSQLParser\utils\PHPSQLParserConstants;
 
 /**
  * This class processes expression lists.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
  */
-class ExpressionListProcessor extends AbstractProcessor {
-
-    public function process($tokens) {
-        $resultList = array();
-        $skip_next = false;
-        $prev = new ExpressionToken();
+class ExpressionListProcessor extends AbstractProcessor
+{
+    public function process($tokens)
+    {
+        $resultList = [];
+        $skip_next  = false;
+        $prev       = new ExpressionToken();
 
         foreach ($tokens as $k => $v) {
-
-
             if ($this->isCommentToken($v)) {
                 $resultList[] = parent::processComment($v);
+
                 continue;
             }
 
@@ -75,23 +73,21 @@ class ExpressionListProcessor extends AbstractProcessor {
             if ($skip_next) {
                 // skip the next non-whitespace token
                 $skip_next = false;
+
                 continue;
             }
 
-            /* is it a subquery? */
+            // is it a subquery?
             if ($curr->isSubQueryToken()) {
-
                 $processor = new DefaultProcessor($this->options);
                 $curr->setSubTree($processor->process($this->removeParenthesisFromStart($curr->getTrim())));
                 $curr->setTokenType(ExpressionType::SUBQUERY);
-
             } elseif ($curr->isEnclosedWithinParenthesis()) {
-                /* is it an in-list? */
+                // is it an in-list?
 
                 $localTokenList = $this->splitSQLIntoTokens($this->removeParenthesisFromStart($curr->getTrim()));
 
                 if ($prev->getUpper() === 'IN') {
-
                     foreach ($localTokenList as $k => $v) {
                         $tmpToken = new ExpressionToken($k, $v);
                         if ($tmpToken->isCommaToken()) {
@@ -103,15 +99,16 @@ class ExpressionListProcessor extends AbstractProcessor {
                     $curr->setSubTree($this->process($localTokenList));
                     $curr->setTokenType(ExpressionType::IN_LIST);
                 } elseif ($prev->getUpper() === 'AGAINST') {
-
                     $match_mode = false;
-                    foreach ($localTokenList as $k => $v) {
 
+                    foreach ($localTokenList as $k => $v) {
                         $tmpToken = new ExpressionToken($k, $v);
+
                         switch ($tmpToken->getUpper()) {
                         case 'WITH':
                             $match_mode = 'WITH QUERY EXPANSION';
                             break;
+
                         case 'IN':
                             $match_mode = 'IN BOOLEAN MODE';
                             break;
@@ -135,7 +132,6 @@ class ExpressionListProcessor extends AbstractProcessor {
                     $curr->setSubTree($tmpToken);
                     $curr->setTokenType(ExpressionType::MATCH_ARGUMENTS);
                     $prev->setTokenType(ExpressionType::SIMPLE_FUNCTION);
-
                 } elseif ($prev->isColumnReference() || $prev->isFunction() || $prev->isAggregateFunction()
                     || $prev->isCustomFunction()) {
 
@@ -145,30 +141,30 @@ class ExpressionListProcessor extends AbstractProcessor {
                     // TODO: this should be a method, because we need the same code
                     // below for unspecified tokens (expressions).
 
-                    $localExpr = new ExpressionToken();
-                    $tmpExprList = array();
+                    $localExpr   = new ExpressionToken();
+                    $tmpExprList = [];
 
                     foreach ($localTokenList as $k => $v) {
                         $tmpToken = new ExpressionToken($k, $v);
-                        if (!$tmpToken->isCommaToken()) {
+                        if (! $tmpToken->isCommaToken()) {
                             $localExpr->addToken($v);
                             $tmpExprList[] = $v;
                         } else {
                             // an expression could have multiple parts split by operands
                             // if we have a comma, it is a split-point for expressions
-                            $tmpExprList = array_values($tmpExprList);
+                            $tmpExprList   = array_values($tmpExprList);
                             $localExprList = $this->process($tmpExprList);
 
                             if (count($localExprList) > 1) {
                                 $localExpr->setSubTree($localExprList);
                                 $localExpr->setTokenType(ExpressionType::EXPRESSION);
-                                $localExprList = $localExpr->toArray();
+                                $localExprList          = $localExpr->toArray();
                                 $localExprList['alias'] = false;
-                                $localExprList = array($localExprList);
+                                $localExprList          = [$localExprList];
                             }
 
-                            if (!$curr->getSubTree()) {
-                                if (!empty($localExprList)) {
+                            if (! $curr->getSubTree()) {
+                                if (! empty($localExprList)) {
                                     $curr->setSubTree($localExprList);
                                 }
                             } else {
@@ -176,24 +172,24 @@ class ExpressionListProcessor extends AbstractProcessor {
                                 $curr->setSubTree(array_merge($tmpExprList, $localExprList));
                             }
 
-                            $tmpExprList = array();
-                            $localExpr = new ExpressionToken();
+                            $tmpExprList = [];
+                            $localExpr   = new ExpressionToken();
                         }
                     }
 
-                    $tmpExprList = array_values($tmpExprList);
+                    $tmpExprList   = array_values($tmpExprList);
                     $localExprList = $this->process($tmpExprList);
 
                     if (count($localExprList) > 1) {
                         $localExpr->setSubTree($localExprList);
                         $localExpr->setTokenType(ExpressionType::EXPRESSION);
-                        $localExprList = $localExpr->toArray();
+                        $localExprList          = $localExpr->toArray();
                         $localExprList['alias'] = false;
-                        $localExprList = array($localExprList);
+                        $localExprList          = [$localExprList];
                     }
 
-                    if (!$curr->getSubTree()) {
-                        if (!empty($localExprList)) {
+                    if (! $curr->getSubTree()) {
+                        if (! empty($localExprList)) {
                             $curr->setSubTree($localExprList);
                         }
                     } else {
@@ -217,12 +213,12 @@ class ExpressionListProcessor extends AbstractProcessor {
 
                 // we have parenthesis, but it seems to be an expression
                 if ($curr->isUnspecified()) {
-                    $tmpExprList = array_values($localTokenList);
+                    $tmpExprList   = array_values($localTokenList);
                     $localExprList = $this->process($tmpExprList);
 
                     $curr->setTokenType(ExpressionType::BRACKET_EXPRESSION);
-                    if (!$curr->getSubTree()) {
-                        if (!empty($localExprList)) {
+                    if (! $curr->getSubTree()) {
+                        if (! empty($localExprList)) {
                             $curr->setSubTree($localExprList);
                         }
                     } else {
@@ -230,18 +226,16 @@ class ExpressionListProcessor extends AbstractProcessor {
                         $curr->setSubTree(array_merge($tmpExprList, $localExprList));
                     }
                 }
-
             } elseif ($curr->isVariableToken()) {
 
-                # a variable
-                # it can be quoted
+                // a variable
+                // it can be quoted
 
                 $curr->setTokenType($this->getVariableType($curr->getUpper()));
                 $curr->setSubTree(false);
                 $curr->setNoQuotes(trim(trim($curr->getToken()), '@'), "`'\"", $this->options);
-
             } else {
-                /* it is either an operator, a colref or a constant */
+                // it is either an operator, a colref or a constant
                 switch ($curr->getUpper()) {
 
                 case '*':
@@ -256,14 +250,15 @@ class ExpressionListProcessor extends AbstractProcessor {
                     // if the last token is colref, const or expression
                     // then * is an operator
                     // but if the previous colref ends with a dot, the * is the all-columns-alias
-                    if (!$prev->isColumnReference() && !$prev->isConstant() && !$prev->isExpression()
-                        && !$prev->isBracketExpression() && !$prev->isAggregateFunction() && !$prev->isVariable()) {
+                    if (! $prev->isColumnReference() && ! $prev->isConstant() && ! $prev->isExpression()
+                        && ! $prev->isBracketExpression() && ! $prev->isAggregateFunction() && ! $prev->isVariable()) {
                         $curr->setTokenType(ExpressionType::COLREF);
                         break;
                     }
 
-                    if ($prev->isColumnReference() && $prev->endsWith(".")) {
+                    if ($prev->isColumnReference() && $prev->endsWith('.')) {
                         $prev->addToken('*'); // tablealias dot *
+
                         continue 2; // skip the current token
                     }
 
@@ -334,13 +329,15 @@ class ExpressionListProcessor extends AbstractProcessor {
                     // it is a string literal
                         $curr->setTokenType(ExpressionType::CONSTANT);
                         break;
+
                     case '"':
-                        if (!$this->options->getANSIQuotes()) {
-                        // If we're not using ANSI quotes, this is a string literal.
+                        if (! $this->options->getANSIQuotes()) {
+                            // If we're not using ANSI quotes, this is a string literal.
                             $curr->setTokenType(ExpressionType::CONSTANT);
                             break;
                         }
                         // Otherwise continue to the next case
+                        // no break
                     case '`':
                     // it is an escaped colum name
                         $curr->setTokenType(ExpressionType::COLREF);
@@ -349,15 +346,14 @@ class ExpressionListProcessor extends AbstractProcessor {
 
                     default:
                         if (is_numeric($curr->getToken())) {
-
                             if ($prev->isSign()) {
                                 $prev->addToken($curr->getToken()); // it is a negative numeric constant
                                 $prev->setTokenType(ExpressionType::CONSTANT);
+
                                 continue 3;
                                 // skip current token
-                            } else {
-                                $curr->setTokenType(ExpressionType::CONSTANT);
                             }
+                            $curr->setTokenType(ExpressionType::CONSTANT);
                         } else {
                             $curr->setTokenType(ExpressionType::COLREF);
                             $curr->setNoQuotes($curr->getToken(), null, $this->options);
@@ -367,38 +363,32 @@ class ExpressionListProcessor extends AbstractProcessor {
                 }
             }
 
-            /* is a reserved word? */
-            if (!$curr->isOperator() && !$curr->isInList() && !$curr->isFunction() && !$curr->isAggregateFunction()
-                && !$curr->isCustomFunction() && PHPSQLParserConstants::getInstance()->isReserved($curr->getUpper())) {
-
-	            $next = isset( $tokens[ $k + 1 ] ) ? new ExpressionToken( $k + 1, $tokens[ $k + 1 ] ) : new ExpressionToken();
+            // is a reserved word?
+            if (! $curr->isOperator() && ! $curr->isInList() && ! $curr->isFunction() && ! $curr->isAggregateFunction()
+                && ! $curr->isCustomFunction() && PHPSQLParserConstants::getInstance()->isReserved($curr->getUpper())) {
+                $next                        = isset($tokens[$k + 1]) ? new ExpressionToken($k + 1, $tokens[$k + 1]) : new ExpressionToken();
                 $isEnclosedWithinParenthesis = $next->isEnclosedWithinParenthesis();
-	            if ($isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isCustomFunction($curr->getUpper())) {
+                if ($isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isCustomFunction($curr->getUpper())) {
                     $curr->setTokenType(ExpressionType::CUSTOM_FUNCTION);
                     $curr->setNoQuotes(null, null, $this->options);
-
                 } elseif ($isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isAggregateFunction($curr->getUpper())) {
                     $curr->setTokenType(ExpressionType::AGGREGATE_FUNCTION);
                     $curr->setNoQuotes(null, null, $this->options);
-
                 } elseif ($curr->getUpper() === 'NULL') {
                     // it is a reserved word, but we would like to set it as constant
                     $curr->setTokenType(ExpressionType::CONSTANT);
-
                 } else {
                     if ($isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isParameterizedFunction($curr->getUpper())) {
                         // issue 60: check functions with parameters
                         // -> colref (we check parameters later)
                         // -> if there is no parameter, we leave the colref
                         $curr->setTokenType(ExpressionType::COLREF);
-
                     } elseif ($isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isFunction($curr->getUpper())) {
                         $curr->setTokenType(ExpressionType::SIMPLE_FUNCTION);
                         $curr->setNoQuotes(null, null, $this->options);
-
-                    }  elseif (!$isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isFunction($curr->getUpper())) {
-	                    // Colname using function name.
-                    	$curr->setTokenType(ExpressionType::COLREF);
+                    } elseif (! $isEnclosedWithinParenthesis && PHPSQLParserConstants::getInstance()->isFunction($curr->getUpper())) {
+                        // Colname using function name.
+                        $curr->setTokenType(ExpressionType::COLREF);
                     } else {
                         $curr->setTokenType(ExpressionType::RESERVED);
                         $curr->setNoQuotes(null, null, $this->options);
@@ -424,10 +414,9 @@ class ExpressionListProcessor extends AbstractProcessor {
             }
 
             $resultList[] = $curr;
-            $prev = $curr;
+            $prev         = $curr;
         } // end of for-loop
 
         return $this->toArray($resultList);
     }
 }
-?>

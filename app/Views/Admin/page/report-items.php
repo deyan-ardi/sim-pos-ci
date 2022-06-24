@@ -53,7 +53,7 @@ Data Item Barang
                                                 <div class="form-group m-0">
                                                     <label class="m-0 mb-2" for="tanggal_awal"><small>Tanggal
                                                             Awal</small></label>
-                                                    <input type="date" id="tanggal_awal" class="form-control " name="tanggal_awal" value="<?= isset($_GET['tanggal_awal']) ? $_GET['tanggal_awal'] : ""; ?>">
+                                                    <input type="date" id="tanggal_awal" class="form-control " name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
 
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@ Data Item Barang
                                                 <div class="form-group m-0">
                                                     <label class="m-0 mb-2" for="tanggal_akhir"><small>Tanggal
                                                             Akhir</small></label>
-                                                    <input type="date" id="tanggal_akhir" class="form-control" name="tanggal_akhir" value="<?= isset($_GET['tanggal_akhir']) ? $_GET['tanggal_akhir'] : ""; ?>">
+                                                    <input type="date" id="tanggal_akhir" class="form-control" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">
 
                                                 </div>
                                             </div>
@@ -88,8 +88,8 @@ Data Item Barang
                                     <div class="card-body">
                                         <form action="" target="_blank" method="post">
                                             <?= csrf_field(); ?>
-                                            <input type="hidden" name="tanggal_awal" value="<?= isset($_GET['tanggal_awal']) ? $_GET['tanggal_awal'] : ""; ?>">
-                                            <input type="hidden" name="tanggal_akhir" value="<?= isset($_GET['tanggal_akhir']) ? $_GET['tanggal_akhir'] : ""; ?>">
+                                            <input type="hidden" name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
+                                            <input type="hidden" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">
                                             <button type="submit" class="btn btn-success mb-3" name="export_in" value="submit"><i class="fa fa-print"></i> Export PDF</button>
                                         </form>
                                         <div class="dt-responsive table-responsive">
@@ -111,6 +111,7 @@ Data Item Barang
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($items as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
@@ -162,8 +163,8 @@ Data Item Barang
                                         <div class="dt-responsive table-responsive">
                                             <form action="" target="_blank" method="post">
                                                 <?= csrf_field(); ?>
-                                                <input type="hidden" name="tanggal_awal" value="<?= isset($_GET['tanggal_awal']) ? $_GET['tanggal_awal'] : ""; ?>">
-                                                <input type="hidden" name="tanggal_akhir" value="<?= isset($_GET['tanggal_akhir']) ? $_GET['tanggal_akhir'] : ""; ?>">
+                                                <input type="hidden" name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
+                                                <input type="hidden" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">
                                                 <button type="submit" class="btn btn-success mb-3" name="export_out" value="submit"><i class="fa fa-print"></i> Export PDF</button>
                                             </form>
                                             <table id="simpletable2" class="table table-striped table-bordered nowrap">
@@ -183,6 +184,7 @@ Data Item Barang
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
+
                                                     foreach ($item_outs as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>

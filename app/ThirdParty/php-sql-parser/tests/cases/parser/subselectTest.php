@@ -31,37 +31,39 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class subselectTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testSubselect() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class subselectTest extends \PHPUnit\Framework\TestCase
+{
+    public function testSubselect()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = 'SELECT (select colA FRom TableA) as b From test t';
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'subselect1.serialized');
-        $this->assertEquals($expected, $p, 'sub-select with alias');
+        $sql      = 'SELECT (select colA FRom TableA) as b From test t';
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'subselect1.serialized');
+        $this->assertSame($expected, $p, 'sub-select with alias');
 
+        $sql      = 'SELECT a.uid, a.users_name FROM USERS AS a LEFT JOIN (SELECT uid AS id FROM USER_IN_GROUPS WHERE ugid = 1) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name';
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'subselect2.serialized');
+        $this->assertSame($expected, $p, 'sub-select as table replacement with alias');
 
-        $sql = 'SELECT a.uid, a.users_name FROM USERS AS a LEFT JOIN (SELECT uid AS id FROM USER_IN_GROUPS WHERE ugid = 1) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name';
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'subselect2.serialized');
-        $this->assertEquals($expected, $p, 'sub-select as table replacement with alias');
-
-		$sql = "SELECT (-- comment\nselect colA FRom TableA) as b From test t";
-		$p = $parser->parse($sql);
-		$expected = getExpectedValue(dirname(__FILE__), 'subselect3.serialized');
-		$this->assertEquals($expected, $p, 'sub-select starting with a comment');
+        $sql      = "SELECT (-- comment\nselect colA FRom TableA) as b From test t";
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'subselect3.serialized');
+        $this->assertSame($expected, $p, 'sub-select starting with a comment');
     }
 }
-

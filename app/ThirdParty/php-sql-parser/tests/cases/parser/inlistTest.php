@@ -31,27 +31,29 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
-namespace PHPSQLParser\Test\Parser;
-use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class inlistTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testInlist() {
+namespace PHPSQLParser\Test\Parser;
+
+use PHPSQLParser\PHPSQLParser;
+
+/**
+ * @internal
+ */
+final class inlistTest extends \PHPUnit\Framework\TestCase
+{
+    public function testInlist()
+    {
         $parser = new PHPSQLParser();
 
-        $sql = "SELECT q.qid, question, gid FROM questions as q WHERE (select count(*) from answers as a where a.qid=q.qid and scale_id=0)=0 and sid=11929 AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
-        $p = $parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'inlist1.serialized');
-        $this->assertEquals($expected, $p, 'in list within WHERE clause');
-
+        $sql      = "SELECT q.qid, question, gid FROM questions as q WHERE (select count(*) from answers as a where a.qid=q.qid and scale_id=0)=0 and sid=11929 AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
+        $p        = $parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'inlist1.serialized');
+        $this->assertSame($expected, $p, 'in list within WHERE clause');
     }
 }
-

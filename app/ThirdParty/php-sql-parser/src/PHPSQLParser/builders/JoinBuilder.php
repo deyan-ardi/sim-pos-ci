@@ -31,46 +31,41 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
- * @author    George Schneeloch <noisecapella@gmail.com>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\builders;
 
 /**
- * This class implements the builder for the JOIN statement parts (within FROM). 
+ * This class implements the builder for the JOIN statement parts (within FROM).
  * You can overwrite all functions to achieve another handling.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
- * @author  George Schneeloch <noisecapella@gmail.com>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class JoinBuilder {
-
-    public function build($parsed) {
+class JoinBuilder
+{
+    public function build($parsed)
+    {
         if ($parsed === 'CROSS') {
-            return ", ";
+            return ', ';
         }
         if ($parsed === 'JOIN') {
-            return " INNER JOIN ";
+            return ' INNER JOIN ';
         }
         if ($parsed === 'LEFT') {
-            return " LEFT JOIN ";
+            return ' LEFT JOIN ';
         }
         if ($parsed === 'RIGHT') {
-            return " RIGHT JOIN ";
+            return ' RIGHT JOIN ';
         }
         if ($parsed === 'STRAIGHT_JOIN') {
-            return " STRAIGHT_JOIN ";
+            return ' STRAIGHT_JOIN ';
         }
         // TODO: add more
         throw new UnsupportedFeatureException($parsed);
     }
 }
-?>

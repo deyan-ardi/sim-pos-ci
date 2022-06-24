@@ -31,30 +31,30 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue37Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue37() {
-
-
+/**
+ * @internal
+ */
+final class issue37Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue37()
+    {
         $parser = new PHPSQLParser();
 
         $sql = "INSERT INTO test (`name`, `test`) VALUES ('Hello this is what happens\n when new lines are involved', '')";
         $parser->parse($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue37.serialized');
-        $this->assertEquals($expected, $p, 'INSERT statement with newline character');
-
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue37.serialized');
+        $this->assertSame($expected, $p, 'INSERT statement with newline character');
     }
 }
-

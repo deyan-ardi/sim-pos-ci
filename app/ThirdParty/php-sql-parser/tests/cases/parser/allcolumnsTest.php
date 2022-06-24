@@ -31,61 +31,70 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
 
-class AllColumnsTest extends \PHPUnit\Framework\TestCase {
-	
-	protected $parser;
-	
-	/**
-	 * @before
-	 * Executed before each test
-	 */
-	protected function setup(): void {
-		$this->parser = new PHPSQLParser();
-	}
-	
-    public function testAllColumns1() {
-        $sql="SELECT * FROM FAILED_LOGIN_ATTEMPTS WHERE ip='192.168.50.5'";
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'allcolumns1.serialized');
-        $this->assertEquals($expected, $p, 'single all column alias');
-    }
-    
-    public function testAllColumns2() {
-        $sql="SELECT a * b FROM tests";
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'allcolumns2.serialized');
-        $this->assertEquals($expected, $p, 'multiply two columns');
+/**
+ * @internal
+ */
+final class allcolumnsTest extends \PHPUnit\Framework\TestCase
+{
+    protected $parser;
+
+    /**
+     * @before
+     * Executed before each test
+     */
+    protected function setup(): void
+    {
+        $this->parser = new PHPSQLParser();
     }
 
-    public function testAllColumns3() {
-        $sql="SELECT count(*) FROM tests";
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'allcolumns3.serialized');
-        $this->assertEquals($expected, $p, 'special function count(*)');
+    public function testAllColumns1()
+    {
+        $sql      = "SELECT * FROM FAILED_LOGIN_ATTEMPTS WHERE ip='192.168.50.5'";
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'allcolumns1.serialized');
+        $this->assertSame($expected, $p, 'single all column alias');
     }
 
-    public function testAllColumns4() {
-        $sql="SELECT a.* FROM FAILED_LOGIN_ATTEMPTS a";
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'allcolumns4.serialized');
-        $this->assertEquals($expected, $p, 'single all column alias with table alias');
+    public function testAllColumns2()
+    {
+        $sql      = 'SELECT a * b FROM tests';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'allcolumns2.serialized');
+        $this->assertSame($expected, $p, 'multiply two columns');
     }
 
-    public function testAllColumns5() {
-        $sql="SELECT a, * FROM tests";
-        $p = $this->parser->parse($sql);
-        $expected = getExpectedValue(dirname(__FILE__), 'allcolumns5.serialized');
-        $this->assertEquals($expected, $p, 'column reference and a single all column alias');
+    public function testAllColumns3()
+    {
+        $sql      = 'SELECT count(*) FROM tests';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'allcolumns3.serialized');
+        $this->assertSame($expected, $p, 'special function count(*)');
+    }
+
+    public function testAllColumns4()
+    {
+        $sql      = 'SELECT a.* FROM FAILED_LOGIN_ATTEMPTS a';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'allcolumns4.serialized');
+        $this->assertSame($expected, $p, 'single all column alias with table alias');
+    }
+
+    public function testAllColumns5()
+    {
+        $sql      = 'SELECT a, * FROM tests';
+        $p        = $this->parser->parse($sql);
+        $expected = getExpectedValue(__DIR__, 'allcolumns5.serialized');
+        $this->assertSame($expected, $p, 'column reference and a single all column alias');
     }
 }
-?>

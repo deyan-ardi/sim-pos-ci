@@ -31,34 +31,34 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue71Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue71() {
+/**
+ * @internal
+ */
+final class issue71Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue71()
+    {
+        $sql      = 'select * from table1 as event';
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue71a.serialized');
+        $this->assertSame($expected, $p, 'infinite loop on table alias "event"');
 
-
-        $sql = "select * from table1 as event";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue71a.serialized');
-        $this->assertEquals($expected, $p, 'infinite loop on table alias "event"');
-
-        $sql = "select acol from table as data";
-        $parser = new PHPSQLParser($sql);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue71b.serialized');
-        $this->assertEquals($expected, $p, 'infinite loop on table alias "data"');
-
+        $sql      = 'select acol from table as data';
+        $parser   = new PHPSQLParser($sql);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue71b.serialized');
+        $this->assertSame($expected, $p, 'infinite loop on table alias "data"');
     }
 }
-

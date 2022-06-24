@@ -32,34 +32,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2015 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
 
-use PHPSQLParser\PHPSQLParser;
-
-class GregoryTest extends \PHPSQLParser\Test\AbstractTestCase {
-	
+/**
+ * @internal
+ */
+final class gregoryTest extends \PHPSQLParser\Test\AbstractTestCase
+{
     /**
      * @doesNotPerformAssertions
      */
-	public function testGregory() {
-/*
-		$query = "
-		SELECT * FROM project_relation pr
-		JOIN Project_type2 t2 ON FIND_IN_SET(id , pr.projet_type2) AND FIND_IN_SET('FR' , t2.pays) 
-		";
-		$p = $this->parser->parse ( $query, true );
-        eval(\Psy\sh());
-		$this->log($p);
-		$expected = getExpectedValue ( dirname ( __FILE__ ), 'gregory.serialized' );
-		$this->assertEquals ( $expected, $p, 'position problems with multiple functions in joins' );
-*/
-	}
+    public function testGregory()
+    {
+        /*
+                $query = "
+                SELECT * FROM project_relation pr
+                JOIN Project_type2 t2 ON FIND_IN_SET(id , pr.projet_type2) AND FIND_IN_SET('FR' , t2.pays)
+                ";
+                $p = $this->parser->parse ( $query, true );
+                eval(\Psy\sh());
+                $this->log($p);
+                $expected = getExpectedValue ( dirname ( __FILE__ ), 'gregory.serialized' );
+                $this->assertEquals ( $expected, $p, 'position problems with multiple functions in joins' );
+        */
+    }
 }
-?>

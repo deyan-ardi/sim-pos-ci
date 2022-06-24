@@ -31,28 +31,28 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Parser;
+
 use PHPSQLParser\PHPSQLParser;
-use PHPSQLParser\PHPSQLCreator;
 
-class issue135Test extends \PHPUnit\Framework\TestCase {
-	
-    public function testIssue135() {
-
-
-        $sql = "SELECT x,y,z FROM tableA WHERE x<5 GROUP BY STD(y)";
-        $parser = new PHPSQLParser($sql, true);
-        $p = $parser->parsed;
-        $expected = getExpectedValue(dirname(__FILE__), 'issue135.serialized');
-        $this->assertEquals($expected, $p, 'STD must be an aggregate function');
-
+/**
+ * @internal
+ */
+final class issue135Test extends \PHPUnit\Framework\TestCase
+{
+    public function testIssue135()
+    {
+        $sql      = 'SELECT x,y,z FROM tableA WHERE x<5 GROUP BY STD(y)';
+        $parser   = new PHPSQLParser($sql, true);
+        $p        = $parser->parsed;
+        $expected = getExpectedValue(__DIR__, 'issue135.serialized');
+        $this->assertSame($expected, $p, 'STD must be an aggregate function');
     }
 }
-

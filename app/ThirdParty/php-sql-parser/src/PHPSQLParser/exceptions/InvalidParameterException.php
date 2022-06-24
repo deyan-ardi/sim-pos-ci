@@ -4,7 +4,7 @@
  *
  * This file implements the InvalidParameterException class which is used within the
  * PHPSQLParser package.
- * 
+ *
  * PHP version 5
  *
  * LICENSE:
@@ -32,37 +32,35 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
 
 namespace PHPSQLParser\exceptions;
+
 use InvalidArgumentException;
 
 /**
  * This exception will occur in the parser, if the given SQL statement
  * is not a String type.
  *
- * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
  */
-class InvalidParameterException extends InvalidArgumentException {
-
+class InvalidParameterException extends InvalidArgumentException
+{
     protected $argument;
 
-    public function __construct($argument) {
+    public function __construct($argument)
+    {
         $this->argument = $argument;
         parent::__construct("no SQL string to parse: \n" . $argument, 10);
     }
 
-    public function getArgument() {
+    public function getArgument()
+    {
         return $this->argument;
     }
 }
-
-?>

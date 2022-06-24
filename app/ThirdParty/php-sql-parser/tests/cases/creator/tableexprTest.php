@@ -31,28 +31,31 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author    André Rothe <andre.rothe@phosco.info>
+ *
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
+ *
  * @version   SVN: $Id$
- * 
  */
+
 namespace PHPSQLParser\Test\Creator;
-use PHPSQLParser\PHPSQLParser;
+
 use PHPSQLParser\PHPSQLCreator;
+use PHPSQLParser\PHPSQLParser;
 
-class tableexprTest extends \PHPUnit\Framework\TestCase {
-	
-    public function testTableexpr() {
-        $sql = "SELECT * FROM t1 LEFT JOIN (t2, t3, t4)
-                         ON (t2.a=t1.a AND t3.b=t1.b AND t4.c=t1.c)";
-        $parser = new PHPSQLParser($sql);
-        $creator = new PHPSQLCreator($parser->parsed);
-        $created = $creator->created;
-        $expected = getExpectedValue(dirname(__FILE__), 'tableexpr.sql', false);
+/**
+ * @internal
+ */
+final class tableexprTest extends \PHPUnit\Framework\TestCase
+{
+    public function testTableexpr()
+    {
+        $sql = 'SELECT * FROM t1 LEFT JOIN (t2, t3, t4)
+                         ON (t2.a=t1.a AND t3.b=t1.b AND t4.c=t1.c)';
+        $parser   = new PHPSQLParser($sql);
+        $creator  = new PHPSQLCreator($parser->parsed);
+        $created  = $creator->created;
+        $expected = getExpectedValue(__DIR__, 'tableexpr.sql', false);
         $this->assertSame($expected, $created, 'table-expression on second position');
-
     }
 }
-
