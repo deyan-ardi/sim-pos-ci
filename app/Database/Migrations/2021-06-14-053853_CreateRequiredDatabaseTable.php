@@ -156,6 +156,7 @@ class CreateRequiredDatabaseTable extends Migration
             'request_status'      => ['type' => 'int'],
             'user_id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'item_id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'alasan'              => ['type' => 'text'],
             'created_at'          => ['type' => 'datetime', 'null' => true],
             'updated_at'          => ['type' => 'datetime', 'null' => true],
             'deleted_at'          => ['type' => 'datetime', 'null' => true],

@@ -68,7 +68,7 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 
 ## Primary Tools
 - Datatables Server Side
-- Codeigniter 4 Standar PHP Fixing
+- Codeigniter 4 Standar PHP Fixing (use: `vendor/bin/php-cs-fixer fix --verbose`)
 
 ## Credit
 Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021

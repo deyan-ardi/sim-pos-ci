@@ -18,6 +18,7 @@ class RequestOrderModel extends Model
         'request_status',
         'user_id',
         'item_id',
+        'alasan'
     ];
 
     // Dates

@@ -61,6 +61,7 @@ Request Order Barang
                                                         <th>Total Permintaan</th>
                                                         <th>Permintaan Dari</th>
                                                         <th>Status Permintaan</th>
+                                                        <th>Alasan</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
                                                     </tr>
@@ -86,6 +87,7 @@ Request Order Barang
                                                             <?php else : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Permintaan Diterima</a></td>
                                                             <?php endif; ?>
+                                                            <td><?= $c->alasan == null ? 'Belum Disetel' : $c->alasan; ?></td>
                                                             <td>
                                                                 <div class="row justify-content-center">
                                                                     <!-- Set Status Button Modal -->
@@ -108,11 +110,17 @@ Request Order Barang
                                                                                         <div class="form-group">
                                                                                             <select class="form-control <?= $validation->getError('request_status') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="request_status" required>
                                                                                                 <option value="">Status Request Order</option>
-                                                                                                <option value="1" <?= $c->request_status === 1 ? 'selected' : ''; ?>>Request Diterima</option>
-                                                                                                <option value="2" <?= $c->request_status === 2 ? 'selected' : ''; ?>>Request Ditolak</option>
+                                                                                                <option value="1" <?= $c->request_status == 1 ? 'selected' : ''; ?>>Request Diterima</option>
+                                                                                                <option value="2" <?= $c->request_status == 2 ? 'selected' : ''; ?>>Request Ditolak</option>
                                                                                             </select>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError('request_status'); ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="form-control <?= $validation->getError('alasan') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Alasan" name="alasan" required><?= $c->alasan; ?></textarea>
+                                                                                            <div class="invalid-feedback">
+                                                                                                <?= $validation->getError('alasan'); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="modal-footer">
@@ -139,6 +147,7 @@ Request Order Barang
                                                         <th>Total Permintaan</th>
                                                         <th>Permintaan Dari</th>
                                                         <th>Status Permintaan</th>
+                                                        <th>Alasan</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>
                                                         </th>
                                                     </tr>
