@@ -47,6 +47,8 @@ $routes->group('categories', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'
 
 $routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'Item::index');
+    $routes->post('ubah/posisi', 'Item::modalPosisi');
+    $routes->post('ubah/item', 'Item::modalUpdate');
     $routes->get('getItemAll', 'Item::ajaxDatatables');
     $routes->post('/', 'Item::index');
     $routes->patch('/', 'Item::index');

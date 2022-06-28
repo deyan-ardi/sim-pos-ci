@@ -60,10 +60,36 @@ Tambahkan Order
                         <!-- [ breadcrumb ] end -->
                         <!-- [ Main Content ] start -->
                         <div class="row">
-                            <div class="col-sm-8">
+                            <div class="col-sm-12">
+                                <div class="card borderless-card">
+                                    <div class="profile-card">
+                                        <img class="img-fluid" src="<?= base_url(); ?>/upload/supplier/59858.jpg" alt="">
+                                        <div class="card-body">
+                                            <h3 class="text-white">Supplier <?= $supplier[0]->supplier_name; ?></h3>
+                                            <p><?= $supplier[0]->supplier_description; ?></p>
+                                            <a href="tel:0<?= $supplier[0]->supplier_contact; ?>"><button class="btn btn-info"><i class="feather icon-phone-call"></i> Hubungi Supplier</button></a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-inverse">
+                                        <div class="row text-center">
+                                            <div class="col">
+                                                <h4><?= $count_order; ?></h4>
+                                                <span>Kali Order</span>
+                                            </div>
+                                            <div class="col">
+                                                <h4><?= $item_count ?></h4>
+                                                <span>Item Barang</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>List Order Barang - Kode Pesanan <span class="text-primary"><?= $supplier[0]->order_code; ?></span></h5>
+                                        <h5>List Order Barang - Kode PO <span class="text-primary"><?= $supplier[0]->order_code; ?></span></h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
@@ -77,9 +103,12 @@ Tambahkan Order
                                                             <th>#</th>
                                                             <th>Kode Barang</th>
                                                             <th>Nama Barang</th>
+                                                            <th>Harga Beli</th>
+                                                            <th>Harga Harga Jual</th>
+                                                            <th>Harga Jual Akhir</th>
                                                             <th>Jumlah Order</th>
                                                             <th>Diubah Terakhir</th>
-                                                            <th>Diubah Oleh</th>
+                                                            <th>Pegawai</th>
                                                             <?php if ($supplier[0]->order_status === 1) : ?>
                                                                 <th class="text-center"><i class="feather icon-settings"></i>
                                                                 </th>
@@ -96,7 +125,10 @@ Tambahkan Order
                                                                 <td><?= $i++; ?></td>
                                                                 <td><?= $c->item_code; ?></td>
                                                                 <td><?= $c->item_name; ?></td>
-                                                                <td><?= $c->detail_quantity; ?> Buah</td>
+                                                                <td>Rp.<?= format_rupiah($c->item_hpp); ?></td>
+                                                                <td>Rp.<?= format_rupiah($c->item_before_sale); ?></td>
+                                                                <td>Rp.<?= format_rupiah($c->item_sale); ?></td>
+                                                                <td><?= $c->detail_quantity; ?> Item</td>
                                                                 <td>
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
@@ -129,11 +161,11 @@ Tambahkan Order
                                                                                                         <?php foreach ($item as $s) : ?>
                                                                                                             <?php if ($s->id === $c->item_id) : ?>
                                                                                                                 <option value="<?= $s->id; ?>" selected>
-                                                                                                                   <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
+                                                                                                                    <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                                                                                                 </option>
                                                                                                             <?php else : ?>
                                                                                                                 <option value="<?= $s->id; ?>">
-                                                                                                                   <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
+                                                                                                                    <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                                                                                                 </option>
                                                                                                             <?php endif; ?>
                                                                                                         <?php endforeach; ?>
@@ -186,11 +218,11 @@ Tambahkan Order
                                                         <tr>
                                                             <th colspan="4" rowspan="2"></th>
                                                             <th>Total Barang</th>
-                                                            <th colspan="2"><?= $i - 1; ?> Jenis</th>
+                                                            <th colspan="4"><?= $i - 1; ?> Jenis Barang</th>
                                                         </tr>
                                                         <tr>
                                                             <th>Total Item Dipesan</th>
-                                                            <th colspan="2"><?= $total_order; ?> Buah Barang</th>
+                                                            <th colspan="4"><?= $total_order; ?> Item Barang</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -199,30 +231,7 @@ Tambahkan Order
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="card borderless-card">
-                                    <div class="profile-card">
-                                        <img class="img-fluid" src="<?= base_url(); ?>/upload/supplier/59858.jpg" alt="">
-                                        <div class="card-body">
-                                            <h3 class="text-white"><?= $supplier[0]->supplier_name; ?></h3>
-                                            <p><?= $supplier[0]->supplier_description; ?></p>
-                                            <a href="tel:0<?= $supplier[0]->supplier_contact; ?>"><button class="btn btn-info"><i class="feather icon-phone-call"></i> Hubungi</button></a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-inverse">
-                                        <div class="row text-center">
-                                            <div class="col">
-                                                <h4><?= $count_order; ?></h4>
-                                                <span>Kali Order</span>
-                                            </div>
-                                            <div class="col">
-                                                <h4><?= $item_count ?></h4>
-                                                <span>Barang</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                         <!-- [ Main Content ] end -->
                     </div>

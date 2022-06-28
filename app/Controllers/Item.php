@@ -22,11 +22,32 @@ class Item extends BaseController
         $this->m_sale     = new SaleModel();
     }
 
+    public function modalPosisi()
+    {
+        $data = [
+            'items' => $this->m_item->where('id', $this->request->getPost('id'))->first(),
+            'validation' => $this->validate,
+        ];
+        return view('Admin/page/_items_modal_posisi', $data);
+    }
+
+    public function modalUpdate()
+    {
+        $data = [
+            'items' => $this->m_item->getAllItem($this->request->getPost('id'), null),
+            'validation' => $this->validate,
+            'category'   => $this->m_category->findAll(),
+            'supplier'   => $this->m_supplier->findAll(),
+        ];
+        // dd($data, $data['items'][0]->category_id);
+        return view('Admin/page/_items_modal_update', $data);
+    }
+
     public function ajaxDatatables()
     {
         $db   = db_connect();
         $item = $db->table('items')
-            ->select('items.id, items.item_image, items.item_code, items.item_name, items.item_merk, items.item_type, items.item_weight, items.item_length, items.item_width, items.item_hpp, items.item_before_sale, items.item_discount, items.item_sale, items.item_profit, items.item_description, items.item_warehouse_a, items.item_warehouse_b, items.item_warehouse_c, items.item_warehouse_d, items.item_stock, items.updated_at, suppliers.supplier_name, item_categories.category_name')
+            ->select('items.id, items.item_image, items.item_code, items.item_name, items.item_merk, items.item_type, items.item_weight, items.item_length, items.item_width, items.item_height, items.item_hpp, items.item_before_sale, items.item_discount, items.item_sale, items.item_profit, items.item_description, items.item_warehouse_a, items.item_warehouse_b, items.item_warehouse_c, items.item_warehouse_d, items.item_stock, items.updated_at, suppliers.supplier_name, item_categories.category_name')
             ->join('item_categories', 'item_categories.id = items.category_id')
             ->join('suppliers', 'suppliers.id = items.supplier_id');
 
@@ -41,12 +62,11 @@ class Item extends BaseController
     public function index()
     {
         $data = [
-            'items'      => $this->m_item->getAllItem(),
             'category'   => $this->m_category->findAll(),
             'supplier'   => $this->m_supplier->findAll(),
             'validation' => $this->validate,
         ];
-        if (! empty($this->request->getPost('input_items'))) {
+        if (!empty($this->request->getPost('input_items'))) {
             if ($this->request->getFile('item_image')->getError() === 0) {
                 $formSubmit = $this->validate([
                     'item_image'       => 'uploaded[item_image]|max_size[item_image,1048]|mime_in[item_image,image/png,image/jpg,image/jpeg]|ext_in[item_image,jpg,jpeg,png]',
@@ -91,7 +111,7 @@ class Item extends BaseController
                     'supplier'         => 'required|integer',
                 ]);
             }
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/items')->withInput();
             }
             if ($this->request->getFile('item_image')->getError() === 0) {
@@ -243,7 +263,7 @@ class Item extends BaseController
             session()->setFlashdata('gagal', 'Data Produk Gagal Ditambahkan');
 
             return redirect()->to('/items')->withCookies();
-        } elseif (! empty($this->request->getPost('update_items'))) {
+        } elseif (!empty($this->request->getPost('update_items'))) {
             if ($this->request->getFile('item_image_up')->getError() === 0) {
                 $formSubmit = $this->validate([
                     'item_image_up'       => 'uploaded[item_image_up]|max_size[item_image_up,1048]|mime_in[item_image_up,image/png,image/jpg,image/jpeg]|ext_in[item_image_up,jpg,jpeg,png]',
@@ -288,7 +308,7 @@ class Item extends BaseController
                     'supplier_up'         => 'required|integer',
                 ]);
             }
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/items')->withInput();
             }
             $find = $this->m_item->find($this->request->getPost('id_item'));
@@ -317,7 +337,7 @@ class Item extends BaseController
                 if ($move) {
                     if (unlink('upload/produk/' . $find->item_image)) {
                         $total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-                        if (! in_groups('GUDANG')) {
+                        if (!in_groups('GUDANG')) {
                             $save = $this->m_item->save([
                                 'id'               => $this->request->getPost('id_item'),
                                 'item_image'       => $namaProduk,
@@ -383,7 +403,7 @@ class Item extends BaseController
                 return redirect()->to('/items')->withCookies();
             }
             $total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-            if (! in_groups('GUDANG')) {
+            if (!in_groups('GUDANG')) {
                 $save = $this->m_item->save([
                     'id'               => $this->request->getPost('id_item'),
                     'item_code'        => $this->request->getPost('item_code_up'),
@@ -437,19 +457,19 @@ class Item extends BaseController
             session()->setFlashdata('gagal', 'Data Produk Gagal Diubah');
 
             return redirect()->to('/items')->withCookies();
-        } elseif (! empty($this->request->getPost('update_posisi_item'))) {
+        } elseif (!empty($this->request->getPost('update_posisi_item'))) {
             $formSubmit = $this->validate([
                 'item_stock_a_up' => 'required|integer',
                 'item_stock_b_up' => 'required|integer',
                 'item_stock_c_up' => 'required|integer',
                 'item_stock_d_up' => 'required|integer',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/items')->withInput();
             }
             $find  = $this->m_item->find($this->request->getPost('id_item'));
             $total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-            if ($total === $find->item_stock) {
+            if ($total == $find->item_stock) {
                 $save = $this->m_item->save([
                     'id'               => $this->request->getPost('id_item'),
                     'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),
@@ -470,10 +490,10 @@ class Item extends BaseController
             session()->setFlashdata('gagal', 'Jumlah Stok Digudang A,B,C,D Harus Sama Dengan Master Stok');
 
             return redirect()->to('/items')->withCookies();
-        } elseif (! empty($this->request->getPost('delete_items'))) {
+        } elseif (!empty($this->request->getPost('delete_items'))) {
             $find = $this->m_item->find($this->request->getPost('id_item'));
-            if (! empty($find)) {
-                if (! empty($find->item_image)) {
+            if (!empty($find)) {
+                if (!empty($find->item_image)) {
                     unlink('upload/produk/' . $find->item_image);
                 }
 
@@ -489,9 +509,10 @@ class Item extends BaseController
             session()->setFlashdata('gagal', 'Data Yang Dicari Tidak Ditemukan');
 
             return redirect()->to('/items')->withCookies();
-        }
+        } else {
 
-        return view('Admin/page/items', $data);
+            return view('Admin/page/items', $data);
+        }
     }
 
     public function report()
@@ -499,14 +520,14 @@ class Item extends BaseController
         $item_in  = $this->m_order->getAllOrderWhere();
         $item_out = $this->m_sale->getAllOrderWhere();
 
-        if (! empty($this->request->getGet('filter'))) {
+        if (!empty($this->request->getGet('filter'))) {
             $item_in_filter  = $this->m_order->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
             $item_out_filter = $this->m_sale->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
             $data            = [
                 'items'     => $item_in_filter,
                 'item_outs' => $item_out_filter,
             ];
-            if (! empty($this->request->getPost('export_out'))) {
+            if (!empty($this->request->getPost('export_out'))) {
                 if ($this->request->getGet('tanggal_awal') !== null && $this->request->getGet('tanggal_akhir') !== null) {
                     $item_out_filter = $this->m_sale->getAllOrderWhereFilter($this->request->getGet('tanggal_awal'), $this->request->getGet('tanggal_akhir'));
                     $data_in         = [
@@ -539,7 +560,7 @@ class Item extends BaseController
             } else {
                 return view('Admin/page/report-items', $data);
             }
-        } elseif (! empty($this->request->getPost('export_out'))) {
+        } elseif (!empty($this->request->getPost('export_out'))) {
             $data_in = [
                 'ket'    => 'BARANG KELUAR',
                 'barang' => $item_out,
@@ -552,7 +573,7 @@ class Item extends BaseController
             $mpdf->showImageErrors = true;
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output('Data Barang Masuk.pdf', 'I');
-        } elseif (! empty($this->request->getPost('export_in'))) {
+        } elseif (!empty($this->request->getPost('export_in'))) {
             $data_in = [
                 'ket'    => 'BARANG MASUK',
                 'barang' => $item_in,

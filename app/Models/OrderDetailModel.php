@@ -37,7 +37,7 @@ class OrderDetailModel extends Model
     public function getAllOrder($supplier_id = null)
     {
         if ($supplier_id !== null) {
-            $this->select('order_details.*,items.item_name,items.item_code,users.username');
+            $this->select('order_details.*,items.item_name,items.item_code,items.item_hpp,items.item_before_sale,items.item_sale,users.username');
             $this->join('items', 'items.id = order_details.item_id');
             $this->join('users', 'users.id = order_details.user_id');
             $this->where('order_id', $supplier_id);

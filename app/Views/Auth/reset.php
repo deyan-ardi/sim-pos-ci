@@ -7,7 +7,7 @@ Halaman Setel Ulang Kata Sandi
 <div class="auth-wrapper">
     <!-- [ reset-password ] start -->
     <div class="auth-content row justify-content-center container">
-        <div class="card col-md-6">
+        <div class="card col-md-5">
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="card-body">

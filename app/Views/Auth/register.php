@@ -9,7 +9,7 @@ Halaman Registrasi Akun
 <!-- [ auth-signup ] start -->
 <div class="auth-wrapper">
     <div class="auth-content row justify-content-center container">
-        <div class="card col-md-6">
+        <div class="card col-md-5">
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="card-body">
