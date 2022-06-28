@@ -87,7 +87,7 @@ Order Barang Supplier
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Kode Order</th>
+                                                        <th>Kode PO</th>
                                                         <th>Nama Supplier</th>
                                                         <th>Kontak Supplier</th>
                                                         <th>Email Supplier</th>
@@ -109,7 +109,7 @@ Order Barang Supplier
                                                     foreach ($order as $c) : ?>
                                                         <tr>
                                                             <td><?= $i++; ?></td>
-                                                            <td><?= $c->order_code; ?></td>
+                                                            <td>PO No.<?= $c->order_code; ?></td>
                                                             <td><?= $c->supplier_name; ?></td>
                                                             <td>0<?= $c->supplier_contact; ?></td>
                                                             <td><?= $c->supplier_email; ?></td>
@@ -222,7 +222,7 @@ Order Barang Supplier
                                                 <tfoot>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Kode Order</th>
+                                                        <th>Kode PO</th>
                                                         <th>Nama Supplier</th>
                                                         <th>Kontak Supplier</th>
                                                         <th>Email Supplier</th>
