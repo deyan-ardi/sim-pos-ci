@@ -121,7 +121,7 @@
             <?= $validation->getError('item_stock_d_up'); ?>
         </div>
     </div>
-    <?php if (!in_groups('GUDANG')) : ?>
+    <?php if (! in_groups('GUDANG')) : ?>
         <div class="form-group input-group search-form">
             <div class="input-group-append">
                 <span class="input-group-text bg-transparent">Rp</span>

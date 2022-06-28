@@ -230,7 +230,7 @@ Data Item Barang
                         return o + ' Buah';
                     }
                 },
-                <?php if (!in_groups('GUDANG')) : ?> {
+                <?php if (! in_groups('GUDANG')) : ?> {
                         data: 'item_hpp',
                         name: 'item_hpp',
                         render: function(o) {
@@ -436,7 +436,7 @@ Data Item Barang
                                                         <th>Stok Gudang C</th>
                                                         <th>Stok Gudang D</th>
                                                         <th>Stok Total</th>
-                                                        <?php if (!in_groups('GUDANG')) : ?>
+                                                        <?php if (! in_groups('GUDANG')) : ?>
                                                             <th>Harga Beli</th>
                                                             <th>Harga Jual</th>
                                                             <th>Diskon</th>
@@ -471,7 +471,7 @@ Data Item Barang
                                                         <th>Stok Gudang C</th>
                                                         <th>Stok Gudang D</th>
                                                         <th>Stok Total</th>
-                                                        <?php if (!in_groups('GUDANG')) : ?>
+                                                        <?php if (! in_groups('GUDANG')) : ?>
                                                             <th>Harga Beli</th>
                                                             <th>Harga Jual</th>
                                                             <th>Diskon</th>
@@ -673,7 +673,7 @@ Data Item Barang
                             <?= $validation->getError('item_stock_d'); ?>
                         </div>
                     </div>
-                    <?php if (!in_groups('GUDANG')) : ?>
+                    <?php if (! in_groups('GUDANG')) : ?>
                         <div class="form-group input-group search-form">
                             <div class="input-group-append">
                                 <span class="input-group-text bg-transparent">Rp</span>

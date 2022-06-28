@@ -59,6 +59,7 @@ class ItemModel extends Model
             $this->join('suppliers', 'suppliers.id = items.supplier_id');
             $this->where('items.id', $id);
         }
+
         return $this->get()->getResult();
     }
 
