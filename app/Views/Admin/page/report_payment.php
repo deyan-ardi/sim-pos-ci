@@ -51,13 +51,13 @@ Laporan Keuangan PT Dapur Inspirasi Nusantara
 
 <?= $this->section('main'); ?>
 <?php
-if ($sortir == 1) {
+if ($sortir === 1) {
     $ket = 'Keseluruhan';
-} elseif ($sortir == 2) {
+} elseif ($sortir === 2) {
     $ket = 'Tahun ' . date('Y');
-} elseif ($sortir == 3) {
+} elseif ($sortir === 3) {
     $ket = 'Bulan ' . date('F Y');
-} elseif ($sortir == 4) {
+} elseif ($sortir === 4) {
     $ket = 'Hari Ini,Tanggal ' . date('d F Y');
 } else {
     $ket = 'Tanggal ' . date('d F Y', strtotime($tgl_dari)) . ' - ' . date('d F Y', strtotime($tgl_sampai));
@@ -95,7 +95,7 @@ if ($sortir == 1) {
                             $n = 0;
 
                             foreach ($transaksi as $all) {
-                                if ($all->sale_status == 1) {
+                                if ($all->sale_status === 1) {
                                     $v++;
                                 } else {
                                     $n++;
@@ -107,7 +107,7 @@ if ($sortir == 1) {
                             $s = 0;
 
                             foreach ($order as $all) {
-                                if ($all->order_status == 8) {
+                                if ($all->order_status === 8) {
                                     $s++;
                                 }
                                 $j++;
@@ -215,7 +215,7 @@ if ($sortir == 1) {
                                                             <td>Rp. <?= format_rupiah($t->sale_profit); ?></td>
                                                             <td><?= $t->username; ?></td>
                                                             <td>Transaksi <?= $t->sale_ket; ?></td>
-                                                            <?php if ($t->sale_status == 0) : ?>
+                                                            <?php if ($t->sale_status === 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
                                                             <?php else : ?>
                                                                 <?php
@@ -288,11 +288,11 @@ if ($sortir == 1) {
                     <?= csrf_field(); ?>
                     <div class="form-group">
                         <select name="order" required onchange="check_value(this.value)" id="order" class="form-control <?= $validation->getError('order') ? 'is-invalid' : ''; ?>">
-                            <option value="1" <?= $sortir == 1 ? 'selected' : '' ?>>Berdasarkan Keseluruhan</option>
-                            <option value="2" <?= $sortir == 2 ? 'selected' : '' ?>>Berdasarkan Tahun Ini</option>
-                            <option value="3" <?= $sortir == 3 ? 'selected' : '' ?>>Berdasarkan Bulan Ini</option>
-                            <option value="4" <?= $sortir == 4 ? 'selected' : '' ?>>Berdasarkan Hari Ini</option>
-                            <option value="5" <?= $sortir == 5 ? 'selected' : '' ?>>Kustom Sortir</option>
+                            <option value="1" <?= $sortir === 1 ? 'selected' : '' ?>>Berdasarkan Keseluruhan</option>
+                            <option value="2" <?= $sortir === 2 ? 'selected' : '' ?>>Berdasarkan Tahun Ini</option>
+                            <option value="3" <?= $sortir === 3 ? 'selected' : '' ?>>Berdasarkan Bulan Ini</option>
+                            <option value="4" <?= $sortir === 4 ? 'selected' : '' ?>>Berdasarkan Hari Ini</option>
+                            <option value="5" <?= $sortir === 5 ? 'selected' : '' ?>>Kustom Sortir</option>
                         </select>
                         <div class="invalid-feedback">
                             <?= $validation->getError('order'); ?>

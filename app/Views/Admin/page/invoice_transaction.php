@@ -156,7 +156,7 @@
                         <div>Kode Member : <?= $member->member_code; ?></div>
                         <div><?= date('d F Y H:i:s', strtotime($sale[0]->updated_at)); ?> WITA</div>
                         <div><?= $member->member_name; ?></div>
-                        <?php if ($sale[0]->sale_ket == 'project') : ?>
+                        <?php if ($sale[0]->sale_ket === 'project') : ?>
                             <div><?= $member->member_company; ?></div>
                             <div><?= $member->member_job; ?></div>
                             <div>0<?= $member->member_contact; ?></div>

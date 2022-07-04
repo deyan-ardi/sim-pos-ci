@@ -118,7 +118,7 @@ Pengaturan Transaksi
                                                     foreach ($invoice as $i => $c) : ?>
                                                         <tr>
                                                             <td><?= $i + 1; ?></td>
-                                                            <?php if ($c->key == 'kiri' || $c->key == 'tengah' || $c->key == 'kanan' || $c->key == 'bawah') : ?>
+                                                            <?php if ($c->key === 'kiri' || $c->key === 'tengah' || $c->key === 'kanan' || $c->key === 'bawah') : ?>
                                                                 <td>Konfigurasi TTD Bagian <?= ucwords($c->key); ?></td>
                                                             <?php else : ?>
                                                                 <td><?= ucwords($c->key); ?></td>
@@ -212,7 +212,7 @@ Pengaturan Transaksi
                         <input type="hidden" name="_method" value="PATCH">
                         <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                         <div class="form-group">
-                            <?php if ($c->key == 'kiri' || $c->key == 'tengah' || $c->key == 'kanan' || $c->key == 'bawah') : ?>
+                            <?php if ($c->key === 'kiri' || $c->key === 'tengah' || $c->key === 'kanan' || $c->key === 'bawah') : ?>
                                 <input type="text" class="form-control" disabled value="Konfigurasi TTD Bagian <?= ucwords($c->key); ?>">
                             <?php else : ?>
                                 <input type="text" class="form-control" disabled value="<?= ucwords($c->key); ?>">
@@ -226,7 +226,7 @@ Pengaturan Transaksi
                             </div>
                             <small>Kosongkan untuk mendisable pengaturan</small>
                         </div>
-                        <?php if ($c->key == 'kiri' || $c->key == 'tengah' || $c->key == 'kanan' || $c->key == 'bawah') : ?>
+                        <?php if ($c->key === 'kiri' || $c->key === 'tengah' || $c->key === 'kanan' || $c->key === 'bawah') : ?>
                             <div class="form-group">
                                 <input type="text" class="form-control <?= $validation->getError('posisi') ? 'is-invalid' : ''; ?>" name="posisi" placeholder="Nilai Posisi" value="<?= (old('posisi')) ?: $c->position; ?>">
 

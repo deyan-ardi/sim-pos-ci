@@ -116,7 +116,7 @@ Data Pelanggan Project
                                                                     <!-- Update Button Modal -->
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id ?>"><i class="feather icon-edit" title="Ubah Member" data-toggle="tooltip"></i></button>
 
-                                                                    <?php if ($c->member_status == 0) : ?>
+                                                                    <?php if ($c->member_status === 0) : ?>
                                                                         <!-- Delete -->
                                                                         <form action="" id="<?= $c->id ?>" method="POST">
                                                                             <?= csrf_field(); ?>

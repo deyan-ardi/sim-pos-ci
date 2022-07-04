@@ -23,22 +23,22 @@ class Report extends BaseController
     public function index()
     {
         if (! empty($this->request->getPost('submit_sortir'))) {
-            if ($this->request->getPost('order') == 1) {
+            if ($this->request->getPost('order') === 1) {
                 $sortir = 1;
                 $find   = $this->m_sale->getAllSale();
                 $dari   = null;
                 $sampai = null;
-            } elseif ($this->request->getPost('order') == 2) {
+            } elseif ($this->request->getPost('order') === 2) {
                 $sortir = 2;
                 $find   = $this->m_sale->getAllSale(null, date('Y'), null, 'Y');
                 $dari   = null;
                 $sampai = null;
-            } elseif ($this->request->getPost('order') == 3) {
+            } elseif ($this->request->getPost('order') === 3) {
                 $sortir = 3;
                 $find   = $this->m_sale->getAllSale(null, date('Y-m'), null, 'M');
                 $dari   = null;
                 $sampai = null;
-            } elseif ($this->request->getPost('order') == 4) {
+            } elseif ($this->request->getPost('order') === 4) {
                 $sortir = 4;
                 $find   = $this->m_sale->getAllSale(null, date('Y-m-d'), null, 'D');
                 $dari   = null;
@@ -118,16 +118,16 @@ class Report extends BaseController
             $mpdf->Output('Invoice Transaction.pdf', 'I');
             $mpdf->Output();
         } elseif (! empty($this->request->getPost('submit_laporan'))) {
-            if ($this->request->getPost('id_sortir') == 1) {
+            if ($this->request->getPost('id_sortir') === 1) {
                 $sortir = 1;
                 $find   = $this->m_sale->getAllSale();
-            } elseif ($this->request->getPost('id_sortir') == 2) {
+            } elseif ($this->request->getPost('id_sortir') === 2) {
                 $sortir = 2;
                 $find   = $this->m_sale->getAllSale(null, date('Y'), null, 'Y');
-            } elseif ($this->request->getPost('id_sortir') == 3) {
+            } elseif ($this->request->getPost('id_sortir') === 3) {
                 $sortir = 3;
                 $find   = $this->m_sale->getAllSale(null, date('Y-m'), null, 'M');
-            } elseif ($this->request->getPost('id_sortir') == 4) {
+            } elseif ($this->request->getPost('id_sortir') === 4) {
                 $sortir = 4;
                 $find   = $this->m_sale->getAllSale(null, date('Y-m-d'), null, 'D');
             } else {

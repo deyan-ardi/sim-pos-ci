@@ -175,35 +175,35 @@
                         <div><?= $supplier->supplier_name; ?></div>
                         <div>0<?= $supplier->supplier_contact; ?></div>
                     </div>
-                    <?php if ($order->order_status == 1) : ?>
+                    <?php if ($order->order_status === 1) : ?>
                         <div class="card-warning" style="color:white;">
                             <h4>REQUEST DITERIMA</h4>
                         </div>
-                    <?php elseif ($order->order_status == 2) : ?>
+                    <?php elseif ($order->order_status === 2) : ?>
                         <div class="card-info" style="color:white;">
                             <h4>PERSETUJUAN</h4>
                         </div>
-                    <?php elseif ($order->order_status == 3) : ?>
+                    <?php elseif ($order->order_status === 3) : ?>
                         <div class="card-info" style="color:white;">
                             <h4>ORDER KELUAR</h4>
                         </div>
-                    <?php elseif ($order->order_status == 4) : ?>
+                    <?php elseif ($order->order_status === 4) : ?>
                         <div class="card-info" style="color:white;">
                             <h4>INVOICE MASUK</h4>
                         </div>
-                    <?php elseif ($order->order_status == 5) : ?>
+                    <?php elseif ($order->order_status === 5) : ?>
                         <div class="card-info" style="color:white;">
                             <h4>PRODUKSI</h4>
                         </div>
-                    <?php elseif ($order->order_status == 6) : ?>
+                    <?php elseif ($order->order_status === 6) : ?>
                         <div class="card-info" style="color:white;">
                             <h4>DIKIRIM SUPPLIER</h4>
                         </div>
-                    <?php elseif ($order->order_status == 7) : ?>
+                    <?php elseif ($order->order_status === 7) : ?>
                         <div class="card-info" style="color:white;">
                             <h4>DITERIMA GUDANG</h4>
                         </div>
-                    <?php elseif ($order->order_status == 8) : ?>
+                    <?php elseif ($order->order_status === 8) : ?>
                         <div class="card-success" style="color:white;">
                             <h4>SELESAI</h4>
                         </div>

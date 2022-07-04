@@ -159,7 +159,7 @@
     <div class="form-group">
         <select name="category_up" id="item_id-<?= $items[0]->id ?>" required class="form-control <?= $validation->getError('category_up') ? 'is-invalid' : ''; ?>">
             <?php foreach ($category as $ca) : ?>
-                <?php if ($ca->id == $items[0]->category_id) : ?>
+                <?php if ($ca->id === $items[0]->category_id) : ?>
                     <option value="<?= $ca->id; ?>" selected>
                         <?= $ca->category_name; ?>
                     </option>
@@ -179,7 +179,7 @@
     <div class="form-group">
         <select name="supplier_up" id="supp_id-<?= $items[0]->id ?>" required class="form-control <?= $validation->getError('supplier_up') ? 'is-invalid' : ''; ?>">
             <?php foreach ($supplier as $ca) : ?>
-                <?php if ($ca->id == $items[0]->supplier_id) : ?>
+                <?php if ($ca->id === $items[0]->supplier_id) : ?>
                     <option value="<?= $ca->id; ?>" selected>
                         <?= $ca->supplier_name; ?>
                     </option>

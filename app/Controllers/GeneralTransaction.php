@@ -82,7 +82,8 @@ class GeneralTransaction extends BaseController
             session()->setFlashdata('gagal', 'Gagal Membuat Transaksi Baru');
 
             return redirect()->to('/transaction-general')->withCookies();
-        } elseif (! empty($this->request->getPost('submit_transaksi'))) {
+        }
+        if (! empty($this->request->getPost('submit_transaksi'))) {
             $formSubmit = $this->validate([
                 'item_barang'   => 'required',
                 'item_quantity' => 'required|integer',
@@ -164,14 +165,15 @@ class GeneralTransaction extends BaseController
             session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
 
             return redirect()->to('/transaction-general')->withCookies();
-        } elseif (! empty($this->request->getPost('batalkan_transaksi'))) {
+        }
+        if (! empty($this->request->getPost('batalkan_transaksi'))) {
             if (get_cookie('transaction-general')) {
                 $find_sale_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction-general'));
                 $find_item        = $this->m_item->findAll();
                 if (! empty($find_sale_detail)) {
                     foreach ($find_sale_detail as $d) {
                         foreach ($find_item as $i) {
-                            if ($d->item_id == $i->id) {
+                            if ($d->item_id === $i->id) {
                                 $this->m_item->save([
                                     'id'         => $i->id,
                                     'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -200,7 +202,8 @@ class GeneralTransaction extends BaseController
             session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
 
             return redirect()->to('/transaction-general')->withCookies();
-        } elseif (! empty($this->request->getPost('delete_item'))) {
+        }
+        if (! empty($this->request->getPost('delete_item'))) {
             if (get_cookie('transaction-general')) {
 
                 // Ambil detail penjualan
@@ -263,7 +266,8 @@ class GeneralTransaction extends BaseController
             session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
 
             return redirect()->to('/transaction-general')->withCookies();
-        } elseif (! empty($this->request->getPost('invoice'))) {
+        }
+        if (! empty($this->request->getPost('invoice'))) {
             if (get_cookie('transaction-general')) {
                 $save_update_status = $this->m_sale->save([
                     'id'          => get_cookie('transaction-general'),
@@ -467,7 +471,7 @@ class GeneralTransaction extends BaseController
             if (! empty($find_sale_detail)) {
                 foreach ($find_sale_detail as $d) {
                     foreach ($find_item as $i) {
-                        if ($d->item_id == $i->id) {
+                        if ($d->item_id === $i->id) {
                             $this->m_item->save([
                                 'id'         => $i->id,
                                 'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -592,13 +596,14 @@ class GeneralTransaction extends BaseController
                     session()->setFlashdata('gagal', 'Gagal Menambahkan Detail Transaksi');
 
                     return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
-                } elseif (! empty($this->request->getPost('batalkan_transaksi'))) {
+                }
+                if (! empty($this->request->getPost('batalkan_transaksi'))) {
                     $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
                     $find_item        = $this->m_item->findAll();
                     if (! empty($find_sale_detail)) {
                         foreach ($find_sale_detail as $d) {
                             foreach ($find_item as $i) {
-                                if ($d->item_id == $i->id) {
+                                if ($d->item_id === $i->id) {
                                     $this->m_item->save([
                                         'id'         => $i->id,
                                         'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -623,7 +628,8 @@ class GeneralTransaction extends BaseController
                     session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Barang');
 
                     return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
-                } elseif (! empty($this->request->getPost('delete_item'))) {
+                }
+                if (! empty($this->request->getPost('delete_item'))) {
 
                     // Ambil detail penjualan
                     $detail_sale = $this->m_sale_detail->find($this->request->getPost('id_item'));
@@ -681,7 +687,8 @@ class GeneralTransaction extends BaseController
                     session()->setFlashdata('gagal', 'Gagal Memperbaharui Stok Barang');
 
                     return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
-                } elseif (! empty($this->request->getPost('invoice'))) {
+                }
+                if (! empty($this->request->getPost('invoice'))) {
                     $save_update_status = $this->m_sale->save([
                         'id'          => $find_sale_code[0]->id,
                         'sale_status' => 1,

@@ -146,7 +146,7 @@ Transaksi Barang - Menu Kasir
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if ($find_sale[0]->sale_status == 1) : ?>
+                        <?php if ($find_sale[0]->sale_status === 1) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
