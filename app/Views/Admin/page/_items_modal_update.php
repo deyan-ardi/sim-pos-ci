@@ -79,7 +79,7 @@
         </div>
         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_a_up') ? 'is-invalid' : ''; ?>" name="item_stock_a_up" placeholder="Jumlah Stok Gudang A" required value="<?= (old('item_stock_a_up')) ?: $items[0]->item_warehouse_a; ?>">
         <div class="input-group-append">
-            <span class="input-group-text bg-transparent">Buah</span>
+            <span class="input-group-text bg-transparent">Unit</span>
         </div>
         <div class="invalid-feedback">
             <?= $validation->getError('item_stock_a_up'); ?>
@@ -91,7 +91,7 @@
         </div>
         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_b_up') ? 'is-invalid' : ''; ?>" name="item_stock_b_up" placeholder="Jumlah Stok Gudang B" required value="<?= (old('item_stock_b_up')) ?: $items[0]->item_warehouse_b; ?>">
         <div class="input-group-append">
-            <span class="input-group-text bg-transparent">Buah</span>
+            <span class="input-group-text bg-transparent">Unit</span>
         </div>
         <div class="invalid-feedback">
             <?= $validation->getError('item_stock_b_up'); ?>
@@ -103,7 +103,7 @@
         </div>
         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_c_up') ? 'is-invalid' : ''; ?>" name="item_stock_c_up" placeholder="Jumlah Stok Gudang C" required value="<?= (old('item_stock_c_up')) ?: $items[0]->item_warehouse_c; ?>">
         <div class="input-group-append">
-            <span class="input-group-text bg-transparent">Buah</span>
+            <span class="input-group-text bg-transparent">Unit</span>
         </div>
         <div class="invalid-feedback">
             <?= $validation->getError('item_stock_c_up'); ?>
@@ -115,7 +115,7 @@
         </div>
         <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_d_up') ? 'is-invalid' : ''; ?>" name="item_stock_d_up" placeholder="Jumlah Stok Gudang D" required value="<?= (old('item_stock_d_up')) ?: $items[0]->item_warehouse_d; ?>">
         <div class="input-group-append">
-            <span class="input-group-text bg-transparent">Buah</span>
+            <span class="input-group-text bg-transparent">Unit</span>
         </div>
         <div class="invalid-feedback">
             <?= $validation->getError('item_stock_d_up'); ?>
@@ -159,7 +159,7 @@
     <div class="form-group">
         <select name="category_up" id="item_id-<?= $items[0]->id ?>" required class="form-control <?= $validation->getError('category_up') ? 'is-invalid' : ''; ?>">
             <?php foreach ($category as $ca) : ?>
-                <?php if ($ca->id === $items[0]->category_id) : ?>
+                <?php if ($ca->id == $items[0]->category_id) : ?>
                     <option value="<?= $ca->id; ?>" selected>
                         <?= $ca->category_name; ?>
                     </option>
@@ -179,7 +179,7 @@
     <div class="form-group">
         <select name="supplier_up" id="supp_id-<?= $items[0]->id ?>" required class="form-control <?= $validation->getError('supplier_up') ? 'is-invalid' : ''; ?>">
             <?php foreach ($supplier as $ca) : ?>
-                <?php if ($ca->id === $items[0]->supplier_id) : ?>
+                <?php if ($ca->id == $items[0]->supplier_id) : ?>
                     <option value="<?= $ca->id; ?>" selected>
                         <?= $ca->supplier_name; ?>
                     </option>

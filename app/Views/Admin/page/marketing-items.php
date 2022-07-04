@@ -118,7 +118,7 @@ Data Item Barang
                         if (o == null || o == "") {
                             o = 0;
                         }
-                        return o + ' Buah';
+                        return o + ' Unit';
                     }
                 },
                 {
@@ -128,7 +128,7 @@ Data Item Barang
                         if (o == null || o == "") {
                             o = 0;
                         }
-                        return o + ' Buah';
+                        return o + ' Unit';
                     }
                 },
                 {
@@ -138,7 +138,7 @@ Data Item Barang
                         if (o == null || o == "") {
                             o = 0;
                         }
-                        return o + ' Buah';
+                        return o + ' Unit';
                     }
                 },
                 {
@@ -148,7 +148,7 @@ Data Item Barang
                         if (o == null || o == "") {
                             o = 0;
                         }
-                        return o + ' Buah';
+                        return o + ' Unit';
                     }
                 },
                 {
@@ -158,7 +158,7 @@ Data Item Barang
                         if (o == null || o == "") {
                             o = 0;
                         }
-                        return o + ' Buah';
+                        return o + ' Unit';
                     }
                 },
                 {

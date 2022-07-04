@@ -138,13 +138,13 @@
 <body>
     <header class="clearfix">
         <?php
-        if ($sortir === 1) {
+        if ($sortir == 1) {
             $ket = 'Keseluruhan';
-        } elseif ($sortir === 2) {
+        } elseif ($sortir == 2) {
             $ket = 'Tahun ' . date('Y');
-        } elseif ($sortir === 3) {
+        } elseif ($sortir == 3) {
             $ket = 'Bulan ' . date('F Y');
-        } elseif ($sortir === 4) {
+        } elseif ($sortir == 4) {
             $ket = 'Hari Ini,Tanggal ' . date('d F Y');
         } else {
             $ket = 'Tanggal ' . date('d F Y', strtotime($tgl_dari)) . ' - ' . date('d F Y', strtotime($tgl_sampai));
@@ -203,7 +203,7 @@
                             <td>Rp. <?= format_rupiah($t->sale_total); ?></td>
                             <td>Rp. <?= format_rupiah($t->sale_profit); ?></td>
                             <td><?= $t->username; ?></td>
-                            <?php if ($t->sale_status === 0) : ?>
+                            <?php if ($t->sale_status == 0) : ?>
                                 <td>
                                     DRAFT
                                 </td>

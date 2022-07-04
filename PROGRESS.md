@@ -1,7 +1,7 @@
 ## Purchasing
 
 - Yang daftar permintaan order, tambahkan ada note kenapa diterima atau ditolak [Sudah]
-- Order barang (tambah data pesanan) sebelum pilih supplier, perlu nomor PO (ada format tersendiri),
+- Order barang (tambah data pesanan) sebelum pilih supplier, perlu nomor PO (ada format tersendiri) [Sudah],
 - Formatnya diupayakan supaya otomatis, "PO No.006/DIN/X/2020", [Sudah]
 - Dimanajemen pesanan, untuk purchasing liatin harganya (harga-harga) [Sudah]
 - Dimanajemen pesanan, bisa dicetak POnya(formatnya nanti dikasi)
@@ -13,8 +13,8 @@
 
 - ROGS dicetak di order barang
 - Receiving feature (Bagus, Diretur) mirip order barang, untuk menangani barang yang datang tapi belum semua
-- Buah ubah jadi unit
-- "Buat pesanan" dihapus di Gudang
+- Buah ubah jadi unit [Sudah]
+- "Buat pesanan" dihapus di Gudang [Sudah]
 - Retur feature (cetak)
 - Ada fitur Done, langsung masuk di manajemen barang - laporan transaksi barang
 - Ada fitur noted, untuk ngasi tau kenapa barang diretur

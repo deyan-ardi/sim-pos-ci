@@ -93,7 +93,7 @@ Tambahkan Order
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
-                                            <?php if ($supplier[0]->order_status === 1) : ?>
+                                            <?php if ($supplier[0]->order_status == 1) : ?>
                                                 <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
                                             <?php endif; ?>
                                             <div class="dt-responsive table-responsive">
@@ -109,7 +109,7 @@ Tambahkan Order
                                                             <th>Jumlah Order</th>
                                                             <th>Diubah Terakhir</th>
                                                             <th>Pegawai</th>
-                                                            <?php if ($supplier[0]->order_status === 1) : ?>
+                                                            <?php if ($supplier[0]->order_status == 1) : ?>
                                                                 <th class="text-center"><i class="feather icon-settings"></i>
                                                                 </th>
                                                             <?php endif; ?>
@@ -128,12 +128,12 @@ Tambahkan Order
                                                                 <td>Rp.<?= format_rupiah($c->item_hpp); ?></td>
                                                                 <td>Rp.<?= format_rupiah($c->item_before_sale); ?></td>
                                                                 <td>Rp.<?= format_rupiah($c->item_sale); ?></td>
-                                                                <td><?= $c->detail_quantity; ?> Item</td>
+                                                                <td><?= $c->detail_quantity; ?> Unit</td>
                                                                 <td>
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
                                                                 <td><?= $c->username; ?></td>
-                                                                <?php if ($supplier[0]->order_status === 1) : ?>
+                                                                <?php if ($supplier[0]->order_status == 1) : ?>
                                                                     <td>
                                                                         <div class="row justify-content-center">
 
@@ -159,7 +159,7 @@ Tambahkan Order
                                                                                                     <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name_up') ? 'is-invalid' : ''; ?>" style=" text-transform: capitalize;" name="item_name_up" required>
                                                                                                         <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
                                                                                                         <?php foreach ($item as $s) : ?>
-                                                                                                            <?php if ($s->id === $c->item_id) : ?>
+                                                                                                            <?php if ($s->id == $c->item_id) : ?>
                                                                                                                 <option value="<?= $s->id; ?>" selected>
                                                                                                                     <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                                                                                                 </option>
@@ -178,7 +178,7 @@ Tambahkan Order
                                                                                                     <div class="input-group search-form">
                                                                                                         <input type="number" min="0" class="form-control <?= $validation->getError('item_quantity_up') ? 'is-invalid' : ''; ?>" name="item_quantity_up" required placeholder="Jumlah Order" value="<?= old('item_quantity_up') ?: $c->detail_quantity; ?>">
                                                                                                         <div class="input-group-append">
-                                                                                                            <span class="input-group-text bg-transparent">Buah</span>
+                                                                                                            <span class="input-group-text bg-transparent">Unit</span>
                                                                                                         </div>
                                                                                                         <div class="invalid-feedback">
                                                                                                             <?= $validation->getError('item_quantity_up'); ?>
@@ -270,7 +270,7 @@ Tambahkan Order
                         <div class="input-group search-form">
                             <input type="number" min="0" class="form-control <?= $validation->getError('item_quantity') ? 'is-invalid' : ''; ?>" name="item_quantity" required placeholder="Jumlah Order" value="<?= old('item_quantity') ?: ''; ?>">
                             <div class="input-group-append">
-                                <span class="input-group-text bg-transparent">Buah</span>
+                                <span class="input-group-text bg-transparent">Unit</span>
                             </div>
                             <div class="invalid-feedback">
                                 <?= $validation->getError('item_quantity'); ?>

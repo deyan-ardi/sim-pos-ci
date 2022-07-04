@@ -182,7 +182,7 @@ Dashboard Page
                                                 $i = 0;
 
                                                 foreach ($sale as $s) : ?>
-                                                    <?php if ($i++ === 0) : ?>
+                                                    <?php if ($i++ == 0) : ?>
                                                         <div class="row p-t-20 p-b-30">
                                                         <?php else : ?>
                                                             <div class="row p-b-30">

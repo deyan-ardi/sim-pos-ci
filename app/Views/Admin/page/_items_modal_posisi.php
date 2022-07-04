@@ -9,7 +9,7 @@
     </div>
     <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_a_up') ? 'is-invalid' : ''; ?>" name="item_stock_a_up" placeholder="Jumlah Stok Gudang A" required value="<?= (old('item_stock_a_up')) ?: $items->item_warehouse_a; ?>">
     <div class="input-group-append">
-        <span class="input-group-text bg-transparent">Buah</span>
+        <span class="input-group-text bg-transparent">Unit</span>
     </div>
     <div class="invalid-feedback">
         <?= $validation->getError('item_stock_a_up'); ?>
@@ -21,7 +21,7 @@
     </div>
     <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_b_up') ? 'is-invalid' : ''; ?>" name="item_stock_b_up" placeholder="Jumlah Stok Gudang B" required value="<?= (old('item_stock_b_up')) ?: $items->item_warehouse_b; ?>">
     <div class="input-group-append">
-        <span class="input-group-text bg-transparent">Buah</span>
+        <span class="input-group-text bg-transparent">Unit</span>
     </div>
     <div class="invalid-feedback">
         <?= $validation->getError('item_stock_b_up'); ?>
@@ -33,7 +33,7 @@
     </div>
     <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_c_up') ? 'is-invalid' : ''; ?>" name="item_stock_c_up" placeholder="Jumlah Stok Gudang C" required value="<?= (old('item_stock_c_up')) ?: $items->item_warehouse_c; ?>">
     <div class="input-group-append">
-        <span class="input-group-text bg-transparent">Buah</span>
+        <span class="input-group-text bg-transparent">Unit</span>
     </div>
     <div class="invalid-feedback">
         <?= $validation->getError('item_stock_c_up'); ?>
@@ -45,7 +45,7 @@
     </div>
     <input type="number" min="0" class="form-control <?= $validation->getError('item_stock_d_up') ? 'is-invalid' : ''; ?>" name="item_stock_d_up" placeholder="Jumlah Stok Gudang D" required value="<?= (old('item_stock_d_up')) ?: $items->item_warehouse_d; ?>">
     <div class="input-group-append">
-        <span class="input-group-text bg-transparent">Buah</span>
+        <span class="input-group-text bg-transparent">Unit</span>
     </div>
     <div class="invalid-feedback">
         <?= $validation->getError('item_stock_d_up'); ?>

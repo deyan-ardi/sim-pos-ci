@@ -245,7 +245,7 @@ Transaksi Barang - Menu Kasir
                                                                             <?php if ($i->item_stock <= 0) : ?>
                                                                                 <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - [ STOK HABIS ]</option>
                                                                             <?php else : ?>
-                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Buah</option>
+                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Unit</option>
                                                                             <?php endif; ?>
                                                                         <?php endforeach; ?>
                                                                     </select>
@@ -256,7 +256,7 @@ Transaksi Barang - Menu Kasir
                                                                 <div class="input-group search-form">
                                                                     <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? 'is-invalid' : ''; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ?: ''; ?>">
                                                                     <div class="input-group-append">
-                                                                        <span class="input-group-text bg-transparent">Buah</span>
+                                                                        <span class="input-group-text bg-transparent">Unit</span>
                                                                     </div>
                                                                     <div class="invalid-feedback">
                                                                         <?= $validation->getError('item_quantity'); ?>
@@ -311,7 +311,7 @@ Transaksi Barang - Menu Kasir
                                                                             <td><?= $i++; ?></td>
                                                                             <td><?= $d->item_code; ?></td>
                                                                             <td><?= $d->item_name; ?></td>
-                                                                            <td><?= $d->detail_quantity; ?> Buah</td>
+                                                                            <td><?= $d->detail_quantity; ?> Unit</td>
                                                                             <td>Rp. <?= format_rupiah($d->item_sale); ?></td>
                                                                             <td>Rp. <?= format_rupiah($d->detail_total); ?></td>
                                                                             <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>

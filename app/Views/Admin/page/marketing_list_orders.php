@@ -75,7 +75,7 @@ Tambahkan Order
                                                                 <td><?= $i++; ?></td>
                                                                 <td><?= $c->item_code; ?></td>
                                                                 <td><?= $c->item_name; ?></td>
-                                                                <td><?= $c->detail_quantity; ?> Buah</td>
+                                                                <td><?= $c->detail_quantity; ?> Unit</td>
                                                                 <td>
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
@@ -93,7 +93,7 @@ Tambahkan Order
                                                         </tr>
                                                         <tr>
                                                             <th>Total Item Dipesan</th>
-                                                            <th colspan="2"><?= $total_order; ?> Buah Barang</th>
+                                                            <th colspan="2"><?= $total_order; ?> Unit Barang</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>

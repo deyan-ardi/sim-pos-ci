@@ -196,7 +196,7 @@
                             <td><?= $c->item_code; ?></td>
                             <td><?= $c->item_name; ?></td>
                             <td><?= $c->order_code; ?></td>
-                            <td><?= $c->detail_quantity; ?> Buah</td>
+                            <td><?= $c->detail_quantity; ?> Unit</td>
                             <td><?= $c->category_name; ?></td>
                             <td><?= $c->supplier_name; ?></td>
                             <td><button class="btn btn-success">Sukses</button></td>
@@ -213,7 +213,7 @@
                 </tr>
                 <tr class="grand-total">
                     <th colspan="6">Total Jumlah Order</th>
-                    <th colspan="4"><?= $total_order; ?> Buah</th>
+                    <th colspan="4"><?= $total_order; ?> Unit</th>
                 </tr>
             </tbody>
         </table>

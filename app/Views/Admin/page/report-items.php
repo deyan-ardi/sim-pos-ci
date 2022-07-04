@@ -118,7 +118,7 @@ Data Item Barang
                                                             <td><?= $c->item_code; ?></td>
                                                             <td><?= $c->item_name; ?></td>
                                                             <td><?= $c->order_code; ?></td>
-                                                            <td><?= $c->detail_quantity; ?> Buah</td>
+                                                            <td><?= $c->detail_quantity; ?> Unit</td>
                                                             <td><?= $c->category_name; ?></td>
                                                             <td><?= $c->supplier_name; ?></td>
                                                             <td><button class="btn btn-success">Sukses</button></td>
@@ -191,7 +191,7 @@ Data Item Barang
                                                             <td><?= $c->item_code; ?></td>
                                                             <td><?= $c->item_name; ?></td>
                                                             <td><?= $c->sale_code; ?></td>
-                                                            <td><?= $c->detail_quantity; ?> Buah</td>
+                                                            <td><?= $c->detail_quantity; ?> Unit</td>
                                                             <td><?= $c->category_name; ?></td>
                                                             <td><button class="btn btn-success">Sukses</button></td>
                                                             <td><?= $c->username; ?></td>

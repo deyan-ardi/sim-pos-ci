@@ -66,7 +66,7 @@ class Item extends BaseController
             'validation' => $this->validate,
         ];
         if (! empty($this->request->getPost('input_items'))) {
-            if ($this->request->getFile('item_image')->getError() === 0) {
+            if ($this->request->getFile('item_image')->getError() == 0) {
                 $formSubmit = $this->validate([
                     'item_image'       => 'uploaded[item_image]|max_size[item_image,1048]|mime_in[item_image,image/png,image/jpg,image/jpeg]|ext_in[item_image,jpg,jpeg,png]',
                     'item_code'        => 'required|max_length[25]',
@@ -113,7 +113,7 @@ class Item extends BaseController
             if (! $formSubmit) {
                 return redirect()->to('/items')->withInput();
             }
-            if ($this->request->getFile('item_image')->getError() === 0) {
+            if ($this->request->getFile('item_image')->getError() == 0) {
                 $fotoProduk = $this->request->getFile('item_image');
                 $namaProduk = $fotoProduk->getRandomName();
 
@@ -264,7 +264,7 @@ class Item extends BaseController
             return redirect()->to('/items')->withCookies();
         }
         if (! empty($this->request->getPost('update_items'))) {
-            if ($this->request->getFile('item_image_up')->getError() === 0) {
+            if ($this->request->getFile('item_image_up')->getError() == 0) {
                 $formSubmit = $this->validate([
                     'item_image_up'       => 'uploaded[item_image_up]|max_size[item_image_up,1048]|mime_in[item_image_up,image/png,image/jpg,image/jpeg]|ext_in[item_image_up,jpg,jpeg,png]',
                     'item_code_up'        => 'required|max_length[25]',
@@ -326,7 +326,7 @@ class Item extends BaseController
                 $profit = 0;
             }
 
-            if ($this->request->getFile('item_image_up')->getError() === 0) {
+            if ($this->request->getFile('item_image_up')->getError() == 0) {
                 $fotoProduk = $this->request->getFile('item_image_up');
                 $namaProduk = $fotoProduk->getRandomName();
                 $fotoProduk->move('upload/produk', $namaProduk);
@@ -470,7 +470,7 @@ class Item extends BaseController
             }
             $find  = $this->m_item->find($this->request->getPost('id_item'));
             $total = $this->request->getPost('item_stock_a_up') + $this->request->getPost('item_stock_b_up') + $this->request->getPost('item_stock_c_up') + $this->request->getPost('item_stock_d_up');
-            if ($total === $find->item_stock) {
+            if ($total == $find->item_stock) {
                 $save = $this->m_item->save([
                     'id'               => $this->request->getPost('id_item'),
                     'item_warehouse_a' => $this->request->getPost('item_stock_a_up'),

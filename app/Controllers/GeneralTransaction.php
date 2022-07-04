@@ -171,7 +171,7 @@ class GeneralTransaction extends BaseController
                 if (! empty($find_sale_detail)) {
                     foreach ($find_sale_detail as $d) {
                         foreach ($find_item as $i) {
-                            if ($d->item_id === $i->id) {
+                            if ($d->item_id == $i->id) {
                                 $this->m_item->save([
                                     'id'         => $i->id,
                                     'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -467,7 +467,7 @@ class GeneralTransaction extends BaseController
             if (! empty($find_sale_detail)) {
                 foreach ($find_sale_detail as $d) {
                     foreach ($find_item as $i) {
-                        if ($d->item_id === $i->id) {
+                        if ($d->item_id == $i->id) {
                             $this->m_item->save([
                                 'id'         => $i->id,
                                 'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -598,7 +598,7 @@ class GeneralTransaction extends BaseController
                     if (! empty($find_sale_detail)) {
                         foreach ($find_sale_detail as $d) {
                             foreach ($find_item as $i) {
-                                if ($d->item_id === $i->id) {
+                                if ($d->item_id == $i->id) {
                                     $this->m_item->save([
                                         'id'         => $i->id,
                                         'item_stock' => $i->item_stock + $d->detail_quantity,

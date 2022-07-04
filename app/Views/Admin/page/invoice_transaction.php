@@ -156,7 +156,7 @@
                         <div>Kode Member : <?= $member->member_code; ?></div>
                         <div><?= date('d F Y H:i:s', strtotime($sale[0]->updated_at)); ?> WITA</div>
                         <div><?= $member->member_name; ?></div>
-                        <?php if ($sale[0]->sale_ket === 'project') : ?>
+                        <?php if ($sale[0]->sale_ket == 'project') : ?>
                             <div><?= $member->member_company; ?></div>
                             <div><?= $member->member_job; ?></div>
                             <div>0<?= $member->member_contact; ?></div>
@@ -199,7 +199,7 @@
                             <td class="service"><?= $i++; ?></td>
                             <td class="service"><?= $d->item_code; ?></td>
                             <td class="desc"><?= $d->item_name; ?></td>
-                            <td class="qty"><?= $d->detail_quantity; ?> Buah</td>
+                            <td class="qty"><?= $d->detail_quantity; ?> Unit</td>
                             <td class="qty">Rp. <?= format_rupiah($d->item_sale); ?></td>
                             <td class="qty">Rp. <?= format_rupiah($d->detail_total); ?></td>
                         </tr>
