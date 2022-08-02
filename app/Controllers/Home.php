@@ -44,7 +44,7 @@ class Home extends BaseController
             'validation' => $this->validate,
         ];
         if (! empty($this->request->getPost('submit_profil'))) {
-            if ($this->request->getFile('user_image')->getError() === 0) {
+            if ($this->request->getFile('user_image')->getError() == 0) {
                 $formSubmit = $this->validate([
                     'user_image'  => 'uploaded[user_image]|max_size[user_image,1048]|mime_in[user_image,image/png,image/jpg,image/jpeg]|ext_in[user_image,jpg,jpeg,png]',
                     'username'    => 'required|max_length[50]',
@@ -81,7 +81,7 @@ class Home extends BaseController
                 $password = $find[0]['password_hash'];
             }
 
-            if ($this->request->getFile('user_image')->getError() === 0) {
+            if ($this->request->getFile('user_image')->getError() == 0) {
                 if (! empty($find[0]['user_image'])) {
                     if (unlink('upload/user/' . $find[0]['user_image'])) {
                         $unlink = true;

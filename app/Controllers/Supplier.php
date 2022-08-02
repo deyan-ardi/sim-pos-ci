@@ -120,37 +120,37 @@ class Supplier extends BaseController
 
     public function _month($bulan)
     {
-        if ($bulan === '01') {
+        if ($bulan == '01') {
             return 'I';
         }
-        if ($bulan === '02') {
+        if ($bulan == '02') {
             return 'II';
         }
-        if ($bulan === '03') {
+        if ($bulan == '03') {
             return 'III';
         }
-        if ($bulan === '04') {
+        if ($bulan == '04') {
             return 'IV';
         }
-        if ($bulan === '05') {
+        if ($bulan == '05') {
             return 'V';
         }
-        if ($bulan === '06') {
+        if ($bulan == '06') {
             return 'VI';
         }
-        if ($bulan === '07') {
+        if ($bulan == '07') {
             return 'VII';
         }
-        if ($bulan === '08') {
+        if ($bulan == '08') {
             return 'VIII';
         }
-        if ($bulan === '09') {
+        if ($bulan == '09') {
             return 'IX';
         }
-        if ($bulan === '10') {
+        if ($bulan == '10') {
             return 'X';
         }
-        if ($bulan === '11') {
+        if ($bulan == '11') {
             return 'XI';
         }
 
@@ -212,7 +212,7 @@ class Supplier extends BaseController
             if (! $formSubmit) {
                 return redirect()->to('/suppliers/order-items')->withInput();
             }
-            if ($this->request->getPost('order_name_up') === 8) {
+            if ($this->request->getPost('order_name_up') == 8) {
                 $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
 
                 foreach ($order_data as $o) {
@@ -329,7 +329,7 @@ class Supplier extends BaseController
                     }
                     $find_order = $this->m_order_detail->find($this->request->getPost('id_order_detail'));
                     // dd($find->item_id == $this->request->getPost('item_name_up'));
-                    if ($find_order->item_id === $this->request->getPost('item_name_up')) {
+                    if ($find_order->item_id == $this->request->getPost('item_name_up')) {
                         $status = true;
                     } else {
                         $check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name_up'))->where('order_id', $this->request->getPost('id_order'))->findAll();

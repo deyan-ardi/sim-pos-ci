@@ -28,7 +28,7 @@
 - Handling & Final Connecting bersifat opsional
 - Cakupannya sampe penawaran saja
 - Pas fase penawaran, gk langsung ngurangin stok
-- Nambah 2 tipe user, finance dan tim proyek
+- Nambah 2 tipe user, finance dan tim proyek [Sudah]
 - Pas Deal juga belum dikurangi stoknya
 - Marketing, bisa melihat SPPB
 - Transaksi general, pertama done, lalu masuk ke finance, dicetak difinance, lalu dibawa ke SPPB

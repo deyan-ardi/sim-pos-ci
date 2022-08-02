@@ -107,7 +107,7 @@ Data User Sistem
                                                             <td><?= $c->username; ?></td>
                                                             <td><?= ! empty($c->user_number) ? $c->user_number : 'Kosong'; ?></td>
                                                             <td><?= ucwords(strtolower($c->name)); ?></td>
-                                                            <?php if ($c->active === 1) : ?>
+                                                            <?php if ($c->active == 1) : ?>
                                                                 <td><button type="button" class="btn btn-icon btn-success"><i class="feather icon-check-circle" title="User Aktif" data-toggle="tooltip"></i></button></td>
                                                             <?php else : ?>
                                                                 <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-alert-triangle" title="User Tidak Aktif" data-toggle="tooltip"></i></button></td>
@@ -175,12 +175,12 @@ Data User Sistem
                                                                                         <div class="form-group">
                                                                                             <select class="form-control <?= $validation->getError('group_up') ? 'is-invalid' : ''; ?>" name="group_up">
                                                                                                 <option value="">Pilih Hak Akses</option>
-                                                                                                <option value="1" <?= $c->name === 'KASIR' ? 'selected' : ''; ?>>Kasir</option>
-                                                                                                <option value="2" <?= $c->name === 'GUDANG' ? 'selected' : ''; ?>>Gudang</option>
-                                                                                                <option value="3" <?= $c->name === 'SUPER ADMIN' ? 'selected' : ''; ?>>Super Admin</option>
-                                                                                                <option value="4" <?= $c->name === 'ATASAN' ? 'selected' : ''; ?>>Atasan</option>
-                                                                                                <option value="5" <?= $c->name === 'PURCHASING' ? 'selected' : ''; ?>>Purchasing</option>
-                                                                                                <option value="6" <?= $c->name === 'MARKETING' ? 'selected' : ''; ?>>Marketing</option>
+                                                                                                <option value="1" <?= $c->name == 'KASIR' ? 'selected' : ''; ?>>Kasir</option>
+                                                                                                <option value="2" <?= $c->name == 'GUDANG' ? 'selected' : ''; ?>>Gudang</option>
+                                                                                                <option value="3" <?= $c->name == 'SUPER ADMIN' ? 'selected' : ''; ?>>Super Admin</option>
+                                                                                                <option value="4" <?= $c->name == 'ATASAN' ? 'selected' : ''; ?>>Atasan</option>
+                                                                                                <option value="5" <?= $c->name == 'PURCHASING' ? 'selected' : ''; ?>>Purchasing</option>
+                                                                                                <option value="6" <?= $c->name == 'MARKETING' ? 'selected' : ''; ?>>Marketing</option>
                                                                                             </select>
                                                                                             <div class="invalid-feedback">
                                                                                                 <?= $validation->getError('group_up'); ?>

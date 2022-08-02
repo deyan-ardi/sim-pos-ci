@@ -21,25 +21,31 @@ class AddUserSuperAdmin extends Seeder
             $hashOptions
         );
 
-        for ($i = 1; $i <= 6; $i++) {
-            if ($i === 1) {
+        for ($i = 1; $i <= 8; $i++) {
+            if ($i == 1) {
                 $email    = 'kasir@ganatech.id';
                 $username = 'Kasir User';
-            } elseif ($i === 2) {
+            } elseif ($i == 2) {
                 $email    = 'gudang@ganatech.id';
                 $username = 'Gudang User';
-            } elseif ($i === 3) {
+            } elseif ($i == 3) {
                 $email    = 'super.admin@ganatech.id';
                 $username = 'Super Admin User';
-            } elseif ($i === 4) {
+            } elseif ($i == 4) {
                 $email    = 'atasan@ganatech.id';
                 $username = 'Atasan User';
-            } elseif ($i === 5) {
+            } elseif ($i == 5) {
                 $email    = 'purchasing@ganatech.id';
                 $username = 'Purchasing User';
-            } else {
+            } elseif ($i == 6) {
                 $email    = 'marketing@ganatech.id';
                 $username = 'Marketing User';
+            } elseif ($i == 7) {
+                $email    = 'finance@ganatech.id';
+                $username = 'Finance User';
+            } elseif ($i == 8) {
+                $email    = 'proyek@ganatech.id';
+                $username = 'Proyek User';
             }
             $data_user = [
                 [
@@ -83,13 +89,13 @@ class AddUserSuperAdmin extends Seeder
         $this->db->table('pphs')->insert($data_pph);
 
         for ($i = 1; $i <= 4; $i++) {
-            if ($i === 1) {
+            if ($i == 1) {
                 $key = 'kiri';
-            } elseif ($i === 2) {
+            } elseif ($i == 2) {
                 $key = 'tengah';
-            } elseif ($i === 3) {
+            } elseif ($i == 3) {
                 $key = 'kanan';
-            } elseif ($i === 4) {
+            } elseif ($i == 4) {
                 $key = 'note';
             }
 

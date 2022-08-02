@@ -22,7 +22,7 @@ class User extends BaseController
             'user'       => $this->m_user->getUserRole(),
         ];
         if ($this->request->getPost('submit_user')) {
-            if ($this->request->getFile('user_image')->getError() === 0) {
+            if ($this->request->getFile('user_image')->getError() == 0) {
                 $formSubmit = $this->validate([
                     'user_image'       => 'uploaded[user_image]|max_size[user_image,1048]|mime_in[user_image,image/png,image/jpg,image/jpeg]|ext_in[user_image,jpg,jpeg,png]',
                     'email'            => 'required|valid_email',
@@ -46,7 +46,7 @@ class User extends BaseController
                 return redirect()->to('/users')->withInput();
             }
             if (! empty($this->request->getPost('password')) && ! empty($this->request->getPost('password_confirm'))) {
-                if ($this->request->getFile('user_image')->getError() === 0) {
+                if ($this->request->getFile('user_image')->getError() == 0) {
                     $fotoUser     = $this->request->getFile('user_image');
                     $namaFotoUser = $fotoUser->getRandomName();
 
@@ -113,7 +113,7 @@ class User extends BaseController
             return redirect()->to('/users')->withCookies();
         }
         if ($this->request->getPost('update_user')) {
-            if ($this->request->getFile('user_image_up')->getError() === 0) {
+            if ($this->request->getFile('user_image_up')->getError() == 0) {
                 $formSubmit = $this->validate([
                     'user_image_up'       => 'uploaded[user_image_up]|max_size[user_image_up,1048]|mime_in[user_image_up,image/png,image/jpg,image/jpeg]|ext_in[user_image_up,jpg,jpeg,png]',
                     'email_up'            => 'required|valid_email',
@@ -154,7 +154,7 @@ class User extends BaseController
                 $password = $find[0]['password_hash'];
             }
 
-            if ($this->request->getFile('user_image_up')->getError() === 0) {
+            if ($this->request->getFile('user_image_up')->getError() == 0) {
                 if (! empty($find[0]['user_image'])) {
                     if (unlink('upload/user/' . $find[0]['user_image'])) {
                         $unlink = true;
@@ -221,7 +221,7 @@ class User extends BaseController
         if ($this->request->getPost('delete_user')) {
             $find = $this->m_user->getUserRole($this->request->getPost('id_user'));
             if (! empty($find)) {
-                if ($find[0]['userid'] === user()->id) {
+                if ($find[0]['userid'] == user()->id) {
                     session()->setFlashdata('gagal', 'Tidak Dapat Mengapus Diri Sendiri');
 
                     return redirect()->to('/users')->withCookies();

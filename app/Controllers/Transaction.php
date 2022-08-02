@@ -172,7 +172,7 @@ class Transaction extends BaseController
                 if (! empty($find_sale_detail)) {
                     foreach ($find_sale_detail as $d) {
                         foreach ($find_item as $i) {
-                            if ($d->item_id === $i->id) {
+                            if ($d->item_id == $i->id) {
                                 $this->m_item->save([
                                     'id'         => $i->id,
                                     'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -468,7 +468,7 @@ class Transaction extends BaseController
             if (! empty($find_sale_detail)) {
                 foreach ($find_sale_detail as $d) {
                     foreach ($find_item as $i) {
-                        if ($d->item_id === $i->id) {
+                        if ($d->item_id == $i->id) {
                             $this->m_item->save([
                                 'id'         => $i->id,
                                 'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -601,7 +601,7 @@ class Transaction extends BaseController
                     if (! empty($find_sale_detail)) {
                         foreach ($find_sale_detail as $d) {
                             foreach ($find_item as $i) {
-                                if ($d->item_id === $i->id) {
+                                if ($d->item_id == $i->id) {
                                     $this->m_item->save([
                                         'id'         => $i->id,
                                         'item_stock' => $i->item_stock + $d->detail_quantity,
@@ -760,7 +760,7 @@ class Transaction extends BaseController
                 return redirect()->to('/transaction/pengaturan')->withCookies();
             }
             if (! empty($this->request->getPost('update_pengaturan'))) {
-                if ($this->request->getPost('pengaturan') === '' || empty($this->request->getPost('pengaturan'))) {
+                if ($this->request->getPost('pengaturan') == '' || empty($this->request->getPost('pengaturan'))) {
                     $value  = null;
                     $posisi = null;
                     $header = null;

@@ -33,6 +33,14 @@ class AddGroupUser extends Seeder
                 'name'        => 'MARKETING',
                 'description' => 'Group For Marketing User',
             ],
+            [
+                'name'        => 'FINANCE',
+                'description' => 'Group For Finance User',
+            ],
+            [
+                'name'        => 'PROYEK',
+                'description' => 'Group For Project Team User',
+            ],
         ];
         $this->db->table('auth_groups')->insertBatch($data);
     }

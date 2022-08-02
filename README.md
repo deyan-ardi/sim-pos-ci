@@ -65,6 +65,12 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 6. Login Sebagai User Marketing
 - email : marketing@ganatech.id
 - password : 12345678
+7. Login Sebagai User Finance
+- email : finance@ganatech.id
+- password : 12345678
+8. Login Sebagai User Tim Proyek
+- email : proyek@ganatech.id
+- password : 12345678
 
 ## Primary Tools
 - Datatables Server Side
