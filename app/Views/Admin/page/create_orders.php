@@ -93,7 +93,7 @@ Tambahkan Order
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
-                                            <?php if ($supplier[0]->order_status === 1) : ?>
+                                            <?php if ($supplier[0]->order_status == 1) : ?>
                                                 <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
                                             <?php endif; ?>
                                             <div class="dt-responsive table-responsive">
@@ -104,12 +104,12 @@ Tambahkan Order
                                                             <th>Kode Barang</th>
                                                             <th>Nama Barang</th>
                                                             <th>Harga Beli</th>
-                                                            <th>Harga Harga Jual</th>
+                                                            <th>Harga Jual</th>
                                                             <th>Harga Jual Akhir</th>
                                                             <th>Jumlah Order</th>
                                                             <th>Diubah Terakhir</th>
                                                             <th>Pegawai</th>
-                                                            <?php if ($supplier[0]->order_status === 1) : ?>
+                                                            <?php if ($supplier[0]->order_status == 1) : ?>
                                                                 <th class="text-center"><i class="feather icon-settings"></i>
                                                                 </th>
                                                             <?php endif; ?>
@@ -133,7 +133,7 @@ Tambahkan Order
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
                                                                 <td><?= $c->username; ?></td>
-                                                                <?php if ($supplier[0]->order_status === 1) : ?>
+                                                                <?php if ($supplier[0]->order_status == 1) : ?>
                                                                     <td>
                                                                         <div class="row justify-content-center">
 
@@ -159,7 +159,7 @@ Tambahkan Order
                                                                                                     <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name_up') ? 'is-invalid' : ''; ?>" style=" text-transform: capitalize;" name="item_name_up" required>
                                                                                                         <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
                                                                                                         <?php foreach ($item as $s) : ?>
-                                                                                                            <?php if ($s->id === $c->item_id) : ?>
+                                                                                                            <?php if ($s->id == $c->item_id) : ?>
                                                                                                                 <option value="<?= $s->id; ?>" selected>
                                                                                                                     <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
                                                                                                                 </option>

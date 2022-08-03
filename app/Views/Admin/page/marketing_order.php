@@ -117,16 +117,16 @@ Request Order Barang
                                                             <td><?= $c->request_description; ?></td>
                                                             <td><?= $c->request_total; ?> Unit</td>
                                                             <td><?= $c->username; ?></td>
-                                                            <?php if ($c->request_status === 0) : ?>
+                                                            <?php if ($c->request_status == 0) : ?>
                                                                 <td><a href="" class="btn btn-warning btn-sm">Draft</a></td>
-                                                            <?php elseif ($c->request_status === 2) : ?>
+                                                            <?php elseif ($c->request_status == 2) : ?>
                                                                 <td><a href="" class="btn btn-danger btn-sm">Permintaan Ditolak</a></td>
                                                             <?php else : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Permintaan Diterima</a></td>
                                                             <?php endif; ?>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if ($c->request_status === 0) : ?>
+                                                                    <?php if ($c->request_status == 0) : ?>
                                                                         <!-- Set Status Button Modal -->
                                                                         <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Permintaan Order" data-toggle="tooltip"></i></button>
 
@@ -147,7 +147,7 @@ Request Order Barang
                                                                                             <div class="form-group">
                                                                                                 <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="item_name" required>
                                                                                                     <?php foreach ($item as $i) : ?>
-                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id === $c->item_id ? 'selected' : '' ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
+                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id == $c->item_id ? 'selected' : '' ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
                                                                                                     <?php endforeach; ?>
                                                                                                 </select>
                                                                                                 <div class="invalid-feedback">

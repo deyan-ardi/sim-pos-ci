@@ -161,7 +161,7 @@ class Supplier extends BaseController
     {
         $bulan        = $this->_month(date('m'));
         $tahun        = date('Y');
-        $last_id      = $this->m_order->orderBy('id', 'DESC')->first()->id + 1;
+        $last_id      = $this->m_order->orderBy('id', 'DESC')->first() == null ? 1 : $this->m_order->orderBy('id', 'DESC')->first()->id + 1;
         $leading_kode = sprintf('%03d', $last_id);
         $kode_po      = "{$leading_kode}/DIN/{$bulan}/{$tahun}";
         $data         = [

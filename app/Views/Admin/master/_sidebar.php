@@ -1,12 +1,12 @@
    <!-- [ navigation menu ] start -->
-   <nav class="pcoded-navbar menupos-fixed menu-dark menu-item-icon-style6 ">
+   <nav class="pcoded-navbar menupos-fixed menu-dark menu-item-icon-style6 navbar-collapsed">
        <div class="navbar-wrapper ">
            <div class="navbar-brand header-logo">
                <a href="<?= base_url(); ?>" class="b-brand">
                    <img src="<?= base_url(); ?>/logo-white.png" width="30%" alt="" class="logo images">
                    <img src="<?= base_url(); ?>/logo-white.png" width="50%" alt="" class="logo-thumb images">
                </a>
-               <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+               <a class="mobile-menu on" id="mobile-collapse" href="#!"><span></span></a>
            </div>
            <div class="navbar-content scroll-div">
                <ul class="nav pcoded-inner-navbar mb-5">

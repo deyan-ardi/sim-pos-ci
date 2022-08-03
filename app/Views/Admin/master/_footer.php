@@ -5,7 +5,7 @@
  <!-- sweet alert Js -->
  <script>
      function format_rupiah(angka) {
-         if (angka === null) {
+         if (angka == null) {
              angka = 0;
          }
          var rupiah = angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");

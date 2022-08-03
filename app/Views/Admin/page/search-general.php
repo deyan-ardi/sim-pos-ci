@@ -19,8 +19,8 @@ Transaksi Barang - Menu Kasir
         this.value = +this.value.replace(/[^0-9]/g, '');
     });
     const ajax_send = () => {
-        // console.log(event.key === "Enter");
-        if (event.key === "Enter") {
+        // console.log(event.key == "Enter");
+        if (event.key == "Enter") {
             var url = "<?= base_url() . '/GeneralTransaction/validation_payment' ?>"
             $.ajax({
                 url: url,
@@ -39,8 +39,8 @@ Transaksi Barang - Menu Kasir
         // console.log($('#form').serialize());
     }
     const ajax_send_handling = () => {
-        // console.log(event.key === "Enter");
-        if (event.key === "Enter") {
+        // console.log(event.key == "Enter");
+        if (event.key == "Enter") {
             $('#form_handling').submit();
         }
         // console.log($('#form').serialize());
@@ -146,7 +146,7 @@ Transaksi Barang - Menu Kasir
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if ($find_sale[0]->sale_status === 1) : ?>
+                        <?php if ($find_sale[0]->sale_status == 1) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
