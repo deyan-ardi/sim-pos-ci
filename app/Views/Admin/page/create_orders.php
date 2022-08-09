@@ -96,7 +96,7 @@ Tambahkan Order
                                             <?php if ($supplier[0]->order_status == 1) : ?>
                                                 <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
                                             <?php endif; ?>
-                                            <button type="button" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
+                                            <button type="button" data-toggle="modal" data-target="#cetakPO" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
                                             <button type="button" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
                                             <div class="dt-responsive table-responsive">
                                                 <table id="simpletable" class="table table-striped table-bordered nowrap">
@@ -224,6 +224,33 @@ Tambahkan Order
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="input_order" value="order" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cetakPO" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cetakPOLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cetakPOLabel">Cetak PO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
+                    <div class="form-group">
+                        <textarea name="order_po" id="order_po" class="form-control <?= $validation->getError('order_po') ? 'is-invalid' : ''; ?>" required placeholder="Masukkan Informasi Sebelum Mencetak PO" cols="30" rows="5"><?= old('order_po') ?: ''; ?></textarea>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('order_po'); ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="input_order" value="order_po" class="btn btn-primary">Cetak PO</button>
                         <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
                     </div>
                 </form>
