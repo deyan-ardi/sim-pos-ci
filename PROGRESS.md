@@ -4,14 +4,15 @@
 - Order barang (tambah data pesanan) sebelum pilih supplier, perlu nomor PO (ada format tersendiri) [Sudah],
 - Formatnya diupayakan supaya otomatis, "PO No.006/DIN/X/2020", [Sudah]
 - Dimanajemen pesanan, untuk purchasing liatin harganya (harga-harga) [Sudah]
-- Dimanajemen pesanan, bisa dicetak POnya(formatnya nanti dikasi)
-- Dibagian cetak isi untuk menambahkan remark/noted
-- Recipt Of Goods Slip (format dikasi nanti), letaknya disamping PO
-- ROGS & PO bisa dicetak oleh Purchasing, tpi Gudang hanya bisa cetak ROGS saja
+- Dimanajemen pesanan, bisa dicetak POnya(formatnya nanti dikasi) [Sudah]
+- Dibagian cetak isi untuk menambahkan remark/noted [Sudah]
+- Recipt Of Goods Slip (format dikasi nanti), letaknya disamping PO [Sudah]
+- Layout Cetak ROGS & Cetak PO
+- ROGS & PO bisa dicetak oleh Purchasing, tpi Gudang hanya bisa cetak ROGS saja [Sudah]
 
 ## Gudang
 
-- ROGS dicetak di order barang
+- ROGS dicetak di order barang [Sudah]
 - Receiving feature (Bagus, Diretur) mirip order barang, untuk menangani barang yang datang tapi belum semua
 - Buah ubah jadi unit [Sudah]
 - "Buat pesanan" dihapus di Gudang [Sudah]

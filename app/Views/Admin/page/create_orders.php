@@ -93,11 +93,19 @@ Tambahkan Order
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
-                                            <?php if ($supplier[0]->order_status == 1) : ?>
-                                                <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
-                                            <?php endif; ?>
-                                            <button type="button" data-toggle="modal" data-target="#cetakPO" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
-                                            <button type="button" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
+                                            <form action="" method="POST">
+                                                <?= csrf_field(); ?>
+                                                
+                                                <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
+                                                    <?php if ($supplier[0]->order_status == 1) : ?>
+                                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                                    <?php endif; ?>
+                                                    
+                                                    <button type="button" data-toggle="modal" data-target="#cetakPO" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
+                                                <?php endif; ?>
+
+                                                <button type="submit" name="input_rogs" value="rogs" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
+                                            </form>
                                             <div class="dt-responsive table-responsive">
                                                 <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                     <thead>
@@ -242,15 +250,14 @@ Tambahkan Order
             <div class="modal-body">
                 <form action="" method="POST">
                     <?= csrf_field(); ?>
-                    <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
                     <div class="form-group">
-                        <textarea name="order_po" id="order_po" class="form-control <?= $validation->getError('order_po') ? 'is-invalid' : ''; ?>" required placeholder="Masukkan Informasi Sebelum Mencetak PO" cols="30" rows="5"><?= old('order_po') ?: ''; ?></textarea>
+                        <textarea name="order_po" id="order_po" class="form-control <?= $validation->getError('order_po') ? 'is-invalid' : ''; ?>" required placeholder="Masukkan Informasi Sebelum Mencetak PO" cols="30" rows="5"><?= old('order_po') ?: $supplier[0]->order_po; ?></textarea>
                         <div class="invalid-feedback">
                             <?= $validation->getError('order_po'); ?>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" name="input_order" value="order_po" class="btn btn-primary">Cetak PO</button>
+                        <button type="submit" name="input_order_po" value="input_order_po" class="btn btn-primary">Cetak PO</button>
                         <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
                     </div>
                 </form>

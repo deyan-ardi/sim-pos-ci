@@ -13,7 +13,7 @@ class OrderModel extends Model
     protected $returnType       = OrderModel::class;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'order_code', 'order_total_quantity', 'order_total_item', 'user_id', 'supplier_id', 'order_status',
+        'order_code', 'order_total_quantity', 'order_po', 'order_total_item', 'user_id', 'supplier_id', 'order_status',
     ];
 
     // Dates

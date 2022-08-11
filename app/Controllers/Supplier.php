@@ -27,7 +27,7 @@ class Supplier extends BaseController
                 'supplier'   => $this->m_supplier->findAll(),
                 'validation' => $this->validate,
             ];
-            if (! empty($this->request->getPost('input_supplier'))) {
+            if (!empty($this->request->getPost('input_supplier'))) {
                 $formSubmit = $this->validate([
                     'supplier_name'        => 'required|max_length[200]',
                     'supplier_contact'     => 'required|is_natural',
@@ -35,7 +35,7 @@ class Supplier extends BaseController
                     'supplier_alamat'      => 'required',
                     'supplier_description' => 'required|max_length[500]',
                 ]);
-                if (! $formSubmit) {
+                if (!$formSubmit) {
                     return redirect()->to('/suppliers')->withInput();
                 }
                 $save = $this->m_supplier->save([
@@ -54,7 +54,7 @@ class Supplier extends BaseController
 
                 return redirect()->to('/suppliers')->withCookies();
             }
-            if (! empty($this->request->getPost('update_supplier'))) {
+            if (!empty($this->request->getPost('update_supplier'))) {
                 $formSubmit = $this->validate([
                     'supplier_name_up'        => 'required|max_length[200]',
                     'supplier_contact_up'     => 'required|is_natural',
@@ -62,7 +62,7 @@ class Supplier extends BaseController
                     'supplier_alamat_up'      => 'required',
                     'supplier_description_up' => 'required|max_length[500]',
                 ]);
-                if (! $formSubmit) {
+                if (!$formSubmit) {
                     return redirect()->to('/suppliers')->withInput();
                 }
                 $save = $this->m_supplier->save([
@@ -82,12 +82,12 @@ class Supplier extends BaseController
 
                 return redirect()->to('/suppliers')->withCookies();
             }
-            if (! empty($this->request->getPost('delete_supplier'))) {
+            if (!empty($this->request->getPost('delete_supplier'))) {
                 $find          = $this->m_supplier->find($this->request->getPost('id_supplier'));
                 $find_relation = $this->m_item->where('supplier_id', $find->id)->findAll();
 
-                if (! empty($find)) {
-                    if (! empty($find_relation)) {
+                if (!empty($find)) {
+                    if (!empty($find_relation)) {
                         foreach ($find_relation as $r) {
                             unlink('upload/produk/' . $r->item_image);
                         }
@@ -170,11 +170,11 @@ class Supplier extends BaseController
             'supplier'   => $this->m_supplier->findAll(),
             'kode_po'    => $kode_po,
         ];
-        if (! empty($this->request->getPost('input_order'))) {
+        if (!empty($this->request->getPost('input_order'))) {
             $formSubmit = $this->validate([
                 'supplier_name' => 'required',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/suppliers/order-items')->withInput();
             }
             $this->m_order->save([
@@ -204,12 +204,12 @@ class Supplier extends BaseController
 
             return redirect()->to('/suppliers/order-items')->withCookies();
         }
-        if (! empty($this->request->getPost('update_status_order'))) {
+        if (!empty($this->request->getPost('update_status_order'))) {
             // Disini ada perkondisian untuk menghitung
             $formSubmit = $this->validate([
                 'order_name_up' => 'required',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/suppliers/order-items')->withInput();
             }
             if ($this->request->getPost('order_name_up') == 8) {
@@ -239,10 +239,10 @@ class Supplier extends BaseController
 
             return redirect()->to('/suppliers/order-items')->withCookies();
         }
-        if (! empty($this->request->getPost('delete_order'))) {
+        if (!empty($this->request->getPost('delete_order'))) {
             // Disini ada perkondisian untuk menghitung
             $find = $this->m_order->find($this->request->getPost('id_order'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 if ($this->m_order->delete($this->request->getPost('id_order'))) {
                     session()->setFlashdata('berhasil', 'Permintaan Order Barang Yang Dipilih Berhasil Dihapus');
 
@@ -262,9 +262,9 @@ class Supplier extends BaseController
 
     public function create_order()
     {
-        if (! empty($this->request->getGet('order_code'))) {
+        if (!empty($this->request->getGet('order_code'))) {
             $find = $this->m_order->getAllOrder(null, $this->request->getGet('order_code'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 $data = [
                     'supplier'    => $find,
                     'validation'  => $this->validate,
@@ -277,7 +277,7 @@ class Supplier extends BaseController
                         'item_name'     => 'required',
                         'item_quantity' => 'required|integer',
                     ]);
-                    if (! $formSubmit) {
+                    if (!$formSubmit) {
                         return redirect()->to('/suppliers/order-items')->withInput();
                     }
                     $check_item = $this->m_order_detail->where('item_id', $this->request->getPost('item_name'))->where('order_id', $this->request->getPost('id_order'))->findAll();
@@ -324,7 +324,7 @@ class Supplier extends BaseController
                         'item_name_up'     => 'required',
                         'item_quantity_up' => 'required|integer',
                     ]);
-                    if (! $formSubmit) {
+                    if (!$formSubmit) {
                         return redirect()->to('/suppliers/order-items')->withInput();
                     }
                     $find_order = $this->m_order_detail->find($this->request->getPost('id_order_detail'));
@@ -380,7 +380,7 @@ class Supplier extends BaseController
                 }
                 if ($this->request->getPost('delete_order')) {
                     $find_order = $this->m_order_detail->find($this->request->getPost('id_order'));
-                    if (! empty($find_order)) {
+                    if (!empty($find_order)) {
                         if ($this->m_order_detail->delete($this->request->getPost('id_order'))) {
                             $count      = $this->m_order_detail->getAllOrder($find[0]->id);
                             $i          = 0;
@@ -412,7 +412,22 @@ class Supplier extends BaseController
 
                     return redirect()->to('/suppliers/create_orders?order_code=' . $this->request->getGet('order_code'))->withCookies();
                 }
-
+                if ($this->request->getPost('input_order_po')) {
+                    $noted = $this->request->getPost('order_po');
+                    $update_data = $this->m_order->save([
+                        'id' => $find[0]->id,
+                        'order_po' => $noted,
+                    ]);
+                    if ($update_data) {
+                        //Cetak PO Ada Disini
+                        dd('cetak po');
+                    }
+                    session()->setFlashdata('gagal', 'Gagal Menambahkan Noted');
+                }
+                if ($this->request->getPost('input_rogs')) {
+                    // Cetak ROGS Disini
+                    dd('cetak rogs');
+                }
                 return view('Admin/page/create_orders', $data);
             }
             session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');
@@ -450,12 +465,12 @@ class Supplier extends BaseController
                 'item'          => $this->m_item->getAllItem(),
                 'validation'    => $this->validate,
             ];
-            if (! empty($this->request->getPost('update_status_order'))) {
+            if (!empty($this->request->getPost('update_status_order'))) {
                 $formSubmit = $this->validate([
                     'request_status' => 'required|integer',
                     'alasan'         => 'required|max_length[255]',
                 ]);
-                if (! $formSubmit) {
+                if (!$formSubmit) {
                     return redirect()->to('/suppliers/view-orders')->withInput();
                 }
                 $save = $this->m_request_order->save([
