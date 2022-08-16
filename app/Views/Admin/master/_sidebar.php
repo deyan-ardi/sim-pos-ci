@@ -52,6 +52,10 @@
                                <?php endif; ?>
                                <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Barang</a>
                                </li>
+                               <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG')) : ?>
+                                   <li class=""><a href="<?= base_url(); ?>/suppliers/receiving" class="">Receiving</a>
+                                   </li>
+                               <?php endif; ?>
                            </ul>
                        </li>
                        <li class="nav-item pcoded-menu-caption">

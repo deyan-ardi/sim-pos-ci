@@ -493,4 +493,40 @@ class Supplier extends BaseController
 
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
+
+    public function receiving()
+    {
+        $bulan        = $this->_month(date('m'));
+        $tahun        = date('Y');
+        $last_id      = $this->m_order->orderBy('id', 'DESC')->first() == null ? 1 : $this->m_order->orderBy('id', 'DESC')->first()->id + 1;
+        $leading_kode = sprintf('%03d', $last_id);
+        $kode_po      = "{$leading_kode}/DIN/{$bulan}/{$tahun}";
+        $data         = [
+            'order'      => $this->m_order->getAllOrder(),
+            'validation' => $this->validate,
+            'supplier'   => $this->m_supplier->findAll(),
+            'kode_po'    => $kode_po,
+        ];
+        return view('Admin/page/receiving/index', $data);
+    }
+
+    public function receiving_detail()
+    {
+        if (!empty($this->request->getGet('order_code'))) {
+            $find = $this->m_order->getAllOrder(null, $this->request->getGet('order_code'));
+            if (!empty($find)) {
+                $data = [
+                    'supplier'    => $find,
+                    'validation'  => $this->validate,
+                    'count_order' => $this->m_order->where('supplier_id', $find[0]->supplier_id)->countAllResults(),
+                    'order'       => $this->m_order_detail->getAllOrder($find[0]->id),
+                    'item'        => $this->m_item->getAllItem(null, $find[0]->supplier_id),
+                ];
+                return view('Admin/page/receiving/detail', $data);
+            }
+            session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');
+            return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+        }
+        return redirect()->to('/suppliers/receiving')->withCookies();
+    }
 }

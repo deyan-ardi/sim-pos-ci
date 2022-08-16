@@ -79,7 +79,7 @@ $routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING']
     $routes->post('/', 'Supplier::index');
     $routes->patch('/', 'Supplier::index');
     $routes->delete('/', 'Supplier::index');
-    $routes->get('view-orders/', 'Supplier::view_order');
+    $routes->get('view-orders', 'Supplier::view_order');
     $routes->patch('view-orders', 'Supplier::view_order');
     $routes->get('order-items', 'Supplier::order');
     $routes->post('order-items', 'Supplier::order');
@@ -90,6 +90,10 @@ $routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING']
     $routes->patch('create_orders', 'Supplier::create_order');
     $routes->delete('create_orders', 'Supplier::create_order');
     $routes->post('invoice', 'Supplier::export_pdf');
+
+    // Receiving
+    $routes->get('receiving', 'Supplier::receiving');
+    $routes->get('receiving-detail', 'Supplier::receiving_detail');
 });
 
 $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {
