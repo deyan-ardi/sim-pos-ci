@@ -185,19 +185,12 @@ class Supplier extends BaseController
                 'user_id'              => user()->id,
                 'supplier_id'          => $this->request->getPost('supplier_name'),
             ]);
-
-            $bulan        = $this->_month(date('m'));
-            $tahun        = date('Y');
-            $last_id      = $this->m_order->insertID;
-            $leading_kode = sprintf('%03d', $last_id);
-            $kode_po      = "{$leading_kode}/DIN/{$bulan}/{$tahun}";
-            $save         = $this->m_order->save([
+            $save_data         = $this->m_order->save([
                 'id'         => $last_id,
                 'order_code' => $kode_po,
             ]);
-            if ($save) {
+            if ($save_data) {
                 session()->setFlashdata('berhasil', 'Permintaan Order Barang Berhasil Dibuat');
-
                 return redirect()->to('/suppliers/order-items')->withCookies();
             }
             session()->setFlashdata('gagal', 'Gagal Menambahkan Order Barang');
@@ -215,14 +208,26 @@ class Supplier extends BaseController
             if ($this->request->getPost('order_name_up') == 8) {
                 $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
 
+                $status_order_data = true;
                 foreach ($order_data as $o) {
-                    $find_item   = $this->m_item->getAllItem($o->item_id);
-                    $total       = $find_item[0]->item_stock + $o->detail_quantity;
-                    $warehouse_a = $find_item[0]->item_warehouse_a + $o->detail_quantity;
-                    $this->m_item->save([
-                        'id'               => $find_item[0]->id,
-                        'item_warehouse_a' => $warehouse_a,
-                        'item_stock'       => $total,
+                    if ($o->status_order == 1) {
+                        $status_order_data = false;
+                    }
+                }
+
+                if ($status_order_data != true) {
+                    session()->setFlashdata('gagal', 'Belum Semua Barang Diterima, Tidak Dapat Diselesaikan');
+                    return redirect()->to('/suppliers/order-items')->withCookies();
+                }
+            }
+
+            if ($this->request->getPost('order_name_up') == 6) {
+                $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
+
+                foreach ($order_data as $o) {
+                    $save = $this->m_order_detail->save([
+                        'id' => $o->id,
+                        'status_order'    => 1,
                     ]);
                 }
             }
@@ -284,6 +289,9 @@ class Supplier extends BaseController
                     if (empty($check_item)) {
                         $save = $this->m_order_detail->save([
                             'detail_quantity' => $this->request->getPost('item_quantity'),
+                            'progress_total'  => $this->request->getPost('item_quantity'),
+                            'receiving_total' => 0,
+                            'status_order'    => 0,
                             'user_id'         => user()->id,
                             'order_id'        => $this->request->getPost('id_order'),
                             'item_id'         => $this->request->getPost('item_name'),
@@ -343,6 +351,9 @@ class Supplier extends BaseController
                         $save = $this->m_order_detail->save([
                             'id'              => $this->request->getPost('id_order_detail'),
                             'detail_quantity' => $this->request->getPost('item_quantity_up'),
+                            'progress_total'  => $this->request->getPost('item_quantity_up'),
+                            'status_order'    => 0,
+                            'receiving_total' => 0,
                             'user_id'         => user()->id,
                             'order_id'        => $this->request->getPost('id_order'),
                             'item_id'         => $this->request->getPost('item_name_up'),
@@ -522,6 +533,45 @@ class Supplier extends BaseController
                     'order'       => $this->m_order_detail->getAllOrder($find[0]->id),
                     'item'        => $this->m_item->getAllItem(null, $find[0]->supplier_id),
                 ];
+
+                if ($this->request->getPost('update_receiving')) {
+                    $total_receiving = $this->request->getPost('receiving_total');
+                    $order_detail = $this->m_order_detail->getAllOrderWhere($this->request->getPost('id_order_detail'));
+                    if ($total_receiving <= $order_detail[0]->detail_quantity) {
+                        $find_item   = $this->m_item->getAllItem($order_detail[0]->item_id);
+
+                        // Kurangi dlu dengan data di database
+                        $total       = $find_item[0]->item_stock - $order_detail[0]->receiving_total;
+                        $warehouse_a = $find_item[0]->item_warehouse_a - $order_detail[0]->receiving_total;
+
+                        // Tambahkan dengan data  dari receiving total
+                        $total_baru       = $total < 0 ? 0 + $total_receiving : $total + $total_receiving;
+                        $warehouse_a_baru = $warehouse_a < 0 ? 0 + $total_receiving : $warehouse_a + $total_receiving;
+
+                        // Simpan Data
+                        $save_item = $this->m_item->save([
+                            'id'               => $find_item[0]->id,
+                            'item_warehouse_a' => $warehouse_a_baru,
+                            'item_stock'       => $total_baru,
+                        ]);
+
+
+                        $save = $this->m_order_detail->save([
+                            'id' => $order_detail[0]->id,
+                            'receiving_total' => $total_receiving,
+                            'progress_total' => $order_detail[0]->detail_quantity - $total_receiving,
+                            'status_order' => $total_receiving == $order_detail[0]->detail_quantity ? 2 : 1,
+                            'receiving_remark' => $this->request->getPost('receiving_remark'),
+                        ]);
+                        if ($save && $save_item) {
+                            session()->setFlashdata('berhasil', 'Jumlah Barang Receiving Berhasil Diperbaharui');
+                            return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                        }
+                    } else {
+                        session()->setFlashdata('gagal', 'Total Receiving Tidak Dapat Lebih Dari Total Order');
+                        return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                    }
+                }
                 return view('Admin/page/receiving/detail', $data);
             }
             session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');

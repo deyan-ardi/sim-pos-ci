@@ -94,6 +94,7 @@ $routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING']
     // Receiving
     $routes->get('receiving', 'Supplier::receiving');
     $routes->get('receiving-detail', 'Supplier::receiving_detail');
+    $routes->patch('receiving-detail', 'Supplier::receiving_detail');
 });
 
 $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {

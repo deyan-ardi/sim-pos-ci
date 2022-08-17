@@ -100,10 +100,10 @@ Tambahkan Order
                                                             <th>#</th>
                                                             <th>Kode Barang</th>
                                                             <th>Nama Barang</th>
-                                                            <th>Harga Beli</th>
-                                                            <th>Harga Jual</th>
-                                                            <th>Harga Jual Akhir</th>
                                                             <th>Jumlah Order</th>
+                                                            <th>Receiving</th>
+                                                            <th>Belum Datang</th>
+                                                            <th>Status</th>
                                                             <th>Diubah Terakhir</th>
                                                             <th>Pegawai</th>
                                                             <?php if ($supplier[0]->order_status != 1) : ?>
@@ -122,21 +122,29 @@ Tambahkan Order
                                                                 <td><?= $i++; ?></td>
                                                                 <td><?= $c->item_code; ?></td>
                                                                 <td><?= $c->item_name; ?></td>
-                                                                <td>Rp.<?= format_rupiah($c->item_hpp); ?></td>
-                                                                <td>Rp.<?= format_rupiah($c->item_before_sale); ?></td>
-                                                                <td>Rp.<?= format_rupiah($c->item_sale); ?></td>
                                                                 <td><?= $c->detail_quantity; ?> Unit</td>
+                                                                <td><?= $c->receiving_total; ?> Unit</td>
+                                                                <td><?= $c->progress_total; ?> Unit</td>
+                                                                <?php if ($c->status_order == 1) : ?>
+                                                                    <td><a href="" class="btn btn-warning btn-sm">Pemeriksaan</a></td>
+                                                                <?php elseif ($c->status_order == 2) : ?>
+                                                                    <td><a href="" class="btn btn-success btn-sm">Terpenuhi</a></td>
+                                                                <?php endif; ?>
                                                                 <td>
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
                                                                 <td><?= $c->username; ?></td>
-                                                                <?php if ($supplier[0]->order_status != 1) : ?>
+                                                                <?php if ($supplier[0]->order_status != 1 && $c->status_order == 1) : ?>
                                                                     <td>
                                                                         <div class="row justify-content-center">
 
                                                                             <!-- Update Button Modal -->
                                                                             <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Order" data-toggle="tooltip"></i></button>
                                                                         </div>
+                                                                    </td>
+                                                                <?php elseif ($c->status_order == 2) : ?>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-success btn-icon btn-rounded" data-toggle="modal"><i class="feather icon-check" title="Terpenuhi" data-toggle="tooltip"></i></button>
                                                                     </td>
                                                                 <?php endif; ?>
                                                             </tr>
@@ -178,8 +186,7 @@ Tambahkan Order
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
-                        Supplier</h5>
+                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Receiving Order Barang</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
@@ -187,39 +194,51 @@ Tambahkan Order
                         <?= csrf_field(); ?>
                         <input type="hidden" name="_method" value="PATCH">
                         <input type="hidden" name="id_order_detail" value="<?= $c->id; ?>">
-                        <input type="hidden" value="<?= $supplier[0]->id; ?>" name="id_order">
                         <div class="form-group">
-                            <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name_up') ? 'is-invalid' : ''; ?>" style=" text-transform: capitalize;" name="item_name_up" required>
-                                <option value="">Pilih Item Barang Yang Ingin Dipesan</option>
-                                <?php foreach ($item as $s) : ?>
-                                    <?php if ($s->id == $c->item_id) : ?>
-                                        <option value="<?= $s->id; ?>" selected>
-                                            <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
-                                        </option>
-                                    <?php else : ?>
-                                        <option value="<?= $s->id; ?>">
-                                            <?= $s->item_code; ?> - <?= $s->item_name; ?> - <?= $s->item_merk; ?> - <?= $s->item_type; ?>
-                                        </option>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="invalid-feedback">
-                                <?= $validation->getError('item_name_up'); ?>
+                            <div class="input-group search-form">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Total Order</span>
+                                </div>
+                                <input type="number" min="0" class="form-control" disabled required placeholder="Belum Datang" value="<?= $c->detail_quantity; ?>">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Unit</span>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group search-form">
-                                <input type="number" min="0" class="form-control <?= $validation->getError('item_quantity_up') ? 'is-invalid' : ''; ?>" name="item_quantity_up" required placeholder="Jumlah Order" value="<?= old('item_quantity_up') ?: $c->detail_quantity; ?>">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Belum Datang</span>
+                                </div>
+                                <input type="number" min="0" class="form-control" disabled required placeholder="Belum Datang" value="<?= $c->progress_total; ?>">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Unit</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group search-form">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Receiving</span>
+                                </div>
+                                <input type="number" min="0" max="<?= $c->detail_quantity ?>" class="form-control <?= $validation->getError('item_quantity_up') ? 'is-invalid' : ''; ?>" name="receiving_total" required placeholder="Order Masuk" value="<?= old('receiving_total') ?: $c->receiving_total; ?>">
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-transparent">Unit</span>
                                 </div>
                                 <div class="invalid-feedback">
-                                    <?= $validation->getError('item_quantity_up'); ?>
+                                    <?= $validation->getError('receiving_total'); ?>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <textarea name="receiving_remark" id="receiving_remark" class="form-control <?= $validation->getError('receiving_remark') ? 'is-invalid' : ''; ?>" placeholder="Masukkan Remark (Optional)" cols="30" rows="5"><?= old('receiving_remark') ?: $c->receiving_remark; ?></textarea>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('receiving_remark'); ?>
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
-                            <button type="submit" name="update_order" value="update" class="btn btn-primary">Simpan
+                            <button type="submit" name="update_receiving" value="update" class="btn btn-primary">Simpan
                                 Perubahan</button>
                             <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
                         </div>

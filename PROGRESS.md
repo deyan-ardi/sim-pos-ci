@@ -13,7 +13,7 @@
 ## Gudang
 
 - ROGS dicetak di order barang [Sudah]
-- Receiving feature (Bagus, Diretur) mirip order barang, untuk menangani barang yang datang tapi belum semua
+- Receiving feature (Bagus, Diretur) mirip order barang, untuk menangani barang yang datang tapi belum semua [Sudah]
 - Buah ubah jadi unit [Sudah]
 - "Buat pesanan" dihapus di Gudang [Sudah]
 - Retur feature (cetak)

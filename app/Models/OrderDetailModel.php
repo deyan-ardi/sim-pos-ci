@@ -13,7 +13,7 @@ class OrderDetailModel extends Model
     protected $returnType       = OrderDetailModel::class;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'detail_quantity', 'user_id', 'order_id', 'item_id',
+        'detail_quantity', 'user_id', 'order_id', 'item_id', 'receiving_total', 'progress_total', 'status_order','receiving_remark',
     ];
 
     // Dates
@@ -25,6 +25,9 @@ class OrderDetailModel extends Model
 
     // Validation
     protected $validationRules = [
+        'receiving_total' => 'required',
+        'progress_total'  => 'required',
+        'status_order'    => 'required',
         'detail_quantity' => 'required',
         'user_id'         => 'required',
         'order_id'        => 'required',
@@ -44,5 +47,14 @@ class OrderDetailModel extends Model
 
             return $this->get()->getResult();
         }
+    }
+
+    public function getAllOrderWhere($id)
+    {
+        $this->select('order_details.*,items.item_name,items.item_code,items.item_hpp,items.item_before_sale,items.item_sale,users.username');
+        $this->join('items', 'items.id = order_details.item_id');
+        $this->join('users', 'users.id = order_details.user_id');
+        $this->where('order_details.id', $id);
+        return $this->get()->getResult();
     }
 }

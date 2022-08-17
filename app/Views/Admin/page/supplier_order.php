@@ -142,61 +142,21 @@ Order Barang Supplier
                                                                 <td><a href="" class="btn btn-info btn-sm">Diterima Gudang</a></td>
                                                             <?php elseif ($c->order_status == 8) : ?>
                                                                 <td><a href="" class="btn btn-success btn-sm">Selesai</a></td>
-                                                            <?php else : ?>
-                                                                <td><a href="" class="btn btn-danger btn-sm">Pengembalian</a></td>
                                                             <?php endif; ?>
                                                             <td>
                                                                 <div class="row justify-content-center">
                                                                     <?php if ($c->order_status !== 8) : ?>
                                                                         <!-- Set Status Button Modal -->
-                                                                        <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
+                                                                        <?php if (in_groups('PURCHASING') || in_groups('SUPER ADMIN')) : ?>
+                                                                            <?php if ($c->order_status != 6) : ?>
+                                                                                <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
+                                                                            <?php endif; ?>
+                                                                        <?php elseif (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
+                                                                            <?php if ($c->order_status == 6 || $c->order_status == 7) : ?>
+                                                                                <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
+                                                                            <?php endif; ?>
+                                                                        <?php endif; ?>
 
-                                                                        <!-- Update Modal -->
-                                                                        <div id="updateOrder-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrderLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                            <div class="modal-dialog" role="document">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h5 class="modal-title" id="updateOrderLabel-<?= $c->id; ?>">Ubah Status Order</h5>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <form action="" method="POST">
-                                                                                            <?= csrf_field(); ?>
-                                                                                            <input type="hidden" name="_method" value="PATCH">
-                                                                                            <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                                            <div class="form-group">
-                                                                                                <select class="form-control <?= $validation->getError('order_name_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="order_name_up" required>
-                                                                                                    <?php if (in_groups('PURCHASING') || in_groups('SUPER ADMIN')) : ?>
-                                                                                                        <option value="1" <?= $c->order_status == 1 ? 'selected' : ''; ?>>Request Diterima - Permintaan Pesanan Diterima</option>
-                                                                                                        <option value="2" <?= $c->order_status == 2 ? 'selected' : ''; ?>>Persetujuan - Pesanan Telah Dibuat, Request Persetujuan</option>
-                                                                                                        <option value="3" <?= $c->order_status == 3 ? 'selected' : ''; ?>>Order Keluar - Pesanan Disetujui, Order Keluar</option>
-                                                                                                        <option value="4" <?= $c->order_status == 4 ? 'selected' : ''; ?>>Invoice Masuk - Invoice Barang Yang Dipesan Telah Diterima</option>
-                                                                                                        <option value="5" <?= $c->order_status == 5 ? 'selected' : ''; ?>>Produksi - Barang Pesanan Sudah Dalam Tahap Produksi</option>
-                                                                                                        <option value="6" <?= $c->order_status == 6 ? 'selected' : ''; ?>>Dikirim Oleh Vendor - Pesanan Dikirim Supplier</option>
-                                                                                                    <?php elseif (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
-                                                                                                        <?php if ($c->order_status == 6 || $c->order_status == 7 || $c->order_status == 8 || $c->order_status == 9) : ?>
-                                                                                                            <option value="7" <?= $c->order_status == 7 ? 'selected' : ''; ?>>Diterima - Barang Telah Diterima Oleh Pihak Gudang</option>
-                                                                                                            <option value="8" <?= $c->order_status == 8 ? 'selected' : ''; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
-                                                                                                            <option value="9" <?= $c->order_status == 9 ? 'selected' : ''; ?>>Pengembalian - Ada Barang Yang Tidak Sesuai, Proses Retur</option>
-                                                                                                        <?php else : ?>
-                                                                                                            <option value="">-- Pesanan Belum Dikirim Oleh Supplier --</option>
-                                                                                                        <?php endif; ?>
-                                                                                                    <?php endif; ?>
-                                                                                                </select>
-                                                                                                <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError('order_name_up'); ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="submit" name="update_status_order" value="update" class="btn btn-primary">Simpan
-                                                                                                    Perubahan</button>
-                                                                                                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                            </div>
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
                                                                         <!-- Delete -->
                                                                         <form action="" id="<?= $c->id; ?>" method="POST">
                                                                             <?= csrf_field(); ?>
@@ -252,6 +212,58 @@ Order Barang Supplier
     </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<?php foreach ($order as $c) : ?>
+    <!-- Update Modal -->
+    <div id="updateOrder-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrderLabel-<?= $c->id; ?>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateOrderLabel-<?= $c->id; ?>">Ubah Status Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                        <div class="form-group">
+                            <select class="form-control <?= $validation->getError('order_name_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="order_name_up" required>
+                                <?php if (in_groups('PURCHASING') || in_groups('SUPER ADMIN')) : ?>
+                                    <?php if ($c->order_status != 6) : ?>
+                                        <option value="1" <?= $c->order_status == 1 ? 'selected' : ''; ?>>Request Diterima - Permintaan Pesanan Diterima</option>
+                                        <option value="2" <?= $c->order_status == 2 ? 'selected' : ''; ?>>Persetujuan - Pesanan Telah Dibuat, Request Persetujuan</option>
+                                        <option value="3" <?= $c->order_status == 3 ? 'selected' : ''; ?>>Order Keluar - Pesanan Disetujui, Order Keluar</option>
+                                        <option value="4" <?= $c->order_status == 4 ? 'selected' : ''; ?>>Invoice Masuk - Invoice Barang Yang Dipesan Telah Diterima</option>
+                                        <option value="5" <?= $c->order_status == 5 ? 'selected' : ''; ?>>Produksi - Barang Pesanan Sudah Dalam Tahap Produksi</option>
+                                        <option value="6" <?= $c->order_status == 6 ? 'selected' : ''; ?>>Dikirim Oleh Vendor - Pesanan Dikirim Supplier</option>
+                                    <?php else : ?>
+                                        <option value="">-- Pesanan Sudah Dikirim, Tidak Dapat Diubah --</option>
+                                    <?php endif; ?>
+                                <?php elseif (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
+                                    <?php if ($c->order_status == 6 || $c->order_status == 7) : ?>
+                                        <option value="7" <?= $c->order_status == 7 ? 'selected' : ''; ?>>Diterima - Barang Telah Diterima Oleh Pihak Gudang</option>
+                                        <option value="8" <?= $c->order_status == 8 ? 'selected' : ''; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
+                                    <?php else : ?>
+                                        <option value="">-- Pesanan Belum Dikirim Oleh Supplier --</option>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('order_name_up'); ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="update_status_order" value="update" class="btn btn-primary">Simpan
+                                Perubahan</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
 
 <!-- Modal -->
 <div id="addCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCategoryLabel" aria-hidden="true">

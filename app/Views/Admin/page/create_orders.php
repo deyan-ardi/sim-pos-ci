@@ -95,12 +95,12 @@ Tambahkan Order
                                         <div class="card-body">
                                             <form action="" method="POST">
                                                 <?= csrf_field(); ?>
-                                                
+
                                                 <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
                                                     <?php if ($supplier[0]->order_status == 1) : ?>
                                                         <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
                                                     <?php endif; ?>
-                                                    
+
                                                     <button type="button" data-toggle="modal" data-target="#cetakPO" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
                                                 <?php endif; ?>
 
@@ -169,7 +169,7 @@ Tambahkan Order
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th colspan="4" rowspan="2"></th>
+                                                            <th colspan="<?= $supplier[0]->order_status == 1 ? 5 : 4 ?>" rowspan="2"></th>
                                                             <th>Total Barang</th>
                                                             <th colspan="4"><?= $i - 1; ?> Jenis Barang</th>
                                                         </tr>

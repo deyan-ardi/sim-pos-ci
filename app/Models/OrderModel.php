@@ -23,7 +23,6 @@ class OrderModel extends Model
     protected $validationRules = [
         'order_code'           => 'required',
         'order_total_quantity' => 'required',
-        'order_po'             => 'required',
         'order_total_item'     => 'required',
         'order_status'         => 'required',
         'user_id'              => 'required',

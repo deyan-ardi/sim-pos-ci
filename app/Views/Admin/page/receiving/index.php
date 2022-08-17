@@ -65,7 +65,7 @@ Receiving Order Barang Supplier
                                                     $i = 1;
 
                                                     foreach ($order as $c) : ?>
-                                                        <?php if ($c->order_status != 1) : ?>
+                                                        <?php if ($c->order_status == 7 || $c->order_status == 8) : ?>
                                                             <tr>
                                                                 <td><?= $i++; ?></td>
                                                                 <td>PO No.<?= $c->order_code; ?></td>
