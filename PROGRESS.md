@@ -16,9 +16,10 @@
 - Receiving feature (Bagus, Diretur) mirip order barang, untuk menangani barang yang datang tapi belum semua [Sudah]
 - Buah ubah jadi unit [Sudah]
 - "Buat pesanan" dihapus di Gudang [Sudah]
-- Retur feature (cetak)
-- Ada fitur Done, langsung masuk di manajemen barang - laporan transaksi barang
-- Ada fitur noted, untuk ngasi tau kenapa barang diretur
+- Fitur retur barang [Sudah]
+- Cetak data barang retur
+- Ada fitur Done, langsung masuk di manajemen barang - laporan transaksi barang [Sudah]
+- Ada fitur noted, untuk ngasi tau kenapa barang diretur [Sudah]
 - List item barang, ubah jadi server side [Sudah]
 - SPPB menu baru
 

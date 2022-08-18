@@ -93,19 +93,27 @@ Tambahkan Order
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
-                                            <form action="" method="POST">
-                                                <?= csrf_field(); ?>
+                                            <div class="row">
+                                                <form action="" method="POST">
+                                                    <?= csrf_field(); ?>
 
-                                                <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
-                                                    <?php if ($supplier[0]->order_status == 1) : ?>
-                                                        <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                                    <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
+                                                        <?php if ($supplier[0]->order_status == 1) : ?>
+                                                            <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
+                                                        <?php endif; ?>
+
+                                                        <button type="button" data-toggle="modal" data-target="#cetakPO" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
                                                     <?php endif; ?>
 
-                                                    <button type="button" data-toggle="modal" data-target="#cetakPO" class="btn btn-gradient-success btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak PO</button>
+                                                    <button type="submit" name="input_rogs" value="rogs" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
+                                                </form>
+                                                <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG')) : ?>
+                                                    <form action="" method="POST">
+                                                        <?= csrf_field(); ?>
+                                                        <button type="submit" name="input_retur" value="rogs" class="btn btn-gradient-danger btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak Retur</button>
+                                                    </form>
                                                 <?php endif; ?>
-
-                                                <button type="submit" name="input_rogs" value="rogs" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
-                                            </form>
+                                            </div>
                                             <div class="dt-responsive table-responsive">
                                                 <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                     <thead>

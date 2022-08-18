@@ -93,6 +93,18 @@ Tambahkan Order
                                     </div>
                                     <div class="card-body">
                                         <div class="card-body">
+                                            <div class="row">
+                                                <form action="" method="POST">
+                                                    <?= csrf_field(); ?>
+                                                    <button type="submit" name="input_rogs" value="rogs" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
+                                                </form>
+                                                <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG')) : ?>
+                                                    <form action="" method="POST">
+                                                        <?= csrf_field(); ?>
+                                                        <button type="submit" name="input_retur" value="rogs" class="btn btn-gradient-danger btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak Retur</button>
+                                                    </form>
+                                                <?php endif; ?>
+                                            </div>
                                             <div class="dt-responsive table-responsive">
                                                 <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                     <thead>
@@ -103,6 +115,7 @@ Tambahkan Order
                                                             <th>Jumlah Order</th>
                                                             <th>Receiving</th>
                                                             <th>Belum Datang</th>
+                                                            <th>Di Retur</th>
                                                             <th>Status</th>
                                                             <th>Diubah Terakhir</th>
                                                             <th>Pegawai</th>
@@ -122,11 +135,12 @@ Tambahkan Order
                                                                 <td><?= $i++; ?></td>
                                                                 <td><?= $c->item_code; ?></td>
                                                                 <td><?= $c->item_name; ?></td>
-                                                                <td><?= $c->detail_quantity; ?> Unit</td>
-                                                                <td><?= $c->receiving_total; ?> Unit</td>
-                                                                <td><?= $c->progress_total; ?> Unit</td>
+                                                                <td><?= $c->detail_quantity; ?> Unit Dipesan</td>
+                                                                <td><?= $c->receiving_total; ?> Unit Sesuai</td>
+                                                                <td><?= $c->progress_total; ?> Unit Diproses</td>
+                                                                <td><?= $c->retur_total; ?> Unit Diretur</td>
                                                                 <?php if ($c->status_order == 1) : ?>
-                                                                    <td><a href="" class="btn btn-warning btn-sm">Pemeriksaan</a></td>
+                                                                    <td><a href="" class="btn btn-warning btn-sm">Berlangsung</a></td>
                                                                 <?php elseif ($c->status_order == 2) : ?>
                                                                     <td><a href="" class="btn btn-success btn-sm">Terpenuhi</a></td>
                                                                 <?php endif; ?>
@@ -154,7 +168,7 @@ Tambahkan Order
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th colspan="5" rowspan="2"></th>
+                                                            <th colspan="6" rowspan="2"></th>
                                                             <th>Total Barang</th>
                                                             <th colspan="4"><?= $i - 1; ?> Jenis Barang</th>
                                                         </tr>
@@ -208,20 +222,24 @@ Tambahkan Order
                         <div class="form-group">
                             <div class="input-group search-form">
                                 <div class="input-group-append">
-                                    <span class="input-group-text bg-transparent">Belum Datang</span>
+                                    <span class="input-group-text bg-transparent">Diproses</span>
                                 </div>
-                                <input type="number" min="0" class="form-control" disabled required placeholder="Belum Datang" value="<?= $c->progress_total; ?>">
+                                <input type="number" min="0" max="<?= $c->detail_quantity ?>" class="form-control <?= $validation->getError('progress_total') ? 'is-invalid' : ''; ?>" name="progress_total" required placeholder="Order Masuk" value="<?= old('progress_total') ?: $c->progress_total; ?>">
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-transparent">Unit</span>
                                 </div>
+                                <div class="invalid-feedback">
+                                    <?= $validation->getError('progress_total'); ?>
+                                </div>
                             </div>
+                            <small>Untuk barang-barang yang belum datang dari supplier, namun bukan termasuk barang yang diretur</small>
                         </div>
                         <div class="form-group">
                             <div class="input-group search-form">
                                 <div class="input-group-append">
-                                    <span class="input-group-text bg-transparent">Receiving</span>
+                                    <span class="input-group-text bg-transparent">Barang Sesuai</span>
                                 </div>
-                                <input type="number" min="0" max="<?= $c->detail_quantity ?>" class="form-control <?= $validation->getError('item_quantity_up') ? 'is-invalid' : ''; ?>" name="receiving_total" required placeholder="Order Masuk" value="<?= old('receiving_total') ?: $c->receiving_total; ?>">
+                                <input type="number" min="0" max="<?= $c->detail_quantity ?>" class="form-control <?= $validation->getError('receiving_total') ? 'is-invalid' : ''; ?>" name="receiving_total" required placeholder="Order Masuk" value="<?= old('receiving_total') ?: $c->receiving_total; ?>">
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-transparent">Unit</span>
                                 </div>
@@ -229,14 +247,29 @@ Tambahkan Order
                                     <?= $validation->getError('receiving_total'); ?>
                                 </div>
                             </div>
+                            <small>Untuk barang-barang yang sudah lolos cek dan dinyatakan sesuai</small>
                         </div>
                         <div class="form-group">
-                            <textarea name="receiving_remark" id="receiving_remark" class="form-control <?= $validation->getError('receiving_remark') ? 'is-invalid' : ''; ?>" placeholder="Masukkan Remark (Optional)" cols="30" rows="5"><?= old('receiving_remark') ?: $c->receiving_remark; ?></textarea>
+                            <div class="input-group search-form">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Barang Retur</span>
+                                </div>
+                                <input type="number" min="0" max="<?= $c->detail_quantity ?>" class="form-control <?= $validation->getError('retur_total') ? 'is-invalid' : ''; ?>" name="retur_total" required placeholder="Order Masuk" value="<?= old('retur_total') ?: $c->retur_total; ?>">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent">Unit</span>
+                                </div>
+                                <div class="invalid-feedback">
+                                    <?= $validation->getError('retur_total'); ?>
+                                </div>
+                            </div>
+                            <small>Untuk barang-barang retur yang belum datang dari supplier</small>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="retur_remark" id="retur_remark" class="form-control <?= $validation->getError('retur_remark') ? 'is-invalid' : ''; ?>" placeholder="Masukkan Remark Barang Retur (Optional)" cols="30" rows="5"><?= old('retur_remark') ?: $c->retur_remark; ?></textarea>
                             <div class="invalid-feedback">
-                                <?= $validation->getError('receiving_remark'); ?>
+                                <?= $validation->getError('retur_remark'); ?>
                             </div>
                         </div>
-
                         <div class="modal-footer">
                             <button type="submit" name="update_receiving" value="update" class="btn btn-primary">Simpan
                                 Perubahan</button>

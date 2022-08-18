@@ -221,7 +221,7 @@ class Supplier extends BaseController
                 }
             }
 
-            if ($this->request->getPost('order_name_up') == 6) {
+            if ($this->request->getPost('order_name_up') == 7) {
                 $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
 
                 foreach ($order_data as $o) {
@@ -291,6 +291,7 @@ class Supplier extends BaseController
                             'detail_quantity' => $this->request->getPost('item_quantity'),
                             'progress_total'  => $this->request->getPost('item_quantity'),
                             'receiving_total' => 0,
+                            'retur_total'     => 0,
                             'status_order'    => 0,
                             'user_id'         => user()->id,
                             'order_id'        => $this->request->getPost('id_order'),
@@ -352,6 +353,7 @@ class Supplier extends BaseController
                             'id'              => $this->request->getPost('id_order_detail'),
                             'detail_quantity' => $this->request->getPost('item_quantity_up'),
                             'progress_total'  => $this->request->getPost('item_quantity_up'),
+                            'retur_total'     => 0,
                             'status_order'    => 0,
                             'receiving_total' => 0,
                             'user_id'         => user()->id,
@@ -438,6 +440,10 @@ class Supplier extends BaseController
                 if ($this->request->getPost('input_rogs')) {
                     // Cetak ROGS Disini
                     dd('cetak rogs');
+                }
+                if ($this->request->getPost('input_retur')) {
+                    // Cetak ROGS Disini
+                    dd('cetak retur');
                 }
                 return view('Admin/page/create_orders', $data);
             }
@@ -536,41 +542,74 @@ class Supplier extends BaseController
 
                 if ($this->request->getPost('update_receiving')) {
                     $total_receiving = $this->request->getPost('receiving_total');
+                    $total_diproses = $this->request->getPost('progress_total');
+                    $total_retur = $this->request->getPost('retur_total');
                     $order_detail = $this->m_order_detail->getAllOrderWhere($this->request->getPost('id_order_detail'));
-                    if ($total_receiving <= $order_detail[0]->detail_quantity) {
-                        $find_item   = $this->m_item->getAllItem($order_detail[0]->item_id);
+                    if ($total_receiving <= $order_detail[0]->detail_quantity && $total_diproses <= $order_detail[0]->detail_quantity && $total_retur <= $order_detail[0]->detail_quantity) {
 
-                        // Kurangi dlu dengan data di database
-                        $total       = $find_item[0]->item_stock - $order_detail[0]->receiving_total;
-                        $warehouse_a = $find_item[0]->item_warehouse_a - $order_detail[0]->receiving_total;
+                        $hitung_total_data = $total_diproses + $total_receiving + $total_retur;
+                        if ($hitung_total_data == $order_detail[0]->detail_quantity) {
+                            $find_item   = $this->m_item->getAllItem($order_detail[0]->item_id);
 
-                        // Tambahkan dengan data  dari receiving total
-                        $total_baru       = $total < 0 ? 0 + $total_receiving : $total + $total_receiving;
-                        $warehouse_a_baru = $warehouse_a < 0 ? 0 + $total_receiving : $warehouse_a + $total_receiving;
+                            // Kurangi dlu dengan data di database
+                            $total       = $find_item[0]->item_stock - $order_detail[0]->receiving_total;
+                            $warehouse_a = $find_item[0]->item_warehouse_a - $order_detail[0]->receiving_total;
 
-                        // Simpan Data
-                        $save_item = $this->m_item->save([
-                            'id'               => $find_item[0]->id,
-                            'item_warehouse_a' => $warehouse_a_baru,
-                            'item_stock'       => $total_baru,
-                        ]);
+                            // Tambahkan dengan data  dari receiving total
+                            $total_baru       = $total < 0 ? 0 + $total_receiving : $total + $total_receiving;
+                            $warehouse_a_baru = $warehouse_a < 0 ? 0 + $total_receiving : $warehouse_a + $total_receiving;
+
+                            // Simpan Data
+                            $save_item = $this->m_item->save([
+                                'id'               => $find_item[0]->id,
+                                'item_warehouse_a' => $warehouse_a_baru,
+                                'item_stock'       => $total_baru,
+                            ]);
 
 
-                        $save = $this->m_order_detail->save([
-                            'id' => $order_detail[0]->id,
-                            'receiving_total' => $total_receiving,
-                            'progress_total' => $order_detail[0]->detail_quantity - $total_receiving,
-                            'status_order' => $total_receiving == $order_detail[0]->detail_quantity ? 2 : 1,
-                            'receiving_remark' => $this->request->getPost('receiving_remark'),
-                        ]);
-                        if ($save && $save_item) {
-                            session()->setFlashdata('berhasil', 'Jumlah Barang Receiving Berhasil Diperbaharui');
+                            $save = $this->m_order_detail->save([
+                                'id' => $order_detail[0]->id,
+                                'receiving_total' => $total_receiving,
+                                'progress_total' => $total_diproses,
+                                'retur_total' => $total_retur,
+                                'status_order' => $total_receiving == $order_detail[0]->detail_quantity ? 2 : 1,
+                                'retur_remark' => $total_receiving == $order_detail[0]->detail_quantity  ? NULL : $this->request->getPost('retur_remark'),
+                            ]);
+
+                            $all_detail_order_where_order = $this->m_order_detail->where('order_id', $order_detail[0]->order_id)->findAll();
+                            $status_all_detail_order_where_order = true;
+                            foreach ($all_detail_order_where_order as $o) {
+                                if ($o->status_order == 1) {
+                                    $status_all_detail_order_where_order = false;
+                                }
+                            }
+
+                            if ($status_all_detail_order_where_order == true) {
+                                $this->m_order->save([
+                                    'id'           => $order_detail[0]->order_id,
+                                    'order_status' => 8,
+                                ]);
+                            }
+                            if ($save && $save_item) {
+                                session()->setFlashdata('berhasil', 'Jumlah Barang Receiving Berhasil Diperbaharui');
+                                return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                            }
+                        } else {
+                            session()->setFlashdata('gagal', 'Total barang yang masuk tidak sama dengan total order');
                             return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
                         }
                     } else {
                         session()->setFlashdata('gagal', 'Total Receiving Tidak Dapat Lebih Dari Total Order');
                         return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
                     }
+                }
+                if ($this->request->getPost('input_rogs')) {
+                    // Cetak ROGS Disini
+                    dd('cetak rogs');
+                }
+                if ($this->request->getPost('input_retur')) {
+                    // Cetak ROGS Disini
+                    dd('cetak retur');
                 }
                 return view('Admin/page/receiving/detail', $data);
             }

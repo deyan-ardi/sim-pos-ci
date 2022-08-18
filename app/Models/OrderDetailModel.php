@@ -13,7 +13,7 @@ class OrderDetailModel extends Model
     protected $returnType       = OrderDetailModel::class;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'detail_quantity', 'user_id', 'order_id', 'item_id', 'receiving_total', 'progress_total', 'status_order','receiving_remark',
+        'detail_quantity', 'user_id', 'order_id', 'item_id', 'receiving_total', 'progress_total', 'retur_total', 'status_order', 'retur_remark',
     ];
 
     // Dates

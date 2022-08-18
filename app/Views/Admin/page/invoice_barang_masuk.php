@@ -137,7 +137,7 @@
 
 <body>
     <header class="clearfix">
-        <h1>LAPORAN TRANSAKSI <?= strtoupper($ket); ?></h1>
+        <h1>LAPORAN TRANSAKSI <br> <?= strtoupper($ket); ?></h1>
         <table id="info">
             <tr>
                 <td id="company">
@@ -147,7 +147,7 @@
                         <div>Jl. Mertasari Jl. Suwung Batan Kendal No.68 F, Sidakarya, <br /> Denpasar Selatan, Kota Denpasar, Bali</div>
                         <div>(0361) 710984</div>
                         <div><a href="mailto:dintara.kitchen@gmail.com">dintara.kitchen@gmail.com</a></div>
-                        <?php if (! empty($awal) && ! empty($akhir)) : ?>
+                        <?php if (!empty($awal) && !empty($akhir)) : ?>
                             <div>Data dari <?= $awal; ?> sampai <?= $akhir; ?></div>
                         <?php else : ?>
                             <div>Keseluruhan Data</div>
@@ -166,6 +166,7 @@
                     <th class="desc">NAMA BARANG</th>
                     <th class="desc">KODE ORDER</th>
                     <th>TOTAL ORDER</th>
+                    <th>BARANG DITERIMA</th>
                     <th>KATEGORI BARANG</th>
                     <th>NAMA SUPPLIER</th>
                     <th>STATUS ORDER</th>
@@ -197,6 +198,7 @@
                             <td><?= $c->item_name; ?></td>
                             <td><?= $c->order_code; ?></td>
                             <td><?= $c->detail_quantity; ?> Unit</td>
+                            <td><?= $c->receiving_total; ?> Unit</td>
                             <td><?= $c->category_name; ?></td>
                             <td><?= $c->supplier_name; ?></td>
                             <td><button class="btn btn-success">Sukses</button></td>
@@ -208,11 +210,11 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
                 <tr class="total">
-                    <th colspan="6">Total Item Dipesan</th>
+                    <th colspan="7">Total Item Dipesan</th>
                     <th colspan="4"><?= $total_item; ?> Item</th>
                 </tr>
                 <tr class="grand-total">
-                    <th colspan="6">Total Jumlah Order</th>
+                    <th colspan="7">Total Jumlah Order</th>
                     <th colspan="4"><?= $total_order; ?> Unit</th>
                 </tr>
             </tbody>

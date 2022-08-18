@@ -3,7 +3,8 @@ $(document).ready(function() {
         // [ Zero Configuration ] start
         $('#simpletable').DataTable();
         $("#simpletable2").DataTable();
-
+        $("#simpletable3").DataTable();
+        $("#simpletable4").DataTable();
 
         // [ Default Ordering ] start
         $('#order-table').DataTable({
