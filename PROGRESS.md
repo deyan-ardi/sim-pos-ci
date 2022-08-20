@@ -23,11 +23,11 @@
 - List item barang, ubah jadi server side [Sudah]
 - SPPB menu baru
 
-## Marketing
+## Marketing atau Kasir??
 
 - Kasir Project, ada beberapa status (Draft, Done)
 - Marketing pertama2 melakukan penawaran, setelah itu baru jika disetuji menjadi deal, setelah itu lanjut ke finance
-- Handling & Final Connecting bersifat opsional
+- Handling & Final Connecting bersifat opsional [Sudah]
 - Cakupannya sampe penawaran saja
 - Pas fase penawaran, gk langsung ngurangin stok
 - Nambah 2 tipe user, finance dan tim proyek [Sudah]
@@ -58,4 +58,4 @@
 - Fitur SPPB dilihat dlu, baru cetak SPPB, sehabis dicetak baru update stok
 - Setelah cetak SPPB, di gudang itu akan otomatis surat jalan
 - Saat project mau nyetak, ada textarea untuk nambah alamat
-- Update Nomor Transaksi
+- Update Nomor Transaksi [Sudah]

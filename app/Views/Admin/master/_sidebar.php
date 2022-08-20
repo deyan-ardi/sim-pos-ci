@@ -26,7 +26,7 @@
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Marketing</label>
                        </li>
-                       <li data-username="marketing items order report suppliers" class="nav-item pcoded-hasmenu">
+                       <li data-username="marketing item order laporan supplier request permintaan" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-percent"></i></span><span class="pcoded-mtext">Manajemen Marketing</span></a>
                            <ul class="pcoded-submenu">
                                <li class=""><a href="<?= base_url(); ?>/marketing" class="">Data Barang</a></li>
@@ -41,7 +41,7 @@
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Supplier</label>
                        </li>
-                       <li data-username="supplier items order report suppliers" class="nav-item pcoded-hasmenu">
+                       <li data-username="supplier item order barang receiving permintaan" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Manajemen
                                    Supplier</span></a>
                            <ul class="pcoded-submenu">
@@ -61,7 +61,7 @@
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Item Barang</label>
                        </li>
-                       <li data-username="items item management categories" class="nav-item pcoded-hasmenu">
+                       <li data-username="item data barang transaksi laporan" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Manajemen
                                    Barang</span></a>
                            <ul class="pcoded-submenu">
@@ -75,10 +75,10 @@
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Manajemen User</label>
                        </li>
-                       <li data-username="user users admin atasan super kasir members member shop" class="nav-item pcoded-hasmenu">
+                       <li data-username="user admin atasan super kasir member pelanggan projek" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Manajemen User</span></a>
                            <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/members" class="">Data Pelanggan Project</a></li>
+                               <li class=""><a href="<?= base_url(); ?>/members" class="">Data Pelanggan Projek</a></li>
                                <?php if (in_groups('SUPER ADMIN')) : ?>
                                    <li class=""><a href="<?= base_url(); ?>/users" class="">Data User Sistem</a></li>
                                <?php endif; ?>
@@ -88,17 +88,28 @@
                            <li class="nav-item pcoded-menu-caption">
                                <label>Menu Transaksi</label>
                            </li>
-                           <li data-username="payment cashier report" class="nav-item pcoded-hasmenu">
-                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Manajemen
-                                       Transaksi</span></a>
+                           <li data-username="transaksi general laporan penawaran daftar" class="nav-item pcoded-hasmenu">
+                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-minus"></i></span><span class="pcoded-mtext">Transaksi General</span></a>
                                <ul class="pcoded-submenu">
-                                   <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Transaksi Project</a></li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Project</a>
-                                   </li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir Transaksi General</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir Penawaran</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Daftar Penawaran</a>
                                    <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Laporan Transaksi General</a>
                                    </li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction/pengaturan" class="">Pengaturan Transaksi</a>
+                               </ul>
+                           </li>
+                           <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
+                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
+                               <ul class="pcoded-submenu">
+                                   <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Penawaran</a></li>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Daftar Penawaran</a>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Projek</a>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li data-username="pengaturan pph invoice transaksi project general" class="nav-item pcoded-hasmenu">
+                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Setelan Transaksi</span></a>
+                               <ul class="pcoded-submenu">
+                                   <li class=""><a href="<?= base_url(); ?>/transaction/pengaturan" class="">PPh dan Invoice</a>
                                    </li>
                                </ul>
                            </li>

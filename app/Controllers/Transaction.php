@@ -24,16 +24,55 @@ class Transaction extends BaseController
         $this->m_invoice     = new InvoiceSettingModel();
     }
 
+    public function _month($bulan)
+    {
+        if ($bulan == '01') {
+            return 'I';
+        }
+        if ($bulan == '02') {
+            return 'II';
+        }
+        if ($bulan == '03') {
+            return 'III';
+        }
+        if ($bulan == '04') {
+            return 'IV';
+        }
+        if ($bulan == '05') {
+            return 'V';
+        }
+        if ($bulan == '06') {
+            return 'VI';
+        }
+        if ($bulan == '07') {
+            return 'VII';
+        }
+        if ($bulan == '08') {
+            return 'VIII';
+        }
+        if ($bulan == '09') {
+            return 'IX';
+        }
+        if ($bulan == '10') {
+            return 'X';
+        }
+        if ($bulan == '11') {
+            return 'XI';
+        }
+
+        return 'XII';
+    }
+
     public function index()
     {
-        if (! get_cookie('transaction')) {
+        if (!get_cookie('transaction')) {
             $find_detail  = [];
             $find_sale    = null;
             $count_member = null;
         } else {
             $find_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction'));
             $find_sale   = $this->m_sale->getAllSale(get_cookie('transaction'));
-            if (! empty($find_sale)) {
+            if (!empty($find_sale)) {
                 $count_member = $this->m_sale->where('member_id', $find_sale[0]->user_id)->countAll();
             } else {
                 $count_member = null;
@@ -42,6 +81,11 @@ class Transaction extends BaseController
         // set_cookie('_transaction', 1, time() + 900);
         $pph_model = $this->m_pph->getAllPPh();
         // Send Data
+        $bulan        = $this->_month(date('m'));
+        $tahun        = date('Y');
+        $last_id      = $this->m_sale->orderBy('id', 'DESC')->first() == null ? 1 : $this->m_sale->orderBy('id', 'DESC')->first()->id + 1;
+        $leading_kode = sprintf('%03d', $last_id);
+        $kode_transaksi = "{$leading_kode}/PROJECT/DIN/{$bulan}/{$tahun}";
         $data = [
             'transaction' => $find_detail,
             'pph'         => $pph_model,
@@ -51,18 +95,16 @@ class Transaction extends BaseController
             'find_sale'   => $find_sale,
             'count_user'  => $count_member,
         ];
-        if (! empty($this->request->getPost('submit_member'))) {
+        if (!empty($this->request->getPost('submit_member'))) {
             $formSubmit = $this->validate([
                 'member_id' => 'required',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/transaction')->withInput();
             }
-            $string      = '0123456789BCDFGHJKLMNPQRSTVWXYZ';
-            $token       = substr(str_shuffle($string), 0, 10);
             $find_member = $this->m_member->find($this->request->getPost('member_id'));
             $save        = $this->m_sale->save([
-                'sale_code'     => $token,
+                'sale_code'     => $kode_transaksi,
                 'sale_total'    => 0,
                 'sale_pay'      => 0,
                 'sale_discount' => $find_member->member_discount,
@@ -82,18 +124,18 @@ class Transaction extends BaseController
 
             return redirect()->to('/transaction')->withCookies();
         }
-        if (! empty($this->request->getPost('submit_transaksi'))) {
+        if (!empty($this->request->getPost('submit_transaksi'))) {
             $formSubmit = $this->validate([
                 'item_barang'   => 'required',
                 'item_quantity' => 'required|integer',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/transaction')->withInput();
             }
             if (get_cookie('transaction')) {
                 // Cek apakah sudah ada item tersebut di database
                 $check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', get_cookie('transaction'))->findAll();
-                if (! empty($check)) {
+                if (!empty($check)) {
                     session()->setFlashdata('gagal', 'Barang Sudah Ada Di List, Gagal Menambahkan');
 
                     return redirect()->to('/transaction')->withCookies();
@@ -126,7 +168,7 @@ class Transaction extends BaseController
                     ]);
                     if ($save_item) {
 
-                                    // Perhitungan Belanja Baru
+                        // Perhitungan Belanja Baru
                         $get_all   = $this->m_sale_detail->where('sale_id', get_cookie('transaction'))->findAll();
                         $sub_tot_1 = 0;
 
@@ -165,11 +207,11 @@ class Transaction extends BaseController
 
             return redirect()->to('/transaction')->withCookies();
         }
-        if (! empty($this->request->getPost('batalkan_transaksi'))) {
+        if (!empty($this->request->getPost('batalkan_transaksi'))) {
             if (get_cookie('transaction')) {
                 $find_sale_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction'));
                 $find_item        = $this->m_item->findAll();
-                if (! empty($find_sale_detail)) {
+                if (!empty($find_sale_detail)) {
                     foreach ($find_sale_detail as $d) {
                         foreach ($find_item as $i) {
                             if ($d->item_id == $i->id) {
@@ -202,7 +244,7 @@ class Transaction extends BaseController
 
             return redirect()->to('/transaction')->withCookies();
         }
-        if (! empty($this->request->getPost('delete_item'))) {
+        if (!empty($this->request->getPost('delete_item'))) {
             if (get_cookie('transaction')) {
                 // Ambil detail penjualan
                 $detail_sale = $this->m_sale_detail->find($this->request->getPost('id_item'));
@@ -264,7 +306,7 @@ class Transaction extends BaseController
 
             return redirect()->to('/transaction')->withCookies();
         }
-        if (! empty($this->request->getPost('invoice'))) {
+        if (!empty($this->request->getPost('invoice'))) {
             if (get_cookie('transaction')) {
                 $save_update_status = $this->m_sale->save([
                     'id'          => get_cookie('transaction'),
@@ -317,8 +359,8 @@ class Transaction extends BaseController
 
     public function validation_payment()
     {
-        if (get_cookie('transaction') || ! empty($this->request->getPost('cetak_ulang'))) {
-            if (! empty($this->request->getPost('cetak_ulang'))) {
+        if (get_cookie('transaction') || !empty($this->request->getPost('cetak_ulang'))) {
+            if (!empty($this->request->getPost('cetak_ulang'))) {
                 $id_transaksi = $this->request->getPost('id_transaksi');
             } else {
                 $id_transaksi = get_cookie('transaction');
@@ -337,8 +379,8 @@ class Transaction extends BaseController
 
     public function add_handling_report()
     {
-        if (get_cookie('transaction') || ! empty($this->request->getPost('handling'))) {
-            if (! empty($this->request->getPost('handling'))) {
+        if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+            if (!empty($this->request->getPost('handling'))) {
                 $id_transaksi = $this->request->getPost('id_transaksi');
             } else {
                 $id_transaksi = get_cookie('transaction');
@@ -376,8 +418,8 @@ class Transaction extends BaseController
 
     public function add_handling()
     {
-        if (get_cookie('transaction') || ! empty($this->request->getPost('handling'))) {
-            if (! empty($this->request->getPost('handling'))) {
+        if (get_cookie('transaction') || !empty($this->request->getPost('handling'))) {
+            if (!empty($this->request->getPost('handling'))) {
                 $id_transaksi = $this->request->getPost('id_transaksi');
             } else {
                 $id_transaksi = get_cookie('transaction');
@@ -419,7 +461,7 @@ class Transaction extends BaseController
             'transaksi' => $this->m_sale->getAllSaleWhere('Project'),
         ];
         $find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->findAll();
-        if (! empty($this->request->getPost('invoice'))) {
+        if (!empty($this->request->getPost('invoice'))) {
             $save_update_status = $this->m_sale->save([
                 'id'          => $find_sale_code[0]->id,
                 'sale_status' => 1,
@@ -462,10 +504,10 @@ class Transaction extends BaseController
                 $mpdf->Output();
             }
         }
-        if (! empty($this->request->getPost('delete_transaksi'))) {
+        if (!empty($this->request->getPost('delete_transaksi'))) {
             $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
             $find_item        = $this->m_item->findAll();
-            if (! empty($find_sale_detail)) {
+            if (!empty($find_sale_detail)) {
                 foreach ($find_sale_detail as $d) {
                     foreach ($find_item as $i) {
                         if ($d->item_id == $i->id) {
@@ -503,7 +545,7 @@ class Transaction extends BaseController
         if ($this->request->getGet('sale_code') !== null) {
             $sale_code      = $this->request->getGet('sale_code');
             $find_sale_code = $this->m_sale->where('sale_code', $sale_code)->findAll();
-            if (! empty($find_sale_code)) {
+            if (!empty($find_sale_code)) {
                 $count_member = $this->m_sale->where('member_id', $find_sale_code[0]->user_id)->countAllResults();
                 $find_detail  = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
                 $find_sale    = $this->m_sale->getAllSale($find_sale_code[0]->id);
@@ -517,17 +559,17 @@ class Transaction extends BaseController
                     'pph'         => $pph_model,
                     'count_user'  => $count_member,
                 ];
-                if (! empty($this->request->getPost('submit_transaksi'))) {
+                if (!empty($this->request->getPost('submit_transaksi'))) {
                     $formSubmit = $this->validate([
                         'item_barang'   => 'required',
                         'item_quantity' => 'required|integer',
                     ]);
-                    if (! $formSubmit) {
+                    if (!$formSubmit) {
                         return redirect()->to('/transaction')->withInput();
                     }
                     // Cek apakah sudah ada item tersebut di database
                     $check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', $find_sale_code[0]->id)->findAll();
-                    if (! empty($check)) {
+                    if (!empty($check)) {
                         session()->setFlashdata('gagal', 'Barang Yang  Dipilih Sudah Ada Dalam List Transaksi');
 
                         return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
@@ -560,7 +602,7 @@ class Transaction extends BaseController
                         ]);
                         if ($save_item) {
 
-                                        // Perhitungan Belanja Baru
+                            // Perhitungan Belanja Baru
                             $get_all   = $this->m_sale_detail->where('sale_id', $find_sale_code[0]->id)->findAll();
                             $sub_tot_1 = 0;
 
@@ -595,10 +637,10 @@ class Transaction extends BaseController
 
                     return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
                 }
-                if (! empty($this->request->getPost('batalkan_transaksi'))) {
+                if (!empty($this->request->getPost('batalkan_transaksi'))) {
                     $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
                     $find_item        = $this->m_item->findAll();
-                    if (! empty($find_sale_detail)) {
+                    if (!empty($find_sale_detail)) {
                         foreach ($find_sale_detail as $d) {
                             foreach ($find_item as $i) {
                                 if ($d->item_id == $i->id) {
@@ -627,7 +669,7 @@ class Transaction extends BaseController
 
                     return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
                 }
-                if (! empty($this->request->getPost('delete_item'))) {
+                if (!empty($this->request->getPost('delete_item'))) {
 
                     // Ambil detail penjualan
                     $detail_sale = $this->m_sale_detail->find($this->request->getPost('id_item'));
@@ -687,7 +729,7 @@ class Transaction extends BaseController
 
                     return redirect()->to('/transaction/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
                 }
-                if (! empty($this->request->getPost('invoice'))) {
+                if (!empty($this->request->getPost('invoice'))) {
                     $save_update_status = $this->m_sale->save([
                         'id'          => $find_sale_code[0]->id,
                         'sale_status' => 1,
@@ -745,7 +787,7 @@ class Transaction extends BaseController
                 'invoice'    => $this->m_invoice->findAll(),
                 'validation' => $this->validate,
             ];
-            if (! empty($this->request->getPost('update_status_order'))) {
+            if (!empty($this->request->getPost('update_status_order'))) {
                 $save = $this->m_pph->save([
                     'id'        => $this->request->getPost('id_order'),
                     'pph_value' => $this->request->getPost('pph'),
@@ -759,7 +801,7 @@ class Transaction extends BaseController
 
                 return redirect()->to('/transaction/pengaturan')->withCookies();
             }
-            if (! empty($this->request->getPost('update_pengaturan'))) {
+            if (!empty($this->request->getPost('update_pengaturan'))) {
                 if ($this->request->getPost('pengaturan') == '' || empty($this->request->getPost('pengaturan'))) {
                     $value  = null;
                     $posisi = null;

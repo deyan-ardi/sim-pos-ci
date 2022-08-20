@@ -330,7 +330,7 @@ Transaksi Barang - Menu Kasir
                                                                             endforeach; ?>
                                                                 </tbody>
                                                                 <tfoot>
-                                                                    <?php if (! empty($find_sale[0]->sale_handling)) : ?>
+                                                                    <?php if ($find_sale[0]->sale_handling != NULL && $find_sale[0]->sale_handling >= 0) : ?>
                                                                         <tr>
                                                                             <th colspan="<?= $colspan_all; ?>" rowspan="9"></th>
                                                                             <th>Sub Total I</th>
@@ -349,7 +349,7 @@ Transaksi Barang - Menu Kasir
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2); ?></th>
                                                                         </tr>
                                                                         <tr>
-                                                                            <th>Handling & Final Connecting</th>
+                                                                            <th>Handling & Final Connecting (Optional)</th>
                                                                             <th colspan="<?= $colspan; ?>">
                                                                                 Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
                                                                             </th>
@@ -366,7 +366,7 @@ Transaksi Barang - Menu Kasir
                                                                             <th>Grand Total</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                         </tr>
-                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && ! empty($transaction)) : ?>
+                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
 
                                                                             <tr>
                                                                                 <th>Bayar</th>
@@ -375,7 +375,7 @@ Transaksi Barang - Menu Kasir
                                                                                         <?php csrf_field() ?>
                                                                                         <input type="hidden" name="cetak_ulang" value="cetak_ulang">
                                                                                         <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="number" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
+                                                                                        <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
                                                                                     </form>
                                                                                 </th>
                                                                             </tr>
@@ -411,13 +411,13 @@ Transaksi Barang - Menu Kasir
                                                                         </tr>
                                                                         <?php if ($find_sale[0]->sale_total > 0) : ?>
                                                                             <tr>
-                                                                                <th>Handling & Final Connecting</th>
+                                                                                <th>Handling & Final Connecting (Optional)</th>
                                                                                 <th colspan="<?= $colspan; ?>">
                                                                                     <form action="<?= base_url('transaction/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
                                                                                         <?php csrf_field() ?>
                                                                                         <input type="hidden" name="handling" value="handling">
                                                                                         <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="number" min="0" id="handling" value="0" placeholder=" Dalam Rupiah" name="handling_tot" class="form-control">
+                                                                                        <input type="text" id="handling" value="0" placeholder=" Dalam Rupiah" name="handling_tot" class="form-control">
                                                                                     </form>
                                                                                 </th>
                                                                             </tr>
@@ -434,10 +434,10 @@ Transaksi Barang - Menu Kasir
                                                             </table>
                                                         </div>
                                                         <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total) {
-                                                                                $disabled = 'disabled';
-                                                                            } else {
-                                                                                $disabled = '';
-                                                                            } ?>
+                                                            $disabled = 'disabled';
+                                                        } else {
+                                                            $disabled = '';
+                                                        } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
                                                                 <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">

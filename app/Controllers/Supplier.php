@@ -552,12 +552,12 @@ class Supplier extends BaseController
                             $find_item   = $this->m_item->getAllItem($order_detail[0]->item_id);
 
                             // Kurangi dlu dengan data di database
-                            $total       = $find_item[0]->item_stock - $order_detail[0]->receiving_total;
                             $warehouse_a = $find_item[0]->item_warehouse_a - $order_detail[0]->receiving_total;
+                            $total       = $find_item[0]->item_stock - $order_detail[0]->receiving_total;
 
                             // Tambahkan dengan data  dari receiving total
-                            $total_baru       = $total < 0 ? 0 + $total_receiving : $total + $total_receiving;
                             $warehouse_a_baru = $warehouse_a < 0 ? 0 + $total_receiving : $warehouse_a + $total_receiving;
+                            $total_baru       = $total < 0 ? 0 + $total_receiving : $total + $total_receiving;
 
                             // Simpan Data
                             $save_item = $this->m_item->save([
