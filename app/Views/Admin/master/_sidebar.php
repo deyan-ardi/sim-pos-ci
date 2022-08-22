@@ -49,11 +49,11 @@
                                    <li class=""><a href="<?= base_url(); ?>/suppliers" class="">Data Supplier</a></li>
                                    <li class=""><a href="<?= base_url(); ?>/suppliers/view-orders" class="">Daftar Permintaan Order</a>
                                    </li>
+                                   <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Barang</a>
+                                   </li>
                                <?php endif; ?>
-                               <li class=""><a href="<?= base_url(); ?>/suppliers/order-items" class="">Order Barang</a>
-                               </li>
                                <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG')) : ?>
-                                   <li class=""><a href="<?= base_url(); ?>/suppliers/receiving" class="">Receiving</a>
+                                   <li class=""><a href="<?= base_url(); ?>/suppliers/receiving" class="">Receiving Order Barang</a>
                                    </li>
                                <?php endif; ?>
                            </ul>
@@ -88,11 +88,10 @@
                            <li class="nav-item pcoded-menu-caption">
                                <label>Menu Transaksi</label>
                            </li>
-                           <li data-username="transaksi general laporan penawaran daftar" class="nav-item pcoded-hasmenu">
+                           <li data-username="transaksi general laporan daftar" class="nav-item pcoded-hasmenu">
                                <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-minus"></i></span><span class="pcoded-mtext">Transaksi General</span></a>
                                <ul class="pcoded-submenu">
-                                   <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir Penawaran</a></li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Daftar Penawaran</a>
+                                   <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir General</a></li>
                                    <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Laporan Transaksi General</a>
                                    </li>
                                </ul>

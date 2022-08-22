@@ -151,10 +151,6 @@ Order Barang Supplier
                                                                             <?php if ($c->order_status != 6) : ?>
                                                                                 <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
                                                                             <?php endif; ?>
-                                                                        <?php elseif (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
-                                                                            <?php if ($c->order_status == 6 || $c->order_status == 7) : ?>
-                                                                                <button type="button" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-package" title="Ubah Status Order" data-toggle="tooltip"></i></button>
-                                                                            <?php endif; ?>
                                                                         <?php endif; ?>
 
                                                                         <!-- Delete -->
@@ -239,13 +235,6 @@ Order Barang Supplier
                                         <option value="6" <?= $c->order_status == 6 ? 'selected' : ''; ?>>Dikirim Oleh Vendor - Pesanan Dikirim Supplier</option>
                                     <?php else : ?>
                                         <option value="">-- Pesanan Sudah Dikirim, Tidak Dapat Diubah --</option>
-                                    <?php endif; ?>
-                                <?php elseif (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
-                                    <?php if ($c->order_status == 6 || $c->order_status == 7) : ?>
-                                        <option value="7" <?= $c->order_status == 7 ? 'selected' : ''; ?>>Diterima - Barang Telah Diterima Oleh Pihak Gudang</option>
-                                        <option value="8" <?= $c->order_status == 8 ? 'selected' : ''; ?>>Selesai - Barang Telah Dicek dan Telah Sesuai</option>
-                                    <?php else : ?>
-                                        <option value="">-- Pesanan Belum Dikirim Oleh Supplier --</option>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </select>

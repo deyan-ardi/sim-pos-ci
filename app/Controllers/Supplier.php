@@ -524,7 +524,54 @@ class Supplier extends BaseController
             'supplier'   => $this->m_supplier->findAll(),
             'kode_po'    => $kode_po,
         ];
-        return view('Admin/page/receiving/index', $data);
+        if (!empty($this->request->getPost('update_status_order'))) {
+            // Disini ada perkondisian untuk menghitung
+            $formSubmit = $this->validate([
+                'order_name_up' => 'required',
+            ]);
+            if (!$formSubmit) {
+                return redirect()->to('/suppliers/receiving')->withInput();
+            }
+            if ($this->request->getPost('order_name_up') == 8) {
+                $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
+
+                $status_order_data = true;
+                foreach ($order_data as $o) {
+                    if ($o->status_order == 1) {
+                        $status_order_data = false;
+                    }
+                }
+
+                if ($status_order_data != true) {
+                    session()->setFlashdata('gagal', 'Belum Semua Barang Diterima, Tidak Dapat Diselesaikan');
+                    return redirect()->to('/suppliers/receiving')->withCookies();
+                }
+            }
+
+            if ($this->request->getPost('order_name_up') == 7) {
+                $order_data = $this->m_order_detail->where('order_id', $this->request->getPost('id_order'))->findAll();
+
+                foreach ($order_data as $o) {
+                    $save = $this->m_order_detail->save([
+                        'id' => $o->id,
+                        'status_order'    => 1,
+                    ]);
+                }
+            }
+            $save = $this->m_order->save([
+                'id'           => $this->request->getPost('id_order'),
+                'order_status' => $this->request->getPost('order_name_up'),
+            ]);
+            if ($save) {
+                session()->setFlashdata('berhasil', 'Status Order Berhasil Diperbaharui');
+
+                return redirect()->to('/suppliers/receiving')->withCookies();
+            }
+            session()->setFlashdata('gagal', 'Status Order Gagal Diperbaharui');
+            return redirect()->to('/suppliers/receiving')->withCookies();
+        }else{
+            return view('Admin/page/receiving/index', $data);
+        }
     }
 
     public function receiving_detail()
@@ -592,15 +639,15 @@ class Supplier extends BaseController
                             }
                             if ($save && $save_item) {
                                 session()->setFlashdata('berhasil', 'Jumlah Barang Receiving Berhasil Diperbaharui');
-                                return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                                return redirect()->to('/suppliers/receiving/detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
                             }
                         } else {
                             session()->setFlashdata('gagal', 'Total barang yang masuk tidak sama dengan total order');
-                            return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                            return redirect()->to('/suppliers/receiving/detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
                         }
                     } else {
                         session()->setFlashdata('gagal', 'Total Receiving Tidak Dapat Lebih Dari Total Order');
-                        return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+                        return redirect()->to('/suppliers/receiving/detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
                     }
                 }
                 if ($this->request->getPost('input_rogs')) {
@@ -614,7 +661,7 @@ class Supplier extends BaseController
                 return view('Admin/page/receiving/detail', $data);
             }
             session()->setFlashdata('gagal', 'Pesanan Gagal Ditemukan');
-            return redirect()->to('/suppliers/receiving-detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
+            return redirect()->to('/suppliers/receiving/detail?order_code=' . $this->request->getGet('order_code'))->withCookies();
         }
         return redirect()->to('/suppliers/receiving')->withCookies();
     }

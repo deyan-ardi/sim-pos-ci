@@ -22,19 +22,24 @@
 - Ada fitur noted, untuk ngasi tau kenapa barang diretur [Sudah]
 - List item barang, ubah jadi server side [Sudah]
 - SPPB menu baru
+- Order barang nggak ditampilin, karena sudah di Receiving [Sudah]
+- Gudang tidak bisa menghapus order [Sudah]
 
-## Marketing atau Kasir??
-
+## Marketing
+- Akses ke kasir penawaran untuk kasir project
 - Kasir Project, ada beberapa status (Draft, Done)
 - Marketing pertama2 melakukan penawaran, setelah itu baru jika disetuji menjadi deal, setelah itu lanjut ke finance
-- Handling & Final Connecting bersifat opsional [Sudah]
 - Cakupannya sampe penawaran saja
 - Pas fase penawaran, gk langsung ngurangin stok
 - Nambah 2 tipe user, finance dan tim proyek [Sudah]
 - Pas Deal juga belum dikurangi stoknya
 - Marketing, bisa melihat SPPB
 - Transaksi general, pertama done, lalu masuk ke finance, dicetak difinance, lalu dibawa ke SPPB
-- Untuk di dua kasir (Transaksi General/Project),
+
+## Kasir
+- Handling & Final Connecting bersifat opsional [Sudah]
+- Setelah disetujui penawearannya, kasir itu mencetak invoice hanya untuk di project
+- General dibiarkan seoperti awal [Sudah]
 
 ## Finance
 

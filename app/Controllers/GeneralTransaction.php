@@ -108,7 +108,6 @@ class GeneralTransaction extends BaseController
                 'sale_total'    => 0,
                 'sale_pay'      => 0,
                 'sale_discount' => $find_member->member_discount,
-                'sale_handling' => null,
                 'sale_profit'   => 0,
                 'sale_status'   => 0,
                 'sale_ket'      => 'General',

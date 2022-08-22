@@ -74,28 +74,34 @@ $routes->group('users', ['filter' => 'role:SUPER ADMIN'], ['namespace' => 'App\C
     $routes->delete('/', 'User::index');
 });
 
-$routes->group('suppliers', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
-    $routes->get('/', 'Supplier::index');
-    $routes->post('/', 'Supplier::index');
-    $routes->patch('/', 'Supplier::index');
-    $routes->delete('/', 'Supplier::index');
-    $routes->get('view-orders', 'Supplier::view_order');
-    $routes->patch('view-orders', 'Supplier::view_order');
-    $routes->get('order-items', 'Supplier::order');
-    $routes->post('order-items', 'Supplier::order');
-    $routes->patch('order-items', 'Supplier::order');
-    $routes->delete('order-items', 'Supplier::order');
-    $routes->get('create_orders', 'Supplier::create_order');
-    $routes->post('create_orders', 'Supplier::create_order');
-    $routes->patch('create_orders', 'Supplier::create_order');
-    $routes->delete('create_orders', 'Supplier::create_order');
-    $routes->post('invoice', 'Supplier::export_pdf');
+$routes->group('suppliers', ['namespace' => 'App\Controllers'], static function ($routes) {
+    $routes->group('', ['filter' => 'role:SUPER ADMIN, PURCHASING'], static function ($routes) {
+        $routes->get('/', 'Supplier::index');
+        $routes->post('/', 'Supplier::index');
+        $routes->patch('/', 'Supplier::index');
+        $routes->delete('/', 'Supplier::index');
+        $routes->get('view-orders', 'Supplier::view_order');
+        $routes->patch('view-orders', 'Supplier::view_order');
+        $routes->get('order-items', 'Supplier::order');
+        $routes->post('order-items', 'Supplier::order');
+        $routes->patch('order-items', 'Supplier::order');
+        $routes->delete('order-items', 'Supplier::order');
+        $routes->get('create_orders', 'Supplier::create_order');
+        $routes->post('create_orders', 'Supplier::create_order');
+        $routes->patch('create_orders', 'Supplier::create_order');
+        $routes->delete('create_orders', 'Supplier::create_order');
+        $routes->post('invoice', 'Supplier::export_pdf');
+    });
 
-    // Receiving
-    $routes->get('receiving', 'Supplier::receiving');
-    $routes->get('receiving-detail', 'Supplier::receiving_detail');
-    $routes->patch('receiving-detail', 'Supplier::receiving_detail');
-    $routes->post('receiving-detail', 'Supplier::receiving_detail');
+    $routes->group('receiving', ['filter' => 'role:SUPER ADMIN, GUDANG'], static function ($routes) {
+        // Receiving
+        $routes->get('/', 'Supplier::receiving');
+        $routes->post('invoice', 'Supplier::export_pdf');
+        $routes->patch('/', 'Supplier::receiving');
+        $routes->get('detail', 'Supplier::receiving_detail');
+        $routes->patch('detail', 'Supplier::receiving_detail');
+        $routes->post('detail', 'Supplier::receiving_detail');
+    });
 });
 
 $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {
