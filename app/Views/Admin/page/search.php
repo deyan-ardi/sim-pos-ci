@@ -311,7 +311,8 @@ Transaksi Barang - Menu Kasir
                                                                             endforeach; ?>
                                                                 </tbody>
                                                                 <tfoot>
-                                                                    <?php if (! empty($find_sale[0]->sale_handling)) : ?>
+                                                                    <?php if ($find_sale[0]->sale_handling != NULL && $find_sale[0]->sale_handling >= 0) : ?>
+
                                                                         <tr>
                                                                             <th colspan="<?= $colspan_all; ?>" rowspan="9"></th>
                                                                             <th>Sub Total I</th>
@@ -347,7 +348,7 @@ Transaksi Barang - Menu Kasir
                                                                             <th>Grand Total</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                         </tr>
-                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && ! empty($transaction)) : ?>
+                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
 
                                                                             <tr>
                                                                                 <th>Bayar</th>
@@ -356,7 +357,7 @@ Transaksi Barang - Menu Kasir
                                                                                         <?php csrf_field() ?>
                                                                                         <input type="hidden" name="cetak_ulang" value="cetak_ulang">
                                                                                         <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="number" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
+                                                                                        <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
                                                                                     </form>
                                                                                 </th>
                                                                             </tr>
@@ -398,7 +399,7 @@ Transaksi Barang - Menu Kasir
                                                                                         <?php csrf_field() ?>
                                                                                         <input type="hidden" name="handling" value="handling">
                                                                                         <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="number" min="0" id="handling" value="0" placeholder=" Dalam Rupiah" name="handling_tot" class="form-control">
+                                                                                        <input type="text" min="0" id="handling" value="0" placeholder=" Dalam Rupiah" name="handling_tot" class="form-control">
                                                                                     </form>
                                                                                 </th>
                                                                             </tr>
@@ -415,26 +416,26 @@ Transaksi Barang - Menu Kasir
                                                             </table>
                                                         </div>
                                                         <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total) {
-                                                                                $disabled = 'disabled';
-                                                                            } else {
-                                                                                $disabled = '';
-                                                                            } ?>
+                                                            $disabled = 'disabled';
+                                                        } else {
+                                                            $disabled = '';
+                                                        } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <input type="hidden" name="invoice" value="invoice">
-                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
+                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->sale_code; ?>" method="POST">
+                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
                                                                     <?php csrf_field() ?>
 
                                                                     <input type="hidden" name="_method" value="DELETE">
                                                                     <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
+                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
                                                                 </form>
                                                             </div>
                                                         </div>

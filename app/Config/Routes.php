@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Controllers\Transaction;
+
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
@@ -115,21 +117,35 @@ $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['names
     $routes->delete('order-items', 'Marketing::order');
 });
 
-$routes->group('transaction', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], static function ($routes) {
-    $routes->get('/', 'Transaction::index');
-    $routes->post('/', 'Transaction::index');
-    $routes->delete('/', 'Transaction::index');
+$routes->group('transaction', ['namespace' => 'App\Controllers'], static function ($routes) {
+
+    // All
     $routes->patch('validation_payment', 'Transaction::validation_payment');
     $routes->post('report/add_handling', 'Transaction::add_handling_report');
     $routes->post('add_handling', 'Transaction::add_handling');
     $routes->get('report', 'Transaction::report');
     $routes->post('report', 'Transaction::report');
-    $routes->delete('report', 'Transaction::report');
-    $routes->post('report/search', 'Transaction::search');
-    $routes->delete('report/search', 'Transaction::search');
-    $routes->get('report/search', 'Transaction::search');
-    $routes->get('pengaturan', 'Transaction::pengaturan');
-    $routes->patch('pengaturan', 'Transaction::pengaturan');
+    $routes->get('list-penawaran', 'Transaction::penawaran');
+    $routes->post('list-penawaran', 'Transaction::penawaran');
+    
+    // Marketing
+    $routes->group('', ['filter' => 'role:SUPER ADMIN, MARKETING'], static function ($routes) {
+        $routes->get('/', 'Transaction::index');
+        $routes->post('/', 'Transaction::index');
+        $routes->delete('/', 'Transaction::index');
+        $routes->patch('list-penawaran', 'Transaction::penawaran');
+        $routes->delete('list-penawaran', 'Transaction::penawaran');
+    });
+
+    // Kasir
+    $routes->group('report', ['filter' => 'role:SUPER ADMIN, KASIR'], static function ($routes) {
+        $routes->delete('/', 'Transaction::report');
+        $routes->post('search', 'Transaction::search');
+        $routes->delete('search', 'Transaction::search');
+        $routes->get('search', 'Transaction::search');
+        $routes->get('pengaturan', 'Transaction::pengaturan');
+        $routes->patch('pengaturan', 'Transaction::pengaturan');
+    });
 });
 
 $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], static function ($routes) {

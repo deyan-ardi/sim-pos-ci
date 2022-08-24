@@ -371,7 +371,7 @@ Transaksi Barang - Menu Kasir
                                                                                         <?php csrf_field() ?>
                                                                                         <input type="hidden" name="cetak_ulang" value="cetak_ulang">
                                                                                         <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="number" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
+                                                                                        <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
                                                                                     </form>
                                                                                 </th>
                                                                             </tr>
@@ -436,20 +436,20 @@ Transaksi Barang - Menu Kasir
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <input type="hidden" name="invoice" value="invoice">
-                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
+                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->sale_code; ?>" method="POST">
+                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
                                                                     <?php csrf_field() ?>
 
                                                                     <input type="hidden" name="_method" value="DELETE">
                                                                     <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
+                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
                                                                 </form>
                                                             </div>
                                                         </div>

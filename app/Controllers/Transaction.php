@@ -353,7 +353,11 @@ class Transaction extends BaseController
                 return redirect()->to('/transaction')->withCookies();
             }
         } else {
-            return view('Admin/page/transaction', $data);
+            if (in_groups('SUPER ADMIN') ||  in_groups('MARKETING')) {
+                return view('Admin/page/transaction', $data);
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
         }
     }
 

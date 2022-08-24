@@ -1,6 +1,6 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Transaksi Barang - Menu Kasir
+Transaksi Barang - Menu Kasir Penawaran
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
@@ -147,11 +147,11 @@ Transaksi Barang - Menu Kasir
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir dan Transaksi Project</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir Penawaran Transaksi Project</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Menu Kasir</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Menu Kasir Penawaran</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@ Transaksi Barang - Menu Kasir
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir - Pilih Member</span></h5>
+                                            <h5>Sistem Kasir Penawaran - Pilih Member</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
@@ -217,7 +217,7 @@ Transaksi Barang - Menu Kasir
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5>Sistem Kasir - Input Barang Yang Dibeli</span></h5>
+                                                        <h5>Sistem Kasir Penawaran - Input Barang Penawaran</span></h5>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="card-body">
@@ -263,7 +263,7 @@ Transaksi Barang - Menu Kasir
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <button type="submit" name="submit_transaksi" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Tambah Transaksi</button>
+                                                                    <button type="submit" name="submit_transaksi" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Tambah Penawaran</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -274,7 +274,7 @@ Transaksi Barang - Menu Kasir
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h5>Sistem Kasir - Rincian Transaksi</span></h5>
+                                                    <h5>Sistem Kasir Penawaran - Rincian Barang Penawaran</span></h5>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="card-body">
@@ -440,20 +440,20 @@ Transaksi Barang - Menu Kasir
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <input type="hidden" name="invoice" value="invoice">
-                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
+                                                                    <button type="submit" <?= $disabled; ?> data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Transaksi</button>
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->sale_code; ?>" method="POST">
+                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
                                                                     <?php csrf_field() ?>
 
                                                                     <input type="hidden" name="_method" value="DELETE">
                                                                     <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
+                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
                                                                 </form>
                                                             </div>
                                                         </div>

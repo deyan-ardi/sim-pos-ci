@@ -84,34 +84,45 @@
                                <?php endif; ?>
                            </ul>
                        </li>
-                       <?php if (in_groups('SUPER ADMIN') || in_groups('KASIR')) : ?>
+                       <?php if (in_groups('SUPER ADMIN') || in_groups('KASIR') || in_groups('MARKETING')) : ?>
                            <li class="nav-item pcoded-menu-caption">
                                <label>Menu Transaksi</label>
                            </li>
-                           <li data-username="transaksi general laporan daftar" class="nav-item pcoded-hasmenu">
-                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-minus"></i></span><span class="pcoded-mtext">Transaksi General</span></a>
-                               <ul class="pcoded-submenu">
-                                   <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir General</a></li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Laporan Transaksi General</a>
-                                   </li>
-                               </ul>
-                           </li>
-                           <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
-                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
-                               <ul class="pcoded-submenu">
-                                   <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Penawaran</a></li>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Daftar Penawaran</a>
-                                   <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Projek</a>
-                                   </li>
-                               </ul>
-                           </li>
-                           <li data-username="pengaturan pph invoice transaksi project general" class="nav-item pcoded-hasmenu">
-                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Setelan Transaksi</span></a>
-                               <ul class="pcoded-submenu">
-                                   <li class=""><a href="<?= base_url(); ?>/transaction/pengaturan" class="">PPh dan Invoice</a>
-                                   </li>
-                               </ul>
-                           </li>
+                           <?php if (in_groups('SUPER ADMIN') ||  in_groups('MARKETING')) : ?>
+                               <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
+                                   <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
+                                   <ul class="pcoded-submenu">
+                                       <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Penawaran</a></li>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/list-penawaran" class="">Daftar Penawaran</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Projek</a>
+                                       </li>
+                                   </ul>
+                               </li>
+                           <?php elseif (in_groups('SUPER ADMIN') ||  in_groups('KASIR')) : ?>
+                               <li data-username="transaksi general laporan daftar" class="nav-item pcoded-hasmenu">
+                                   <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-minus"></i></span><span class="pcoded-mtext">Transaksi General</span></a>
+                                   <ul class="pcoded-submenu">
+                                       <li class=""><a href="<?= base_url(); ?>/transaction-general" class="">Kasir General</a></li>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction-general/report" class="">Laporan Transaksi General</a>
+                                       </li>
+                                   </ul>
+                               </li>
+                               <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
+                                   <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
+                                   <ul class="pcoded-submenu">
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Daftar Penawaran</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Projek</a>
+                                       </li>
+                                   </ul>
+                               </li>
+                               <li data-username="pengaturan pph invoice transaksi project general" class="nav-item pcoded-hasmenu">
+                                   <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Setelan Transaksi</span></a>
+                                   <ul class="pcoded-submenu">
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/pengaturan" class="">PPh dan Invoice</a>
+                                       </li>
+                                   </ul>
+                               </li>
+                           <?php endif; ?>
                        <?php endif; ?>
                    <?php endif; ?>
                    <?php if (in_groups('SUPER ADMIN') || in_groups('ATASAN')) : ?>
