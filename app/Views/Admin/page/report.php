@@ -71,7 +71,7 @@ Laporan Transaksi
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>List Laporan Transaksi</h5>
+                                        <h5>List Laporan Transaksi Project</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="dt-responsive table-responsive">
@@ -112,8 +112,24 @@ Laporan Transaksi
                                                             </td>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if ($t->sale_status == 0) : ?>
-                                                                        <a href="<?= base_url(); ?>/transaction/report/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
+                                                                    <?php if (in_groups('SUPER ADMIN') ||  in_groups('KASIR')) : ?>
+                                                                        <?php if ($t->sale_status == 0) : ?>
+                                                                            <a href="<?= base_url(); ?>/transaction/cashier/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
+                                                                            <!-- Delete -->
+                                                                            <form action="" id="<?= $t->id; ?>" method="POST">
+                                                                                <?= csrf_field(); ?>
+                                                                                <input type="hidden" name="_method" value="DELETE" />
+                                                                                <input type="hidden" name="id_transaksi" value="<?= $t->sale_code; ?>">
+                                                                                <input type="hidden" name="delete_transaksi" value="delete">
+                                                                                <button type="submit" data-formid="<?= $t->id ?>" data-nama="<?= $t->sale_code ?>" class="btn btn-danger btn-icon btn-rounded delete-button" title="Hapus Transaksi" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                            </form>
+                                                                        <?php else : ?>
+                                                                            <form action="" target="_blank" method="POST">
+                                                                                <?= csrf_field(); ?>
+                                                                                <input type="hidden" name="id_transaksi" value="<?= $t->sale_code; ?>">
+                                                                                <button type="submit" name="invoice" value="invoice" class="btn btn-success btn-icon btn-rounded" title="Cetak Ulang Invoice Transaksi" data-toggle="tooltip"><i class="feather icon-printer"></i></button>
+                                                                            </form>
+                                                                        <?php endif; ?>
                                                                     <?php else : ?>
                                                                         <form action="" target="_blank" method="POST">
                                                                             <?= csrf_field(); ?>
@@ -121,15 +137,6 @@ Laporan Transaksi
                                                                             <button type="submit" name="invoice" value="invoice" class="btn btn-success btn-icon btn-rounded" title="Cetak Ulang Invoice Transaksi" data-toggle="tooltip"><i class="feather icon-printer"></i></button>
                                                                         </form>
                                                                     <?php endif; ?>
-                                                                    <!-- Delete -->
-                                                                    <form action="" id="<?= $t->id; ?>" method="POST">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                                        <input type="hidden" name="id_transaksi" value="<?= $t->sale_code; ?>">
-                                                                        <input type="hidden" name="delete_transaksi" value="delete">
-                                                                        <button type="submit" data-formid="<?= $t->id ?>" data-nama="<?= $t->sale_code ?>" class="btn btn-danger btn-icon btn-rounded delete-button" title="Hapus Transaksi" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                    </form>
-
                                                                 </div>
                                                             </td>
                                                         </tr>

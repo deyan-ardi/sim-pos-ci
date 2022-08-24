@@ -21,7 +21,7 @@ Transaksi Barang - Menu Kasir
     const ajax_send = () => {
         // console.log(event.key == "Enter");
         if (event.key == "Enter") {
-            let url = "<?= base_url() . '/transaction/validation_payment' ?>"
+            let url = "<?= base_url() . '/transaction/cashier/validation_payment' ?>"
             $.ajax({
                 url: url,
                 type: "POST",
@@ -395,7 +395,7 @@ Transaksi Barang - Menu Kasir
                                                                             <tr>
                                                                                 <th>Handling & Final Connecting</th>
                                                                                 <th colspan="<?= $colspan; ?>">
-                                                                                    <form action="<?= base_url('transaction/report/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
+                                                                                    <form action="<?= base_url('transaction/cashier/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
                                                                                         <?php csrf_field() ?>
                                                                                         <input type="hidden" name="handling" value="handling">
                                                                                         <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">

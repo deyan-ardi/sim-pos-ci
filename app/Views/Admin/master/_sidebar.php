@@ -92,9 +92,9 @@
                                <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
                                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
                                    <ul class="pcoded-submenu">
-                                       <li class=""><a href="<?= base_url(); ?>/transaction" class="">Kasir Penawaran</a></li>
-                                       <li class=""><a href="<?= base_url(); ?>/transaction/list-penawaran" class="">Daftar Penawaran</a>
-                                       <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Projek</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/marketing/kasir-penawaran" class="">Kasir Penawaran</a></li>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/marketing/list-penawaran" class="">Daftar Penawaran</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/marketing/report" class="">Laporan Transaksi Projek</a>
                                        </li>
                                    </ul>
                                </li>
@@ -110,8 +110,9 @@
                                <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
                                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
                                    <ul class="pcoded-submenu">
-                                       <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Daftar Penawaran</a>
-                                       <li class=""><a href="<?= base_url(); ?>/transaction/report" class="">Laporan Transaksi Projek</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/cashier/transaction-project" class="">Kasir Project</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/cashier/list-penawaran" class="">Daftar Penawaran</a>
+                                       <li class=""><a href="<?= base_url(); ?>/transaction/cashier/report" class="">Laporan Transaksi Projek</a>
                                        </li>
                                    </ul>
                                </li>

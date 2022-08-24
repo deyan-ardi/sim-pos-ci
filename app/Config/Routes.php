@@ -118,33 +118,59 @@ $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], ['names
 });
 
 $routes->group('transaction', ['namespace' => 'App\Controllers'], static function ($routes) {
-
-    // All
-    $routes->patch('validation_payment', 'Transaction::validation_payment');
-    $routes->post('report/add_handling', 'Transaction::add_handling_report');
-    $routes->post('add_handling', 'Transaction::add_handling');
-    $routes->get('report', 'Transaction::report');
-    $routes->post('report', 'Transaction::report');
-    $routes->get('list-penawaran', 'Transaction::penawaran');
-    $routes->post('list-penawaran', 'Transaction::penawaran');
-    
     // Marketing
-    $routes->group('', ['filter' => 'role:SUPER ADMIN, MARKETING'], static function ($routes) {
-        $routes->get('/', 'Transaction::index');
-        $routes->post('/', 'Transaction::index');
-        $routes->delete('/', 'Transaction::index');
-        $routes->patch('list-penawaran', 'Transaction::penawaran');
-        $routes->delete('list-penawaran', 'Transaction::penawaran');
+    $routes->group('marketing', ['filter' => 'role:SUPER ADMIN, MARKETING'], static function ($routes) {
+        $routes->post('report/add_handling', 'TransactionPenawaran::add_handling_report');
+        $routes->post('add_handling', 'TransactionPenawaran::add_handling');
+        $routes->group('kasir-penawaran', static function ($routes) {
+            $routes->get('/', 'TransactionPenawaran::index');
+            $routes->post('/', 'TransactionPenawaran::index');
+            $routes->delete('/', 'TransactionPenawaran::index');
+        });
+
+        $routes->group('list-penawaran', static function ($routes) {
+            $routes->get('/', 'TransactionPenawaran::list_penawaran');
+            $routes->post('/', 'TransactionPenawaran::list_penawaran');
+            $routes->delete('/', 'TransactionPenawaran::list_penawaran');
+        });
+
+        $routes->group('report', static function ($routes) {
+            $routes->get('/', 'TransactionPenawaran::report_marketing');
+            $routes->post('/', 'TransactionPenawaran::report_marketing');
+        });
     });
 
     // Kasir
-    $routes->group('report', ['filter' => 'role:SUPER ADMIN, KASIR'], static function ($routes) {
-        $routes->delete('/', 'Transaction::report');
-        $routes->post('search', 'Transaction::search');
-        $routes->delete('search', 'Transaction::search');
-        $routes->get('search', 'Transaction::search');
-        $routes->get('pengaturan', 'Transaction::pengaturan');
-        $routes->patch('pengaturan', 'Transaction::pengaturan');
+    $routes->group('cashier', ['filter' => 'role:SUPER ADMIN, KASIR'], static function ($routes) {
+        $routes->patch('validation_payment', 'Transaction::validation_payment');
+        $routes->post('report/add_handling', 'Transaction::add_handling_report');
+        $routes->post('add_handling', 'Transaction::add_handling');
+        $routes->group('transaction-project', static function ($routes) {
+            $routes->get('/', 'Transaction::index');
+            $routes->post('/', 'Transaction::index');
+            $routes->delete('/', 'Transaction::index');
+        });
+        $routes->group('report', static function ($routes) {
+            $routes->get('/', 'Transaction::report_kasir');
+            $routes->post('/', 'Transaction::report_kasir');
+            $routes->delete('/', 'Transaction::report_kasir');
+        });
+
+        $routes->group('list-penawaran', static function ($routes) {
+            $routes->get('/', 'Transaction::list_penawaran');
+            $routes->post('/', 'Transaction::list_penawaran');
+        });
+
+        $routes->group('search', static function ($routes) {
+            $routes->get('/', 'Transaction::search');
+            $routes->post('/', 'Transaction::search');
+            $routes->delete('/', 'Transaction::search');
+        });
+
+        $routes->group('pengaturan', static function ($routes) {
+            $routes->get('/', 'Transaction::pengaturan');
+            $routes->patch('/', 'Transaction::pengaturan');
+        });
     });
 });
 

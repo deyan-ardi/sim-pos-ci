@@ -16,6 +16,7 @@ class RequestOrderModel extends Model
         'request_description',
         'request_total',
         'request_status',
+        'request_po_code',
         'user_id',
         'item_id',
         'alasan',
@@ -42,8 +43,28 @@ class RequestOrderModel extends Model
             $this->select('request_orders.*,users.username,items.item_name,items.item_code');
             $this->join('items', 'items.id = request_orders.item_id');
             $this->join('users', 'users.id = request_orders.user_id');
-
             return $this->get()->getResult();
         }
+    }
+
+    public function getAllOrderWhere($item_id, $po)
+    {
+        $this->select('request_orders.*,users.username,items.item_name,items.item_code');
+        $this->join('items', 'items.id = request_orders.item_id');
+        $this->join('users', 'users.id = request_orders.user_id');
+        $this->where('request_orders.item_id', $item_id);
+        $this->where('request_orders.request_po_code', $po);
+        $this->where('request_orders.request_status', '!=', 1);
+        return $this->get()->getResult();
+    }
+
+    public function getAllOrderWherePenawaranCode($po)
+    {
+        $this->select('request_orders.*,users.username,items.item_name,items.item_code');
+        $this->join('items', 'items.id = request_orders.item_id');
+        $this->join('users', 'users.id = request_orders.user_id');
+        $this->where('request_orders.request_po_code', $po);
+        $this->where('request_orders.request_status', '!=', 1);
+        return $this->get()->getResult();
     }
 }
