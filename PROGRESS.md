@@ -26,19 +26,18 @@
 - Gudang tidak bisa menghapus order [Sudah]
 
 ## Marketing
-- Akses ke kasir penawaran untuk kasir project
-- Kasir Project, ada beberapa status (Draft, Done)
-- Marketing pertama2 melakukan penawaran, setelah itu baru jika disetuji menjadi deal, setelah itu lanjut ke finance
-- Cakupannya sampe penawaran saja
-- Pas fase penawaran, gk langsung ngurangin stok
+- Akses ke kasir penawaran untuk kasir project [Sudah]
+- Kasir Penawaran Project, ada beberapa status (Draft, Done) [Sudah]
+- Marketing pertama2 melakukan penawaran, setelah itu baru jika disetuji menjadi deal, setelah itu lanjut ke finance [Sudah]
+- Cakupannya sampe penawaran saja [Sudah]
+- Pas fase penawaran, gk langsung ngurangin stok [Sudah]
 - Nambah 2 tipe user, finance dan tim proyek [Sudah]
-- Pas Deal juga belum dikurangi stoknya
+- Pas Deal juga belum dikurangi stoknya [Sudah]
 - Marketing, bisa melihat SPPB
-- Transaksi general, pertama done, lalu masuk ke finance, dicetak difinance, lalu dibawa ke SPPB
 
 ## Kasir
 - Handling & Final Connecting bersifat opsional [Sudah]
-- Setelah disetujui penawearannya, kasir itu mencetak invoice hanya untuk di project
+- Setelah disetujui penawarannya, kasir itu mencetak invoice hanya untuk di project
 - General dibiarkan seoperti awal [Sudah]
 
 ## Finance

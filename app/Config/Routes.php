@@ -131,7 +131,14 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], static functio
         $routes->group('list-penawaran', static function ($routes) {
             $routes->get('/', 'TransactionPenawaran::list_penawaran');
             $routes->post('/', 'TransactionPenawaran::list_penawaran');
+            $routes->patch('/', 'TransactionPenawaran::list_penawaran');
             $routes->delete('/', 'TransactionPenawaran::list_penawaran');
+        });
+
+        $routes->group('search', static function ($routes) {
+            $routes->get('/', 'TransactionPenawaran::search');
+            $routes->post('/', 'TransactionPenawaran::search');
+            $routes->delete('/', 'TransactionPenawaran::search');
         });
 
         $routes->group('report', static function ($routes) {

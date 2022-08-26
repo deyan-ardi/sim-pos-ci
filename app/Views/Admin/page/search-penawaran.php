@@ -288,7 +288,7 @@ Transaksi Barang - Menu Kasir Penawaran
                                                                         <th>Banyak</th>
                                                                         <th>Harga</th>
                                                                         <th>Jumlah</th>
-                                                                        <?php if ($find_sale[0]->penawaran_handling == NULL) : ?>
+                                                                        <?php if ($find_sale[0]->penawaran_status != 2) : ?>
                                                                             <?php $colspan     = 3; ?>
                                                                             <?php $colspan_all = 3; ?>
 
@@ -314,7 +314,7 @@ Transaksi Barang - Menu Kasir Penawaran
                                                                             <td><?= $d->detail_quantity; ?> Unit</td>
                                                                             <td>Rp. <?= format_rupiah($d->item_sale); ?></td>
                                                                             <td>Rp. <?= format_rupiah($d->detail_total); ?></td>
-                                                                            <?php if ($find_sale[0]->penawaran_handling == NULL) : ?>
+                                                                            <?php if ($find_sale[0]->penawaran_status != 2) : ?>
                                                                                 <td>
                                                                                     <!-- Delete -->
                                                                                     <form action="" method="POST">
@@ -352,7 +352,7 @@ Transaksi Barang - Menu Kasir Penawaran
                                                                         <tr>
                                                                             <th>Handling & Final Connecting (Optional)</th>
                                                                             <th colspan="<?= $colspan; ?>">
-                                                                                <form action="<?= base_url('transaction/marketing/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
+                                                                                <form action="<?= base_url('transaction/marketing/report/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
                                                                                     <?php csrf_field() ?>
                                                                                     <input type="hidden" name="handling" value="handling">
                                                                                     <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">

@@ -33,17 +33,17 @@ class PenawaranModel extends Model
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;
 
-	public function getAllPenawaran($sale_id = null, $date_dari = null, $date_sampai = null, $ket = null)
+	public function getAllPenawaran($penawaran_id = null, $date_dari = null, $date_sampai = null, $ket = null)
 	{
-		if ($sale_id !== null && $date_dari === null) {
+		if ($penawaran_id !== null && $date_dari === null) {
 			$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,penawarans.*');
 			$this->join('members', 'members.id = penawarans.member_id');
 			$this->join('users', 'users.id = penawarans.user_id');
-			$this->where('penawarans.id', $sale_id);
+			$this->where('penawarans.id', $penawaran_id);
 
 			return $this->get()->getResult();
 		}
-		if ($sale_id === null && $date_dari !== null) {
+		if ($penawaran_id === null && $date_dari !== null) {
 			if ($ket === 'M') {
 				$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,penawarans.*');
 				$this->join('members', 'members.id = penawarans.member_id');
@@ -84,5 +84,23 @@ class PenawaranModel extends Model
 
 			return $this->get()->getResult();
 		}
+	}
+
+	public function getAllPenawaranWhere($ket)
+	{
+		if ($ket === 'General') {
+			$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,penawarans.*');
+			$this->join('members', 'members.id = penawarans.member_id');
+			$this->join('users', 'users.id = penawarans.user_id');
+			$this->where('penawarans.penawaran_ket', 'General');
+
+			return $this->get()->getResult();
+		}
+		$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,penawarans.*');
+		$this->join('members', 'members.id = penawarans.member_id');
+		$this->join('users', 'users.id = penawarans.user_id');
+		$this->where('penawarans.penawaran_ket', 'Project');
+
+		return $this->get()->getResult();
 	}
 }

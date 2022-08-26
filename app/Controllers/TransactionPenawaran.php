@@ -232,7 +232,6 @@ class TransactionPenawaran extends BaseController
 				return redirect()->to('/transaction/marketing/kasir-penawaran')->withCookies();
 			}
 			session()->setFlashdata('gagal', 'Session Transaksi Habis, Transaksi Tersimpan Sebagai Draft Di Menu Laporan Transaksi');
-
 			return redirect()->to('/transaction/marketing/kasir-penawaran')->withCookies();
 		}
 		if (!empty($this->request->getPost('delete_item'))) {
@@ -467,5 +466,293 @@ class TransactionPenawaran extends BaseController
 			}
 		}
 		return view('Admin/page/report', $data);
+	}
+
+	public function list_penawaran()
+	{
+		$data = [
+			'transaksi' => $this->m_penawaran->getAllPenawaranWhere('Project'),
+			'validation'  => $this->validate,
+		];
+		$find_penawaran_code = $this->m_penawaran->where('penawaran_code', $this->request->getPost('id_transaksi'))->first();
+		if (!empty($this->request->getPost('invoice'))) {
+			$save_update_status = $this->m_penawaran->save([
+				'id'          => $find_penawaran_code->id,
+				'penawaran_status' => 2,
+			]);
+			if ($save_update_status) {
+				$find_detail = $this->m_penawaran_detail->getAllPenawaranDetail($find_penawaran_code->id);
+				$find_sale   = $this->m_penawaran->getAllPenawaran($find_penawaran_code->id);
+				$find_member = $this->m_member->find($find_sale[0]->member_id);
+				$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
+				$pph_model   = $this->m_pph->getAllPPh();
+				$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
+				$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
+				$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
+				$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
+				$note        = $this->m_invoice->where('key', 'note')->first();
+				$data        = [
+					'detail'     => $find_detail,
+					'sale'       => $find_sale,
+					'pph'        => $pph_model,
+					'member'     => $find_member,
+					'user'       => $find_user,
+					'ttd_kiri'   => $ttd_kiri,
+					'ttd_tengah' => $ttd_tengah,
+					'ttd_kanan'  => $ttd_kanan,
+					'ttd_bawah'  => $ttd_bawah,
+					'note'       => $note,
+				];
+				// return view('Admin/page/invoice_transaction', $data);
+				$mpdf = new \Mpdf\Mpdf();
+				$html = view('Admin/page/invoice_transaction_penawaran', $data);
+				$mpdf->WriteHTML($html);
+				// $mpdf->SetWatermarkText("SUKSES");
+				// $mpdf->showWatermarkText = true;
+				$mpdf->showImageErrors = true;
+				$this->response->setHeader('Content-Type', 'application/pdf');
+				// $mpdf->AutoPrint(true);
+				$mpdf->SetJS('this.print();');
+				// $mpdf->Output('Invoice Transaction.pdf', 'I');
+				$mpdf->Output();
+			}
+		}
+		if (!empty($this->request->getPost('delete_transaksi'))) {
+			$kode_penawaran = $this->m_penawaran->where('id', $find_penawaran_code->id)->first();
+			$request_order_data = $this->m_request_order->getAllOrderWherePenawaranCode($kode_penawaran->penawaran_code);
+			if ($request_order_data > 0) {
+				foreach ($request_order_data as $data) {
+					$this->m_request_order->delete($data->id);
+				}
+			}
+
+			if ($this->m_penawaran->delete($find_penawaran_code->id)) {
+				session()->setFlashdata('berhasil', 'Berhasil Menghapus Penawaran Yang Dipilih');
+
+				return redirect()->to('/transaction/marketing/list-penawaran')->withCookies();
+			}
+			session()->setFlashdata('gagal', 'Gagal Menghapus Penawaran Yang Dipilih');
+			return redirect()->to('/transaction/marketing/list-penawaran')->withCookies();
+		}
+		if (!empty($this->request->getPost('update_status_penawaran'))) {
+			$this->m_penawaran->save([
+				'id' => $find_penawaran_code->id,
+				'penawaran_status' => $this->request->getPost('penawaran_status'),
+			]);
+			session()->setFlashdata('berhasil', 'Berhasil Mengubah Status Penawaran Yang Dipilih');
+			return redirect()->to('/transaction/marketing/list-penawaran')->withCookies();
+		}
+
+		return view('Admin/page/report-penawaran', $data);
+	}
+
+	public function search()
+	{
+		if ($this->request->getGet('penawaran_code') !== null) {
+			$penawaran_code      = $this->request->getGet('penawaran_code');
+			$find_penawaran_code = $this->m_penawaran->where('penawaran_code', $penawaran_code)->first();
+			if (!empty($find_penawaran_code)) {
+				$count_member = $this->m_penawaran->where('member_id', $find_penawaran_code->user_id)->countAllResults();
+				$find_detail  = $this->m_penawaran_detail->getAllPenawaranDetail($find_penawaran_code->id);
+				$find_sale    = $this->m_penawaran->getAllPenawaran($find_penawaran_code->id);
+				$pph_model    = $this->m_pph->getAllPPh();
+				$data         = [
+					'transaction' => $find_detail,
+					'member'      => $this->m_member->findAll(),
+					'validation'  => $this->validate,
+					'item'        => $this->m_item->getAllItemWhere(),
+					'find_sale'   => $find_sale,
+					'pph'         => $pph_model,
+					'count_user'  => $count_member,
+				];
+				if (!empty($this->request->getPost('submit_transaksi'))) {
+					$formSubmit = $this->validate([
+						'item_barang'   => 'required',
+						'item_quantity' => 'required|integer',
+					]);
+					if (!$formSubmit) {
+						return redirect()->to('/transaction/marketing/list-penawaran')->withInput();
+					}
+					// Cek apakah sudah ada item tersebut di database
+					$check = $this->m_penawaran_detail->where('item_id', $this->request->getPost('item_barang'))->where('penawaran_id', $find_penawaran_code->id)->findAll();
+					if (!empty($check)) {
+						session()->setFlashdata('gagal', 'Barang Yang  Dipilih Sudah Ada Dalam List Transaksi');
+
+						return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+					}
+					$item_barang = $this->m_item->find($this->request->getPost('item_barang'));
+					$stock_sisa  = $item_barang->item_stock - $this->request->getPost('item_quantity');
+					if ($stock_sisa < 0) {
+						$kode_penawaran = $this->m_penawaran->where('id', $find_penawaran_code->id)->first();
+						$request_order_data = $this->m_request_order->getAllOrderWhere($this->request->getPost('item_barang'), $kode_penawaran->penawaran_code);
+						if ($request_order_data > 0) {
+							foreach ($request_order_data as $data) {
+								$this->m_request_order->delete($data->id);
+							}
+						}
+						$this->m_request_order->save([
+							'request_description' => "Request Kekurangan Barang Untuk Transaksi Project PO.$kode_penawaran->penawaran_code",
+							'request_status' => 0,
+							'request_total' => abs($stock_sisa),
+							'request_po_code' => $kode_penawaran->penawaran_code,
+							'item_id'             => $this->request->getPost('item_barang'),
+							'user_id'             => user()->id,
+						]);
+					}
+					// Perhitungan Total Belanjar
+					$detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
+
+					// Total Keuntungan
+					$profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
+					$total_profit    = $find_sale[0]->penawaran_profit + $profit_per_item;
+					// $total_discount = $find_sale[0]->penawaran_discount + $item_barang->item_discount;
+					$save_penawaran_detail = $this->m_penawaran_detail->save([
+						'detail_total'    => $detail,
+						'detail_quantity' => $this->request->getPost('item_quantity'),
+						'user_id'         => user()->id,
+						'item_id'         => $this->request->getPost('item_barang'),
+						'penawaran_id'    => $find_penawaran_code->id,
+					]);
+					if ($save_penawaran_detail) {
+						// Perhitungan Belanja Baru
+						$get_all   = $this->m_penawaran_detail->where('penawaran_id', $find_penawaran_code->id)->findAll();
+						$sub_tot_1 = 0;
+
+						foreach ($get_all as $detail) {
+							$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+						}
+						$discount    = $sub_tot_1 * $find_sale[0]->penawaran_discount / 100;
+						$sub_tot_2   = $sub_tot_1 - $discount;
+						$sub_tot_3   = $find_sale[0]->penawaran_handling + $sub_tot_2;
+						$pph         = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+						$grand_total = $sub_tot_3 + $pph;
+						// End Perhitungan Belanja Baru
+
+						$save_sale = $this->m_penawaran->save([
+							'id'         => $find_penawaran_code->id,
+							'penawaran_total' => $grand_total,
+							// 'penawaran_discount' => $total_discount,
+							'penawaran_profit' => $total_profit,
+						]);
+						if ($save_sale) {
+							return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+						}
+						session()->setFlashdata('gagal', 'Gagal Mengubah Transaksi Yang Dipilih');
+						return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+					}
+					session()->setFlashdata('gagal', 'Gagal Menambahkan Detail Transaksi');
+					return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+				}
+				if (!empty($this->request->getPost('batalkan_transaksi'))) {
+					$kode_penawaran = $this->m_penawaran->where('id', $find_penawaran_code->id)->first();
+					$request_order_data = $this->m_request_order->getAllOrderWherePenawaranCode($kode_penawaran->penawaran_code);
+					if ($request_order_data > 0) {
+						foreach ($request_order_data as $data) {
+							$this->m_request_order->delete($data->id);
+						}
+					}
+					if ($this->m_penawaran->delete($find_penawaran_code->id)) {
+						session()->setFlashdata('berhasil', 'Berhasil Membatalkan Transaksi Yang Dipilih');
+						return redirect()->to('/transaction/marketing/list-penawaran')->withCookies();
+					}
+					session()->setFlashdata('gagal', 'Gagal Membatalkan Transaksi Yang Dipilih');
+					return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+				}
+				if (!empty($this->request->getPost('delete_item'))) {
+					// Ambil detail penjualan
+					$detail_sale = $this->m_penawaran_detail->find($this->request->getPost('id_item'));
+					// Ambil barang berdasarkan id item yang ada didetail penjualan
+					$item_barang = $this->m_item->find($detail_sale->item_id);
+					$kode_penawaran = $this->m_penawaran->where('id', $find_penawaran_code->id)->first();
+					$request_order_data = $this->m_request_order->getAllOrderWhere($detail_sale->item_id, $kode_penawaran->penawaran_code);
+					if ($request_order_data > 0) {
+						foreach ($request_order_data as $data) {
+							$this->m_request_order->delete($data->id);
+						}
+					}
+
+					// Perhitungan Total Belanjar
+					$detail = $detail_sale->detail_quantity * $item_barang->item_sale;
+
+					// Total Keuntungan
+					$profit_per_item = $detail_sale->detail_quantity * $item_barang->item_profit;
+					$total_profit    = $find_sale[0]->penawaran_profit - $profit_per_item;
+
+					// Perlu input itu ada stoknya, penawaran_total,penawaran_profit
+					// Pertama ubah stocknya
+					if ($this->m_penawaran_detail->delete($this->request->getPost('id_item'))) {
+						// Perhitungan Belanja Baru
+						$get_all   = $this->m_penawaran_detail->where('penawaran_id', $find_penawaran_code->id)->findAll();
+						$sub_tot_1 = 0;
+
+						foreach ($get_all as $detail) {
+							$sub_tot_1 = $sub_tot_1 + $detail->detail_total;
+						}
+						$discount    = $sub_tot_1 * $find_sale[0]->penawaran_discount / 100;
+						$sub_tot_2   = $sub_tot_1 - $discount;
+						$sub_tot_3   = $find_sale[0]->penawaran_handling + $sub_tot_2;
+						$pph         = $sub_tot_3 * $pph_model[0]->pph_value / 100;
+						$grand_total = $sub_tot_3 + $pph;
+						// End Perhitungan Belanja Baru
+
+						$save_update_sale = $this->m_penawaran->save([
+							'id'          => $find_penawaran_code->id,
+							'penawaran_total'  => $grand_total,
+							'penawaran_profit' => $total_profit,
+						]);
+
+						if ($save_update_sale) {
+							return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+						}
+						session()->setFlashdata('gagal', 'Gagal Memperbaharui Transaksi Yang Dipilih');
+
+						return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+					}
+					session()->setFlashdata('gagal', 'Gagal Menghapus Item Barang Yang Dipilih');
+
+					return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
+				}
+				if (!empty($this->request->getPost('invoice'))) {
+					$save_update_status = $this->m_penawaran->save([
+						'id'          => $find_penawaran_code->id,
+						'penawaran_status' => 1,
+					]);
+					if ($save_update_status) {
+						$find_member = $this->m_member->find($find_sale[0]->member_id);
+						$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
+						$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
+						$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
+						$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
+						$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
+						$note        = $this->m_invoice->where('key', 'note')->first();
+						$data        = [
+							'detail'     => $find_detail,
+							'sale'       => $find_sale,
+							'pph'        => $pph_model,
+							'member'     => $find_member,
+							'user'       => $find_user,
+							'ttd_kiri'   => $ttd_kiri,
+							'ttd_tengah' => $ttd_tengah,
+							'ttd_kanan'  => $ttd_kanan,
+							'ttd_bawah'  => $ttd_bawah,
+							'note'       => $note,
+						];
+						$mpdf = new \Mpdf\Mpdf();
+						$html = view('Admin/page/invoice_transaction_penawaran', $data);
+						$mpdf->WriteHTML($html);
+						$mpdf->showImageErrors = true;
+						$this->response->setHeader('Content-Type', 'application/pdf');
+						$mpdf->SetJS('this.print();');
+						$mpdf->Output();
+					}
+				} else {
+					return view('Admin/page/search-penawaran', $data);
+				}
+			} else {
+				return redirect()->to('/transaction/marketing/list-penawaran');
+			}
+		} else {
+			return redirect()->to('/transaction/marketing/list-penawaran');
+		}
 	}
 }
