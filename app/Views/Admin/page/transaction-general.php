@@ -24,12 +24,30 @@ Transaksi Barang - Menu Kasir
             var url = "<?= base_url() . '/GeneralTransaction/validation_payment' ?>"
             $.ajax({
                 url: url,
-                type: "PATCH",
+                type: "POST",
                 data: $('#form').serialize(),
                 dataType: "JSON",
                 success: function(data) {
+                    if (data.status == true) {
+                        swal({
+                                title: "Query Berhasil!",
+                                text: data.message,
+                                icon: "success",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    } else {
+                        swal({
+                                title: "Terjadi Kesalahan!",
+                                text: data.message,
+                                icon: "error",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    }
                     //if success close modal and reload ajax table
-                    location.reload(); // for reload a page
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error adding / update data');

@@ -366,14 +366,18 @@ class GeneralTransaction extends BaseController
             } else {
                 $id_transaksi = get_cookie('transaction-general');
             }
+            $sale = $this->m_sale->where('id', $id_transaksi)->first();
+            if ($this->request->getPost('bayar') - $sale->sale_total < 0) {
+                return json_encode(['status' => false, 'message' => 'Uang Yang Dimasukkan Kurang']);
+            }
             $save = $this->m_sale->save([
                 'id'       => $id_transaksi,
                 'sale_pay' => $this->request->getPost('bayar'),
             ]);
             if ($save) {
-                echo json_encode(['status' => true]);
+                return json_encode(['status' => true, "message" => "Transaksi Berhasil, Silahkan Cetak Invoice"]);
             } else {
-                echo json_encode(['status' => false]);
+                return json_encode(['status' => false, "message" => "Gagal Menyimpan Data"]);
             }
         }
     }
@@ -462,15 +466,15 @@ class GeneralTransaction extends BaseController
         $data = [
             'transaksi' => $this->m_sale->getAllSaleWhere('General'),
         ];
-        $find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->findAll();
+        $find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->first();
         if (!empty($this->request->getPost('invoice'))) {
             $save_update_status = $this->m_sale->save([
-                'id'          => $find_sale_code[0]->id,
+                'id'          => $find_sale_code->id,
                 'sale_status' => 1,
             ]);
             if ($save_update_status) {
-                $find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
-                $find_sale   = $this->m_sale->getAllSale($find_sale_code[0]->id);
+                $find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
+                $find_sale   = $this->m_sale->getAllSale($find_sale_code->id);
                 $find_member = $this->m_member->find($find_sale[0]->member_id);
                 $find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
                 $pph_model   = $this->m_pph->getAllPPh();
@@ -507,7 +511,7 @@ class GeneralTransaction extends BaseController
             }
         }
         if (!empty($this->request->getPost('delete_transaksi'))) {
-            $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
+            $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
             $find_item        = $this->m_item->findAll();
             if (!empty($find_sale_detail)) {
                 foreach ($find_sale_detail as $d) {
@@ -525,7 +529,7 @@ class GeneralTransaction extends BaseController
                 $status = true;
             }
             if ($status) {
-                if ($this->m_sale->delete($find_sale_code[0]->id)) {
+                if ($this->m_sale->delete($find_sale_code->id)) {
                     session()->setFlashdata('berhasil', 'Berhasil Menghapus Transaksi Yang Dipilih');
 
                     return redirect()->to('/transaction-general/report')->withCookies();
@@ -546,11 +550,11 @@ class GeneralTransaction extends BaseController
     {
         if ($this->request->getGet('sale_code') !== null) {
             $sale_code      = $this->request->getGet('sale_code');
-            $find_sale_code = $this->m_sale->where('sale_code', $sale_code)->findAll();
-            if (!empty($find_sale_code)) {
-                $count_member = $this->m_sale->where('member_id', $find_sale_code[0]->user_id)->countAllResults();
-                $find_detail  = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
-                $find_sale    = $this->m_sale->getAllSale($find_sale_code[0]->id);
+            $find_sale_code = $this->m_sale->where('sale_code', $sale_code)->first();
+            if (!empty($find_sale_code) && $find_sale_code->sale_status != 1 && $find_sale_code->sale_ket == "General") {
+                $count_member = $this->m_sale->where('member_id', $find_sale_code->user_id)->countAllResults();
+                $find_detail  = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
+                $find_sale    = $this->m_sale->getAllSale($find_sale_code->id);
                 $pph_model    = $this->m_pph->getAllPPh();
                 $data         = [
                     'transaction' => $find_detail,
@@ -570,7 +574,7 @@ class GeneralTransaction extends BaseController
                         return redirect()->to('/transaction-general')->withInput();
                     }
                     // Cek apakah sudah ada item tersebut di database
-                    $check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', $find_sale_code[0]->id)->findAll();
+                    $check = $this->m_sale_detail->where('item_id', $this->request->getPost('item_barang'))->where('sale_id', $find_sale_code->id)->findAll();
                     if (!empty($check)) {
                         session()->setFlashdata('gagal', 'Barang Yang  Dipilih Sudah Ada Dalam List Transaksi');
 
@@ -595,7 +599,7 @@ class GeneralTransaction extends BaseController
                         'detail_quantity' => $this->request->getPost('item_quantity'),
                         'user_id'         => user()->id,
                         'item_id'         => $this->request->getPost('item_barang'),
-                        'sale_id'         => $find_sale_code[0]->id,
+                        'sale_id'         => $find_sale_code->id,
                     ]);
                     if ($save_sale_detail) {
                         $save_item = $this->m_item->save([
@@ -605,7 +609,7 @@ class GeneralTransaction extends BaseController
                         if ($save_item) {
 
                             // Perhitungan Belanja Baru
-                            $get_all   = $this->m_sale_detail->where('sale_id', $find_sale_code[0]->id)->findAll();
+                            $get_all   = $this->m_sale_detail->where('sale_id', $find_sale_code->id)->findAll();
                             $sub_tot_1 = 0;
 
                             foreach ($get_all as $detail) {
@@ -619,7 +623,7 @@ class GeneralTransaction extends BaseController
                             // End Perhitungan Belanja Baru
 
                             $save_sale = $this->m_sale->save([
-                                'id'          => $find_sale_code[0]->id,
+                                'id'          => $find_sale_code->id,
                                 'sale_total'  => $grand_total,
                                 'sale_profit' => $total_profit,
                             ]);
@@ -639,7 +643,7 @@ class GeneralTransaction extends BaseController
                     return redirect()->to('/transaction-general/report/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
                 }
                 if (!empty($this->request->getPost('batalkan_transaksi'))) {
-                    $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
+                    $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
                     $find_item        = $this->m_item->findAll();
                     if (!empty($find_sale_detail)) {
                         foreach ($find_sale_detail as $d) {
@@ -657,7 +661,7 @@ class GeneralTransaction extends BaseController
                         $status = true;
                     }
                     if ($status) {
-                        if ($this->m_sale->delete($find_sale_code[0]->id)) {
+                        if ($this->m_sale->delete($find_sale_code->id)) {
                             session()->setFlashdata('berhasil', 'Berhasil Membatalkan Transaksi Yang Dipilih');
 
                             return redirect()->to('/transaction-general/report')->withCookies();
@@ -695,7 +699,7 @@ class GeneralTransaction extends BaseController
                     if ($save_update_stock) {
                         if ($this->m_sale_detail->delete($this->request->getPost('id_item'))) {
                             // Perhitungan Belanja Baru
-                            $get_all   = $this->m_sale_detail->where('sale_id', $find_sale_code[0]->id)->findAll();
+                            $get_all   = $this->m_sale_detail->where('sale_id', $find_sale_code->id)->findAll();
                             $sub_tot_1 = 0;
 
                             foreach ($get_all as $detail) {
@@ -731,7 +735,7 @@ class GeneralTransaction extends BaseController
                 }
                 if (!empty($this->request->getPost('invoice'))) {
                     $save_update_status = $this->m_sale->save([
-                        'id'          => $find_sale_code[0]->id,
+                        'id'          => $find_sale_code->id,
                         'sale_status' => 1,
                     ]);
                     if ($save_update_status) {

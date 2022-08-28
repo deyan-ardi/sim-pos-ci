@@ -185,7 +185,7 @@ $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], [
     $routes->get('/', 'GeneralTransaction::index');
     $routes->post('/', 'GeneralTransaction::index');
     $routes->delete('/', 'GeneralTransaction::index');
-    $routes->patch('validation_payment', 'GeneralTransaction::validation_payment');
+    $routes->post('validation_payment', 'GeneralTransaction::validation_payment');
     $routes->post('report/add_handling', 'GeneralTransaction::add_handling_report');
     $routes->post('add_handling', 'GeneralTransaction::add_handling');
     $routes->get('report', 'GeneralTransaction::report');

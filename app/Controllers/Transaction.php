@@ -393,7 +393,7 @@ class Transaction extends BaseController
         if ($this->request->getGet('sale_code') !== null) {
             $sale_code      = $this->request->getGet('sale_code');
             $find_sale_code = $this->m_sale->where('sale_code', $sale_code)->first();
-            if (!empty($find_sale_code) && $find_sale_code->sale_status != 2) {
+            if (!empty($find_sale_code) && $find_sale_code->sale_status != 2 && $find_sale_code->sale_ket == "Project") {
                 $count_member = $this->m_sale->where('member_id', $find_sale_code->user_id)->countAllResults();
                 $find_detail  = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
                 $find_sale    = $this->m_sale->getAllSale($find_sale_code->id);
