@@ -11,6 +11,7 @@ class CreateSalesTables extends Migration
 		$this->forge->addField([
 			'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
 			'sale_code'     => ['type' => 'varchar', 'constraint' => 50],
+			'sale_penawaran_code'     => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
 			'sale_handling' => ['type' => 'float', 'null' => true],
 			'sale_total'    => ['type' => 'float'],
 			'sale_pay'      => ['type' => 'float'],

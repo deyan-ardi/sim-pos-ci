@@ -24,14 +24,14 @@ class ItemModel extends Model
 
     public function getAllItem($id = null, $supplier_id = null)
     {
-        if ($id === null && $supplier_id === null) {
+        if ($id == null && $supplier_id == null) {
             $this->select('items.*,suppliers.supplier_name,item_categories.category_name');
             $this->join('item_categories', 'item_categories.id = items.category_id');
             $this->join('suppliers', 'suppliers.id = items.supplier_id');
 
             return $this->get()->getResult();
         }
-        if ($id === null && $supplier_id !== null) {
+        if ($id == null && $supplier_id !== null) {
             $this->select('items.*,suppliers.supplier_name,item_categories.category_name');
             $this->join('item_categories', 'item_categories.id = items.category_id');
             $this->join('suppliers', 'suppliers.id = items.supplier_id');
@@ -39,7 +39,7 @@ class ItemModel extends Model
 
             return $this->get()->getResult();
         }
-        if ($id !== null && $supplier_id === null) {
+        if ($id != null && $supplier_id == null) {
             $this->select('items.*,suppliers.supplier_name,item_categories.category_name');
             $this->join('item_categories', 'item_categories.id = items.category_id');
             $this->join('suppliers', 'suppliers.id = items.supplier_id');

@@ -11,6 +11,7 @@ use App\Models\PenawaranDetailModel;
 use App\Models\PenawaranModel;
 use App\Models\RequestOrderModel;
 use App\Models\SaleModel;
+use App\Models\SaleDetailModel;
 use App\Models\UserModel;
 
 class TransactionPenawaran extends BaseController
@@ -22,6 +23,7 @@ class TransactionPenawaran extends BaseController
 		$this->m_penawaran      = new PenawaranModel();
 		$this->m_item        = new ItemModel();
 		$this->m_sale 		= new SaleModel();
+		$this->m_sale_detail = new SaleDetailModel();
 		$this->m_member      = new MemberModel();
 		$this->m_user        = new UserModel();
 		$this->m_pph         = new PphModel();
@@ -421,15 +423,15 @@ class TransactionPenawaran extends BaseController
 		$data = [
 			'transaksi' => $this->m_sale->getAllSaleWhere('Project'),
 		];
-		$find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->findAll();
+		$find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->first();
 		if (!empty($this->request->getPost('invoice'))) {
 			$save_update_status = $this->m_sale->save([
-				'id'          => $find_sale_code[0]->id,
+				'id'          => $find_sale_code->id,
 				'sale_status' => 1,
 			]);
 			if ($save_update_status) {
-				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
-				$find_sale   = $this->m_sale->getAllSale($find_sale_code[0]->id);
+				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
+				$find_sale   = $this->m_sale->getAllSale($find_sale_code->id);
 				$find_member = $this->m_member->find($find_sale[0]->member_id);
 				$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
 				$pph_model   = $this->m_pph->getAllPPh();
@@ -551,7 +553,7 @@ class TransactionPenawaran extends BaseController
 		if ($this->request->getGet('penawaran_code') !== null) {
 			$penawaran_code      = $this->request->getGet('penawaran_code');
 			$find_penawaran_code = $this->m_penawaran->where('penawaran_code', $penawaran_code)->first();
-			if (!empty($find_penawaran_code)) {
+			if (!empty($find_penawaran_code) && $find_penawaran_code->penawaran_status != 2) {
 				$count_member = $this->m_penawaran->where('member_id', $find_penawaran_code->user_id)->countAllResults();
 				$find_detail  = $this->m_penawaran_detail->getAllPenawaranDetail($find_penawaran_code->id);
 				$find_sale    = $this->m_penawaran->getAllPenawaran($find_penawaran_code->id);

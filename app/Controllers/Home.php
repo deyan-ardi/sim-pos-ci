@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ItemCategoryModel;
 use App\Models\ItemModel;
 use App\Models\MemberModel;
+use App\Models\PenawaranModel;
 use App\Models\SaleModel;
 use App\Models\SupplierModel;
 use App\Models\UserModel;
@@ -19,6 +20,7 @@ class Home extends BaseController
         $this->m_category = new ItemCategoryModel();
         $this->m_item     = new ItemModel();
         $this->m_member   = new MemberModel();
+        $this->m_penawaran = new PenawaranModel();
         $this->m_supplier = new SupplierModel();
         $this->crop       = \Config\Services::image();
     }
@@ -27,6 +29,7 @@ class Home extends BaseController
     {
         $data = [
             'sale'     => $this->m_sale->limit(7)->findAll(),
+            'penawaran' => $this->m_penawaran->limit(7)->findAll(),
             'user'     => $this->m_user->getUserRole(user()->id),
             'member'   => $this->m_member->countAll(),
             'kategori' => $this->m_category->countAll(),
@@ -43,7 +46,7 @@ class Home extends BaseController
             'user'       => $this->m_user->getUserRole(user()->id),
             'validation' => $this->validate,
         ];
-        if (! empty($this->request->getPost('submit_profil'))) {
+        if (!empty($this->request->getPost('submit_profil'))) {
             if ($this->request->getFile('user_image')->getError() == 0) {
                 $formSubmit = $this->validate([
                     'user_image'  => 'uploaded[user_image]|max_size[user_image,1048]|mime_in[user_image,image/png,image/jpg,image/jpeg]|ext_in[user_image,jpg,jpeg,png]',
@@ -60,11 +63,11 @@ class Home extends BaseController
                     're_password' => 'permit_empty|matches[password]',
                 ]);
             }
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/profile-setting')->withInput();
             }
             $find = $this->m_user->getUserRole(user()->id);
-            if (! empty($this->request->getPost('password')) && ! empty($this->request->getPost('re_password'))) {
+            if (!empty($this->request->getPost('password')) && !empty($this->request->getPost('re_password'))) {
                 // Password Create Hash
                 $hashOptions = [
                     'cost' => 10,
@@ -82,7 +85,7 @@ class Home extends BaseController
             }
 
             if ($this->request->getFile('user_image')->getError() == 0) {
-                if (! empty($find[0]['user_image'])) {
+                if (!empty($find[0]['user_image'])) {
                     if (unlink('upload/user/' . $find[0]['user_image'])) {
                         $unlink = true;
                     } else {

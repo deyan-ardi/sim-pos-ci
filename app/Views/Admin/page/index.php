@@ -126,7 +126,7 @@ Dashboard Page
                             <div class="col-xl-4 col-md-6">
                                 <div class="card widget-profile">
                                     <div class="widget-profile-card-3">
-                                        <?php if (! empty(user()->user_image)) : ?>
+                                        <?php if (!empty(user()->user_image)) : ?>
                                             <img class="img-fluid" src="<?= base_url(); ?>/upload/user/<?= user()->user_image; ?>" alt="Profile-user">
                                         <?php else : ?>
                                             <img class="img-fluid" src="<?= base_url(); ?>/upload/user/user-default.jpg" alt="Profile-user">
@@ -137,7 +137,7 @@ Dashboard Page
                                         <h3><?= ucwords($user[0]['username']); ?></h3>
                                         <p><?= strtolower($user[0]['email']); ?></p>
                                         <div class="row mt-5">
-                                            <?php if (! empty($user[0]['user_number'])) : ?>
+                                            <?php if (!empty($user[0]['user_number'])) : ?>
                                                 <div class="col text-center">
                                                     <h4><?= $user[0]['user_number']; ?></h4>
                                                     <span>Kontak</span>
@@ -148,7 +148,7 @@ Dashboard Page
                                                     <span>Kontak</span>
                                                 </div>
                                             <?php endif; ?>
-                                            <?php if (! empty($user[0]['name'])) : ?>
+                                            <?php if (!empty($user[0]['name'])) : ?>
                                                 <div class="col text-center">
                                                     <h4><?= ucwords(strtolower($user[0]['name'])); ?></h4>
                                                     <span>Hak Akses</span>
@@ -198,23 +198,43 @@ Dashboard Page
                                                             </div>
                                                             </div>
                                                         <?php endforeach; ?>
+                                                        </div>
 
-
+                                                        <div class="latest-update-box">
+                                                            <?php
+                                                            $j = 0;
+                                                            foreach ($penawaran as $p) : ?>
+                                                                <?php if ($j++ == 0 && $i == 0) : ?>
+                                                                    <div class="row p-t-20 p-b-30">
+                                                                    <?php else : ?>
+                                                                        <div class="row p-b-30">
+                                                                        <?php endif; ?>
+                                                                        <div class="col-auto text-right update-meta">
+                                                                            <i class="feather icon-check f-w-600 bg-c-green update-icon"></i>
+                                                                        </div>
+                                                                        <div class="col p-l-5">
+                                                                            <a href="#!">
+                                                                                <h6 class="m-0">Penawaran <?= $p->penawaran_code; ?> Telah Berhasil Dibuat <?= CodeIgniter\I18n\Time::parse($s->updated_at)->toLocalizedString('d MMM yyyy, H:m'); ?> WITA</h6>
+                                                                            </a>
+                                                                            <p class="m-b-0">~ Dintara Point Of Sale</p>
+                                                                        </div>
+                                                                        </div>
+                                                                    <?php endforeach; ?>
+                                                                    </div>
                                                         </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- what-new end -->
+                                        <!-- what-new end -->
 
+                                    </div>
+                                    <!-- [ Main Content ] end -->
                                 </div>
-                                <!-- [ Main Content ] end -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- [ Main Content ] end -->
         </div>
-        <!-- [ Main Content ] end -->
     </div>
-</div>
-<?= $this->endSection(); ?>
+    <?= $this->endSection(); ?>

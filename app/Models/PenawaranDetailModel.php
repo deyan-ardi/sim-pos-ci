@@ -36,7 +36,7 @@ class PenawaranDetailModel extends Model
 	protected $cleanValidationRules = true;
 	public function getAllPenawaranDetail($penawaran_id)
 	{
-		$this->select('penawaran_details.*,items.item_name,items.item_code,items.item_sale');
+		$this->select('penawaran_details.*,items.item_name,items.item_code,items.item_sale,items.item_stock');
 		$this->join('items', 'items.id = penawaran_details.item_id');
 		$this->where('penawaran_details.penawaran_id', $penawaran_id);
 

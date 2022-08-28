@@ -24,7 +24,7 @@ Transaksi Barang - Menu Kasir
             var url = "<?= base_url() . '/GeneralTransaction/validation_payment' ?>"
             $.ajax({
                 url: url,
-                type: "POST",
+                type: "PATCH",
                 data: $('#form').serialize(),
                 dataType: "JSON",
                 success: function(data) {

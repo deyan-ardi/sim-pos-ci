@@ -149,7 +149,7 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], static functio
 
     // Kasir
     $routes->group('cashier', ['filter' => 'role:SUPER ADMIN, KASIR'], static function ($routes) {
-        $routes->patch('validation_payment', 'Transaction::validation_payment');
+        $routes->post('validation_payment', 'Transaction::validation_payment');
         $routes->post('report/add_handling', 'Transaction::add_handling_report');
         $routes->post('add_handling', 'Transaction::add_handling');
         $routes->group('transaction-project', static function ($routes) {

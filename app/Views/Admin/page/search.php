@@ -1,6 +1,6 @@
 <?= $this->extend('Admin/master/layout'); ?>
 <?= $this->section('title'); ?>
-Transaksi Barang - Menu Kasir
+Transaksi Barang - Menu Kasir Project
 <?= $this->endSection(); ?>
 
 <?= $this->section('footer'); ?>
@@ -21,27 +21,38 @@ Transaksi Barang - Menu Kasir
     const ajax_send = () => {
         // console.log(event.key == "Enter");
         if (event.key == "Enter") {
-            let url = "<?= base_url() . '/transaction/cashier/validation_payment' ?>"
+            var url = "<?= base_url() . '/transaction/cashier/validation_payment' ?>"
             $.ajax({
                 url: url,
                 type: "POST",
                 data: $('#form').serialize(),
                 dataType: "JSON",
                 success: function(data) {
+                    if (data.status == true) {
+                        swal({
+                                title: "Query Berhasil!",
+                                text: data.message,
+                                icon: "success",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    } else {
+                        swal({
+                                title: "Terjadi Kesalahan!",
+                                text: data.message,
+                                icon: "error",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    }
                     //if success close modal and reload ajax table
-                    location.reload(); // for reload a page
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error adding / update data');
                 }
             });
-        }
-        // console.log($('#form').serialize());
-    }
-    const ajax_send_handling = () => {
-        // console.log(event.key == "Enter");
-        if (event.key == "Enter") {
-            $('#form_handling').submit();
         }
         // console.log($('#form').serialize());
     }
@@ -113,6 +124,18 @@ Transaksi Barang - Menu Kasir
         }
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $('#member_id').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function() {
+        $('#item_id').selectize({
+            sortField: 'text'
+        });
+    });
+</script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('header'); ?>
@@ -135,39 +158,46 @@ Transaksi Barang - Menu Kasir
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir dan Transaksi Project</h5>
+                                            <h5 class="m-b-10">Dintara Point Of Sale - Sistem Kasir Project Transaksi Project</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="feather icon-home"></i></a></li>
-                                            <li class="breadcrumb-item"><a href="#!">Menu Kasir</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Menu Kasir Project</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if ($find_sale[0]->sale_status == 1) : ?>
+                        <?php if (empty($find_sale)) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir - Informasi Transaksi</span></h5>
+                                            <h5>Sistem Kasir Project - Pilih Penawaran</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
-                                                <div class="row justify-content-center">
-                                                    <div class="col-12">
-                                                        <h4 class="text-center mb-4">Transaksi dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
-                                                        <a href="<?= base_url(); ?>/transaction" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
-                                                        <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
-                                                            <?php csrf_field() ?>
-                                                            <input type="hidden" name="_key" value="download">
-                                                            <input type="hidden" name="invoice" value="invoice">
-                                                            <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
-                                                        </form>
+                                                <form action="" method="POST">
+                                                    <?php csrf_field() ?>
+
+                                                    <div class="form-group">
+                                                        <select name="penawaran_id" id="penawaran_id" required class="form-control <?= $validation->getError('penawaran_id') ? 'is-invalid' : ''; ?>">
+                                                            <option value="">--Pilih Penawaran Dari Marketing--</option>
+                                                            <?php foreach ($penawaran as $m) : ?>
+                                                                <option value="<?= $m->id; ?>">Penawaran <?= $m->penawaran_code; ?> - Untuk Klien <?= $m->member_name; ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('penawaran_id'); ?>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" name="submit_penawaran" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Pilih Penawaran</button>
+                                                    </div>
+                                                </form>
+
                                             </div>
                                         </div>
                                     </div>
@@ -198,55 +228,29 @@ Transaksi Barang - Menu Kasir
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5>Sistem Kasir - Input Barang Yang Dibeli</span></h5>
+                                                        <h5>Sistem Kasir Project - Input Barang Project</span></h5>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="card-body">
-                                                            <form action="" method="POST">
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <input type="text" class="form-control" disabled value="<?= $find_sale[0]->member_code . ' - ' . $find_sale[0]->member_name; ?>">
-                                                                        </div>
-                                                                        <div class="col-3">
-                                                                            <input type="text" class="form-control" disabled value="Diskon <?= $find_sale[0]->member_discount; ?> %">
-                                                                        </div>
-                                                                        <div class="col-3">
-                                                                            <input type="text" class="form-control" disabled value="<?= $count_user; ?> Kali Transaksi">
-                                                                        </div>
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <input type="text" class="form-control" disabled value="<?= $find_sale[0]->member_code . ' - ' . $find_sale[0]->member_name; ?>">
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <input type="text" class="form-control" disabled value="Diskon <?= $find_sale[0]->member_discount; ?> %">
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <input type="text" class="form-control" disabled value="<?= $count_user; ?> Kali Transaksi">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group">
-                                                                    <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? 'is-invalid' : ''; ?>">
-                                                                        <option value="">--Pilih Barang--</option>
-                                                                        <?php foreach ($item as $i) : ?>
-                                                                            <?php if ($i->item_stock <= 0) : ?>
-                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - [ STOK HABIS ]</option>
-                                                                            <?php else : ?>
-                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Unit</option>
-                                                                            <?php endif; ?>
-                                                                        <?php endforeach; ?>
-                                                                    </select>
-                                                                    <div class="invalid-feedback">
-                                                                        <?= $validation->getError('item_barang'); ?>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="input-group search-form">
-                                                                    <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? 'is-invalid' : ''; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ?: ''; ?>">
-                                                                    <div class="input-group-append">
-                                                                        <span class="input-group-text bg-transparent">Unit</span>
-                                                                    </div>
-                                                                    <div class="invalid-feedback">
-                                                                        <?= $validation->getError('item_quantity'); ?>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <button type="submit" name="submit_transaksi" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Tambah Transaksi</button>
-                                                                </div>
-                                                            </form>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" disabled value="KODE PENAWARAN : <?= $find_sale[0]->sale_penawaran_code; ?>" class="form-control">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -255,7 +259,7 @@ Transaksi Barang - Menu Kasir
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h5>Sistem Kasir - Rincian Transaksi</span></h5>
+                                                    <h5>Sistem Kasir Project - Rincian Barang Project</span></h5>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="card-body">
@@ -266,26 +270,18 @@ Transaksi Barang - Menu Kasir
                                                                         <th>#</th>
                                                                         <th>Kode Barang</th>
                                                                         <th>Nama Barang</th>
-                                                                        <th>Banyak</th>
+                                                                        <th>Jumlah Pesan</th>
+                                                                        <th>Jumlah Stok</th>
                                                                         <th>Harga</th>
                                                                         <th>Jumlah</th>
-                                                                        <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
-                                                                            <?php $colspan     = 3; ?>
-                                                                            <?php $colspan_all = 3; ?>
-
-                                                                            <th class="text-center"><i class="feather icon-settings"></i>
-                                                                            </th>
-                                                                        <?php else : ?>
-                                                                            <?php $colspan_all = 2; ?>
-                                                                            <?php $colspan     = 3; ?>
-                                                                        <?php endif; ?>
+                                                                        <th>Status Barang</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
                                                                     $i           = 1;
                                                                     $total_order = 0;
-
+                                                                    $status = 0;
                                                                     foreach ($transaction as $d) :
                                                                     ?>
                                                                         <tr>
@@ -293,129 +289,96 @@ Transaksi Barang - Menu Kasir
                                                                             <td><?= $d->item_code; ?></td>
                                                                             <td><?= $d->item_name; ?></td>
                                                                             <td><?= $d->detail_quantity; ?> Unit</td>
+                                                                            <td><?= $d->item_stock; ?> Unit</td>
                                                                             <td>Rp. <?= format_rupiah($d->item_sale); ?></td>
                                                                             <td>Rp. <?= format_rupiah($d->detail_total); ?></td>
-                                                                            <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
-                                                                                <td>
-                                                                                    <!-- Delete -->
-                                                                                    <form action="" method="POST">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                                                        <input type="hidden" name="id_item" value="<?= $d->id; ?>">
-                                                                                        <button type="submit" name="delete_item" value="delete" class="btn btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                                    </form>
-                                                                                </td>
+                                                                            <?php if ($d->item_stock - $d->detail_quantity < 0) : ?>
+                                                                                <?php $status--; ?>
+                                                                                <td><button type="button" class="btn btn-danger btn-sm"> Invalid</button></td>
+                                                                            <?php else : ?>
+                                                                                <?php $status++; ?>
+                                                                                <td><button type="button" class="btn btn-success btn-sm"> Tersedia</button></td>
                                                                             <?php endif; ?>
-                                                                        </tr> <?php
-                                                                                $total_order = $total_order + $d->detail_total;
-                                                                            endforeach; ?>
+                                                                        </tr>
+                                                                    <?php
+                                                                        $total_order = $total_order + $d->detail_total;
+                                                                    endforeach; ?>
                                                                 </tbody>
                                                                 <tfoot>
-                                                                    <?php if ($find_sale[0]->sale_handling != NULL && $find_sale[0]->sale_handling >= 0) : ?>
 
+                                                                    <tr>
+                                                                        <th colspan="4" rowspan="9"></th>
+                                                                        <th>Sub Total I</th>
+                                                                        <th colspan="4">Rp. <?= format_rupiah($total_order); ?></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Diskon Member</th>
+                                                                        <th colspan="4"> <?= $find_sale[0]->sale_discount; ?>%</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <?php
+                                                                        $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
+                                                                        $sub_tot_2 = $total_order - $disk;
+                                                                        ?>
+                                                                        <th>Sub Total II</th>
+                                                                        <th colspan="4">Rp. <?= format_rupiah($sub_tot_2); ?></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Handling & Final Connecting (Optional)</th>
+                                                                        <th colspan="4">
+                                                                            Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Sub Total III</th>
+                                                                        <th colspan="4">Rp. <?= format_rupiah($sub_tot_2 + $find_sale[0]->sale_handling); ?></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>PPN</th>
+                                                                        <th colspan="4"><?= $pph[0]->pph_value; ?> %</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Grand Total</th>
+                                                                        <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
+                                                                    </tr>
+                                                                    <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total  && $status == count($transaction)) : ?>
                                                                         <tr>
-                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="9"></th>
-                                                                            <th>Sub Total I</th>
-                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th>Diskon Member</th>
-                                                                            <th colspan="<?= $colspan; ?>"> <?= $find_sale[0]->sale_discount; ?>%</th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <?php
-                                                                            $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
-                                                                            $sub_tot_2 = $total_order - $disk;
-                                                                            ?>
-                                                                            <th>Sub Total II</th>
-                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2); ?></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th>Handling & Final Connecting</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
-                                                                            </th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th>Sub Total III</th>
-                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2 + $find_sale[0]->sale_handling); ?></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th>PPN</th>
-                                                                            <th colspan="<?= $colspan; ?>"><?= $pph[0]->pph_value; ?> %</th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th>Grand Total</th>
-                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
-                                                                        </tr>
-                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
-
-                                                                            <tr>
-                                                                                <th>Bayar</th>
-                                                                                <th colspan="<?= $colspan; ?>">
-                                                                                    <form action="" onkeyup="ajax_send()" method="post" id="form">
-                                                                                        <?php csrf_field() ?>
-                                                                                        <input type="hidden" name="cetak_ulang" value="cetak_ulang">
-                                                                                        <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
-                                                                                    </form>
-                                                                                </th>
-                                                                            </tr>
-                                                                        <?php else : ?>
                                                                             <th>Bayar</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
-                                                                            </th>
-                                                                        <?php endif; ?>
-                                                                        <tr>
-                                                                            <th>Kembali</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
+                                                                            <th colspan="4">
+                                                                                <form action="" onkeyup="ajax_send()" method="post" id="form">
+                                                                                    <?php csrf_field() ?>
+                                                                                    <input type="hidden" name="cetak_ulang" value="cetak_ulang">
+                                                                                    <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
+                                                                                    <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
+                                                                                </form>
                                                                             </th>
                                                                         </tr>
                                                                     <?php else : ?>
                                                                         <tr>
-                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="4"></th>
-                                                                            <th>Sub Total I</th>
-                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th>Diskon Member</th>
-                                                                            <th colspan="<?= $colspan; ?>"> <?= $find_sale[0]->sale_discount; ?>%</th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <?php
-                                                                            $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
-                                                                            $sub_tot_2 = $total_order - $disk;
-                                                                            ?>
-                                                                            <th>Sub Total II</th>
-                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2); ?></th>
-                                                                        </tr>
-                                                                        <?php if ($find_sale[0]->sale_total > 0) : ?>
-                                                                            <tr>
-                                                                                <th>Handling & Final Connecting</th>
-                                                                                <th colspan="<?= $colspan; ?>">
-                                                                                    <form action="<?= base_url('transaction/cashier/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
-                                                                                        <?php csrf_field() ?>
-                                                                                        <input type="hidden" name="handling" value="handling">
-                                                                                        <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                        <input type="text" min="0" id="handling" value="0" placeholder=" Dalam Rupiah" name="handling_tot" class="form-control">
-                                                                                    </form>
+                                                                            <?php if ($status != count($transaction)) : ?>
+                                                                                <th>Bayar</th>
+                                                                                <th colspan="4">
+                                                                                    <p>Proses Pembayaran Tidak Dapat Dilakukan</p>
                                                                                 </th>
-                                                                            </tr>
-                                                                        <?php else : ?>
-                                                                            <tr>
-                                                                                <th>Handling & Final Connecting</th>
-                                                                                <th colspan="<?= $colspan; ?>">
-                                                                                    Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
+                                                                            <?php else : ?>
+                                                                                <th>Bayar</th>
+                                                                                <th colspan="4">
+                                                                                    <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
                                                                                 </th>
-                                                                            </tr>
-                                                                        <?php endif; ?>
+                                                                            <?php endif; ?>
+                                                                        </tr>
                                                                     <?php endif; ?>
+                                                                    <tr>
+                                                                        <th>Kembali</th>
+                                                                        <th colspan="4">
+                                                                            <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
+                                                                        </th>
+                                                                    </tr>
+
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total) {
+                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total || $status != count($transaction)) {
                                                             $disabled = 'disabled';
                                                         } else {
                                                             $disabled = '';

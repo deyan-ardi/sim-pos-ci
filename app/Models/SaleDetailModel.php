@@ -37,7 +37,7 @@ class SaleDetailModel extends Model
 
     public function getAllSaleDetail($sale_id)
     {
-        $this->select('sale_details.*,items.item_name,items.item_code,items.item_sale');
+        $this->select('sale_details.*,items.item_name,items.item_code,items.item_sale,items.item_stock');
         $this->join('items', 'items.id = sale_details.item_id');
         $this->where('sale_details.sale_id', $sale_id);
 

@@ -26,6 +26,7 @@
 - Gudang tidak bisa menghapus order [Sudah]
 
 ## Marketing
+
 - Akses ke kasir penawaran untuk kasir project [Sudah]
 - Kasir Penawaran Project, ada beberapa status (Draft, Done) [Sudah]
 - Marketing pertama2 melakukan penawaran, setelah itu baru jika disetuji menjadi deal, setelah itu lanjut ke finance [Sudah]
@@ -36,8 +37,9 @@
 - Marketing, bisa melihat SPPB
 
 ## Kasir
+
 - Handling & Final Connecting bersifat opsional [Sudah]
-- Setelah disetujui penawarannya, kasir itu mencetak invoice hanya untuk di project
+- Setelah disetujui penawarannya, kasir itu mencetak invoice hanya untuk di project [Sudah]
 - General dibiarkan seoperti awal [Sudah]
 
 ## Finance
@@ -51,7 +53,6 @@
 - Yang bisa mencetak SPPB hanya Project
 - Marketing dan Gudang hanya bisa melihat
 - Finance gk bisa melihat dan mencetak SPPB
-- Ketika tim project mencetak, baru pengurangan stok
 - Ada DP
 - DP atau full bisa cetak SPPB dan Surat Jalan
 - Total Invoice, ada proses DP

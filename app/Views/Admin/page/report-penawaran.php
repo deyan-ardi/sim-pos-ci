@@ -83,7 +83,7 @@ Laporan Transaksi
                                                         <th>Kode Member</th>
                                                         <th>Nama Member</th>
                                                         <th>Total Penawaran</th>
-                                                        <th>Nama Kasir</th>
+                                                        <th>Nama Tim Marketing</th>
                                                         <th>Status Penawaran</th>
                                                         <th>Diubah Pada</th>
                                                         <th class="text-center"><i class="feather icon-settings"></i>

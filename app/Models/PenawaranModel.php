@@ -103,4 +103,25 @@ class PenawaranModel extends Model
 
 		return $this->get()->getResult();
 	}
+
+	public function getAllPenawaranWhereSuccess()
+	{
+		$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,penawarans.*');
+		$this->join('members', 'members.id = penawarans.member_id');
+		$this->join('users', 'users.id = penawarans.user_id');
+		$this->where('penawarans.penawaran_ket', 'Project');
+		$this->where('penawarans.penawaran_status', 2);
+		return $this->get()->getResult();
+	}
+
+	public function getAllPenawaranWhereIdSuccess($id)
+	{
+		$this->select('users.username, members.member_name,members.member_code,members.member_discount,members.member_contact,members.member_description,penawarans.*');
+		$this->join('members', 'members.id = penawarans.member_id');
+		$this->join('users', 'users.id = penawarans.user_id');
+		$this->where('penawarans.penawaran_ket', 'Project');
+		$this->where('penawarans.penawaran_status', 2);
+		$this->where('penawarans.id', $id);
+		return $this->get()->getResult();
+	}
 }
