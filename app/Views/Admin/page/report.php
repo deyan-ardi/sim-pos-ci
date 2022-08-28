@@ -83,6 +83,8 @@ Laporan Transaksi
                                                         <th>Kode Member</th>
                                                         <th>Nama Member</th>
                                                         <th>Total Transaksi</th>
+                                                        <th>Terbayar</th>
+                                                        <th>Belum Terbayar</th>
                                                         <th>Nama Kasir</th>
                                                         <th>Status Transaksi</th>
                                                         <th>Diubah Pada</th>
@@ -101,9 +103,13 @@ Laporan Transaksi
                                                             <td><?= $t->member_code; ?></td>
                                                             <td><?= $t->member_name; ?></td>
                                                             <td>Rp. <?= format_rupiah($t->sale_total); ?></td>
+                                                            <td>Rp. <?= format_rupiah($t->sale_pay); ?></td>
+                                                            <td>Rp. <?= format_rupiah(abs($t->sale_kurang)); ?></td>
                                                             <td><?= $t->username; ?></td>
                                                             <?php if ($t->sale_status == 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
+                                                            <?php elseif ($t->sale_status == 1) : ?>
+                                                                <td><button type="button" class="btn btn-warning btn-sm"> DP Pembayaran</button></td>
                                                             <?php else : ?>
                                                                 <td><button type="button" class="btn btn-success btn-sm"> Sukses</button></td>
                                                             <?php endif; ?>
@@ -113,7 +119,7 @@ Laporan Transaksi
                                                             <td>
                                                                 <div class="row justify-content-center">
                                                                     <?php if (in_groups('SUPER ADMIN') ||  in_groups('KASIR')) : ?>
-                                                                        <?php if ($t->sale_status == 0) : ?>
+                                                                        <?php if ($t->sale_status == 0 || $t->sale_status == 1) : ?>
                                                                             <a href="<?= base_url(); ?>/transaction/cashier/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
                                                                             <!-- Delete -->
                                                                             <form action="" id="<?= $t->id; ?>" method="POST">
@@ -149,6 +155,8 @@ Laporan Transaksi
                                                         <th>Kode Member</th>
                                                         <th>Nama Member</th>
                                                         <th>Total Transaksi</th>
+                                                        <th>Terbayar</th>
+                                                        <th>Belum Terbayar</th>
                                                         <th>Nama Kasir</th>
                                                         <th>Status Transaksi</th>
                                                         <th>Diubah Pada</th>

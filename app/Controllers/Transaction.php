@@ -113,6 +113,7 @@ class Transaction extends BaseController
                 'sale_penawaran_code' => $find_penawaran[0]->penawaran_code,
                 'sale_total'    => $find_penawaran[0]->penawaran_total,
                 'sale_pay'      => $find_penawaran[0]->penawaran_pay,
+                'sale_kurang'   => $find_penawaran[0]->penawaran_total,
                 'sale_discount' => $find_member[0]->member_discount,
                 'sale_profit'   => $find_penawaran[0]->penawaran_profit,
                 'sale_handling' => $find_penawaran[0]->penawaran_handling,
@@ -174,9 +175,15 @@ class Transaction extends BaseController
                             ]);
                         }
                     }
+                    $sale = $this->m_sale->where('id', get_cookie('transaction-general'))->first();
+                    if ($sale->sale_pay - $sale->sale_kurang < 0) {
+                        $status = 1;
+                    } else {
+                        $status = 2;
+                    }
                     $save_update_status = $this->m_sale->save([
-                        'id'          => get_cookie('transaction'),
-                        'sale_status' => 1,
+                        'id'          => get_cookie('transaction-general'),
+                        'sale_status' => $status,
                     ]);
                     if ($save_update_status) {
                         $find_member = $this->m_member->find($find_sale[0]->member_id);
@@ -235,18 +242,35 @@ class Transaction extends BaseController
             } else {
                 $id_transaksi = get_cookie('transaction');
             }
+            $bayar_real = $this->request->getPost('bayar');
+            $pecah = explode(".", $bayar_real);
+            $bayar_total = implode("", $pecah);
+
             $sale = $this->m_sale->where('id', $id_transaksi)->first();
-            if ($this->request->getPost('bayar') - $sale->sale_total < 0) {
-                return json_encode(['status' => false, 'message' => 'Uang Yang Dimasukkan Kurang']);
-            }
-            $save = $this->m_sale->save([
-                'id'       => $id_transaksi,
-                'sale_pay' => $this->request->getPost('bayar'),
-            ]);
-            if ($save) {
-                return json_encode(['status' => true, "message" => "Transaksi Berhasil, Silahkan Cetak Invoice"]);
+            if ($bayar_total - $sale->sale_kurang < 0) {
+                $save = $this->m_sale->save([
+                    'id'       => $id_transaksi,
+                    'sale_pay' => $sale->sale_pay + $bayar_total,
+                    'sale_status' => 1,
+                    'sale_kurang' => abs($bayar_total - $sale->sale_kurang)
+                ]);
+                if ($save) {
+                    return json_encode(['status' => 'kurang', 'message' => format_rupiah($bayar_total)]);
+                } else {
+                    return json_encode(['status' => false, "message" => "Gagal Menyimpan Data"]);
+                }
             } else {
-                return json_encode(['status' => false, "message" => "Gagal Menyimpan Data"]);
+                $save = $this->m_sale->save([
+                    'id'       => $id_transaksi,
+                    'sale_pay' => $sale->sale_pay + $bayar_total >= $sale->sale_total ? $sale->sale_total : $sale->sale_pay + $bayar_total,
+                    'sale_kurang' => 0,
+                    'sale_status' => 2,
+                ]);
+                if ($save) {
+                    return json_encode(['status' => true, "message" => "Transaksi Berhasil, Silahkan Cetak Invoice"]);
+                } else {
+                    return json_encode(['status' => false, "message" => "Gagal Menyimpan Data"]);
+                }
             }
         }
     }
@@ -345,46 +369,40 @@ class Transaction extends BaseController
         ];
         $find_penawaran_code = $this->m_penawaran->where('penawaran_code', $this->request->getPost('id_transaksi'))->first();
         if (!empty($this->request->getPost('invoice'))) {
-            $save_update_status = $this->m_penawaran->save([
-                'id'          => $find_penawaran_code->id,
-                'penawaran_status' => 2,
-            ]);
-            if ($save_update_status) {
-                $find_detail = $this->m_penawaran_detail->getAllPenawaranDetail($find_penawaran_code->id);
-                $find_sale   = $this->m_penawaran->getAllPenawaran($find_penawaran_code->id);
-                $find_member = $this->m_member->find($find_sale[0]->member_id);
-                $find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
-                $pph_model   = $this->m_pph->getAllPPh();
-                $ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-                $ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-                $ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-                $ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-                $note        = $this->m_invoice->where('key', 'note')->first();
-                $data        = [
-                    'detail'     => $find_detail,
-                    'sale'       => $find_sale,
-                    'pph'        => $pph_model,
-                    'member'     => $find_member,
-                    'user'       => $find_user,
-                    'ttd_kiri'   => $ttd_kiri,
-                    'ttd_tengah' => $ttd_tengah,
-                    'ttd_kanan'  => $ttd_kanan,
-                    'ttd_bawah'  => $ttd_bawah,
-                    'note'       => $note,
-                ];
-                // return view('Admin/page/invoice_transaction', $data);
-                $mpdf = new \Mpdf\Mpdf();
-                $html = view('Admin/page/invoice_transaction_penawaran', $data);
-                $mpdf->WriteHTML($html);
-                // $mpdf->SetWatermarkText("SUKSES");
-                // $mpdf->showWatermarkText = true;
-                $mpdf->showImageErrors = true;
-                $this->response->setHeader('Content-Type', 'application/pdf');
-                // $mpdf->AutoPrint(true);
-                $mpdf->SetJS('this.print();');
-                // $mpdf->Output('Invoice Transaction.pdf', 'I');
-                $mpdf->Output();
-            }
+            $find_detail = $this->m_penawaran_detail->getAllPenawaranDetail($find_penawaran_code->id);
+            $find_sale   = $this->m_penawaran->getAllPenawaran($find_penawaran_code->id);
+            $find_member = $this->m_member->find($find_sale[0]->member_id);
+            $find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
+            $pph_model   = $this->m_pph->getAllPPh();
+            $ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
+            $ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
+            $ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
+            $ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
+            $note        = $this->m_invoice->where('key', 'note')->first();
+            $data        = [
+                'detail'     => $find_detail,
+                'sale'       => $find_sale,
+                'pph'        => $pph_model,
+                'member'     => $find_member,
+                'user'       => $find_user,
+                'ttd_kiri'   => $ttd_kiri,
+                'ttd_tengah' => $ttd_tengah,
+                'ttd_kanan'  => $ttd_kanan,
+                'ttd_bawah'  => $ttd_bawah,
+                'note'       => $note,
+            ];
+            // return view('Admin/page/invoice_transaction', $data);
+            $mpdf = new \Mpdf\Mpdf();
+            $html = view('Admin/page/invoice_transaction_penawaran', $data);
+            $mpdf->WriteHTML($html);
+            // $mpdf->SetWatermarkText("SUKSES");
+            // $mpdf->showWatermarkText = true;
+            $mpdf->showImageErrors = true;
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            // $mpdf->AutoPrint(true);
+            $mpdf->SetJS('this.print();');
+            // $mpdf->Output('Invoice Transaction.pdf', 'I');
+            $mpdf->Output();
         }
         return view('Admin/page/report-penawaran', $data);
     }
@@ -393,7 +411,7 @@ class Transaction extends BaseController
         if ($this->request->getGet('sale_code') !== null) {
             $sale_code      = $this->request->getGet('sale_code');
             $find_sale_code = $this->m_sale->where('sale_code', $sale_code)->first();
-            if (!empty($find_sale_code) && $find_sale_code->sale_status != 2 && $find_sale_code->sale_ket == "Project") {
+            if (!empty($find_sale_code) && $find_sale_code->sale_ket == "Project") {
                 $count_member = $this->m_sale->where('member_id', $find_sale_code->user_id)->countAllResults();
                 $find_detail  = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
                 $find_sale    = $this->m_sale->getAllSale($find_sale_code->id);
@@ -407,16 +425,6 @@ class Transaction extends BaseController
                     'pph'         => $pph_model,
                     'count_user'  => $count_member,
                 ];
-                if (!empty($this->request->getPost('batalkan_transaksi'))) {
-                    if ($this->m_sale->delete($find_sale_code->id)) {
-                        session()->setFlashdata('berhasil', 'Berhasil Membatalkan Transaksi Yang Dipilih');
-
-                        return redirect()->to('/transaction/cashier/report')->withCookies();
-                    }
-                    session()->setFlashdata('gagal', 'Gagal Membatalkan Transaksi Yang Dipilih');
-
-                    return redirect()->to('/transaction/cashier/search?sale_code=' . $this->request->getGet('sale_code'))->withCookies();
-                }
                 if (!empty($this->request->getPost('invoice'))) {
                     $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
                     $status = true;
@@ -437,9 +445,15 @@ class Transaction extends BaseController
                                 ]);
                             }
                         }
+                        $sale = $this->m_sale->where('id', $find_sale_code->id)->first();
+                        if ($sale->sale_pay - $sale->sale_total < 0) {
+                            $status = 1;
+                        } else {
+                            $status = 2;
+                        }
                         $save_update_status = $this->m_sale->save([
                             'id'          => $find_sale_code->id,
-                            'sale_status' => 1,
+                            'sale_status' => $status,
                         ]);
                         if ($save_update_status) {
                             $find_member = $this->m_member->find($find_sale[0]->member_id);

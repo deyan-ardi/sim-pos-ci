@@ -41,6 +41,7 @@
 - Handling & Final Connecting bersifat opsional [Sudah]
 - Setelah disetujui penawarannya, kasir itu mencetak invoice hanya untuk di project [Sudah]
 - General dibiarkan seoperti awal [Sudah]
+- Ada Proses DP [Sudah]
 
 ## Finance
 
@@ -53,9 +54,8 @@
 - Yang bisa mencetak SPPB hanya Project
 - Marketing dan Gudang hanya bisa melihat
 - Finance gk bisa melihat dan mencetak SPPB
-- Ada DP
+- Ada Proses DP [Sudah]
 - DP atau full bisa cetak SPPB dan Surat Jalan
-- Total Invoice, ada proses DP
 
 ## Project
 

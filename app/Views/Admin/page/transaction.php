@@ -15,9 +15,6 @@ Transaksi Barang - Menu Kasir Project
     $('#bayar').bind('keyup paste', function() {
         this.value = +this.value.replace(/[^0-9]/g, '');
     });
-    $('#handling').bind('keyup paste', function() {
-        this.value = +this.value.replace(/[^0-9]/g, '');
-    });
     const ajax_send = () => {
         // console.log(event.key == "Enter");
         if (event.key == "Enter") {
@@ -33,6 +30,15 @@ Transaksi Barang - Menu Kasir Project
                                 title: "Query Berhasil!",
                                 text: data.message,
                                 icon: "success",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    } else if (data.status == 'kurang') {
+                        swal({
+                                title: "Pembayaran Kurang!",
+                                text: "Pembayaran Ini Dilanjutkan Sebagai Pembayaran DP",
+                                icon: "info",
                             })
                             .then(() => {
                                 location.reload(); // for reload a page
@@ -55,6 +61,30 @@ Transaksi Barang - Menu Kasir Project
             });
         }
         // console.log($('#form').serialize());
+    }
+
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+    }
+
+    const bayar = document.getElementById("bayar");
+    if (bayar != null) {
+        bayar.addEventListener("keyup", function(e) {
+            bayar.value = formatRupiah(this.value, "");
+        });
     }
 </script>
 <script type="text/javascript">
@@ -307,7 +337,7 @@ Transaksi Barang - Menu Kasir Project
                                                                 <tfoot>
 
                                                                     <tr>
-                                                                        <th colspan="4" rowspan="9"></th>
+                                                                        <th colspan="4" rowspan="10"></th>
                                                                         <th>Sub Total I</th>
                                                                         <th colspan="4">Rp. <?= format_rupiah($total_order); ?></th>
                                                                     </tr>
@@ -340,6 +370,10 @@ Transaksi Barang - Menu Kasir Project
                                                                     <tr>
                                                                         <th>Grand Total</th>
                                                                         <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Perlu Membayar</th>
+                                                                        <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
                                                                     </tr>
                                                                     <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total  && $status == count($transaction)) : ?>
                                                                         <tr>
@@ -378,7 +412,7 @@ Transaksi Barang - Menu Kasir Project
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total || $status != count($transaction)) {
+                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay == 0 || $status != count($transaction)) {
                                                             $disabled = 'disabled';
                                                         } else {
                                                             $disabled = '';

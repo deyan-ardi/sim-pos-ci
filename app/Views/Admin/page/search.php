@@ -15,9 +15,6 @@ Transaksi Barang - Menu Kasir Project
     $('#bayar').bind('keyup paste', function() {
         this.value = +this.value.replace(/[^0-9]/g, '');
     });
-    $('#handling').bind('keyup paste', function() {
-        this.value = +this.value.replace(/[^0-9]/g, '');
-    });
     const ajax_send = () => {
         // console.log(event.key == "Enter");
         if (event.key == "Enter") {
@@ -33,6 +30,15 @@ Transaksi Barang - Menu Kasir Project
                                 title: "Query Berhasil!",
                                 text: data.message,
                                 icon: "success",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    } else if (data.status == 'kurang') {
+                        swal({
+                                title: "Pembayaran Kurang!",
+                                text: "Pembayaran Ini Dilanjutkan Sebagai Pembayaran DP",
+                                icon: "info",
                             })
                             .then(() => {
                                 location.reload(); // for reload a page
@@ -55,6 +61,30 @@ Transaksi Barang - Menu Kasir Project
             });
         }
         // console.log($('#form').serialize());
+    }
+
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+    }
+
+    const bayar = document.getElementById("bayar");
+    if (bayar != null) {
+        bayar.addEventListener("keyup", function(e) {
+            bayar.value = formatRupiah(this.value, "");
+        });
     }
 </script>
 <script type="text/javascript">
@@ -169,35 +199,28 @@ Transaksi Barang - Menu Kasir Project
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if (empty($find_sale)) : ?>
+                        <?php if ($find_sale[0]->sale_status == 2) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir Project - Pilih Penawaran</span></h5>
+                                            <h5>Sistem Kasir - Informasi Transaksi</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
-                                                <form action="" method="POST">
-                                                    <?php csrf_field() ?>
-
-                                                    <div class="form-group">
-                                                        <select name="penawaran_id" id="penawaran_id" required class="form-control <?= $validation->getError('penawaran_id') ? 'is-invalid' : ''; ?>">
-                                                            <option value="">--Pilih Penawaran Dari Marketing--</option>
-                                                            <?php foreach ($penawaran as $m) : ?>
-                                                                <option value="<?= $m->id; ?>">Penawaran <?= $m->penawaran_code; ?> - Untuk Klien <?= $m->member_name; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            <?= $validation->getError('penawaran_id'); ?>
-                                                        </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12">
+                                                        <h4 class="text-center mb-4">Transaksi Selesai dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
+                                                        <a href="<?= base_url(); ?>/transaction/cashier/transaction-project" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
+                                                        <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
+                                                            <?php csrf_field() ?>
+                                                            <input type="hidden" name="_key" value="download">
+                                                            <input type="hidden" name="invoice" value="invoice">
+                                                            <button type="submit" data-formid="<?= $find_sale[0]->sale_code; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control cetak-button btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
+                                                        </form>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" name="submit_penawaran" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Pilih Penawaran</button>
-                                                    </div>
-                                                </form>
-
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -307,7 +330,7 @@ Transaksi Barang - Menu Kasir Project
                                                                 <tfoot>
 
                                                                     <tr>
-                                                                        <th colspan="4" rowspan="9"></th>
+                                                                        <th colspan="4" rowspan="10"></th>
                                                                         <th>Sub Total I</th>
                                                                         <th colspan="4">Rp. <?= format_rupiah($total_order); ?></th>
                                                                     </tr>
@@ -340,6 +363,10 @@ Transaksi Barang - Menu Kasir Project
                                                                     <tr>
                                                                         <th>Grand Total</th>
                                                                         <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Perlu Membayar</th>
+                                                                        <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
                                                                     </tr>
                                                                     <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total  && $status == count($transaction)) : ?>
                                                                         <tr>
@@ -378,7 +405,7 @@ Transaksi Barang - Menu Kasir Project
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total || $status != count($transaction)) {
+                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay == 0 || $status != count($transaction)) {
                                                             $disabled = 'disabled';
                                                         } else {
                                                             $disabled = '';
@@ -393,13 +420,7 @@ Transaksi Barang - Menu Kasir Project
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
-                                                                    <?php csrf_field() ?>
-
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
-                                                                </form>
+                                                                <a href="<?= base_url(); ?>/transaction/cashier/report" class="form-control btn btn-danger"><i class="feather icon-arrow-left"></i>Kembali</a>
                                                             </div>
                                                         </div>
                                                     </div>
