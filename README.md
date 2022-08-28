@@ -83,11 +83,6 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - email : proyek@ganatech.id
 - password : 12345678
 
-## Primary Tools
-
-- Datatables Server Side
-- Codeigniter 4 Standar PHP Fixing (use: `vendor/bin/php-cs-fixer fix --verbose`)
-
 ## Credit
 
-Aplikasi ini dikembangkan oleh Ganatech ID, Copyright 2021
+Aplikasi ini dikembangkan oleh GanaDev Com, Copyright 2021
