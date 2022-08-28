@@ -62,6 +62,7 @@ class Report extends BaseController
         }
         // JSON Data Send To Grafik
         $order = $this->m_order->getAllOrder();
+        $output_order[] = [];
         if ($order !== null) {
             foreach ($order as $row) {
                 $output_order[] = [
@@ -69,9 +70,8 @@ class Report extends BaseController
                     'price' => $row->order_total_item,
                 ];
             }
-        } else {
-            $output_order[] = [];
         }
+        $output_transaksi[] = [];
         if ($find !== null) {
             foreach ($find as $row) {
                 $output_transaksi[] = [
@@ -79,9 +79,7 @@ class Report extends BaseController
                     'price' => $row->sale_profit,
                 ];
             }
-        } else {
-            $output_transaksi[] = [];
-        }
+        } 
         // End JSON Data
         $data = [
             'sortir'         => $sortir,

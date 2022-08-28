@@ -349,6 +349,11 @@ class TransactionPenawaran extends BaseController
 			} else {
 				$id_transaksi = get_cookie('penawaran');
 			}
+
+			$handling_real = $this->request->getPost('handling_tot');
+			$pecah = explode(".", $handling_real);
+			$handling_total = implode("", $pecah);
+
 			$find      = $this->m_penawaran->where('id', $id_transaksi)->find();
 			$pph_model = $this->m_pph->getAllPPh();
 
@@ -361,15 +366,16 @@ class TransactionPenawaran extends BaseController
 			}
 			$discount    = $sub_tot_1 * $find[0]->penawaran_discount / 100;
 			$sub_tot_2   = $sub_tot_1 - $discount;
-			$sub_tot_3   = $this->request->getPost('handling_tot') + $sub_tot_2;
+			$sub_tot_3   = $handling_total + $sub_tot_2;
 			$pph         = $sub_tot_3 * $pph_model[0]->pph_value / 100;
 			$grand_total = $sub_tot_3 + $pph;
 			// End Perhitungan Belanja Baru
 
 			$save = $this->m_penawaran->save([
 				'id'            => $id_transaksi,
-				'penawaran_handling' => $this->request->getPost('handling_tot'),
+				'penawaran_handling' => $handling_total,
 				'penawaran_total'    => $grand_total,
+				'penawaran_status' => 1,
 			]);
 			if ($save) {
 				// echo json_encode(array("status" => TRUE));
@@ -387,6 +393,11 @@ class TransactionPenawaran extends BaseController
 			} else {
 				$id_transaksi = get_cookie('penawaran');
 			}
+
+			$handling_real = $this->request->getPost('handling_tot');
+			$pecah = explode(".", $handling_real);
+			$handling_total = implode("", $pecah);
+
 			$find      = $this->m_penawaran->where('id', $id_transaksi)->find();
 			$pph_model = $this->m_pph->getAllPPh();
 
@@ -399,15 +410,16 @@ class TransactionPenawaran extends BaseController
 			}
 			$discount    = $sub_tot_1 * $find[0]->penawaran_discount / 100;
 			$sub_tot_2   = $sub_tot_1 - $discount;
-			$sub_tot_3   = $this->request->getPost('handling_tot') + $sub_tot_2;
+			$sub_tot_3   = $handling_total + $sub_tot_2;
 			$pph         = $sub_tot_3 * $pph_model[0]->pph_value / 100;
 			$grand_total = $sub_tot_3 + $pph;
 			// End Perhitungan Belanja Baru
 
 			$save = $this->m_penawaran->save([
 				'id'            => $id_transaksi,
-				'penawaran_handling' => $this->request->getPost('handling_tot'),
+				'penawaran_handling' => $handling_total,
 				'penawaran_total'    => $grand_total,
+				'penawaran_status' => 1,
 			]);
 			if ($save) {
 				// echo json_encode(array("status" => TRUE));
@@ -425,47 +437,41 @@ class TransactionPenawaran extends BaseController
 		];
 		$find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->first();
 		if (!empty($this->request->getPost('invoice'))) {
-			$save_update_status = $this->m_sale->save([
-				'id'          => $find_sale_code->id,
-				'sale_status' => 1,
-			]);
-			if ($save_update_status) {
-				$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
-				$find_sale   = $this->m_sale->getAllSale($find_sale_code->id);
-				$find_member = $this->m_member->find($find_sale[0]->member_id);
-				$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
-				$pph_model   = $this->m_pph->getAllPPh();
-				$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-				$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-				$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-				$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-				$note        = $this->m_invoice->where('key', 'note')->first();
-				$data        = [
-					'detail'     => $find_detail,
-					'sale'       => $find_sale,
-					'pph'        => $pph_model,
-					'member'     => $find_member,
-					'user'       => $find_user,
-					'ttd_kiri'   => $ttd_kiri,
-					'ttd_tengah' => $ttd_tengah,
-					'ttd_kanan'  => $ttd_kanan,
-					'ttd_bawah'  => $ttd_bawah,
-					'note'       => $note,
-				];
-				// return view('Admin/page/invoice_transaction', $data);
-				set_cookie('transaction', false, 900);
-				$mpdf = new \Mpdf\Mpdf();
-				$html = view('Admin/page/invoice_transaction', $data);
-				$mpdf->WriteHTML($html);
-				// $mpdf->SetWatermarkText("SUKSES");
-				// $mpdf->showWatermarkText = true;
-				$mpdf->showImageErrors = true;
-				$this->response->setHeader('Content-Type', 'application/pdf');
-				// $mpdf->AutoPrint(true);
-				$mpdf->SetJS('this.print();');
-				// $mpdf->Output('Invoice Transaction.pdf', 'I');
-				$mpdf->Output();
-			}
+			$find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
+			$find_sale   = $this->m_sale->getAllSale($find_sale_code->id);
+			$find_member = $this->m_member->find($find_sale[0]->member_id);
+			$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
+			$pph_model   = $this->m_pph->getAllPPh();
+			$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
+			$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
+			$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
+			$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
+			$note        = $this->m_invoice->where('key', 'note')->first();
+			$data        = [
+				'detail'     => $find_detail,
+				'sale'       => $find_sale,
+				'pph'        => $pph_model,
+				'member'     => $find_member,
+				'user'       => $find_user,
+				'ttd_kiri'   => $ttd_kiri,
+				'ttd_tengah' => $ttd_tengah,
+				'ttd_kanan'  => $ttd_kanan,
+				'ttd_bawah'  => $ttd_bawah,
+				'note'       => $note,
+			];
+			// return view('Admin/page/invoice_transaction', $data);
+			set_cookie('transaction', false, 900);
+			$mpdf = new \Mpdf\Mpdf();
+			$html = view('Admin/page/invoice_transaction', $data);
+			$mpdf->WriteHTML($html);
+			// $mpdf->SetWatermarkText("SUKSES");
+			// $mpdf->showWatermarkText = true;
+			$mpdf->showImageErrors = true;
+			$this->response->setHeader('Content-Type', 'application/pdf');
+			// $mpdf->AutoPrint(true);
+			$mpdf->SetJS('this.print();');
+			// $mpdf->Output('Invoice Transaction.pdf', 'I');
+			$mpdf->Output();
 		}
 		return view('Admin/page/report', $data);
 	}
@@ -643,21 +649,6 @@ class TransactionPenawaran extends BaseController
 						return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
 					}
 					session()->setFlashdata('gagal', 'Gagal Menambahkan Detail Transaksi');
-					return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
-				}
-				if (!empty($this->request->getPost('batalkan_transaksi'))) {
-					$kode_penawaran = $this->m_penawaran->where('id', $find_penawaran_code->id)->first();
-					$request_order_data = $this->m_request_order->getAllOrderWherePenawaranCode($kode_penawaran->penawaran_code);
-					if ($request_order_data > 0) {
-						foreach ($request_order_data as $data) {
-							$this->m_request_order->delete($data->id);
-						}
-					}
-					if ($this->m_penawaran->delete($find_penawaran_code->id)) {
-						session()->setFlashdata('berhasil', 'Berhasil Membatalkan Transaksi Yang Dipilih');
-						return redirect()->to('/transaction/marketing/list-penawaran')->withCookies();
-					}
-					session()->setFlashdata('gagal', 'Gagal Membatalkan Transaksi Yang Dipilih');
 					return redirect()->to('/transaction/marketing/search?penawaran_code=' . $this->request->getGet('penawaran_code'))->withCookies();
 				}
 				if (!empty($this->request->getPost('delete_item'))) {

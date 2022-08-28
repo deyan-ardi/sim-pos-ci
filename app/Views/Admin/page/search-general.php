@@ -28,8 +28,35 @@ Transaksi Barang - Menu Kasir
                 data: $('#form').serialize(),
                 dataType: "JSON",
                 success: function(data) {
+                    if (data.status == true) {
+                        swal({
+                                title: "Query Berhasil!",
+                                text: data.message,
+                                icon: "success",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    } else if (data.status == 'kurang') {
+                        swal({
+                                title: "Pembayaran Kurang!",
+                                text: "Pembayaran Ini Dilanjutkan Sebagai Pembayaran DP",
+                                icon: "info",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    } else {
+                        swal({
+                                title: "Terjadi Kesalahan!",
+                                text: data.message,
+                                icon: "error",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
+                    }
                     //if success close modal and reload ajax table
-                    location.reload(); // for reload a page
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error adding / update data');
@@ -44,6 +71,38 @@ Transaksi Barang - Menu Kasir
             $('#form_handling').submit();
         }
         // console.log($('#form').serialize());
+    }
+
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+    }
+
+    const handling = document.getElementById("handling");
+    if (handling != null) {
+        handling.addEventListener("keyup", function(e) {
+            handling.value = formatRupiah(this.value, "");
+        });
+    }
+
+
+    const bayar = document.getElementById("bayar");
+    if (bayar != null) {
+        bayar.addEventListener("keyup", function(e) {
+            bayar.value = formatRupiah(this.value, "");
+        });
     }
 </script>
 <script type="text/javascript">
@@ -146,7 +205,7 @@ Transaksi Barang - Menu Kasir
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if ($find_sale[0]->sale_status == 1) : ?>
+                        <?php if ($find_sale[0]->sale_status == 2) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
@@ -158,7 +217,7 @@ Transaksi Barang - Menu Kasir
                                             <div class="card-body">
                                                 <div class="row justify-content-center">
                                                     <div class="col-12">
-                                                        <h4 class="text-center mb-4">Transaksi dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
+                                                        <h4 class="text-center mb-4">Transaksi Selesai dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
                                                         <a href="<?= base_url(); ?>/transaction-general" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
                                                         <form action="" id="cetak-<?= $find_sale[0]->sale_code; ?>" target="_blank" method="post">
                                                             <?php csrf_field() ?>
@@ -311,7 +370,7 @@ Transaksi Barang - Menu Kasir
                                                                     <?php if ($find_sale[0]->sale_handling != NULL && $find_sale[0]->sale_handling >= 0) : ?>
 
                                                                         <tr>
-                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="9"></th>
+                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="10"></th>
                                                                             <th>Sub Total I</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
                                                                         </tr>
@@ -345,7 +404,11 @@ Transaksi Barang - Menu Kasir
                                                                             <th>Grand Total</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                         </tr>
-                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
+                                                                        <tr>
+                                                                            <th>Perlu Membayar</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
+                                                                        </tr>
+                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_kurang && !empty($transaction)) : ?>
 
                                                                             <tr>
                                                                                 <th>Bayar</th>
@@ -364,12 +427,10 @@ Transaksi Barang - Menu Kasir
                                                                                 <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
                                                                             </th>
                                                                         <?php endif; ?>
-                                                                        <tr>
-                                                                            <th>Kembali</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
-                                                                            </th>
-                                                                        </tr>
+                                                                        <th>Kembali</th>
+                                                                        <th colspan="<?= $colspan; ?>">
+                                                                            <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
+                                                                        </th>
                                                                     <?php else : ?>
                                                                         <tr>
                                                                             <th colspan="<?= $colspan_all; ?>" rowspan="4"></th>
@@ -412,7 +473,7 @@ Transaksi Barang - Menu Kasir
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total) {
+                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay == 0) {
                                                             $disabled = 'disabled';
                                                         } else {
                                                             $disabled = '';
@@ -427,13 +488,7 @@ Transaksi Barang - Menu Kasir
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
-                                                                    <?php csrf_field() ?>
-
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
-                                                                </form>
+                                                                <a href="<?= base_url(); ?>/transaction-general/report" class="form-control btn btn-danger"><i class="feather icon-arrow-left"></i>Kembali</a>
                                                             </div>
                                                         </div>
                                                     </div>

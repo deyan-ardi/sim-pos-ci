@@ -12,9 +12,7 @@ Transaksi Barang - Menu Kasir Penawaran
     $('#form').on('keypress', function(e) {
         return e.which !== 13;
     });
-    $('#bayar').bind('keyup paste', function() {
-        this.value = +this.value.replace(/[^0-9]/g, '');
-    });
+
     $('#handling').bind('keyup paste', function() {
         this.value = +this.value.replace(/[^0-9]/g, '');
     });
@@ -44,6 +42,30 @@ Transaksi Barang - Menu Kasir Penawaran
             $('#form_handling').submit();
         }
         // console.log($('#form').serialize());
+    }
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+    }
+
+    const handling = document.getElementById("handling");
+    if (handling != null) {
+        handling.addEventListener("keyup", function(e) {
+            handling.value = formatRupiah(this.value, "");
+        });
     }
 </script>
 <script type="text/javascript">
@@ -383,7 +405,7 @@ Transaksi Barang - Menu Kasir Penawaran
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if (!empty($transaction) && $find_sale[0]->penawaran_handling != NULL) {
+                                                        <?php if ( $find_sale[0]->penawaran_handling != null) {
                                                             $disabled = '';
                                                         } else {
                                                             $disabled = 'disabled';
@@ -398,13 +420,7 @@ Transaksi Barang - Menu Kasir Penawaran
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
-                                                                    <?php csrf_field() ?>
-
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->penawaran_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
-                                                                </form>
+                                                                <a href="<?= base_url(); ?>/transaction/marketing/list-penawaran" class="form-control btn btn-danger"><i class="feather icon-arrow-left"></i>Kembali</a>
                                                             </div>
                                                         </div>
                                                     </div>

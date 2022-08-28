@@ -37,6 +37,15 @@ Transaksi Barang - Menu Kasir
                             .then(() => {
                                 location.reload(); // for reload a page
                             });
+                    } else if (data.status == 'kurang') {
+                        swal({
+                                title: "Pembayaran Kurang!",
+                                text: "Pembayaran Ini Dilanjutkan Sebagai Pembayaran DP",
+                                icon: "info",
+                            })
+                            .then(() => {
+                                location.reload(); // for reload a page
+                            });
                     } else {
                         swal({
                                 title: "Terjadi Kesalahan!",
@@ -62,6 +71,39 @@ Transaksi Barang - Menu Kasir
             $('#form_handling').submit();
         }
         // console.log($('#form').serialize());
+    }
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+    }
+
+    const handling = document.getElementById("handling");
+    if (handling != null) {
+        handling.addEventListener("keyup", function(e) {
+            handling.value = formatRupiah(this.value, "");
+        });
+    }
+
+
+    const bayar = document.getElementById("bayar");
+    if (bayar != null) {
+        bayar.addEventListener("keyup", function(e) {
+            bayar.value = formatRupiah(this.value, "");
+        });
     }
 </script>
 <script type="text/javascript">
@@ -346,7 +388,7 @@ Transaksi Barang - Menu Kasir
                                                                 <tfoot>
                                                                     <?php if ($find_sale[0]->sale_handling != NULL && $find_sale[0]->sale_handling >= 0) : ?>
                                                                         <tr>
-                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="9"></th>
+                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="10"></th>
                                                                             <th>Sub Total I</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
                                                                         </tr>
@@ -379,6 +421,10 @@ Transaksi Barang - Menu Kasir
                                                                         <tr>
                                                                             <th>Grand Total</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Perlu Membayar</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
                                                                         </tr>
                                                                         <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
 
@@ -447,7 +493,7 @@ Transaksi Barang - Menu Kasir
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay < $find_sale[0]->sale_total) {
+                                                        <?php if (empty($transaction) || $find_sale[0]->sale_pay == 0) {
                                                             $disabled = 'disabled';
                                                         } else {
                                                             $disabled = '';

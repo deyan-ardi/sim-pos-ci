@@ -15,6 +15,7 @@ class CreateSalesTables extends Migration
 			'sale_handling' => ['type' => 'float', 'null' => true],
 			'sale_total'    => ['type' => 'float'],
 			'sale_pay'      => ['type' => 'float'],
+			'sale_kurang'      => ['type' => 'float'],
 			'sale_discount' => ['type' => 'float'],
 			'sale_profit'   => ['type' => 'float'],
 			'sale_status'   => ['type' => 'int'],
