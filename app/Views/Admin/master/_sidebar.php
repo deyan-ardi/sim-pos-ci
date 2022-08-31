@@ -13,7 +13,6 @@
                    <li class="nav-item pcoded-menu-caption">
                        <label>Main Menu</label>
                    </li>
-                   <!--<li data-username="animations" class="nav-item"><a href="landing.html" class="nav-link"><span class="pcoded-micon"><i class="feather icon-aperture"></i></span><span class="pcoded-mtext">New front</span></a></li>-->
                    <li data-username="dashboard home page profile setting logout main" class="nav-item pcoded-hasmenu">
                        <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
                        <ul class="pcoded-submenu">
@@ -71,7 +70,7 @@
                            </ul>
                        </li>
                    <?php endif; ?>
-                   <?php if (in_groups('SUPER ADMIN') || in_groups('KASIR') || in_groups('MARKETING')) : ?>
+                   <?php if (in_groups('SUPER ADMIN') || in_groups('FINANCE') || in_groups('MARKETING')) : ?>
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Manajemen User</label>
                        </li>
@@ -101,9 +100,9 @@
                        </li>
                    <?php endif; ?>
 
-                   <?php if (in_groups('SUPER ADMIN') ||  in_groups('KASIR')) : ?>
+                   <?php if (in_groups('SUPER ADMIN') ||  in_groups('FINANCE')) : ?>
                        <li class="nav-item pcoded-menu-caption">
-                           <label>Menu Transaksi Kasir</label>
+                           <label>Menu Transaksi Kasir Finance</label>
                        </li>
                        <li data-username="transaksi general laporan daftar" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-minus"></i></span><span class="pcoded-mtext">Transaksi General</span></a>
@@ -114,7 +113,7 @@
                            </ul>
                        </li>
                        <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
-                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Project</span></a>
+                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Projek</span></a>
                            <ul class="pcoded-submenu">
                                <li class=""><a href="<?= base_url(); ?>/transaction/cashier/transaction-project" class="">Kasir Project</a>
                                <li class=""><a href="<?= base_url(); ?>/transaction/cashier/list-penawaran" class="">Daftar Penawaran</a>
@@ -127,6 +126,38 @@
                            <ul class="pcoded-submenu">
                                <li class=""><a href="<?= base_url(); ?>/transaction/pengaturan" class="">PPh dan Invoice</a>
                                </li>
+                           </ul>
+                       </li>
+                   <?php endif; ?>
+
+                   <?php if (in_groups('SUPER ADMIN') ||  in_groups('PROYEK') ||  in_groups('MARKETING') ||  in_groups('GUDANG')) : ?>
+                       <li class="nav-item pcoded-menu-caption">
+                           <label>Menu SPPB</label>
+                       </li>
+                       <li data-username="transaksi general laporan daftar" class="nav-item pcoded-hasmenu">
+                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-minus"></i></span><span class="pcoded-mtext">SPPB General</span></a>
+                           <ul class="pcoded-submenu">
+                               <?php if (in_groups('SUPER ADMIN') ||  in_groups('PROYEK') ||  in_groups('MARKETING')) : ?>
+                                   <li class=""><a href="<?= base_url(); ?>/sppb/transaction-general" class="">Cetak SPPB</a>
+                                   </li>
+                               <?php endif; ?>
+                               <?php if (in_groups('SUPER ADMIN') ||  in_groups('GUDANG')) : ?>
+                                   <li class=""><a href="<?= base_url(); ?>/surat-jalan/transaction-general" class="">Cetak Surat Jalan</a>
+                                   </li>
+                               <?php endif; ?>
+                           </ul>
+                       </li>
+                       <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
+                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">SPPB Projek</span></a>
+                           <ul class="pcoded-submenu">
+                               <?php if (in_groups('SUPER ADMIN') ||  in_groups('PROYEK') ||  in_groups('MARKETING')) : ?>
+                                   <li class=""><a href="<?= base_url(); ?>/sppb/transaction-project" class="">Cetak SPPB</a>
+                                   </li>
+                               <?php endif; ?>
+                               <?php if (in_groups('SUPER ADMIN') ||  in_groups('GUDANG')) : ?>
+                                   <li class=""><a href="<?= base_url(); ?>/surat-jalan/transaction-project" class="">Cetak Surat Jalan</a>
+                                   </li>
+                               <?php endif; ?>
                            </ul>
                        </li>
                    <?php endif; ?>

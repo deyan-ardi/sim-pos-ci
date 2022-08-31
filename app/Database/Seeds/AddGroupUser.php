@@ -10,8 +10,8 @@ class AddGroupUser extends Seeder
     {
         $data = [
             [
-                'name'        => 'KASIR',
-                'description' => 'Group For Kasir User',
+                'name'        => 'FINANCE',
+                'description' => 'Group For Kasir Finance',
             ],
             [
                 'name'        => 'GUDANG',
@@ -32,10 +32,6 @@ class AddGroupUser extends Seeder
             [
                 'name'        => 'MARKETING',
                 'description' => 'Group For Marketing User',
-            ],
-            [
-                'name'        => 'FINANCE',
-                'description' => 'Group For Finance User',
             ],
             [
                 'name'        => 'PROYEK',

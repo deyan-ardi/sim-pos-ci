@@ -21,10 +21,10 @@ class AddUserSuperAdmin extends Seeder
             $hashOptions
         );
 
-        for ($i = 1; $i <= 8; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             if ($i == 1) {
-                $email    = 'kasir@ganatech.id';
-                $username = 'Kasir User';
+                $email    = 'finance@ganatech.id';
+                $username = 'Kasir Finance';
             } elseif ($i == 2) {
                 $email    = 'gudang@ganatech.id';
                 $username = 'Gudang User';
@@ -41,9 +41,6 @@ class AddUserSuperAdmin extends Seeder
                 $email    = 'marketing@ganatech.id';
                 $username = 'Marketing User';
             } elseif ($i == 7) {
-                $email    = 'finance@ganatech.id';
-                $username = 'Finance User';
-            } elseif ($i == 8) {
                 $email    = 'proyek@ganatech.id';
                 $username = 'Proyek User';
             }

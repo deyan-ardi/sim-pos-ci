@@ -7,7 +7,6 @@
 - Dimanajemen pesanan, bisa dicetak POnya(formatnya nanti dikasi) [Sudah]
 - Dibagian cetak isi untuk menambahkan remark/noted [Sudah]
 - Recipt Of Goods Slip (format dikasi nanti), letaknya disamping PO [Sudah]
-- Layout Cetak ROGS & Cetak PO
 - ROGS & PO bisa dicetak oleh Purchasing, tpi Gudang hanya bisa cetak ROGS saja [Sudah]
 
 ## Gudang
@@ -17,11 +16,9 @@
 - Buah ubah jadi unit [Sudah]
 - "Buat pesanan" dihapus di Gudang [Sudah]
 - Fitur retur barang [Sudah]
-- Cetak data barang retur
 - Ada fitur Done, langsung masuk di manajemen barang - laporan transaksi barang [Sudah]
 - Ada fitur noted, untuk ngasi tau kenapa barang diretur [Sudah]
 - List item barang, ubah jadi server side [Sudah]
-- SPPB menu baru
 - Order barang nggak ditampilin, karena sudah di Receiving [Sudah]
 - Gudang tidak bisa menghapus order [Sudah]
 
@@ -34,7 +31,6 @@
 - Pas fase penawaran, gk langsung ngurangin stok [Sudah]
 - Nambah 2 tipe user, finance dan tim proyek [Sudah]
 - Pas Deal juga belum dikurangi stoknya [Sudah]
-- Marketing, bisa melihat SPPB
 
 ## Kasir
 
@@ -42,25 +38,39 @@
 - Setelah disetujui penawarannya, kasir itu mencetak invoice hanya untuk di project [Sudah]
 - General dibiarkan seoperti awal [Sudah]
 - Ada Proses DP [Sudah]
-
-## Finance
-
-- Bisa melihat laporan transaksi project, gk bisa akses kasir transaksi project
-- Bisa cetak invoice
-- Setelah cetak invoice, di marketing menu SPPB
-- Saat finance sudah mencetak invoice, otomatis akan menerima transaksi ini dalam bentuk SPPB
-- SPPB itu adalah surat perintah pengiriman barang yang nanti akan diterima oleh marketing, project, gudang
-- Tim project bisa nyetak SPPB, ada hak akses tim proyek
-- Yang bisa mencetak SPPB hanya Project
-- Marketing dan Gudang hanya bisa melihat
-- Finance gk bisa melihat dan mencetak SPPB
-- Ada Proses DP [Sudah]
-- DP atau full bisa cetak SPPB dan Surat Jalan
+- Kasir ubah menjadi Finance [Sudah]
 
 ## Project
 
-- Itu tampilan sama laporan transaksi project, tpi gk bisa liat total transaksi
-- Fitur SPPB dilihat dlu, baru cetak SPPB, sehabis dicetak baru update stok
-- Setelah cetak SPPB, di gudang itu akan otomatis surat jalan
-- Saat project mau nyetak, ada textarea untuk nambah alamat
+- Itu tampilan sama laporan transaksi project, tpi gk bisa liat total transaksi [Sudah]
+- Setelah cetak SPPB, di gudang itu akan otomatis surat jalan [Sudah]
+- Saat project mau nyetak, ada textarea untuk nambah alamat [Sudah]
 - Update Nomor Transaksi [Sudah]
+
+## Atasan
+
+- Tampilkan transaksi [Sudah]
+
+### Alur SPPB
+
+1. Marketing cetak SPPB [Sudah]
+2. SPPB dikirim ke Gudang [Sudah]
+3. Gudang cetak surat jalan [Sudah]
+
+===========================
+
+- Marketing dan Proyek dapat membuat SPPB [Sudah]
+- SPPB bisa dicetak ketika status DP Pembayaran dan Sukses [Sudah]
+- SPBB bisa dilihat oleh Marketing Proyek dan Gudang [Sudah]
+
+
+## Fitur Invoice
+- ROGS
+- Penawaran
+- PO
+- Data Barang Retur
+- SPPB
+- Surat Jalan
+- Invoice General
+- Invoice Project
+- Update Invoice-Invoice Lama

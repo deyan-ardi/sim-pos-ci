@@ -33,7 +33,7 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->group('/', ['filter' => 'role:SUPER ADMIN, KASIR, ATASAN, GUDANG, MARKETING, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+$routes->group('/', ['filter' => 'role:SUPER ADMIN, FINANCE, ATASAN, GUDANG, MARKETING, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('home-page', 'Home::index');
     $routes->get('profile-setting', 'Home::profile');
@@ -62,7 +62,7 @@ $routes->group('item-reports', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASIN
     $routes->post('/', 'Item::report');
 });
 
-$routes->group('members', ['filter' => 'role:SUPER ADMIN, KASIR, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+$routes->group('members', ['filter' => 'role:SUPER ADMIN, FINANCE, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'Member::index');
     $routes->post('/', 'Member::index');
     $routes->patch('/', 'Member::index');
@@ -148,7 +148,7 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], static functio
     });
 
     // Kasir
-    $routes->group('cashier', ['filter' => 'role:SUPER ADMIN, KASIR'], static function ($routes) {
+    $routes->group('cashier', ['filter' => 'role:SUPER ADMIN, FINANCE'], static function ($routes) {
         $routes->post('validation_payment', 'Transaction::validation_payment');
         $routes->post('report/add_handling', 'Transaction::add_handling_report');
         $routes->post('add_handling', 'Transaction::add_handling');
@@ -181,7 +181,7 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], static functio
     });
 });
 
-$routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], ['namespace' => 'App\Controllers'], static function ($routes) {
+$routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, FINANCE'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'GeneralTransaction::index');
     $routes->post('/', 'GeneralTransaction::index');
     $routes->delete('/', 'GeneralTransaction::index');
@@ -194,6 +194,16 @@ $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, KASIR'], [
     $routes->post('report/search', 'GeneralTransaction::search');
     $routes->delete('report/search', 'GeneralTransaction::search');
     $routes->get('report/search', 'GeneralTransaction::search');
+});
+
+$routes->group('sppb', ['filter' => 'role:SUPER ADMIN, PROYEK, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+    $routes->get('transaction-general', 'TransactionProyek::index');
+    $routes->get('transaction-project', 'TransactionProyek::project');
+});
+
+$routes->group('surat-jalan', ['filter' => 'role:SUPER ADMIN, GUDANG'], ['namespace' => 'App\Controllers'], static function ($routes) {
+    $routes->get('transaction-general', 'TransactionProyek::surat_jalan_general');
+    $routes->get('transaction-project', 'TransactionProyek::surat_jalan_project');
 });
 
 $routes->group('report', ['filter' => 'role:SUPER ADMIN, ATASAN'], ['namespace' => 'App\Controllers'], static function ($routes) {

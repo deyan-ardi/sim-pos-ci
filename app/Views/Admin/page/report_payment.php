@@ -217,6 +217,8 @@ if ($sortir == 1) {
                                                             <td>Transaksi <?= $t->sale_ket; ?></td>
                                                             <?php if ($t->sale_status == 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
+                                                            <?php elseif ($t->sale_status == 1) : ?>
+                                                                <td><button type="button" class="btn btn-warning btn-sm"> DP Pembayaran</button></td>
                                                             <?php else : ?>
                                                                 <?php
                                                                 $v++;
