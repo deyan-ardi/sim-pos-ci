@@ -204,6 +204,8 @@ $routes->group('sppb', ['filter' => 'role:SUPER ADMIN, PROYEK, MARKETING'], ['na
 $routes->group('surat-jalan', ['filter' => 'role:SUPER ADMIN, GUDANG'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('transaction-general', 'TransactionProyek::surat_jalan_general');
     $routes->get('transaction-project', 'TransactionProyek::surat_jalan_project');
+    $routes->post('transaction-general', 'TransactionProyek::surat_jalan_general');
+    $routes->post('transaction-project', 'TransactionProyek::surat_jalan_project');
 });
 
 $routes->group('report', ['filter' => 'role:SUPER ADMIN, ATASAN'], ['namespace' => 'App\Controllers'], static function ($routes) {

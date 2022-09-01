@@ -169,7 +169,7 @@ Laporan Transaksi
 
 
                         <div class="modal-footer">
-                            <button type="submit" name="input_order" value="order" class="btn btn-primary">Simpan</button>
+                            <button type="submit" name="invoice" value="order" class="btn btn-primary">Simpan</button>
                             <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
                         </div>
                     </form>
