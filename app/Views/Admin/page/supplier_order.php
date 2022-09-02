@@ -163,7 +163,7 @@ Order Barang Supplier
                                                                         </form>
                                                                     <?php endif; ?>
                                                                     <!-- Delete -->
-                                                                    <form target="_blank" action="<?= base_url(); ?>/suppliers/invoice" method="POST">
+                                                                    <form target="_blank" rel="noopener noreferrer" action="<?= base_url(); ?>/suppliers/invoice" method="POST">
                                                                         <?= csrf_field(); ?>
                                                                         <input type="hidden" name="id_order" value="<?= $c->id; ?>">
                                                                         <button type="submit" name="print_order" value="print" class="btn btn-warning btn-icon btn-rounded" title="Unduh Data Order" data-toggle="tooltip"><i class="feather icon-download"></i></button>

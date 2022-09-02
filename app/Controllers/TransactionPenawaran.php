@@ -509,7 +509,6 @@ class TransactionPenawaran extends BaseController
 					'ttd_kanan'  => $ttd_kanan,
 					'note'       => $note,
 				];
-				// return view('Admin/page/invoice_transaction', $data);
 				$mpdf = new \Mpdf\Mpdf();
 				$html = view('Invoice/invoice-transaksi-penawaran', $data);
 				$mpdf->WriteHTML($html);

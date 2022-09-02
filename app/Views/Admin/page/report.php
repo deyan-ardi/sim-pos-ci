@@ -130,14 +130,14 @@ Laporan Transaksi
                                                                                 <button type="submit" data-formid="<?= $t->id ?>" data-nama="<?= $t->sale_code ?>" class="btn btn-danger btn-icon btn-rounded delete-button" title="Hapus Transaksi" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
                                                                             </form>
                                                                         <?php else : ?>
-                                                                            <form action="" target="_blank" method="POST">
+                                                                            <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                                                 <?= csrf_field(); ?>
                                                                                 <input type="hidden" name="id_transaksi" value="<?= $t->sale_code; ?>">
                                                                                 <button type="submit" name="invoice" value="invoice" class="btn btn-success btn-icon btn-rounded" title="Cetak Ulang Invoice Transaksi" data-toggle="tooltip"><i class="feather icon-printer"></i></button>
                                                                             </form>
                                                                         <?php endif; ?>
                                                                     <?php else : ?>
-                                                                        <form action="" target="_blank" method="POST">
+                                                                        <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                                             <?= csrf_field(); ?>
                                                                             <input type="hidden" name="id_transaksi" value="<?= $t->sale_code; ?>">
                                                                             <button type="submit" name="invoice" value="invoice" class="btn btn-success btn-icon btn-rounded" title="Cetak Ulang Invoice Transaksi" data-toggle="tooltip"><i class="feather icon-printer"></i></button>

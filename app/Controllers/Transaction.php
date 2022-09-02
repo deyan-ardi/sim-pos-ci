@@ -205,7 +205,6 @@ class Transaction extends BaseController
                             'ttd_kanan'  => $ttd_kanan,
                             'note'       => $note,
                         ];
-                        // return view('Admin/page/invoice_transaction', $data);
                         set_cookie('transaction', false, -900);
                         delete_cookie('transaction');
                         $mpdf = new \Mpdf\Mpdf();
@@ -310,7 +309,6 @@ class Transaction extends BaseController
                     'ttd_kanan'  => $ttd_kanan,
                     'note'       => $note,
                 ];
-                // return view('Admin/page/invoice_transaction', $data);
                 set_cookie('transaction', false, 900);
                 $mpdf = new \Mpdf\Mpdf();
                 $html = view('Invoice/invoice-transaksi-project', $data);
@@ -391,7 +389,6 @@ class Transaction extends BaseController
                 'ttd_kanan'  => $ttd_kanan,
                 'note'       => $note,
             ];
-            // return view('Admin/page/invoice_transaction', $data);
             $mpdf = new \Mpdf\Mpdf();
             $html = view('Invoice/invoice-transaksi-penawaran', $data);
             $mpdf->WriteHTML($html);
@@ -475,7 +472,6 @@ class Transaction extends BaseController
                                 'ttd_kanan'  => $ttd_kanan,
                                 'note'       => $note,
                             ];
-                            // return view('Admin/page/invoice_transaction', $data);
                             set_cookie('transaction', false, 900);
                             $mpdf = new \Mpdf\Mpdf();
                             $html = view('Invoice/invoice-transaksi-project', $data);

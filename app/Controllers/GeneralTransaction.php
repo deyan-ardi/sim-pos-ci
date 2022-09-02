@@ -343,7 +343,6 @@ class GeneralTransaction extends BaseController
                         'ttd_kanan'  => $ttd_kanan,
                         'note'       => $note,
                     ];
-                    // return view('Admin/page/invoice_transaction', $data);
                     set_cookie('transaction-general', false, 900);
                     $mpdf = new \Mpdf\Mpdf();
                     $html = view('Invoice/invoice-transaksi-general', $data);
@@ -534,7 +533,6 @@ class GeneralTransaction extends BaseController
                     'ttd_kanan'  => $ttd_kanan,
                     'note'       => $note,
                 ];
-                // return view('Admin/page/invoice_transaction', $data);
                 set_cookie('transaction-general', false, 900);
                 $mpdf = new \Mpdf\Mpdf();
                 $html = view('Invoice/invoice-transaksi-general', $data);
@@ -773,7 +771,6 @@ class GeneralTransaction extends BaseController
                             'ttd_kanan'  => $ttd_kanan,
                             'note'       => $note,
                         ];
-                        // return view('Admin/page/invoice_transaction', $data);
                         set_cookie('transaction-general', false, 900);
                         delete_cookie('transaction-general');
                         $mpdf = new \Mpdf\Mpdf();

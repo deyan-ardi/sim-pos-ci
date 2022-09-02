@@ -129,56 +129,6 @@ Request Order Barang
                                                                     <?php if ($c->request_status == 0) : ?>
                                                                         <!-- Set Status Button Modal -->
                                                                         <button type="button" onclick="update('<?= $c->id ?>')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Permintaan Order" data-toggle="tooltip"></i></button>
-
-
-                                                                        <!-- Modal -->
-                                                                        <div id="updateOrder-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrder-<?= $c->id ?>Label" aria-hidden="true">
-                                                                            <div class="modal-dialog" role="document">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h5 class="modal-title" id="updateOrder-<?= $c->id ?>Label">Ubah Permintaan Order</h5>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <form action="" method="POST">
-                                                                                            <?= csrf_field(); ?>
-                                                                                            <input type="hidden" name="_method" value="PATCH">
-                                                                                            <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                                            <div class="form-group">
-                                                                                                <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="item_name" required>
-                                                                                                    <?php foreach ($item as $i) : ?>
-                                                                                                        <option value="<?= $i->id; ?>" <?= $i->id == $c->item_id ? 'selected' : '' ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
-                                                                                                    <?php endforeach; ?>
-                                                                                                </select>
-                                                                                                <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError('item_name'); ?>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group">
-                                                                                                <textarea class="form-control <?= $validation->getError('request_description') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required> <?= $c->request_description; ?> </textarea>
-                                                                                                <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError('request_description'); ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="form-group input-group search-form">
-                                                                                                <input type="number" min="0" class="form-control <?= $validation->getError('order_total') ? 'is-invalid' : ''; ?>" name="order_total" placeholder="Jumlah Order" required value="<?= (old('order_total')) ?: $c->request_total; ?>">
-                                                                                                <div class="input-group-append">
-                                                                                                    <span class="input-group-text bg-transparent">Unit</span>
-                                                                                                </div>
-                                                                                                <div class="invalid-feedback">
-                                                                                                    <?= $validation->getError('order_total'); ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="submit" name="update_request_order" value="order" class="btn btn-primary">Simpan Perubahan</button>
-                                                                                                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                            </div>
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
                                                                     <?php endif; ?>
                                                                     <!-- Delete -->
                                                                     <?php if ($c->request_status !== 1) : ?>
@@ -271,4 +221,55 @@ Request Order Barang
         </div>
     </div>
 </div>
+
+<?php foreach ($request_order as $c) : ?>
+    <!-- Modal -->
+    <div id="updateOrder-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrder-<?= $c->id ?>Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateOrder-<?= $c->id ?>Label">Ubah Permintaan Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                        <div class="form-group">
+                            <select id="item_id-<?= $c->id ?>" class="form-control <?= $validation->getError('item_name') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="item_name" required>
+                                <?php foreach ($item as $i) : ?>
+                                    <option value="<?= $i->id; ?>" <?= $i->id == $c->item_id ? 'selected' : '' ?>><?= $i->item_code; ?> - <?= $i->item_name; ?> - <?= $i->item_merk; ?> - <?= $i->item_type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('item_name'); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea class="form-control <?= $validation->getError('request_description') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Deskripsi Order" name="request_description" required> <?= $c->request_description; ?> </textarea>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('request_description'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group input-group search-form">
+                            <input type="number" min="0" class="form-control <?= $validation->getError('order_total') ? 'is-invalid' : ''; ?>" name="order_total" placeholder="Jumlah Order" required value="<?= (old('order_total')) ?: $c->request_total; ?>">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-transparent">Unit</span>
+                            </div>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('order_total'); ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="update_request_order" value="order" class="btn btn-primary">Simpan Perubahan</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
 <?= $this->endSection(); ?>

@@ -500,7 +500,7 @@ Transaksi Barang - Menu Kasir
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" rel="noopener noreferrer" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <input type="hidden" name="invoice" value="invoice">

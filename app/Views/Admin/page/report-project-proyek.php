@@ -164,7 +164,7 @@ Laporan Transaksi
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST">
+                    <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                         <?= csrf_field(); ?>
 
 

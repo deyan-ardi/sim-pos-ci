@@ -92,46 +92,6 @@ Request Order Barang
                                                                 <div class="row justify-content-center">
                                                                     <!-- Set Status Button Modal -->
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateOrder-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Status Permintaan Order" data-toggle="tooltip"></i></button>
-
-
-                                                                    <!-- Modal -->
-                                                                    <div id="updateOrder-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrder-<?= $c->id ?>Label" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateOrder-<?= $c->id ?>Label">Ubah Status Permintaan Order</h5>
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="" method="POST">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="PATCH">
-                                                                                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
-                                                                                        <div class="form-group">
-                                                                                            <select class="form-control <?= $validation->getError('request_status') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="request_status" required>
-                                                                                                <option value="">Status Request Order</option>
-                                                                                                <option value="1" <?= $c->request_status == 1 ? 'selected' : ''; ?>>Request Diterima</option>
-                                                                                                <option value="2" <?= $c->request_status == 2 ? 'selected' : ''; ?>>Request Ditolak</option>
-                                                                                            </select>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('request_status'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <textarea class="form-control <?= $validation->getError('alasan') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Alasan" name="alasan" required><?= $c->alasan; ?></textarea>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('alasan'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="submit" name="update_status_order" value="order" class="btn btn-primary">Simpan Perubahan</button>
-                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -167,4 +127,45 @@ Request Order Barang
     </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<?php foreach ($request_order as $c) : ?>
+    <!-- Modal -->
+    <div id="updateOrder-<?= $c->id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateOrder-<?= $c->id ?>Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateOrder-<?= $c->id ?>Label">Ubah Status Permintaan Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="hidden" name="id_order" value="<?= $c->id; ?>">
+                        <div class="form-group">
+                            <select class="form-control <?= $validation->getError('request_status') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="request_status" required>
+                                <option value="">Status Request Order</option>
+                                <option value="1" <?= $c->request_status == 1 ? 'selected' : ''; ?>>Request Diterima</option>
+                                <option value="2" <?= $c->request_status == 2 ? 'selected' : ''; ?>>Request Ditolak</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('request_status'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control <?= $validation->getError('alasan') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" placeholder="Alasan" name="alasan" required><?= $c->alasan; ?></textarea>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('alasan'); ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="update_status_order" value="order" class="btn btn-primary">Simpan Perubahan</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
 <?= $this->endSection(); ?>

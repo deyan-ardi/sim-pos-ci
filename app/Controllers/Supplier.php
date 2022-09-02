@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\InvoiceSettingModel;
 use App\Models\ItemModel;
 use App\Models\OrderDetailModel;
 use App\Models\OrderModel;
@@ -18,6 +19,7 @@ class Supplier extends BaseController
         $this->m_request_order = new RequestOrderModel();
         $this->m_order         = new OrderModel();
         $this->m_order_detail  = new OrderDetailModel();
+        $this->m_invoice = new InvoiceSettingModel();
     }
 
     public function index()
@@ -433,7 +435,33 @@ class Supplier extends BaseController
                     ]);
                     if ($update_data) {
                         //Cetak PO Ada Disini
-                        dd('cetak po');
+                        $find_detail_order = $this->m_order_detail->where('order_id', $find[0]->id)->findAll();
+                        $ttd_kiri    = $this->m_invoice->where('key', 'po-kiri')->first();
+                        $ttd_tengah_satu  = $this->m_invoice->where('key', 'po-tengah-satu')->first();
+                        $ttd_tengah_dua   = $this->m_invoice->where('key', 'po-tengan-dua')->first();
+                        $ttd_kanan   = $this->m_invoice->where('key', 'po-kanan')->first();
+                        $note        = $this->m_invoice->where('key', 'po-note')->first();
+                        $data = [
+                            'ttd_kiri'   => $ttd_kiri,
+                            'ttd_tengah_satu' => $ttd_tengah_satu,
+                            'ttd_tengah_dua'  => $ttd_tengah_dua,
+                            'ttd_kanan'  => $ttd_kanan,
+                            'note'       => $note,
+                            'order' => $find,
+                            'order_detail' =>  $find_detail_order,
+                            'remark' => $noted,
+                        ];
+                        $mpdf = new \Mpdf\Mpdf();
+                        $html = view('Invoice/invoice-transaksi-po', $data);
+                        $mpdf->WriteHTML($html);
+                        // $mpdf->SetWatermarkText("SUKSES");
+                        // $mpdf->showWatermarkText = true;
+                        $mpdf->showImageErrors = true;
+                        $this->response->setHeader('Content-Type', 'application/pdf');
+                        // $mpdf->AutoPrint(true);
+                        $mpdf->SetJS('this.print();');
+                        // $mpdf->Output('Invoice Transaction.pdf', 'I');
+                        $mpdf->Output();
                     }
                     session()->setFlashdata('gagal', 'Gagal Menambahkan Noted');
                 }
@@ -569,7 +597,7 @@ class Supplier extends BaseController
             }
             session()->setFlashdata('gagal', 'Status Order Gagal Diperbaharui');
             return redirect()->to('/suppliers/receiving')->withCookies();
-        }else{
+        } else {
             return view('Admin/page/receiving/index', $data);
         }
     }

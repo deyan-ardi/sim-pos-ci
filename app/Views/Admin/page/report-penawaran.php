@@ -132,14 +132,14 @@ Laporan Transaksi
                                                                         <?php elseif ($t->penawaran_status == 0) : ?>
                                                                             <a href="<?= base_url(); ?>/transaction/marketing/search?penawaran_code=<?= $t->penawaran_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Penawaran" data-toggle="tooltip"><i class="feather icon-search"></i></a>
                                                                         <?php else : ?>
-                                                                            <form action="" target="_blank" method="POST">
+                                                                            <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                                                 <?= csrf_field(); ?>
                                                                                 <input type="hidden" name="id_transaksi" value="<?= $t->penawaran_code; ?>">
                                                                                 <button type="submit" name="invoice" value="invoice" class="btn btn-success btn-icon btn-rounded" title="Cetak Ulang Penawaran" data-toggle="tooltip"><i class="feather icon-printer"></i></button>
                                                                             </form>
                                                                         <?php endif; ?>
                                                                     <?php else : ?>
-                                                                        <form action="" target="_blank" method="POST">
+                                                                        <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                                             <?= csrf_field(); ?>
                                                                             <input type="hidden" name="id_transaksi" value="<?= $t->penawaran_code; ?>">
                                                                             <button type="submit" name="invoice" value="invoice" class="btn btn-success btn-icon btn-rounded" title="Cetak Ulang Penawaran" data-toggle="tooltip"><i class="feather icon-printer"></i></button>

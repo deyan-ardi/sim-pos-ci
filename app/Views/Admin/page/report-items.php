@@ -86,7 +86,7 @@ Data Item Barang
                                         <h5>List Item Barang Diterima Gudang</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form action="" target="_blank" method="post">
+                                        <form action="" target="_blank" rel="noopener noreferrer" method="post">
                                             <?= csrf_field(); ?>
                                             <input type="hidden" name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
                                             <input type="hidden" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">
@@ -167,7 +167,7 @@ Data Item Barang
                                         <h5>List Item Barang Diretur Ke Supplier</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form action="" target="_blank" method="post">
+                                        <form action="" target="_blank" rel="noopener noreferrer" method="post">
                                             <?= csrf_field(); ?>
                                             <input type="hidden" name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
                                             <input type="hidden" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">
@@ -248,7 +248,7 @@ Data Item Barang
                                         <h5>List Item Barang Belum Diterima (Retur Tidak Termasuk)</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form action="" target="_blank" method="post">
+                                        <form action="" target="_blank" rel="noopener noreferrer" method="post">
                                             <?= csrf_field(); ?>
                                             <input type="hidden" name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
                                             <input type="hidden" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">
@@ -331,7 +331,7 @@ Data Item Barang
                                     </div>
                                     <div class="card-body">
                                         <div class="dt-responsive table-responsive">
-                                            <form action="" target="_blank" method="post">
+                                            <form action="" target="_blank" rel="noopener noreferrer" method="post">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="tanggal_awal" value="<?= $_GET['tanggal_awal'] ?? ''; ?>">
                                                 <input type="hidden" name="tanggal_akhir" value="<?= $_GET['tanggal_akhir'] ?? ''; ?>">

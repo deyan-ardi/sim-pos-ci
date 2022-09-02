@@ -110,63 +110,6 @@ Data Supplier Barang
                                                                     <!-- Update Button Modal -->
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Supplier" data-toggle="tooltip"></i></button>
 
-                                                                    <!-- Update Modal -->
-                                                                    <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
-                                                                                        Supplier</h5>
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="" method="POST">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="PATCH">
-                                                                                        <input type="hidden" name="id_supplier" value="<?= $c->id; ?>">
-                                                                                        <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_name_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_name_up" required placeholder="Nama Supplier" value="<?= (old('supplier_name_up')) ?: $c->supplier_name; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('supplier_name_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_contact_up" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact_up')) ?: $c->supplier_contact; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('supplier_contact_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="email" class="form-control <?= $validation->getError('supplier_email_up') ? 'is-invalid' : ''; ?>" name="supplier_email_up" required placeholder="Email Supplier" value="<?= (old('supplier_email_up')) ?: $c->supplier_email; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('supplier_email_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('supplier_alamat_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_alamat_up" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat_up')) ?: $c->supplier_address; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('supplier_alamat_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <textarea class="form-control <?= $validation->getError('supplier_description_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_description_up" required placeholder="Deskripsi Supplier"><?= (old('supplier_description_up')) ?: $c->supplier_description; ?></textarea>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('supplier_description_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="submit" name="update_supplier" value="update" class="btn btn-primary">Simpan
-                                                                                                Perubahan</button>
-                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
-
                                                                     <!-- Delete -->
                                                                     <form action="" id="<?= $c->id ?>" method="POST">
                                                                         <?= csrf_field(); ?>
@@ -260,4 +203,61 @@ Data Supplier Barang
         </div>
     </div>
 </div>
+
+<?php foreach ($supplier as $c) : ?>
+    <!-- Update Modal -->
+    <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
+                        Supplier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="hidden" name="id_supplier" value="<?= $c->id; ?>">
+                        <div class="form-group">
+                            <input type="text" class="form-control <?= $validation->getError('supplier_name_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_name_up" required placeholder="Nama Supplier" value="<?= (old('supplier_name_up')) ?: $c->supplier_name; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('supplier_name_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('supplier_contact_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_contact_up" required placeholder="Kontak Supplier" value="<?= (old('supplier_contact_up')) ?: $c->supplier_contact; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('supplier_contact_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control <?= $validation->getError('supplier_email_up') ? 'is-invalid' : ''; ?>" name="supplier_email_up" required placeholder="Email Supplier" value="<?= (old('supplier_email_up')) ?: $c->supplier_email; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('supplier_email_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control <?= $validation->getError('supplier_alamat_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_alamat_up" required placeholder="Alamat Supplier" value="<?= (old('supplier_alamat_up')) ?: $c->supplier_address; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('supplier_alamat_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control <?= $validation->getError('supplier_description_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="supplier_description_up" required placeholder="Deskripsi Supplier"><?= (old('supplier_description_up')) ?: $c->supplier_description; ?></textarea>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('supplier_description_up'); ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="update_supplier" value="update" class="btn btn-primary">Simpan
+                                Perubahan</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
 <?= $this->endSection(); ?>

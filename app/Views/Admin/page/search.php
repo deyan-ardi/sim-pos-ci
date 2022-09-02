@@ -213,7 +213,7 @@ Transaksi Barang - Menu Kasir Project
                                                     <div class="col-12">
                                                         <h4 class="text-center mb-4">Transaksi Selesai dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
                                                         <a href="<?= base_url(); ?>/transaction/cashier/transaction-project" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
-                                                        <form action="" target="_blank" method="post">
+                                                        <form action="" target="_blank" rel="noopener noreferrer" method="post">
                                                             <?php csrf_field() ?>
                                                             <input type="hidden" name="_key" value="download">
                                                             <input type="hidden" name="invoice" value="invoice">
@@ -412,7 +412,7 @@ Transaksi Barang - Menu Kasir Project
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" rel="noopener noreferrer" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <input type="hidden" name="invoice" value="invoice">

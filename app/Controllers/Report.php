@@ -187,7 +187,6 @@ class Report extends BaseController
                 'tgl_dari'   => $dari,
                 'tgl_sampai' => $sampai,
             ];
-            // return view('Admin/page/invoice_payment', $data);
             $mpdf = new \Mpdf\Mpdf([
                 'mode'        => 'utf-8',
                 'format'      => 'A4-L',

@@ -42,9 +42,8 @@ class TransactionProyek extends BaseController
 				'ttd_bawah'  => $ttd_bawah,
 				'note'       => $note,
 			];
-			// return view('Admin/page/invoice_transaction', $data);
 			$mpdf = new \Mpdf\Mpdf();
-			$html = view('Admin/page/invoice_transaction', $data);
+			$html = view('Invoice/invoice-transaksi-general', $data);
 			$mpdf->WriteHTML($html);
 			// $mpdf->SetWatermarkText("SUKSES");
 			// $mpdf->showWatermarkText = true;
@@ -87,9 +86,8 @@ class TransactionProyek extends BaseController
 				'ttd_bawah'  => $ttd_bawah,
 				'note'       => $note,
 			];
-			// return view('Admin/page/invoice_transaction', $data);
 			$mpdf = new \Mpdf\Mpdf();
-			$html = view('Admin/page/invoice_transaction', $data);
+			$html = view('Invoice/invoice-transaksi-project', $data);
 			$mpdf->WriteHTML($html);
 			// $mpdf->SetWatermarkText("SUKSES");
 			// $mpdf->showWatermarkText = true;

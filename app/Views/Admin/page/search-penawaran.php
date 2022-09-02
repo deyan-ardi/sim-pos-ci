@@ -180,35 +180,27 @@ Transaksi Barang - Menu Kasir Penawaran
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if (empty($find_sale)) : ?>
+                        <?php if ($find_sale[0]->penawaran_status == 2) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir Penawaran - Pilih Member</span></h5>
+                                            <h5>Sistem Kasir - Informasi Transaksi</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
-                                                <form action="" method="POST">
-                                                    <?php csrf_field() ?>
-
-                                                    <div class="form-group">
-                                                        <select name="member_id" id="member_id" required class="form-control <?= $validation->getError('member_id') ? 'is-invalid' : ''; ?>">
-                                                            <option value="">--Pilih Member--</option>
-                                                            <?php foreach ($member as $m) : ?>
-                                                                <option value="<?= $m->id; ?>"><?= $m->member_code; ?> - <?= $m->member_name; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            <?= $validation->getError('member_id'); ?>
-                                                        </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12">
+                                                        <h4 class="text-center mb-4">Transaksi Selesai dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
+                                                        <a href="<?= base_url(); ?>/marketing/kasir-penawaran" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
+                                                        <form action="" target="_blank" rel="noopener noreferrer" method="post">
+                                                            <?= csrf_field() ?>
+                                                            <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
+                                                            <button type="submit" name="invoice" value="invoice" class="form-control btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
+                                                        </form>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" name="submit_member" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Pilih Member</button>
-                                                    </div>
-                                                </form>
-
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -405,14 +397,14 @@ Transaksi Barang - Menu Kasir Penawaran
                                                                 </tfoot>
                                                             </table>
                                                         </div>
-                                                        <?php if ( $find_sale[0]->penawaran_handling != null) {
+                                                        <?php if ($find_sale[0]->penawaran_handling != null) {
                                                             $disabled = '';
                                                         } else {
                                                             $disabled = 'disabled';
                                                         } ?>
                                                         <div class="mt-4 row justify-content-center">
                                                             <div class="col-9">
-                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" method="post">
+                                                                <form action="" id="cetak-<?= $find_sale[0]->id; ?>" target="_blank" rel="noopener noreferrer" method="post">
                                                                     <?php csrf_field() ?>
                                                                     <input type="hidden" name="_key" value="download">
                                                                     <input type="hidden" name="invoice" value="invoice">

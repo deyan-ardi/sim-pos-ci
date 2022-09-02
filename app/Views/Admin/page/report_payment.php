@@ -170,7 +170,7 @@ if ($sortir == 1) {
                                     <div class="card-body">
                                         <div class="row">
                                             <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-search"></i> Sortir Rekapan</button>
-                                            <form action="" method="POST" target="_blank">
+                                            <form action="" method="POST" target="_blank" rel="noopener noreferrer">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="id_sortir" value="<?= $sortir; ?>">
                                                 <?php if ($tgl_dari !== null && $tgl_sampai !== null) : ?>
@@ -237,7 +237,7 @@ if ($sortir == 1) {
                                                                 <?= CodeIgniter\I18n\Time::parse($t->updated_at)->toLocalizedString('d MMM yyyy, H:m'); ?> WITA
                                                             </td>
                                                             <td>
-                                                                <form action="" target="_blank" method="POST">
+                                                                <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                                     <?= csrf_field(); ?>
                                                                     <input type="hidden" name="id_transaksi" value="<?= $t->sale_code; ?>">
                                                                     <button type="submit" name="invoice" value="invoice" class="btn btn-warning btn-icon btn-rounded" title="Unduh Laporan Transaksi" data-toggle="tooltip"><i class="feather icon-download"></i></button>
