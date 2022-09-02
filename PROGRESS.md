@@ -66,8 +66,8 @@
 
 ## Fitur Invoice
 - ROGS
-- Penawaran
-- PO
+- Penawaran [Sudah]
+- PO [Sudah]
 - Data Barang Retur
 - SPPB
 - Surat Jalan

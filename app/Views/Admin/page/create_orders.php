@@ -256,7 +256,7 @@ Tambahkan Order
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                     <?= csrf_field(); ?>
                     <div class="form-group">
                         <textarea name="order_po" id="order_po" class="form-control <?= $validation->getError('order_po') ? 'is-invalid' : ''; ?>" required placeholder="Masukkan Remark Sebelum Mencetak PO" cols="30" rows="5"><?= old('order_po') ?: $supplier[0]->order_po; ?></textarea>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Invoice Transaksi General - <?= $sale[0]->sale_code; ?></title>
+    <title>Invoice PO - <?= $order[0]->order_code; ?></title>
     <style>
         @page {
             margin-top: 70px;
@@ -123,41 +123,49 @@
     <footer>
         <p style="font-size:9px;padding-bottom:20px">===============================================================================================================</p>
         <p style="font-size:9px"><i>Invoice Sah Dicetak dan Dikeluarkan Oleh PT DAPUR INSPIRASI NUSANTARA</i></p>
-        <p style="font-size:9px"><i>Silahkan Simpan Bukti Invoice Ini Sebagai Syarat Mendapatkan Garansi </i></p>
-        <p style="font-size:9px"><i>Tanggal Cetak : <?= date('d F Y H:i:s', strtotime($sale[0]->updated_at)); ?> WITA | <?= $user[0]['username']; ?></i></p>
+        <p style="font-size:9px"><i>Silahkan Gunakan Invoice Ini Untuk Melakukan Proses PO</i></p>
+        <p style="font-size:9px"><i>Tanggal Cetak : <?= date('d F Y H:i:s'); ?> WITA | <?= user()->username; ?></i></p>
     </footer>
     <main>
         <table class="w-100" style="padding-top:50px;margin-top:50px">
             <tr>
                 <td class="w-50 text-left">
-                    <h5 style="font-size:12px">Informasi Klien</h5>
+                    <h5 style="font-size:12px">Informasi Supplier</h5>
                     <table class="w-100" style="padding-top:20 ;">
                         <tr>
                             <td width="120px">
-                                <p style="font-size:12px">No.Member</p>
+                                <p style="font-size:12px">Nama Supplier</p>
                             </td>
                             <td>
-                                <p style="font-size:12px">: <?= $member->member_code; ?></p>
+                                <p style="font-size:12px">: <?= $supplier->supplier_name; ?></p>
                             </td>
                         </tr>
                         <tr>
                             <td width="120px">
-                                <p style="font-size:12px">Nama</p>
+                                <p style="font-size:12px">Kontrak Supplier</p>
                             </td>
                             <td>
-                                <p style="font-size:12px">: <?= $member->member_name; ?></p>
+                                <p style="font-size:12px">: <?= $supplier->supplier_contact ?></p>
                             </td>
                         </tr>
 
                         <tr>
                             <td width="120px">
-                                <p style="font-size:12px">Status</p>
+                                <p style="font-size:12px">Alamat Supplier</p>
                             </td>
                             <td>
-                                <p style="font-size:12px">: Klien General</p>
+                                <p style="font-size:12px">: <?= $supplier->supplier_address; ?></p>
                             </td>
                         </tr>
 
+                        <tr>
+                            <td width="120px">
+                                <p style="font-size:12px">Deskripsi Supplier</p>
+                            </td>
+                            <td>
+                                <p style="font-size:12px">: <?= $supplier->supplier_description; ?></p>
+                            </td>
+                        </tr>
                     </table>
                 </td>
                 <td class="w-50 text-right">
@@ -165,30 +173,50 @@
                     <table class="w-100" style="padding-top:20 ;">
                         <tr>
                             <td></td>
-                            <?php if ($sale[0]->sale_status == 0) : ?>
+                            <?php if ($order[0]->order_status == 1) : ?>
                                 <td width="120px" class="text-right">
-                                    <h4 style="font-size:18px;padding:3px;color:#FF1E00">Draft</h4>
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Request Diterima</h4>
                                 </td>
-                            <?php elseif ($sale[0]->sale_status == 1) : ?>
+                            <?php elseif ($order[0]->order_status == 2) : ?>
                                 <td width="120px" class="text-right">
-                                    <h4 style="font-size:18px;padding:3px;color:#3B9AE1">Down Payment</h4>
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Persetujuan</h4>
+                                </td>
+                            <?php elseif ($order[0]->order_status == 3) : ?>
+                                <td width="120px" class="text-right">
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Order Keluar</h4>
+                                </td>
+                            <?php elseif ($order[0]->order_status == 4) : ?>
+                                <td width="120px" class="text-right">
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Invoice Masuk</h4>
+                                </td>
+                            <?php elseif ($order[0]->order_status == 5) : ?>
+                                <td width="120px" class="text-right">
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Produksi</h4>
+                                </td>
+                            <?php elseif ($order[0]->order_status == 6) : ?>
+                                <td width="120px" class="text-right">
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Dikirim Supplier</h4>
+                                </td>
+                            <?php elseif ($order[0]->order_status == 7) : ?>
+                                <td width="120px" class="text-right">
+                                    <h4 style="font-size:14px;padding:3px;color:#3B9AE1">Diterima Gudang</h4>
                                 </td>
                             <?php else : ?>
                                 <td width="120px" class="text-right">
-                                    <h4 style="font-size:18px;padding:3px;color:#28a745">Paid</h4>
+                                    <h4 style="font-size:14px;padding:3px;color:#28a745">Selesai</h4>
                                 </td>
                             <?php endif; ?>
                         </tr>
                         <tr>
                             <td></td>
                             <td>
-                                <p style="font-size:12px"><?= "Kode." . $sale[0]->sale_code; ?></p>
+                                <p style="font-size:12px"><?= "Kode." . $order[0]->order_code; ?></p>
                             </td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>
-                                <p style="font-size:12px">Transaksi General</p>
+                                <p style="font-size:12px">Transaksi PO</p>
                             </td>
                         </tr>
                     </table>
@@ -221,17 +249,23 @@
                 </thead>
                 <tbody>
                     <?php
-                    $i     = 1;
-                    $total = 0;
+                    $i           = 1;
+                    $total_item  = 0;
+                    $total_order = 0;
+                    $total_akhir = 0;
                     ?>
-                    <?php if (empty($detail)) : ?>
+                    <?php if (empty($order_detail)) : ?>
                         <tr>
                             <td colspan="6" style="text-align: center;">
                                 <p style="font-size:12px">Tidak Ada Item Yang Dibeli</p>
                             </td>
                         </tr>
                     <?php else : ?>
-                        <?php foreach ($detail as $d) : ?>
+                        <?php foreach ($order_detail as $d) : ?>
+                            <?php
+                            $total_item++;
+                            $total_order = $total_order + $d->detail_quantity;
+                            ?>
                             <tr>
                                 <td style="width:25px; vertical-align:middle;text-align: center;">
                                     <p style="font-size:11px"><?= $i++; ?></p>
@@ -249,118 +283,107 @@
                                     <p style="font-size:11px">Rp. <?= format_rupiah($d->item_sale); ?></p>
                                 </td>
                                 <td class="text-right">
-                                    <p style="font-size:11px">Rp. <?= format_rupiah($d->detail_total); ?></p>
+                                    <p style="font-size:11px">Rp. <?= format_rupiah($d->detail_quantity * $d->item_sale); ?></p>
                                 </td>
                             </tr>
                         <?php
-                            $total = $total + $d->detail_total;
+                            $total_akhir = $total_akhir + ($d->detail_quantity * $d->item_sale);
                         endforeach; ?>
                     <?php endif; ?>
 
                     <tr style="background-color:whitesmoke">
                         <td class="text-right" colspan="5">
-                            <p style="font-size:11px">SUB TOTAL I</p>
+                            <p style="font-size:11px">TOTAL BARANG</p>
                         </td>
                         <td class="text-right">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($total); ?></p>
+                            <p style="font-size:11px"><?= $total_item; ?> Jenis</p>
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
                         <td class="text-right" colspan="5">
-                            <p style="font-size:11px">DISKON MEMBER</p>
+                            <p style="font-size:11px">TOTAL ITEM DIPESAN</p>
                         </td>
                         <td class="text-right">
-                            <p style="font-size:11px"><?= $member->member_discount; ?> %</p>
-                        </td>
-                    </tr>
-                    <tr style="background-color:whitesmoke">
-                        <?php
-                        $disk      = ($total * $sale[0]->sale_discount) / 100;
-                        $sub_tot_2 = $total - $disk;
-                        ?>
-                        <td class="text-right" colspan="5">
-                            <p style="font-size:11px">SUB TOTAL II</p>
-                        </td>
-                        <td class="text-right">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sub_tot_2); ?></p>
+                            <p style="font-size:11px"><?= $total_order; ?> Unit</p>
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
                         <td class="text-right" colspan="5">
-                            <p style="font-size:11px">Handling & Final Connecting</p>
+                            <p style="font-size:11px">TOTAL BIAYA PESANAN</p>
                         </td>
                         <td class="text-right">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sale[0]->sale_handling); ?></p>
-                        </td>
-                    </tr>
-                    <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
-                            <p style="font-size:11px">SUB TOTAL III</p>
-                        </td>
-                        <td class="text-right">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sub_tot_2 + $sale[0]->sale_handling); ?></p>
-                        </td>
-                    </tr>
-                    <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
-                            <p style="font-size:11px">PPh</p>
-                        </td>
-                        <td class="text-right">
-                            <p style="font-size:11px"><?= $pph[0]->pph_value; ?> %</p>
-                        </td>
-                    </tr>
-                    <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
-                            <p style="font-size:11px">GRAND TOTAL</p>
-                        </td>
-                        <td class="text-right text-success">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sale[0]->sale_total); ?></p>
+                            <p style="font-size:11px"><?= format_rupiah($total_akhir) ?></p>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
+        <table class="w-100" style="padding-top:50px">
+            <tr>
+                <td>
+                    <h5 style="font-size:12px">Remark:</h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-size:11px;text-align:justify"><?= $remark; ?></p>
+                </td>
+            </tr>
+        </table>
         <div id="ttd" style="margin-top:45px">
             <table style="width: 100%;">
                 <tr>
                     <td>
-                        <p style="text-align: right;font-size:12px">Denpasar, <?= date('d F Y', strtotime($sale[0]->updated_at)); ?></p>
+                        <p style="text-align: right;font-size:12px">Denpasar, <?= date('d F Y'); ?></p>
                     </td>
                 </tr>
             </table>
             <table style="width: 100%; padding-top:20px">
                 <tr>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($ttd_kiri->header) ? $ttd_kiri->header : 'Customer Approval,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_kiri->header) ? $ttd_kiri->header : ''; ?></h5>
                     </td>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_satu->header) ? $ttd_tengah_satu->header : 'Hormat Kami,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_satu->header) ? $ttd_tengah_satu->header : ''; ?></h5>
                     </td>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($tengah_dua->header) ? $tengah_dua->header : 'Dicek Oleh,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_dua->header) ? $ttd_tengah_dua->header : ''; ?></h5>
                     </td>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($ttd_kanan->header) ? $ttd_kanan->header : 'Mengetahui,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_tiga->header) ? $ttd_tengah_tiga->header : ''; ?></h5>
+                    </td>
+                    <td>
+                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_empat->header) ? $ttd_tengah_empat->header : ''; ?></h5>
+                    </td>
+                    <td>
+                        <h5 style="font-size:12px"><?= !empty($ttd_kanan->header) ? $ttd_kanan->header : ''; ?></h5>
                     </td>
                 </tr>
                 <tr>
                     <td style=" padding-top: 4em;">
                         <h5 style="font-size:12px"><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : 'General Klien' ?></p>
+                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : 'Admin Purchasing' ?></p>
                     </td>
 
                     <td style="padding-top: 4em;">
                         <h5 style="font-size:12px"><u><?= !empty($ttd_tengah_satu->value) ? $ttd_tengah_satu->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_tengah_satu->position) ? '(' . $ttd_tengah_satu->position . ')' : 'Spv. Marketing & Sales'; ?></p>
+                        <p style="font-size:11px"><?= !empty($ttd_tengah_satu->position) ? '(' . $ttd_tengah_satu->position . ')' : 'Head Purchasing'; ?></p>
                     </td>
                     <td style="padding-top: 4em;">
-                        <h5 style="font-size:12px"><u><?= !empty($tengah_dua->value) ? $tengah_dua->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($tengah_dua->position) ? '(' . $tengah_dua->position . ')' : 'Head of Marketing & Sales'; ?></p>
+                        <h5 style="font-size:12px"><u><?= !empty($ttd_tengah_dua->value) ? $ttd_tengah_dua->value : '____________________'; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($ttd_tengah_dua->position) ? '(' . $ttd_tengah_dua->position . ')' : 'Procurement'; ?></p>
+                    </td>
+                    <td style=" padding-top: 4em;">
+                        <h5 style="font-size:12px"><u><?= !empty($ttd_tengah_tiga->value) ? $ttd_tengah_tiga->value : '____________________'; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($ttd_tengah_tiga->position) ? '(' . $ttd_tengah_tiga->position . ')' : 'Finance Manager'; ?></p>
+                    </td>
+                    <td style="padding-top: 4em;">
+                        <h5 style="font-size:12px"><u><?= !empty($ttd_tengah_empat->value) ? $ttd_tengah_empat->value : '____________________'; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($ttd_tengah_empat->position) ? '(' . $ttd_tengah_empat->position . ')' : 'General Manager'; ?></p>
                     </td>
                     <td style=" padding-top: 4em;">
                         <h5 style="font-size:12px"><u><?= !empty($ttd_kanan->value) ? $ttd_kanan->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_kanan->position) ? '(' . $ttd_kanan->position . ')' : 'General Manager'; ?></p>
+                        <p style="font-size:11px"><?= !empty($ttd_kanan->position) ? '(' . $ttd_kanan->position . ')' : 'Directur'; ?></p>
                     </td>
                 </tr>
             </table>
