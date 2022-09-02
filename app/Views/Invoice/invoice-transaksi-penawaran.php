@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Invoice Transaksi General - <?= $sale[0]->sale_code; ?></title>
+    <title>Invoice Penawaran <?= $sale[0]->penawaran_code; ?></title>
     <style>
         @page {
             margin-top: 70px;
@@ -122,8 +122,8 @@
     </header>
     <footer>
         <p style="font-size:9px;padding-bottom:20px">===============================================================================================================</p>
-        <p style="font-size:9px"><i>Invoice Sah Dicetak dan Dikeluarkan Oleh PT DAPUR INSPIRASI NUSANTARA</i></p>
-        <p style="font-size:9px"><i>Silahkan Simpan Bukti Invoice Ini Sebagai Syarat Mendapatkan Garansi </i></p>
+        <p style="font-size:9px"><i>Invoice Penawaran Dicetak dan Dikeluarkan Oleh PT DAPUR INSPIRASI NUSANTARA</i></p>
+        <p style="font-size:9px"><i>Silahkan Ajukan Invoice Penawaran Ke Klien </i></p>
         <p style="font-size:9px"><i>Tanggal Cetak : <?= date('d F Y H:i:s', strtotime($sale[0]->updated_at)); ?> WITA | <?= $user[0]['username']; ?></i></p>
     </footer>
     <main>
@@ -148,13 +148,28 @@
                                 <p style="font-size:12px">: <?= $member->member_name; ?></p>
                             </td>
                         </tr>
-
                         <tr>
                             <td width="120px">
-                                <p style="font-size:12px">Status</p>
+                                <p style="font-size:12px">Perusahaan</p>
                             </td>
                             <td>
-                                <p style="font-size:12px">: Klien General</p>
+                                <p style="font-size:12px">: <?= $member->member_company; ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="120px">
+                                <p style="font-size:12px">Jabatan</p>
+                            </td>
+                            <td>
+                                <p style="font-size:12px">: <?= $member->member_job; ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="120px">
+                                <p style="font-size:13px">Kontak</p>
+                            </td>
+                            <td>
+                                <p style="font-size:13px">: 0<?= $member->member_contact; ?></p>
                             </td>
                         </tr>
 
@@ -165,30 +180,31 @@
                     <table class="w-100" style="padding-top:20 ;">
                         <tr>
                             <td></td>
-                            <?php if ($sale[0]->sale_status == 0) : ?>
+                            <?php if ($sale[0]->penawaran_status == 0) : ?>
                                 <td width="120px" class="text-right">
                                     <h4 style="font-size:18px;padding:3px;color:#FF1E00">Draft</h4>
                                 </td>
-                            <?php elseif ($sale[0]->sale_status == 1) : ?>
+                            <?php elseif ($sale[0]->penawaran_status == 1) : ?>
                                 <td width="120px" class="text-right">
-                                    <h4 style="font-size:18px;padding:3px;color:#3B9AE1">Down Payment</h4>
+                                    <h4 style="font-size:18px;padding:3px;color:#3B9AE1">Proses</h4>
                                 </td>
                             <?php else : ?>
                                 <td width="120px" class="text-right">
-                                    <h4 style="font-size:18px;padding:3px;color:#28a745">Paid</h4>
+                                    <h4 style="font-size:18px;padding:3px;color:#28a745">Selesai</h4>
                                 </td>
                             <?php endif; ?>
+
                         </tr>
                         <tr>
                             <td></td>
                             <td>
-                                <p style="font-size:12px"><?= "Kode." . $sale[0]->sale_code; ?></p>
+                                <p style="font-size:12px"><?= "Kode." . $sale[0]->penawaran_code; ?></p>
                             </td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>
-                                <p style="font-size:12px">Transaksi General</p>
+                                <p style="font-size:12px">Penawaran Marketing</p>
                             </td>
                         </tr>
                     </table>
@@ -227,7 +243,7 @@
                     <?php if (empty($detail)) : ?>
                         <tr>
                             <td colspan="6" style="text-align: center;">
-                                <p style="font-size:12px">Tidak Ada Item Yang Dibeli</p>
+                                <p p style="font-size:12px">Tidak Ada Item Yang Dibeli</p>
                             </td>
                         </tr>
                     <?php else : ?>
@@ -275,7 +291,7 @@
                     </tr>
                     <tr style="background-color:whitesmoke">
                         <?php
-                        $disk      = ($total * $sale[0]->sale_discount) / 100;
+                        $disk      = ($total * $sale[0]->penawaran_discount) / 100;
                         $sub_tot_2 = $total - $disk;
                         ?>
                         <td class="text-right" colspan="5">
@@ -290,7 +306,7 @@
                             <p style="font-size:11px">Handling & Final Connecting</p>
                         </td>
                         <td class="text-right">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sale[0]->sale_handling); ?></p>
+                            <p style="font-size:11px">Rp. <?= format_rupiah($sale[0]->penawaran_handling); ?></p>
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
@@ -298,7 +314,7 @@
                             <p style="font-size:11px">SUB TOTAL III</p>
                         </td>
                         <td class="text-right">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sub_tot_2 + $sale[0]->sale_handling); ?></p>
+                            <p style="font-size:11px">Rp. <?= format_rupiah($sub_tot_2 + $sale[0]->penawaran_handling); ?></p>
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
@@ -314,7 +330,7 @@
                             <p style="font-size:11px">GRAND TOTAL</p>
                         </td>
                         <td class="text-right text-success">
-                            <p style="font-size:11px">Rp. <?= format_rupiah($sale[0]->sale_total); ?></p>
+                            <p style="font-size:11px">Rp. <?= format_rupiah($sale[0]->penawaran_total); ?></p>
                         </td>
                     </tr>
                 </tbody>
@@ -347,7 +363,7 @@
                 <tr>
                     <td style=" padding-top: 4em;">
                         <h5 style="font-size:12px"><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : 'General Klien' ?></p>
+                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : $member->member_job . " " . $member->member_company; ?></p>
                     </td>
 
                     <td style="padding-top: 4em;">

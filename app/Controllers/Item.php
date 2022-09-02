@@ -544,7 +544,7 @@ class Item extends BaseController
                     ];
 
                     $mpdf = new \Mpdf\Mpdf();
-                    $html = view('Admin/page/invoice_barang_keluar', $data_in);
+                    $html = view('Invoice/invoice-barang-keluar', $data_in);
                     $mpdf->WriteHTML($html);
                     $mpdf->showImageErrors = true;
                     $this->response->setHeader('Content-Type', 'application/pdf');
@@ -558,7 +558,7 @@ class Item extends BaseController
                     'akhir'  => $this->request->getGet('tanggal_akhir'),
                 ];
                 $mpdf = new \Mpdf\Mpdf();
-                $html = view('Admin/page/invoice_barang_masuk', $data_in);
+                $html = view('Invoice/invoice-barang-sudah', $data_in);
                 $mpdf->WriteHTML($html);
                 $mpdf->showImageErrors = true;
                 $this->response->setHeader('Content-Type', 'application/pdf');
@@ -571,7 +571,7 @@ class Item extends BaseController
                     'akhir'  => $this->request->getGet('tanggal_akhir'),
                 ];
                 $mpdf = new \Mpdf\Mpdf();
-                $html = view('Admin/page/invoice_barang_retur', $data_retur);
+                $html = view('Invoice/invoice-barang-retur', $data_retur);
                 $mpdf->WriteHTML($html);
                 $mpdf->showImageErrors = true;
                 $this->response->setHeader('Content-Type', 'application/pdf');
@@ -584,7 +584,7 @@ class Item extends BaseController
                     'akhir'  => $this->request->getGet('tanggal_akhir'),
                 ];
                 $mpdf = new \Mpdf\Mpdf();
-                $html = view('Admin/page/invoice_barang_belum', $data_retur);
+                $html = view('Invoice/invoice-barang-belum', $data_retur);
                 $mpdf->WriteHTML($html);
                 $mpdf->showImageErrors = true;
                 $this->response->setHeader('Content-Type', 'application/pdf');
@@ -600,7 +600,7 @@ class Item extends BaseController
                 'akhir'  => null,
             ];
             $mpdf = new \Mpdf\Mpdf();
-            $html = view('Admin/page/invoice_barang_keluar', $data_in);
+            $html = view('Invoice/invoice-barang-keluar', $data_in);
             $mpdf->WriteHTML($html);
             $mpdf->showImageErrors = true;
             $this->response->setHeader('Content-Type', 'application/pdf');
@@ -613,7 +613,7 @@ class Item extends BaseController
                 'akhir'  => null,
             ];
             $mpdf = new \Mpdf\Mpdf();
-            $html = view('Admin/page/invoice_barang_masuk', $data_in);
+            $html = view('Invoice/invoice-barang-sudah', $data_in);
             $mpdf->WriteHTML($html);
             $mpdf->showImageErrors = true;
             $this->response->setHeader('Content-Type', 'application/pdf');
@@ -626,7 +626,7 @@ class Item extends BaseController
                 'akhir'  => null,
             ];
             $mpdf = new \Mpdf\Mpdf();
-            $html = view('Admin/page/invoice_barang_retur', $data_in);
+            $html = view('Invoice/invoice-barang-retur', $data_in);
             $mpdf->WriteHTML($html);
             $mpdf->showImageErrors = true;
             $this->response->setHeader('Content-Type', 'application/pdf');
@@ -639,7 +639,7 @@ class Item extends BaseController
                 'akhir'  => null,
             ];
             $mpdf = new \Mpdf\Mpdf();
-            $html = view('Admin/page/invoice_barang_belum', $data_in);
+            $html = view('Invoice/invoice-barang-belum', $data_in);
             $mpdf->WriteHTML($html);
             $mpdf->showImageErrors = true;
             $this->response->setHeader('Content-Type', 'application/pdf');

@@ -466,7 +466,7 @@ class Supplier extends BaseController
             'supplier' => $find_supplier,
         ];
         $mpdf = new \Mpdf\Mpdf();
-        $html = view('Admin/page/invoice_order', $data);
+        $html = view('Invoice/invoice-order', $data);
         $mpdf->WriteHTML($html);
         $mpdf->showImageErrors = true;
         $this->response->setHeader('Content-Type', 'application/pdf');

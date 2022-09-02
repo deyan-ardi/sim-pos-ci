@@ -2,8 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\InvoiceSettingModel;
 use App\Models\MemberModel;
 use App\Models\OrderModel;
+use App\Models\PenawaranDetailModel;
+use App\Models\PenawaranModel;
+use App\Models\PphModel;
 use App\Models\SaleDetailModel;
 use App\Models\SaleModel;
 use App\Models\UserModel;
@@ -18,11 +22,15 @@ class Report extends BaseController
         $this->m_member      = new MemberModel();
         $this->m_user        = new UserModel();
         $this->m_order       = new OrderModel();
+        $this->m_pph         = new PphModel();
+        $this->m_penawaran   = new PenawaranModel();
+        $this->m_penawaran_detail = new PenawaranDetailModel();
+        $this->m_invoice = new InvoiceSettingModel();
     }
 
     public function index()
     {
-        if (! empty($this->request->getPost('submit_sortir'))) {
+        if (!empty($this->request->getPost('submit_sortir'))) {
             if ($this->request->getPost('order') == 1) {
                 $sortir = 1;
                 $find   = $this->m_sale->getAllSale();
@@ -79,7 +87,7 @@ class Report extends BaseController
                     'price' => $row->sale_profit,
                 ];
             }
-        } 
+        }
         // End JSON Data
         $data = [
             'sortir'         => $sortir,
@@ -91,21 +99,55 @@ class Report extends BaseController
             'transaksi_json' => json_encode($output_transaksi),
             'order_json'     => json_encode($output_order),
         ];
-        if (! empty($this->request->getPost('invoice'))) {
+        if (!empty($this->request->getPost('invoice'))) {
             $find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->findAll();
             $find_sale      = $this->m_sale->getAllSale($find_sale_code[0]->id);
             $find_detail    = $this->m_sale_detail->getAllSaleDetail($find_sale_code[0]->id);
             $find_member    = $this->m_member->find($find_sale[0]->member_id);
             $find_user      = $this->m_user->getUserRole($find_sale[0]->user_id);
-            $data           = [
-                'detail' => $find_detail,
-                'sale'   => $find_sale,
-                'member' => $find_member,
-                'user'   => $find_user,
-            ];
-            // return view('Admin/page/invoice_transaction', $data);
-            $mpdf = new \Mpdf\Mpdf();
-            $html = view('Admin/page/invoice_transaction', $data);
+            $pph_model   = $this->m_pph->getAllPPh();
+
+            if ($find_sale[0]->sale_ket == "General") {
+                $ttd_kiri    = $this->m_invoice->where('key', 'general-kiri')->first();
+                $ttd_tengah_satu  = $this->m_invoice->where('key', 'general-tengah-satu')->first();
+                $ttd_tengah_dua   = $this->m_invoice->where('key', 'general-tengah-dua')->first();
+                $ttd_kanan   = $this->m_invoice->where('key', 'general-kanan')->first();
+                $note        = $this->m_invoice->where('key', 'general-note')->first();
+                $data        = [
+                    'detail'     => $find_detail,
+                    'sale'       => $find_sale,
+                    'pph'        => $pph_model,
+                    'member'     => $find_member,
+                    'user'       => $find_user,
+                    'ttd_kiri'   => $ttd_kiri,
+                    'ttd_tengah_satu' => $ttd_tengah_satu,
+                    'ttd_tengah_dua'  => $ttd_tengah_dua,
+                    'ttd_kanan'  => $ttd_kanan,
+                    'note'       => $note,
+                ];
+                $mpdf = new \Mpdf\Mpdf();
+                $html = view('Invoice/invoice-transaksi-general', $data);
+            } else {
+                $ttd_kiri    = $this->m_invoice->where('key', 'project-kiri')->first();
+                $ttd_tengah_satu  = $this->m_invoice->where('key', 'project-tengah-satu')->first();
+                $ttd_tengah_dua   = $this->m_invoice->where('key', 'project-tengah-dua')->first();
+                $ttd_kanan   = $this->m_invoice->where('key', 'project-kanan')->first();
+                $note        = $this->m_invoice->where('key', 'project-note')->first();
+                $data        = [
+                    'detail'     => $find_detail,
+                    'sale'       => $find_sale,
+                    'pph'        => $pph_model,
+                    'member'     => $find_member,
+                    'user'       => $find_user,
+                    'ttd_kiri'   => $ttd_kiri,
+                    'ttd_tengah_satu' => $ttd_tengah_satu,
+                    'ttd_tengah_dua'  => $ttd_tengah_dua,
+                    'ttd_kanan'  => $ttd_kanan,
+                    'note'       => $note,
+                ];
+                $mpdf = new \Mpdf\Mpdf();
+                $html = view('Invoice/invoice-transaksi-project', $data);
+            }
             $mpdf->WriteHTML($html);
             // $mpdf->SetWatermarkText("SUKSES");
             // $mpdf->showWatermarkText = true;
@@ -115,7 +157,7 @@ class Report extends BaseController
             // $mpdf->SetJS('this.print();');
             $mpdf->Output('Invoice Transaction.pdf', 'I');
             $mpdf->Output();
-        } elseif (! empty($this->request->getPost('submit_laporan'))) {
+        } elseif (!empty($this->request->getPost('submit_laporan'))) {
             if ($this->request->getPost('id_sortir') == 1) {
                 $sortir = 1;
                 $find   = $this->m_sale->getAllSale();
@@ -151,7 +193,7 @@ class Report extends BaseController
                 'format'      => 'A4-L',
                 'orientation' => 'L',
             ]);
-            $html = view('Admin/page/invoice_payment', $data);
+            $html = view('Invoice/invoice-transaksi-umum', $data);
             $mpdf->WriteHTML($html);
             $mpdf->SetWatermarkText('PAYMENTS REPORT');
             $mpdf->showWatermarkText = true;

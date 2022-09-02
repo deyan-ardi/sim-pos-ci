@@ -40,14 +40,14 @@ $routes->group('/', ['filter' => 'role:SUPER ADMIN, FINANCE, ATASAN, GUDANG, MAR
     $routes->patch('profile-setting', 'Home::profile');
 });
 
-$routes->group('categories', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+$routes->group('categories', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING, ATASAN'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'Category::index');
     $routes->patch('/', 'Category::index');
     $routes->delete('/', 'Category::index');
     $routes->post('/', 'Category::index');
 });
 
-$routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+$routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING, ATASAN'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'Item::index');
     $routes->post('ubah/posisi', 'Item::modalPosisi');
     $routes->post('ubah/item', 'Item::modalUpdate');
@@ -57,7 +57,7 @@ $routes->group('items', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['
     $routes->delete('/', 'Item::index');
 });
 
-$routes->group('item-reports', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+$routes->group('item-reports', ['filter' => 'role:SUPER ADMIN, GUDANG, PURCHASING, ATASAN'], ['namespace' => 'App\Controllers'], static function ($routes) {
     $routes->get('/', 'Item::report');
     $routes->post('/', 'Item::report');
 });

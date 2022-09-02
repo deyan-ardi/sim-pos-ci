@@ -57,6 +57,8 @@
                                <?php endif; ?>
                            </ul>
                        </li>
+                   <?php endif; ?>
+                   <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG') || in_groups('PURCHASING') || in_groups('ATASAN')) : ?>
                        <li class="nav-item pcoded-menu-caption">
                            <label>Menu Item Barang</label>
                        </li>
@@ -115,7 +117,7 @@
                        <li data-username="transaksi projek laporan" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Transaksi Projek</span></a>
                            <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/transaction/cashier/transaction-project" class="">Kasir Project</a>
+                               <li class=""><a href="<?= base_url(); ?>/transaction/cashier/transaction-project" class="">Kasir Projek</a>
                                <li class=""><a href="<?= base_url(); ?>/transaction/cashier/list-penawaran" class="">Daftar Penawaran</a>
                                <li class=""><a href="<?= base_url(); ?>/transaction/cashier/report" class="">Laporan Transaksi Projek</a>
                                </li>

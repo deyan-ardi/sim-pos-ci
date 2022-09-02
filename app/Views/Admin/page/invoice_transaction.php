@@ -244,7 +244,7 @@
         </table>
         <div id="notices">
             <div>NOTE:</div>
-            <?php if (! empty($note->value)) : ?>
+            <?php if (!empty($note->value)) : ?>
                 <div class="notice"><?= $note->value; ?></div>
             <?php else : ?>
                 <div class="notice">Silahkan simpan bukti transaksi ini sebagai syarat untuk mendapatkan garansi</div>
@@ -254,42 +254,42 @@
             <table style="width: 100%;">
                 <tr>
                     <td style="text-align: left;">
-                        <h4><?= ! empty($ttd_kiri->header) ? $ttd_kiri->header : ''; ?></h4>
+                        <h4><?= !empty($ttd_kiri->header) ? $ttd_kiri->header : ''; ?></h4>
                     </td>
                     <td style="text-align: center;">
-                        <h4><?= ! empty($ttd_tengah->header) ? $ttd_tengah->header : ''; ?></h4>
+                        <h4><?= !empty($ttd_tengah->header) ? $ttd_tengah->header : ''; ?></h4>
                     </td>
                     <td style="text-align: right;">
-                        <h4><?= ! empty($ttd_kanan->header) ? $ttd_kanan->header : ''; ?></h4>
+                        <h4><?= !empty($ttd_kanan->header) ? $ttd_kanan->header : ''; ?></h4>
                     </td>
                 </tr>
                 <tr>
                     <td style=" text-align: left;padding-top: 4em;">
-                        <h4><u><?= ! empty($ttd_kiri->value) ? $ttd_kiri->value : ''; ?></u></h4>
-                        <h5><?= ! empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : ''; ?></h5>
+                        <h4><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : ''; ?></u></h4>
+                        <h5><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : ''; ?></h5>
                     </td>
 
                     <td style="text-align: center;padding-top: 4em;">
-                        <h4><u><?= ! empty($ttd_tengah->value) ? $ttd_tengah->value : ''; ?></u></h4>
-                        <h5><?= ! empty($ttd_tengah->position) ? '(' . $ttd_tengah->position . ')' : ''; ?></h5>
+                        <h4><u><?= !empty($ttd_tengah->value) ? $ttd_tengah->value : ''; ?></u></h4>
+                        <h5><?= !empty($ttd_tengah->position) ? '(' . $ttd_tengah->position . ')' : ''; ?></h5>
                     </td>
 
                     <td style="text-align: right;padding-top: 4em;">
-                        <h4><u><?= ! empty($ttd_kanan->value) ? $ttd_kanan->value : ''; ?></u></h4>
-                        <h5><?= ! empty($ttd_kanan->position) ? '(' . $ttd_kanan->position . ')' : ''; ?></h5>
+                        <h4><u><?= !empty($ttd_kanan->value) ? $ttd_kanan->value : ''; ?></u></h4>
+                        <h5><?= !empty($ttd_kanan->position) ? '(' . $ttd_kanan->position . ')' : ''; ?></h5>
                     </td>
                 </tr>
             </table>
             <table style="width: 100%; margin-top:2rem">
                 <tr>
                     <td style="text-align: center;" colspan="3">
-                        <h4><?= ! empty($ttd_bawah->header) ? $ttd_bawah->header : ''; ?></h4>
+                        <h4><?= !empty($ttd_bawah->header) ? $ttd_bawah->header : ''; ?></h4>
                     </td>
                 </tr>
                 <tr>
                     <td style=" text-align: center;padding-top: 4em;" colspan="3">
-                        <h4><u><?= ! empty($ttd_bawah->value) ? $ttd_bawah->value : ''; ?></u></h4>
-                        <h5><?= ! empty($ttd_bawah->position) ? '(' . $ttd_bawah->position . ')' : ''; ?></h5>
+                        <h4><u><?= !empty($ttd_bawah->value) ? $ttd_bawah->value : ''; ?></u></h4>
+                        <h5><?= !empty($ttd_bawah->position) ? '(' . $ttd_bawah->position . ')' : ''; ?></h5>
                     </td>
                 </tr>
             </table>

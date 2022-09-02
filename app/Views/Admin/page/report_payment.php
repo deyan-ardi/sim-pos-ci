@@ -202,6 +202,7 @@ if ($sortir == 1) {
                                                     <?php
                                                     $i                = 1;
                                                     $v                = 1;
+                                                    $f                = 1;
                                                     $total_keuntungan = 0;
                                                     $total_transaksi  = 0;
                                                     ?>
@@ -218,10 +219,15 @@ if ($sortir == 1) {
                                                             <?php if ($t->sale_status == 0) : ?>
                                                                 <td><button type="button" class="btn btn-danger btn-sm"> Draft</button></td>
                                                             <?php elseif ($t->sale_status == 1) : ?>
+                                                                <?php
+                                                                $v++;
+                                                                $total_keuntungan = $total_keuntungan + 0;
+                                                                $total_transaksi  = $total_transaksi + $t->sale_pay;
+                                                                ?>
                                                                 <td><button type="button" class="btn btn-warning btn-sm"> DP Pembayaran</button></td>
                                                             <?php else : ?>
                                                                 <?php
-                                                                $v++;
+                                                                $f++;
                                                                 $total_keuntungan = $total_keuntungan + $t->sale_profit;
                                                                 $total_transaksi  = $total_transaksi + $t->sale_total;
                                                                 ?>
@@ -243,23 +249,28 @@ if ($sortir == 1) {
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th colspan="5" rowspan="4"></th>
+                                                        <th colspan="5" rowspan="5"></th>
                                                         <th colspan="3">Jumlah Kegiatan Transaksi</th>
                                                         <th colspan="3"><?= $i - 1; ?> Transaksi
                                                         </th>
                                                     </tr>
                                                     <tr>
                                                         <th colspan="3">Jumlah Transaksi Sukses</th>
-                                                        <th colspan="3"><?= $v - 1; ?> Transaksi
+                                                        <th colspan="3"><?= $f - 1; ?> Transaksi
                                                         </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th colspan="3">Total Transaksi Sukses</th>
-                                                        <th colspan="3">Rp. <?= format_rupiah($total_transaksi); ?></th>
                                                     </tr>
                                                     <tr>
                                                         <th colspan="3">Total Keuntungan Transaksi Sukses</th>
                                                         <th colspan="3">Rp. <?= format_rupiah($total_keuntungan); ?></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="3">Jumlah Transaksi DP Pembayaran</th>
+                                                        <th colspan="3"><?= $v - 1; ?> Transaksi
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="3">Total Uang Masuk Transaksi</th>
+                                                        <th colspan="3">Rp. <?= format_rupiah($total_transaksi); ?></th>
                                                     </tr>
                                                 </tfoot>
                                             </table>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Invoice Transaksi General - <?= $sale[0]->sale_code; ?></title>
+    <title>Invoice Transaksi Project - <?= $sale[0]->sale_code; ?></title>
     <style>
         @page {
             margin-top: 70px;
@@ -151,10 +151,26 @@
 
                         <tr>
                             <td width="120px">
-                                <p style="font-size:12px">Status</p>
+                                <p style="font-size:12px">Perusahaan</p>
                             </td>
                             <td>
-                                <p style="font-size:12px">: Klien General</p>
+                                <p style="font-size:12px">: <?= $member->member_company; ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="120px">
+                                <p style="font-size:12px">Jabatan</p>
+                            </td>
+                            <td>
+                                <p style="font-size:12px">: <?= $member->member_job; ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="120px">
+                                <p style="font-size:13px">Kontak</p>
+                            </td>
+                            <td>
+                                <p style="font-size:13px">: 0<?= $member->member_contact; ?></p>
                             </td>
                         </tr>
 
@@ -188,7 +204,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <p style="font-size:12px">Transaksi General</p>
+                                <p style="font-size:12px">Transaksi Project</p>
                             </td>
                         </tr>
                     </table>
@@ -347,7 +363,7 @@
                 <tr>
                     <td style=" padding-top: 4em;">
                         <h5 style="font-size:12px"><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : 'General Klien' ?></p>
+                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : $member->member_job . " " . $member->member_company ?></p>
                     </td>
 
                     <td style="padding-top: 4em;">

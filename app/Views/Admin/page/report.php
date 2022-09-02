@@ -118,7 +118,7 @@ Laporan Transaksi
                                                             </td>
                                                             <td>
                                                                 <div class="row justify-content-center">
-                                                                    <?php if (in_groups('SUPER ADMIN') ||  in_groups('KASIR')) : ?>
+                                                                    <?php if (in_groups('SUPER ADMIN') ||  in_groups('FINANCE')) : ?>
                                                                         <?php if ($t->sale_status == 0 || $t->sale_status == 1) : ?>
                                                                             <a href="<?= base_url(); ?>/transaction/cashier/search?sale_code=<?= $t->sale_code; ?>" name="lihat_transaksi" value="delete" class="btn btn-warning btn-icon btn-rounded" title="Lihat Transaksi" data-toggle="tooltip"><i class="feather icon-search"></i></a>
                                                                             <!-- Delete -->

@@ -3,6 +3,12 @@
 Receiving Order Barang Supplier
 <?= $this->endSection(); ?>
 
+<?= $this->section('footer'); ?>
+<!-- datatable Js -->
+<script src="<?= base_url(); ?>/assets/plugins/data-tables/js/datatables.min.js"></script>
+<script src="<?= base_url(); ?>/assets/js/pages/data-basic-custom.js"></script>
+<?= $this->endSection(); ?>
+
 <?= $this->section('header'); ?>
 <!-- data tables css -->
 <link rel="stylesheet" href="<?= base_url(); ?>/assets/plugins/data-tables/css/datatables.min.css">
@@ -64,9 +70,8 @@ Receiving Order Barang Supplier
                                                 <tbody>
                                                     <?php
                                                     $i = 1;
-
                                                     foreach ($order as $c) : ?>
-                                                        <?php if ($c->order_status == 7 || $c->order_status == 8) : ?>
+                                                        <?php if ($c->order_status == 6 || $c->order_status == 7) : ?>
                                                             <tr>
                                                                 <td><?= $i++; ?></td>
                                                                 <td>PO No.<?= $c->order_code; ?></td>

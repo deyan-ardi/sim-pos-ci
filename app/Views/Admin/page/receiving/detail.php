@@ -119,7 +119,7 @@ Tambahkan Order
                                                             <th>Status</th>
                                                             <th>Diubah Terakhir</th>
                                                             <th>Pegawai</th>
-                                                            <?php if ($supplier[0]->order_status != 1) : ?>
+                                                            <?php if ($supplier[0]->order_status != 1 && $supplier[0]->order_status != 6) : ?>
                                                                 <th class="text-center"><i class="feather icon-settings"></i>
                                                                 </th>
                                                             <?php endif; ?>
@@ -139,16 +139,24 @@ Tambahkan Order
                                                                 <td><?= $c->receiving_total; ?> Unit Sesuai</td>
                                                                 <td><?= $c->progress_total; ?> Unit Diproses</td>
                                                                 <td><?= $c->retur_total; ?> Unit Diretur</td>
-                                                                <?php if ($c->status_order == 1) : ?>
-                                                                    <td><a href="" class="btn btn-warning btn-sm">Berlangsung</a></td>
-                                                                <?php elseif ($c->status_order == 2) : ?>
-                                                                    <td><a href="" class="btn btn-success btn-sm">Terpenuhi</a></td>
+                                                                <?php if ($supplier[0]->order_status != 1 && $supplier[0]->order_status != 6) : ?>
+                                                                    <?php if ($c->status_order == 1) : ?>
+                                                                        <td><a href="" class="btn btn-warning btn-sm">Berlangsung</a></td>
+                                                                    <?php elseif ($c->status_order == 2) : ?>
+                                                                        <td><a href="" class="btn btn-success btn-sm">Terpenuhi</a></td>
+                                                                    <?php endif; ?>
+                                                                <?php else : ?>
+                                                                    <?php if ($supplier[0]->order_status == 6) : ?>
+                                                                        <td><a href="" class="btn btn-info btn-sm">Belum Diterima</a></td>
+                                                                    <?php elseif ($supplier[0]->order_status == 1) : ?>
+                                                                        <td><a href="" class="btn btn-danger btn-sm">Draft</a></td>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
                                                                 <td>
                                                                     <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                                 </td>
                                                                 <td><?= $c->username; ?></td>
-                                                                <?php if ($supplier[0]->order_status != 1 && $c->status_order == 1) : ?>
+                                                                <?php if ($supplier[0]->order_status != 1 && $supplier[0]->order_status != 6 && $c->status_order == 1) : ?>
                                                                     <td>
                                                                         <div class="row justify-content-center">
 
@@ -158,7 +166,7 @@ Tambahkan Order
                                                                     </td>
                                                                 <?php elseif ($c->status_order == 2) : ?>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-success btn-icon btn-rounded" data-toggle="modal"><i class="feather icon-check" title="Terpenuhi" data-toggle="tooltip"></i></button>
+                                                                        <button type="button" class="btn btn-success btn-icon btn-rounded"><i class="feather icon-check" title="Terpenuhi" data-toggle="tooltip"></i></button>
                                                                     </td>
                                                                 <?php endif; ?>
                                                             </tr>

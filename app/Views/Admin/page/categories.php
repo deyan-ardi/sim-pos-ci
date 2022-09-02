@@ -82,10 +82,10 @@ Data Kategori Barang
                                                         <th>#</th>
                                                         <th>Nama Kategori</th>
                                                         <th>Diubah Terakhir</th>
-                                                        <th class="text-center"><i class="feather icon-settings"></i>
-                                                        </th>
-
-
+                                                        <?php if (!in_groups('ATASAN')) : ?>
+                                                            <th class="text-center"><i class="feather icon-settings"></i>
+                                                            </th>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -99,55 +99,59 @@ Data Kategori Barang
                                                             <td>
                                                                 <?= CodeIgniter\I18n\Time::parse($c->updated_at)->humanize(); ?>
                                                             </td>
-                                                            <td>
-                                                                <div class="row justify-content-center">
-                                                                    <?php if (! in_groups('GUDANG')) : ?>
+                                                            <?php if (!in_groups('ATASAN')) : ?>
 
-                                                                        <!-- Update Button Modal -->
-                                                                        <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Kategori" data-toggle="tooltip"></i></button>
+                                                                <td>
+                                                                    <div class="row justify-content-center">
+                                                                        <?php if (!in_groups('GUDANG')) : ?>
 
-                                                                        <!-- Update Modal -->
-                                                                        <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
-                                                                            <div class="modal-dialog" role="document">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
-                                                                                            Kategori</h5>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <form action="" method="POST">
-                                                                                            <?= csrf_field(); ?>
-                                                                                            <input type="hidden" name="_method" value="PATCH">
-                                                                                            <input type="hidden" name="id_category" value="<?= $c->id; ?>">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('category_update') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="category_update" placeholder="Nama Kategori" value="<?= (old('category_update')) ?: $c->category_name; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('category_update'); ?>
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="submit" name="update_category" value="update" class="btn btn-primary">Simpan
-                                                                                                    Perubahan</button>
-                                                                                                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                            </div>
-                                                                                        </form>
+                                                                            <!-- Update Button Modal -->
+                                                                            <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->id; ?>"><i class="feather icon-edit" title="Ubah Kategori" data-toggle="tooltip"></i></button>
+
+                                                                            <!-- Update Modal -->
+                                                                            <div id="updateCategory-<?= $c->id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->id; ?>" aria-hidden="true">
+                                                                                <div class="modal-dialog" role="document">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title" id="updateCategoryLabel-<?= $c->id; ?>">Ubah Data
+                                                                                                Kategori</h5>
+                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <form action="" method="POST">
+                                                                                                <?= csrf_field(); ?>
+                                                                                                <input type="hidden" name="_method" value="PATCH">
+                                                                                                <input type="hidden" name="id_category" value="<?= $c->id; ?>">
+                                                                                                <input type="text" class="form-control <?= $validation->getError('category_update') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="category_update" placeholder="Nama Kategori" value="<?= (old('category_update')) ?: $c->category_name; ?>">
+                                                                                                <div class="invalid-feedback">
+                                                                                                    <?= $validation->getError('category_update'); ?>
+                                                                                                </div>
+                                                                                                <div class="modal-footer">
+                                                                                                    <button type="submit" name="update_category" value="update" class="btn btn-primary">Simpan
+                                                                                                        Perubahan</button>
+                                                                                                    <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
 
-                                                                    <?php endif; ?>
+                                                                        <?php endif; ?>
 
-                                                                    <!-- Delete -->
-                                                                    <form action="" id="<?= $c->id; ?>" method="POST">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                                        <input type="hidden" name="id_category" value="<?= $c->id; ?>">
-                                                                        <input type="hidden" name="delete_category" value="delete">
-                                                                        <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->category_name ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Kategori" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
-                                                                    </form>
+                                                                        <!-- Delete -->
+                                                                        <form action="" id="<?= $c->id; ?>" method="POST">
+                                                                            <?= csrf_field(); ?>
+                                                                            <input type="hidden" name="_method" value="DELETE" />
+                                                                            <input type="hidden" name="id_category" value="<?= $c->id; ?>">
+                                                                            <input type="hidden" name="delete_category" value="delete">
+                                                                            <button type="submit" data-formid="<?= $c->id ?>" data-nama="<?= $c->category_name ?>" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Kategori" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                                                        </form>
 
-                                                                </div>
-                                                            </td>
+                                                                    </div>
+                                                                </td>
+                                                            <?php endif; ?>
+
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 </tbody>
@@ -156,9 +160,10 @@ Data Kategori Barang
                                                         <th>#</th>
                                                         <th>Nama Kategori</th>
                                                         <th>Diubah Terakhir</th>
-                                                        <th class="text-center"><i class="feather icon-settings"></i>
-                                                        </th>
-
+                                                        <?php if (!in_groups('ATASAN')) : ?>
+                                                            <th class="text-center"><i class="feather icon-settings"></i>
+                                                            </th>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 </tfoot>
                                             </table>

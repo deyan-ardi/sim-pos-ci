@@ -323,7 +323,7 @@ class TransactionPenawaran extends BaseController
 					set_cookie('penawaran', false, -900);
 					delete_cookie('penawaran');
 					$mpdf = new \Mpdf\Mpdf();
-					$html = view('Admin/page/invoice_transaction_penawaran', $data);
+					$html = view('Invoice/invoice-transaksi-penawaran', $data);
 					$mpdf->WriteHTML($html);
 					$mpdf->showImageErrors = true;
 					$this->response->setHeader('Content-Type', 'application/pdf');
@@ -442,11 +442,11 @@ class TransactionPenawaran extends BaseController
 			$find_member = $this->m_member->find($find_sale[0]->member_id);
 			$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
 			$pph_model   = $this->m_pph->getAllPPh();
-			$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-			$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-			$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-			$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-			$note        = $this->m_invoice->where('key', 'note')->first();
+			$ttd_kiri    = $this->m_invoice->where('key', 'project-kiri')->first();
+			$ttd_tengah_satu  = $this->m_invoice->where('key', 'project-tengah-satu')->first();
+			$ttd_tengah_dua   = $this->m_invoice->where('key', 'project-tengan-dua')->first();
+			$ttd_kanan   = $this->m_invoice->where('key', 'project-kanan')->first();
+			$note        = $this->m_invoice->where('key', 'project-note')->first();
 			$data        = [
 				'detail'     => $find_detail,
 				'sale'       => $find_sale,
@@ -454,15 +454,13 @@ class TransactionPenawaran extends BaseController
 				'member'     => $find_member,
 				'user'       => $find_user,
 				'ttd_kiri'   => $ttd_kiri,
-				'ttd_tengah' => $ttd_tengah,
+				'ttd_tengah_satu' => $ttd_tengah_satu,
+				'ttd_tengah_dua'  => $ttd_tengah_dua,
 				'ttd_kanan'  => $ttd_kanan,
-				'ttd_bawah'  => $ttd_bawah,
 				'note'       => $note,
 			];
-			// return view('Admin/page/invoice_transaction', $data);
-			set_cookie('transaction', false, 900);
 			$mpdf = new \Mpdf\Mpdf();
-			$html = view('Admin/page/invoice_transaction', $data);
+			$html = view('Invoice/invoice-transaksi-project', $data);
 			$mpdf->WriteHTML($html);
 			// $mpdf->SetWatermarkText("SUKSES");
 			// $mpdf->showWatermarkText = true;
@@ -494,11 +492,11 @@ class TransactionPenawaran extends BaseController
 				$find_member = $this->m_member->find($find_sale[0]->member_id);
 				$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
 				$pph_model   = $this->m_pph->getAllPPh();
-				$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-				$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-				$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-				$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-				$note        = $this->m_invoice->where('key', 'note')->first();
+				$ttd_kiri    = $this->m_invoice->where('key', 'penawaran-kiri')->first();
+				$ttd_tengah_satu  = $this->m_invoice->where('key', 'penawaran-tengah-satu')->first();
+				$ttd_tengah_dua   = $this->m_invoice->where('key', 'penawaran-tengan-dua')->first();
+				$ttd_kanan   = $this->m_invoice->where('key', 'penawaran-kanan')->first();
+				$note        = $this->m_invoice->where('key', 'penawaran-note')->first();
 				$data        = [
 					'detail'     => $find_detail,
 					'sale'       => $find_sale,
@@ -506,14 +504,14 @@ class TransactionPenawaran extends BaseController
 					'member'     => $find_member,
 					'user'       => $find_user,
 					'ttd_kiri'   => $ttd_kiri,
-					'ttd_tengah' => $ttd_tengah,
+					'ttd_tengah_satu' => $ttd_tengah_satu,
+					'ttd_tengah_dua'  => $ttd_tengah_dua,
 					'ttd_kanan'  => $ttd_kanan,
-					'ttd_bawah'  => $ttd_bawah,
 					'note'       => $note,
 				];
 				// return view('Admin/page/invoice_transaction', $data);
 				$mpdf = new \Mpdf\Mpdf();
-				$html = view('Admin/page/invoice_transaction_penawaran', $data);
+				$html = view('Invoice/invoice-transaksi-penawaran', $data);
 				$mpdf->WriteHTML($html);
 				// $mpdf->SetWatermarkText("SUKSES");
 				// $mpdf->showWatermarkText = true;
@@ -713,11 +711,11 @@ class TransactionPenawaran extends BaseController
 					if ($save_update_status) {
 						$find_member = $this->m_member->find($find_sale[0]->member_id);
 						$find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
-						$ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-						$ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-						$ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-						$ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-						$note        = $this->m_invoice->where('key', 'note')->first();
+						$ttd_kiri    = $this->m_invoice->where('key', 'penawaran-kiri')->first();
+						$ttd_tengah_satu  = $this->m_invoice->where('key', 'penawaran-tengah-satu')->first();
+						$ttd_tengah_dua   = $this->m_invoice->where('key', 'penawaran-tengan-dua')->first();
+						$ttd_kanan   = $this->m_invoice->where('key', 'penawaran-kanan')->first();
+						$note        = $this->m_invoice->where('key', 'penawaran-note')->first();
 						$data        = [
 							'detail'     => $find_detail,
 							'sale'       => $find_sale,
@@ -725,13 +723,13 @@ class TransactionPenawaran extends BaseController
 							'member'     => $find_member,
 							'user'       => $find_user,
 							'ttd_kiri'   => $ttd_kiri,
-							'ttd_tengah' => $ttd_tengah,
+							'ttd_tengah_satu' => $ttd_tengah_satu,
+							'ttd_tengah_dua'  => $ttd_tengah_dua,
 							'ttd_kanan'  => $ttd_kanan,
-							'ttd_bawah'  => $ttd_bawah,
 							'note'       => $note,
 						];
 						$mpdf = new \Mpdf\Mpdf();
-						$html = view('Admin/page/invoice_transaction_penawaran', $data);
+						$html = view('Invoice/invoice-transaksi-penawaran', $data);
 						$mpdf->WriteHTML($html);
 						$mpdf->showImageErrors = true;
 						$this->response->setHeader('Content-Type', 'application/pdf');

@@ -230,7 +230,7 @@ Data Item Barang
                         return o + ' Unit';
                     }
                 },
-                <?php if (! in_groups('GUDANG')) : ?> {
+                <?php if (!in_groups('GUDANG')) : ?> {
                         data: 'item_hpp',
                         name: 'item_hpp',
                         render: function(o) {
@@ -292,56 +292,57 @@ Data Item Barang
                         return new_date.toLocaleTimeString("en-US", options) + " WITA";
                     }
                 },
-                {
-                    data: 'action',
-                    name: 'action',
-                    searchable: false,
-                    render: function(o) {
-                        <?php if (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
-                            const action =
-                                `<div class="row justify-content-center">
+                <?php if (!in_groups('ATASAN')) : ?> {
+                        data: 'action',
+                        name: 'action',
+                        searchable: false,
+                        render: function(o) {
+                            <?php if (in_groups('GUDANG') || in_groups('SUPER ADMIN')) : ?>
+                                const action =
+                                    `<div class="row justify-content-center">
                                 <!-- Posisi Barang Button -->
                                 <button type="button" onclick="requestUbahPosisi('` + o.id + `')" class="btn btn-info btn-icon btn-rounded" data-toggle="modal" data-target="#updatePosisi"><i class="feather icon-box" title="Posisi Barang" data-toggle="tooltip"></i></button>
 
                                 <!-- Update Button Modal -->
                                 <button type="button" onclick="requestUbahItem('` + o.id +
-                                `')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
+                                    `')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
 
                                 <!-- Delete -->
                                 <form action="" id="submit-` + o.id +
-                                `" method="POST">
+                                    `" method="POST">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE" />
                                     <input type="hidden" name="id_item" value="` + o.id + `">
                                     <input type="hidden" name="delete_items" value="delete">
                                     <button type="button" onclick="deleteButton(` + o.id +
-                                `,'` + o.item_code +
-                                `')" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                    `,'` + o.item_code +
+                                    `')" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
                                 </form>
                             </div>`;
-                        <?php else : ?>
-                            const action =
-                                `<div class="row justify-content-center">
+                            <?php else : ?>
+                                const action =
+                                    `<div class="row justify-content-center">
                                 <!-- Update Button Modal -->
                                 <button type="button" onclick="requestUbahItem('` + o.id +
-                                `')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
+                                    `')" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory"><i class="feather icon-edit" title="Ubah Barang" data-toggle="tooltip"></i></button>
 
                                 <!-- Delete -->
                                 <form action="" id="submit-` + o.id +
-                                `" method="POST">
+                                    `" method="POST">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE" />
                                     <input type="hidden" name="id_item" value="` + o.id + `">
                                     <input type="hidden" name="delete_items" value="delete">
                                     <button type="button" onclick="deleteButton(` + o.id +
-                                `,'` + o.item_code +
-                                `')" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
+                                    `,'` + o.item_code +
+                                    `')" class="btn delete-button btn-danger btn-icon btn-rounded" title="Hapus Barang" data-toggle="tooltip"><i class="feather icon-trash"></i></button>
                                 </form>
                             </div>`;
-                        <?php endif; ?>
-                        return action;
-                    }
-                },
+                            <?php endif; ?>
+                            return action;
+                        }
+                    },
+                <?php endif; ?>
             ],
             columnDefs: [{
                 targets: [0],
@@ -436,7 +437,7 @@ Data Item Barang
                                                         <th>Stok Gudang C</th>
                                                         <th>Stok Gudang D</th>
                                                         <th>Stok Total</th>
-                                                        <?php if (! in_groups('GUDANG')) : ?>
+                                                        <?php if (!in_groups('GUDANG')) : ?>
                                                             <th>Harga Beli</th>
                                                             <th>Harga Jual</th>
                                                             <th>Diskon</th>
@@ -446,8 +447,10 @@ Data Item Barang
                                                         <th>Kategori</th>
                                                         <th>Disuplai Oleh</th>
                                                         <th>Diubah Terakhir</th>
-                                                        <th class="text-center"><i class="feather icon-settings"></i>
-                                                        </th>
+                                                        <?php if (!in_groups('ATASAN')) : ?>
+                                                            <th class="text-center"><i class="feather icon-settings"></i>
+                                                            </th>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -471,7 +474,7 @@ Data Item Barang
                                                         <th>Stok Gudang C</th>
                                                         <th>Stok Gudang D</th>
                                                         <th>Stok Total</th>
-                                                        <?php if (! in_groups('GUDANG')) : ?>
+                                                        <?php if (!in_groups('GUDANG')) : ?>
                                                             <th>Harga Beli</th>
                                                             <th>Harga Jual</th>
                                                             <th>Diskon</th>
@@ -481,8 +484,10 @@ Data Item Barang
                                                         <th>Kategori</th>
                                                         <th>Disuplai Oleh</th>
                                                         <th>Diubah Terakhir</th>
-                                                        <th class="text-center"><i class="feather icon-settings"></i>
-                                                        </th>
+                                                        <?php if (!in_groups('ATASAN')) : ?>
+                                                            <th class="text-center"><i class="feather icon-settings"></i>
+                                                            </th>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -673,7 +678,7 @@ Data Item Barang
                             <?= $validation->getError('item_stock_d'); ?>
                         </div>
                     </div>
-                    <?php if (! in_groups('GUDANG')) : ?>
+                    <?php if (!in_groups('GUDANG')) : ?>
                         <div class="form-group input-group search-form">
                             <div class="input-group-append">
                                 <span class="input-group-text bg-transparent">Rp</span>
