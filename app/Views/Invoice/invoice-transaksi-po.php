@@ -216,6 +216,12 @@
                         <tr>
                             <td></td>
                             <td>
+                                <p style="font-size:12px"><?= date('d-m-Y'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
                                 <p style="font-size:12px">Transaksi PO</p>
                             </td>
                         </tr>

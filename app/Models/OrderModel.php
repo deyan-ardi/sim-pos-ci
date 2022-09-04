@@ -94,7 +94,18 @@ class OrderModel extends Model
         $this->where('order_details.retur_total >', 0);
         return $this->get()->getResult();
     }
-
+    public function getAllOrderWhereReturWhereOrder($id)
+    {
+        $this->select('orders.*,order_details.detail_quantity,order_details.status_order,order_details.receiving_total,order_details.progress_total,order_details.retur_total,users.username,suppliers.supplier_name,item_categories.category_name,items.item_name,items.item_code');
+        $this->join('suppliers', 'suppliers.id = orders.supplier_id');
+        $this->join('order_details', 'orders.id = order_details.order_id');
+        $this->join('items', 'items.id = order_details.item_id');
+        $this->join('item_categories', 'item_categories.id = items.category_id');
+        $this->join('users', 'users.id = orders.user_id');
+        $this->where('order_details.retur_total >', 0);
+        $this->where('orders.id', $id);
+        return $this->get()->getResult();
+    }
     public function getAllOrderWhereReturFilter($awal, $akhir)
     {
         $this->select('orders.*,order_details.detail_quantity,order_details.status_order,order_details.receiving_total,order_details.progress_total,order_details.retur_total,users.username,suppliers.supplier_name,item_categories.category_name,items.item_name,items.item_code');

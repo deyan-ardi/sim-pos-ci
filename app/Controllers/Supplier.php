@@ -687,8 +687,19 @@ class Supplier extends BaseController
                     dd('cetak rogs');
                 }
                 if ($this->request->getPost('input_retur')) {
-                    // Cetak ROGS Disini
-                    dd('cetak retur');
+                    $item_retur = $this->m_order->getAllOrderWhereReturWhereOrder($find[0]->id);
+                    $data_in = [
+                        'ket'    => 'BARANG DIRETUR KE SUPPLIER',
+                        'barang' => $item_retur,
+                        'awal'   => null,
+                        'akhir'  => null,
+                    ];
+                    $mpdf = new \Mpdf\Mpdf();
+                    $html = view('Invoice/invoice-barang-retur', $data_in);
+                    $mpdf->WriteHTML($html);
+                    $mpdf->showImageErrors = true;
+                    $this->response->setHeader('Content-Type', 'application/pdf');
+                    $mpdf->Output('Data Barang Diretur Ke Supplier.pdf', 'I');
                 }
                 return view('Admin/page/receiving/detail', $data);
             }

@@ -94,12 +94,12 @@ Tambahkan Order
                                     <div class="card-body">
                                         <div class="card-body">
                                             <div class="row">
-                                                <form action="" method="POST">
+                                                <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                     <?= csrf_field(); ?>
                                                     <button type="submit" name="input_rogs" value="rogs" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
                                                 </form>
                                                 <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG')) : ?>
-                                                    <form action="" method="POST">
+                                                    <form action="" target="_blank" rel="noopener noreferrer" method="POST">
                                                         <?= csrf_field(); ?>
                                                         <button type="submit" name="input_retur" value="rogs" class="btn btn-gradient-danger btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak Retur</button>
                                                     </form>

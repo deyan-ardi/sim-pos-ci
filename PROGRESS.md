@@ -55,7 +55,9 @@
 
 1. Marketing cetak SPPB [Sudah]
 2. SPPB dikirim ke Gudang [Sudah]
-3. Gudang cetak surat jalan [Sudah]
+3. Marketing Bisa Memilih Apa Saja Yang Bisa Keluar Dulu
+4. Data tersebut akan masuk ke Gudang
+5. Gudang cetak surat jalan berdasarkan data yang diberikan [Sudah]
 
 ===========================
 
@@ -63,14 +65,15 @@
 - SPPB bisa dicetak ketika status DP Pembayaran dan Sukses [Sudah]
 - SPBB bisa dilihat oleh Marketing Proyek dan Gudang [Sudah]
 
-
 ## Fitur Invoice
+
 - ROGS
 - Penawaran [Sudah]
 - PO [Sudah]
-- Data Barang Retur
+- Data Barang Retur [Sudah]
 - SPPB
 - Surat Jalan
-- Invoice General
-- Invoice Project
-- Update Invoice-Invoice Lama
+- Invoice General [Sudah]
+- Invoice Project [Sudah]
+- Update Invoice-Invoice Lama [Sudah]
+- Manajemen TTD Untuk Invoice Yang Berisi TTD
