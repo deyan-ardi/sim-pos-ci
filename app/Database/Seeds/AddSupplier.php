@@ -2,32 +2,31 @@
 
 namespace App\Database\Seeds;
 
+use App\Models\SupplierModel;
 use CodeIgniter\Database\Seeder;
 
 class AddSupplier extends Seeder
 {
 	public function run()
 	{
-		$data = [
-			[
-				'supplier_name' => 'Bagus Wirata',
-				'supplier_contact' => '6281915656864',
-				'supplier_email' => 'baguswirata@gmail.com',
-				'supplier_description' => 'Supplier Boba',
-				'supplier_address' => 'Denpasar',
-				'created_at' => date('Y-m-d H:i:s'),
-				'updated_at' => date('Y-m-d H:i:s'),
-			],
-			[
-				'supplier_name' => 'Bayu Cuaca',
-				'supplier_contact' => '6281915656865',
-				'supplier_email' => 'bayucuaca@gmail.com',
-				'supplier_description' => 'Supplier Makanan',
-				'supplier_address' => 'Denpasar Bali',
-				'created_at' => date('Y-m-d H:i:s'),
-				'updated_at' => date('Y-m-d H:i:s'),
-			]
-		];
-		$this->db->table('suppliers')->insertBatch($data);
+		$csvFile = fopen("csv/suppliers.csv", "r");
+		// It will automatically read file from /public/csv folder.
+		$firstline = true;
+		while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
+			if (!$firstline) {
+				$object = new SupplierModel();
+				$object->insert([
+					"id" => $data[0],
+					"supplier_name" => $data[1] == "NULL" ? NULL : $data[1],
+					"supplier_contact" => $data[2] == "NULL" ? NULL : $data[2],
+					"supplier_email" => $data[3] == "NULL" ? NULL : $data[3],
+					"supplier_address" => $data[4] == "NULL" ? NULL : $data[4],
+					"supplier_description" => $data[5] == "NULL" ? NULL : $data[5],
+				]);
+			}
+			$firstline = false;
+		}
+
+		fclose($csvFile);
 	}
 }

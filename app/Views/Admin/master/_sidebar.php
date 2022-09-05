@@ -126,7 +126,7 @@
                        <li data-username="pengaturan pph invoice transaksi project general" class="nav-item pcoded-hasmenu">
                            <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Setelan Transaksi</span></a>
                            <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/transaction/pengaturan" class="">PPh dan Invoice</a>
+                               <li class=""><a href="<?= base_url(); ?>/transaction/cashier/pengaturan" class="">PPh dan Invoice</a>
                                </li>
                            </ul>
                        </li>

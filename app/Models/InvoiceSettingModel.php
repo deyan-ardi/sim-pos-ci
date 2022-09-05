@@ -12,7 +12,7 @@ class InvoiceSettingModel extends Model
     protected $insertID         = 0;
     protected $returnType       = InvoiceSettingModel::class;
     protected $useSoftDeletes   = false;
-    protected $allowedFields    = ['key', 'value', 'position', 'header'];
+    protected $allowedFields    = ['id', 'key', 'value', 'position', 'header'];
 
     // Dates
     protected $useTimestamps = true;

@@ -2,106 +2,38 @@
 
 namespace App\Database\Seeds;
 
+use App\Models\UserModel;
 use CodeIgniter\Database\Seeder;
 
 class AddUserSuperAdmin extends Seeder
 {
     public function run()
     {
-        $password_super_admon_default = '12345678';
-        $hashOptions                  = [
-            'cost' => 10,
-        ];
-        // Enkripsi password
-        $password = password_hash(
-            base64_encode(
-                hash('sha384', $password_super_admon_default, true)
-            ),
-            PASSWORD_DEFAULT,
-            $hashOptions
-        );
-
-        for ($i = 1; $i <= 7; $i++) {
-            if ($i == 1) {
-                $email    = 'finance@ganatech.id';
-                $username = 'Kasir Finance';
-            } elseif ($i == 2) {
-                $email    = 'gudang@ganatech.id';
-                $username = 'Gudang User';
-            } elseif ($i == 3) {
-                $email    = 'super.admin@ganatech.id';
-                $username = 'Super Admin User';
-            } elseif ($i == 4) {
-                $email    = 'atasan@ganatech.id';
-                $username = 'Atasan User';
-            } elseif ($i == 5) {
-                $email    = 'purchasing@ganatech.id';
-                $username = 'Purchasing User';
-            } elseif ($i == 6) {
-                $email    = 'marketing@ganatech.id';
-                $username = 'Marketing User';
-            } elseif ($i == 7) {
-                $email    = 'proyek@ganatech.id';
-                $username = 'Proyek User';
+        $csvFile = fopen("csv/users.csv", "r");
+        // It will automatically read file from /public/csv folder.
+        $firstline = true;
+        while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
+            if (!$firstline) {
+                $object = new UserModel();
+                $object->insert([
+                    "id" => $data[0],
+                    "email" => $data[1] == "NULL" ? NULL : $data[1],
+                    "username" => $data[2] == "NULL" ? NULL : $data[2],
+                    "user_image" => $data[3] == "NULL" ? NULL : $data[3],
+                    "user_number" => $data[4] == "NULL" ? NULL : $data[4],
+                    "password_hash" => $data[5] == "NULL" ? NULL : $data[5],
+                    "reset_hash" => $data[6] == "NULL" ? NULL : $data[6],
+                    "reset_at" => $data[7] == "NULL" ? NULL : $data[7],
+                    "reset_expires" => $data[8] == "NULL" ? NULL : $data[8],
+                    "activate_hash" => $data[9] == "NULL" ? NULL : $data[9],
+                    "status" => $data[10] == "NULL" ? NULL : $data[10],
+                    "status_message" => $data[11] == "NULL" ? NULL : $data[11],
+                    "active" => $data[12] == "NULL" ? NULL : $data[12],
+                    "force_pass_reset" => $data[13] == "NULL" ? NULL : $data[13],
+                ]);
             }
-            $data_user = [
-                [
-                    'id'            => $i,
-                    'email'         => $email,
-                    'username'      => $username,
-                    'password_hash' => $password,
-                    'active'        => '1',
-                    'created_at'    => date('Y-m-d H:i:s'),
-                    'updated_at'    => date('Y-m-d H:i:s'),
-                ],
-            ];
-            $this->db->table('users')->insertBatch($data_user);
-
-            $data_relation = [
-                ['id'          => $i,
-                    'group_id' => $i,
-                    'user_id'  => $i,
-                ],
-            ];
-            $this->db->table('auth_groups_users')->insertBatch($data_relation);
+            $firstline = false;
         }
-        $data_member = [
-            'member_code'        => date('YmdHis'),
-            'member_name'        => 'General User',
-            'member_discount'    => 0,
-            'member_description' => null,
-            'member_email'       => 'general@gmail.com',
-            'member_status'      => 1,
-            'member_contact'     => 81915656865,
-            'created_at'         => date('Y-m-d H:i:s'),
-            'updated_at'         => date('Y-m-d H:i:s'),
-        ];
-        $this->db->table('members')->insert($data_member);
-
-        $data_pph = [
-            'pph_value'  => 10,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
-        $this->db->table('pphs')->insert($data_pph);
-
-        for ($i = 1; $i <= 4; $i++) {
-            if ($i == 1) {
-                $key = 'kiri';
-            } elseif ($i == 2) {
-                $key = 'tengah';
-            } elseif ($i == 3) {
-                $key = 'kanan';
-            } elseif ($i == 4) {
-                $key = 'note';
-            }
-
-            $data_invoice = [
-                'key'   => $key,
-                'value' => '',
-            ];
-
-            $this->db->table('invoice_settings')->insert($data_invoice);
-        }
+        fclose($csvFile);
     }
 }

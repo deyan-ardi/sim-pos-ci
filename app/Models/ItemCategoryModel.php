@@ -12,7 +12,7 @@ class ItemCategoryModel extends Model
     protected $insertID         = 0;
     protected $returnType       = ItemCategoryModel::class;
     protected $useSoftDeletes   = false;
-    protected $allowedFields    = ['category_name', 'deleted_at'];
+    protected $allowedFields    = ['id', 'category_name', 'deleted_at'];
 
     // Dates
     protected $useTimestamps = true;

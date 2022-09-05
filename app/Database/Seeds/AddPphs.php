@@ -2,22 +2,22 @@
 
 namespace App\Database\Seeds;
 
-use App\Models\ItemCategoryModel;
+use App\Models\PphModel;
 use CodeIgniter\Database\Seeder;
 
-class AddCategories extends Seeder
+class AddPphs extends Seeder
 {
 	public function run()
 	{
-		$csvFile = fopen("csv/item_categories.csv", "r");
+		$csvFile = fopen("csv/pphs.csv", "r");
 		// It will automatically read file from /public/csv folder.
 		$firstline = true;
 		while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
 			if (!$firstline) {
-				$object = new ItemCategoryModel();
+				$object = new PphModel();
 				$object->insert([
 					"id" => $data[0],
-					"category_name" => $data[1] == "NULL" ? NULL : $data[1],
+					"pph_value" => $data[1] == "NULL" ? NULL : $data[1],
 				]);
 			}
 			$firstline = false;

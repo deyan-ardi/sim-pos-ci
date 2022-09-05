@@ -12,7 +12,7 @@ class PphModel extends Model
     protected $insertID         = 0;
     protected $returnType       = PphModel::class;
     protected $useSoftDeletes   = false;
-    protected $allowedFields    = ['pph_value'];
+    protected $allowedFields    = ['id', 'pph_value'];
 
     // Dates
     protected $useTimestamps = true;

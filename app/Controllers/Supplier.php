@@ -438,9 +438,9 @@ class Supplier extends BaseController
                         $find_detail_order = $this->m_order_detail->getAllOrder($find[0]->id);
                         $ttd_kiri    = $this->m_invoice->where('key', 'po-kiri')->first();
                         $ttd_tengah_satu  = $this->m_invoice->where('key', 'po-tengah-satu')->first();
-                        $ttd_tengah_dua   = $this->m_invoice->where('key', 'po-tengan-dua')->first();
+                        $ttd_tengah_dua   = $this->m_invoice->where('key', 'po-tengah-dua')->first();
                         $ttd_tengah_tiga  = $this->m_invoice->where('key', 'po-tengah-tiga')->first();
-                        $ttd_tengah_empat   = $this->m_invoice->where('key', 'po-tengan-empat')->first();
+                        $ttd_tengah_empat   = $this->m_invoice->where('key', 'po-tengah-empat')->first();
                         $ttd_kanan   = $this->m_invoice->where('key', 'po-kanan')->first();
                         $note        = $this->m_invoice->where('key', 'po-note')->first();
                         $data = [

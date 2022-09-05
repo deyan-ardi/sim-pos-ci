@@ -13,7 +13,7 @@ class SupplierModel extends Model
     protected $returnType       = SupplierModel::class;
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
-        'supplier_name', 'supplier_contact', 'supplier_description', 'deleted_at', 'supplier_email', 'supplier_address',
+        'id', 'supplier_name', 'supplier_contact', 'supplier_description', 'deleted_at', 'supplier_email', 'supplier_address',
     ];
 
     // Dates

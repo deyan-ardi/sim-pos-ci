@@ -14,7 +14,7 @@ class GroupUserModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'group_id', 'user_id',
+        'id', 'group_id', 'user_id',
     ];
 
     // Dates

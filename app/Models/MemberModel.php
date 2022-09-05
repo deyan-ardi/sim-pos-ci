@@ -13,7 +13,7 @@ class MemberModel extends Model
     protected $returnType       = MemberModel::class;
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
-        'member_name', 'member_code', 'member_status', 'member_job', 'member_company', 'member_contact', 'member_discount', 'member_description', 'member_email', 'deleted_at',
+        'id', 'member_name', 'member_code', 'member_status', 'member_job', 'member_company', 'member_contact', 'member_discount', 'member_description', 'member_email', 'deleted_at',
     ];
 
     // Dates

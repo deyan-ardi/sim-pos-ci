@@ -13,7 +13,7 @@ class ItemModel extends Model
     protected $returnType       = ItemModel::class;
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
-        'item_image', 'item_code', 'item_name', 'item_before_sale', 'item_discount', 'item_profit', 'item_merk', 'item_type', 'item_weight', 'item_length', 'item_width', 'item_height', 'item_hpp', 'item_stock', 'item_sale', 'item_description', 'category_id', 'supplier_id', 'deleted_at', 'item_warehouse_a', 'item_warehouse_b', 'item_warehouse_c', 'item_warehouse_d',
+        'id', 'item_image', 'item_code', 'item_name', 'item_before_sale', 'item_discount', 'item_profit', 'item_merk', 'item_type', 'item_weight', 'item_length', 'item_width', 'item_height', 'item_hpp', 'item_stock', 'item_sale', 'item_description', 'category_id', 'supplier_id', 'deleted_at', 'item_warehouse_a', 'item_warehouse_b', 'item_warehouse_c', 'item_warehouse_d',
     ];
 
     // Dates

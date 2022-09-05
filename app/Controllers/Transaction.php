@@ -374,7 +374,7 @@ class Transaction extends BaseController
             $pph_model   = $this->m_pph->getAllPPh();
             $ttd_kiri    = $this->m_invoice->where('key', 'penawaran-kiri')->first();
             $ttd_tengah_satu  = $this->m_invoice->where('key', 'penawaran-tengah-satu')->first();
-            $ttd_tengah_dua   = $this->m_invoice->where('key', 'penawaran-tengan-dua')->first();
+            $ttd_tengah_dua   = $this->m_invoice->where('key', 'penawaran-tengah-dua')->first();
             $ttd_kanan   = $this->m_invoice->where('key', 'penawaran-kanan')->first();
             $note        = $this->m_invoice->where('key', 'penawaran-note')->first();
             $data        = [
@@ -502,7 +502,7 @@ class Transaction extends BaseController
 
     public function pengaturan()
     {
-        if (in_groups('SUPER ADMIN') || in_groups('KASIR')) {
+        if (in_groups('SUPER ADMIN') || in_groups('FINANCE')) {
             $data = [
                 'pph'        => $this->m_pph->getAllPPh(),
                 'invoice'    => $this->m_invoice->findAll(),

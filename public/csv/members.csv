@@ -1,0 +1,6 @@
+"id","member_code","member_name","member_contact","member_description","member_company","member_job","member_discount","member_email","member_status","created_at","updated_at","deleted_at"
+"1","20211019163554","General User","81915656865",NULL,NULL,NULL,"0","general@gmail.com","1","2021-10-19 16:35:54","2021-10-19 16:35:54",NULL
+"3","2022012091","Pak Mahmud","81222111333",NULL,"maju mundur asik","pengedar narkoba","5","mahmud@gmail.com","0","2022-01-07 12:31:32","2022-01-26 13:10:45",NULL
+"4","2022013647","Abc","88888",NULL,NULL,NULL,"0","jeis@gmail.com","0","2022-01-07 15:00:33","2022-01-07 15:00:33",NULL
+"5","2022063045","Bapak Budi","6281236936031",NULL,"Oz-Britts Meats Bali","Manager","20","ozbritts@yahoo.com","0","2022-06-09 15:26:01","2022-06-09 15:26:01",NULL
+"6","2022080826","Jaksm","879349464946999",NULL,"Guidndkdndb","MANAGER","0","ndhdisj@gmail.com","0","2022-08-05 15:24:19","2022-08-05 15:24:19",NULL
