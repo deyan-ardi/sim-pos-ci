@@ -55,8 +55,8 @@
 
 1. Marketing cetak SPPB [Sudah]
 2. SPPB dikirim ke Gudang [Sudah]
-3. Marketing Bisa Memilih Apa Saja Yang Bisa Keluar Dulu
-4. Data tersebut akan masuk ke Gudang
+3. Marketing Bisa Memilih Apa Saja Yang Bisa Keluar Dulu [Sudah]
+4. Data tersebut akan masuk ke Gudang [Sudah]
 5. Gudang cetak surat jalan berdasarkan data yang diberikan [Sudah]
 
 ===========================
@@ -71,9 +71,9 @@
 - Penawaran [Sudah]
 - PO [Sudah]
 - Data Barang Retur [Sudah]
-- SPPB
+- SPPB [Sudah]
 - Surat Jalan
 - Invoice General [Sudah]
 - Invoice Project [Sudah]
 - Update Invoice-Invoice Lama [Sudah]
-- Manajemen TTD Untuk Invoice Yang Berisi TTD
+- Manajemen TTD Untuk Invoice Yang Berisi TTD [Sudah]

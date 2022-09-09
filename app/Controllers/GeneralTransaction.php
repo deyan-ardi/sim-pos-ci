@@ -161,6 +161,7 @@ class GeneralTransaction extends BaseController
                     'user_id'         => user()->id,
                     'item_id'         => $this->request->getPost('item_barang'),
                     'sale_id'         => get_cookie('transaction-general'),
+                    'detail_send_status' => 0,
                 ]);
                 if ($save_sale_detail) {
                     $save_item = $this->m_item->save([
@@ -322,6 +323,8 @@ class GeneralTransaction extends BaseController
                 $save_update_status = $this->m_sale->save([
                     'id'          => get_cookie('transaction-general'),
                     'sale_status' => $status,
+                    'sale_stock_status' => 1,
+                    'sale_send_status' => 0,
                 ]);
                 if ($save_update_status) {
                     $find_member = $this->m_member->find($find_sale[0]->member_id);
@@ -342,6 +345,7 @@ class GeneralTransaction extends BaseController
                         'ttd_tengah_dua'  => $ttd_tengah_dua,
                         'ttd_kanan'  => $ttd_kanan,
                         'note'       => $note,
+                        'status'  => $status
                     ];
                     set_cookie('transaction-general', false, 900);
                     $mpdf = new \Mpdf\Mpdf();
@@ -395,7 +399,7 @@ class GeneralTransaction extends BaseController
             } else {
                 $save = $this->m_sale->save([
                     'id'       => $id_transaksi,
-                    'sale_pay' => $sale->sale_pay + $bayar_total >= $sale->sale_total ? $sale->sale_total : $sale->sale_pay + $bayar_total,
+                    'sale_pay' => $sale->sale_pay + $bayar_total,
                     'sale_kurang' => 0,
                     'sale_status' => 2,
                 ]);
@@ -633,6 +637,7 @@ class GeneralTransaction extends BaseController
                     // $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
                     $save_sale_detail = $this->m_sale_detail->save([
                         'detail_total'    => $detail,
+                        'detail_send_status' => 0,
                         'detail_quantity' => $this->request->getPost('item_quantity'),
                         'user_id'         => user()->id,
                         'item_id'         => $this->request->getPost('item_barang'),
@@ -750,6 +755,8 @@ class GeneralTransaction extends BaseController
                     $save_update_status = $this->m_sale->save([
                         'id'          => $find_sale_code->id,
                         'sale_status' => $status,
+                        'sale_stock_status' => 1,
+                        'sale_send_status' => 0,
                     ]);
                     if ($save_update_status) {
                         $find_member = $this->m_member->find($find_sale[0]->member_id);
@@ -770,6 +777,7 @@ class GeneralTransaction extends BaseController
                             'ttd_tengah_dua'  => $ttd_tengah_dua,
                             'ttd_kanan'  => $ttd_kanan,
                             'note'       => $note,
+                            'status'  => $status
                         ];
                         set_cookie('transaction-general', false, 900);
                         delete_cookie('transaction-general');

@@ -105,7 +105,7 @@ Data User Sistem
                                                             <?php endif; ?>
                                                             <td><?= $c->email; ?></td>
                                                             <td><?= $c->username; ?></td>
-                                                            <td><?= ! empty($c->user_number) ? $c->user_number : 'Kosong'; ?></td>
+                                                            <td><?= !empty($c->user_number) ? $c->user_number : 'Kosong'; ?></td>
                                                             <td><?= ucwords(strtolower($c->name)); ?></td>
                                                             <?php if ($c->active == 1) : ?>
                                                                 <td><button type="button" class="btn btn-icon btn-success"><i class="feather icon-check-circle" title="User Aktif" data-toggle="tooltip"></i></button></td>
@@ -119,85 +119,6 @@ Data User Sistem
                                                                 <div class="row justify-content-center">
                                                                     <!-- Update Button Modal -->
                                                                     <button type="button" class="btn btn-warning btn-icon btn-rounded" data-toggle="modal" data-target="#updateCategory-<?= $c->userid; ?>"><i class="feather icon-edit" title="Ubah User" data-toggle="tooltip"></i></button>
-
-                                                                    <!-- Update Modal -->
-                                                                    <div id="updateCategory-<?= $c->userid; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->userid; ?>" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->userid; ?>">Ubah Data
-                                                                                        Kategori</h5>
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="" method="POST" enctype="multipart/form-data">
-                                                                                        <?= csrf_field(); ?>
-                                                                                        <input type="hidden" name="_method" value="PATCH">
-                                                                                        <input type="hidden" name="id_user" value="<?= $c->userid; ?>">
-                                                                                        <div class="form-group">
-                                                                                            <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image_up') ? 'is-invalid' : ''; ?>" name="user_image_up">
-                                                                                            <small id="file" class="form-text text-muted">Bersifat Opsional, jika ingin menambahkan silahkan sesuaikan foto profil yang diupload <br> maksimal 1 Mb, bertipe .jpg, .png. atau
-                                                                                                .jpeg</small>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('user_image_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="email" class="form-control <?= $validation->getError('email_up') ? 'is-invalid' : ''; ?>" name="email_up" required placeholder="Email User" value="<?= (old('email_up')) ?: $c->email; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('email_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="text" class="form-control <?= $validation->getError('username_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="username_up" required placeholder="Nama User" value="<?= (old('username_up')) ?: $c->username; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('username_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="user_number_up" placeholder="Kontak User (Opsional)" value="<?= (old('user_number_up')) ?: $c->user_number; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('user_number_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="password" class="form-control <?= $validation->getError('password_up') ? 'is-invalid' : ''; ?>" name="password_up" placeholder="Kata Sandi Akun" value="<?= (old('password_up')) ?: ''; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('password_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <input type="password" class="form-control <?= $validation->getError('password_confirm_up') ? 'is-invalid' : ''; ?>" name="password_confirm_up" placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm_up')) ?: ''; ?>">
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('password_confirm_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <select class="form-control <?= $validation->getError('group_up') ? 'is-invalid' : ''; ?>" name="group_up">
-                                                                                                <option value="">Pilih Hak Akses</option>
-                                                                                                <option value="1" <?= $c->name == 'KASIR' ? 'selected' : ''; ?>>Kasir</option>
-                                                                                                <option value="2" <?= $c->name == 'GUDANG' ? 'selected' : ''; ?>>Gudang</option>
-                                                                                                <option value="3" <?= $c->name == 'SUPER ADMIN' ? 'selected' : ''; ?>>Super Admin</option>
-                                                                                                <option value="4" <?= $c->name == 'ATASAN' ? 'selected' : ''; ?>>Atasan</option>
-                                                                                                <option value="5" <?= $c->name == 'PURCHASING' ? 'selected' : ''; ?>>Purchasing</option>
-                                                                                                <option value="6" <?= $c->name == 'MARKETING' ? 'selected' : ''; ?>>Marketing</option>
-                                                                                            </select>
-                                                                                            <div class="invalid-feedback">
-                                                                                                <?= $validation->getError('group_up'); ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="submit" name="update_user" value="update" class="btn btn-primary">Simpan
-                                                                                                Perubahan</button>
-                                                                                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
 
                                                                     <!-- Delete -->
                                                                     <form action="" id="<?= $c->userid; ?>" method="POST">
@@ -295,12 +216,13 @@ Data User Sistem
                     <div class="form-group">
                         <select class="form-control <?= $validation->getError('group') ? 'is-invalid' : ''; ?>" name="group">
                             <option value="">Pilih Hak Akses</option>
-                            <option value="1">Kasir</option>
+                            <option value="1">Finance</option>
                             <option value="2">Gudang</option>
                             <option value="3">Super Admin</option>
                             <option value="4">Atasan</option>
                             <option value="5">Purchasing</option>
                             <option value="6">Marketing</option>
+                            <option value="7">Proyek</option>
                         </select>
                         <div class="invalid-feedback">
                             <?= $validation->getError('group'); ?>
@@ -315,4 +237,85 @@ Data User Sistem
         </div>
     </div>
 </div>
+
+<?php foreach ($user as $c) : ?>
+    <!-- Update Modal -->
+    <div id="updateCategory-<?= $c->userid; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateCategoryLabel-<?= $c->userid; ?>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCategoryLabel-<?= $c->userid; ?>">Ubah Data
+                        Kategori</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="hidden" name="id_user" value="<?= $c->userid; ?>">
+                        <div class="form-group">
+                            <input type="file" accept=".png,.jpeg,.jpg" class="form-control <?= $validation->getError('user_image_up') ? 'is-invalid' : ''; ?>" name="user_image_up">
+                            <small id="file" class="form-text text-muted">Bersifat Opsional, jika ingin menambahkan silahkan sesuaikan foto profil yang diupload <br> maksimal 1 Mb, bertipe .jpg, .png. atau
+                                .jpeg</small>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('user_image_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control <?= $validation->getError('email_up') ? 'is-invalid' : ''; ?>" name="email_up" required placeholder="Email User" value="<?= (old('email_up')) ?: $c->email; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('email_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control <?= $validation->getError('username_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="username_up" required placeholder="Nama User" value="<?= (old('username_up')) ?: $c->username; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('username_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" min="0" maxlength="15" class="form-control <?= $validation->getError('user_number_up') ? 'is-invalid' : ''; ?>" style="text-transform: capitalize;" name="user_number_up" placeholder="Kontak User (Opsional)" value="<?= (old('user_number_up')) ?: $c->user_number; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('user_number_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control <?= $validation->getError('password_up') ? 'is-invalid' : ''; ?>" name="password_up" placeholder="Kata Sandi Akun" value="<?= (old('password_up')) ?: ''; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('password_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control <?= $validation->getError('password_confirm_up') ? 'is-invalid' : ''; ?>" name="password_confirm_up" placeholder="Konfirmasi Kata Sandi Akun" value="<?= (old('password_confirm_up')) ?: ''; ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('password_confirm_up'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control <?= $validation->getError('group_up') ? 'is-invalid' : ''; ?>" name="group_up">
+                                <option value="">Pilih Hak Akses</option>
+                                <option value="1" <?= $c->name == 'KASIR' ? 'selected' : ''; ?>>Kasir</option>
+                                <option value="2" <?= $c->name == 'GUDANG' ? 'selected' : ''; ?>>Gudang</option>
+                                <option value="3" <?= $c->name == 'SUPER ADMIN' ? 'selected' : ''; ?>>Super Admin</option>
+                                <option value="4" <?= $c->name == 'ATASAN' ? 'selected' : ''; ?>>Atasan</option>
+                                <option value="5" <?= $c->name == 'PURCHASING' ? 'selected' : ''; ?>>Purchasing</option>
+                                <option value="6" <?= $c->name == 'MARKETING' ? 'selected' : ''; ?>>Marketing</option>
+                                <option value="7">Proyek</option>
+
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('group_up'); ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="update_user" value="update" class="btn btn-primary">Simpan
+                                Perubahan</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
 <?= $this->endSection(); ?>

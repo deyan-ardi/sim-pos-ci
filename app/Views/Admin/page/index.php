@@ -214,7 +214,7 @@ Dashboard Page
                                                                         </div>
                                                                         <div class="col p-l-5">
                                                                             <a href="#!">
-                                                                                <h6 class="m-0">Penawaran <?= $p->penawaran_code; ?> Telah Berhasil Dibuat <?= CodeIgniter\I18n\Time::parse($s->updated_at)->toLocalizedString('d MMM yyyy, H:m'); ?> WITA</h6>
+                                                                                <h6 class="m-0">Penawaran <?= $p->penawaran_code; ?> Telah Berhasil Dibuat <?= CodeIgniter\I18n\Time::parse($p->updated_at)->toLocalizedString('d MMM yyyy, H:m'); ?> WITA</h6>
                                                                             </a>
                                                                             <p class="m-b-0">~ Dintara Point Of Sale</p>
                                                                         </div>

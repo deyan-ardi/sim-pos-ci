@@ -171,6 +171,11 @@ Transaksi Barang - Menu Kasir
             document.getElementById("menit").innerHTML = waktu.getMinutes() + " WITA";
         }
     }
+    $(document).ready(function() {
+        $('#item_id').selectize({
+            sortField: 'text'
+        });
+    });
 </script>
 <?= $this->endSection(); ?>
 
@@ -275,7 +280,7 @@ Transaksi Barang - Menu Kasir
                                                                     <input type="text" disabled value="KODE TRANSAKSI : <?= $find_sale[0]->sale_code; ?>" class="form-control">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <select name="item_barang" required id="item" class="form-control <?= $validation->getError('item_barang') ? 'is-invalid' : ''; ?>">
+                                                                    <select name="item_barang" required id="item_id" class="form-control <?= $validation->getError('item_barang') ? 'is-invalid' : ''; ?>">
                                                                         <option value="">--Pilih Barang--</option>
                                                                         <?php foreach ($item as $i) : ?>
                                                                             <?php if ($i->item_stock <= 0) : ?>
@@ -407,7 +412,7 @@ Transaksi Barang - Menu Kasir
                                                                             <th>Perlu Membayar</th>
                                                                             <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
                                                                         </tr>
-                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_kurang && !empty($transaction)) : ?>
+                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
 
                                                                             <tr>
                                                                                 <th>Bayar</th>
@@ -421,15 +426,19 @@ Transaksi Barang - Menu Kasir
                                                                                 </th>
                                                                             </tr>
                                                                         <?php else : ?>
-                                                                            <th>Bayar</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
-                                                                            </th>
+                                                                            <tr>
+                                                                                <th>Bayar</th>
+                                                                                <th colspan="<?= $colspan; ?>">
+                                                                                    <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
+                                                                                </th>
+                                                                            </tr>
                                                                         <?php endif; ?>
-                                                                        <th>Kembali</th>
-                                                                        <th colspan="<?= $colspan; ?>">
-                                                                            <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
-                                                                        </th>
+                                                                        <tr>
+                                                                            <th>Kembali</th>
+                                                                            <th colspan="<?= $colspan; ?>">
+                                                                                <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
+                                                                            </th>
+                                                                        </tr>
                                                                     <?php else : ?>
                                                                         <tr>
                                                                             <th colspan="<?= $colspan_all; ?>" rowspan="4"></th>

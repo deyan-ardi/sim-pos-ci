@@ -45,37 +45,37 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 
 1. Login Sebagai Super Admin
 
-- email : super.admin@ganatech.id
+- email : super.admin@dintarakitchen.com
 - password : 12345678
 
 2. Login Sebagai Atasan
 
-- email : atasan@ganatech.id
+- email : atasan@dintarakitchen.com
 - password : 12345678
 
 3. Login Sebagai User Gudang
 
-- email : gudang@ganatech.id
+- email : gudang@dintarakitchen.com
 - password : 12345678
 
-4. Login Sebagai User Kasir
+4. Login Sebagai User Finance
 
-- email : kasir@ganatech.id
+- email : finance@dintarakitchen.com
 - password : 12345678
 
 5. Login Sebagai User Purchasing
 
-- email : purchasing@ganatech.id
+- email : purchasing@dintarakitchen.com
 - password : 12345678
 
 6. Login Sebagai User Marketing
 
-- email : marketing@ganatech.id
+- email : marketing@dintarakitchen.com
 - password : 12345678
 
 7. Login Sebagai User Tim Proyek
 
-- email : proyek@ganatech.id
+- email : proyek@dintarakitchen.com
 - password : 12345678
 
 ## Credit

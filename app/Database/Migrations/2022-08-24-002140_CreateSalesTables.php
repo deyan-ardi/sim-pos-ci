@@ -19,6 +19,8 @@ class CreateSalesTables extends Migration
 			'sale_discount' => ['type' => 'float'],
 			'sale_profit'   => ['type' => 'float'],
 			'sale_status'   => ['type' => 'int'],
+			'sale_send_status'   => ['type' => 'int', 'null' => true],
+			'sale_stock_status'   => ['type' => 'int', 'null' => true],
 			'sale_ket'      => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
 			'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'member_id'     => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],

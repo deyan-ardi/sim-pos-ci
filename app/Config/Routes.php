@@ -197,8 +197,11 @@ $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, FINANCE'],
 });
 
 $routes->group('sppb', ['filter' => 'role:SUPER ADMIN, PROYEK, MARKETING'], ['namespace' => 'App\Controllers'], static function ($routes) {
+    $routes->post('transaction/load', 'TransactionProyek::detail_sale_sppb');
     $routes->get('transaction-general', 'TransactionProyek::index');
+    $routes->post('transaction-general', 'TransactionProyek::index');
     $routes->get('transaction-project', 'TransactionProyek::project');
+    $routes->post('transaction-project', 'TransactionProyek::project');
 });
 
 $routes->group('surat-jalan', ['filter' => 'role:SUPER ADMIN, GUDANG'], ['namespace' => 'App\Controllers'], static function ($routes) {

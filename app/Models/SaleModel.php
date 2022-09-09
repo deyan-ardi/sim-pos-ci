@@ -13,7 +13,7 @@ class SaleModel extends Model
     protected $returnType       = SaleModel::class;
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
-        'sale_code', 'sale_penawaran_code', 'sale_kurang', 'sale_ket', 'sale_handling', 'sale_total', 'sale_status', 'sale_pay', 'sale_discount', 'sale_profit', 'user_id', 'member_id', 'deleted_at',
+        'sale_code', 'sale_send_status','sale_stock_status', 'sale_penawaran_code', 'sale_kurang', 'sale_ket', 'sale_handling', 'sale_total', 'sale_status', 'sale_pay', 'sale_discount', 'sale_profit', 'user_id', 'member_id', 'deleted_at',
     ];
 
     // Dates

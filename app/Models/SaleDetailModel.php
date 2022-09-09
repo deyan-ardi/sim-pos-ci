@@ -13,7 +13,7 @@ class SaleDetailModel extends Model
     protected $returnType       = SaleDetailModel::class;
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
-        'detail_total', 'detail_quantity', 'user_id', 'item_id', 'sale_id',
+        'detail_total', 'detail_send_status', 'detail_send_address', 'detail_send_estimate', 'detail_quantity', 'user_id', 'item_id', 'sale_id',
     ];
 
     // Dates
@@ -40,7 +40,15 @@ class SaleDetailModel extends Model
         $this->select('sale_details.*,items.item_name,items.item_code,items.item_sale,items.item_stock');
         $this->join('items', 'items.id = sale_details.item_id');
         $this->where('sale_details.sale_id', $sale_id);
+        return $this->get()->getResult();
+    }
 
+    public function getAllSaleDetailWhere($id)
+    {
+        $this->select('sale_details.*,items.item_name,items.item_code,items.item_sale,items.item_stock');
+        $this->join('items', 'items.id = sale_details.item_id');
+        $this->where('sale_details.sale_id', $id);
+        $this->where('sale_details.detail_send_status', 1);
         return $this->get()->getResult();
     }
 }

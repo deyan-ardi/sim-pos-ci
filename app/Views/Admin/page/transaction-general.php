@@ -440,10 +440,12 @@ Transaksi Barang - Menu Kasir
                                                                                 </th>
                                                                             </tr>
                                                                         <?php else : ?>
-                                                                            <th>Bayar</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
-                                                                            </th>
+                                                                            <tr>
+                                                                                <th>Bayar</th>
+                                                                                <th colspan="<?= $colspan; ?>">
+                                                                                    <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
+                                                                                </th>
+                                                                            </tr>
                                                                         <?php endif; ?>
                                                                         <tr>
                                                                             <th>Kembali</th>

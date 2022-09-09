@@ -327,7 +327,7 @@
             </tr>
             <tr>
                 <td>
-                    <p style="font-size:11px;text-align:justify">Status Transaksi yang bersifat "Draft" tidak akan dihitung oleh sistem</p>
+                    <p style="font-size:11px;text-align:justify"><?= empty($note) ? "Tidak Ada Remark" : $note->value; ?></p>
                 </td>
             </tr>
         </table>

@@ -336,7 +336,18 @@
                 </tbody>
             </table>
         </div>
-
+        <table class="w-100" style="padding-top:50px">
+            <tr>
+                <td>
+                    <h5 style="font-size:12px">Remark:</h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-size:11px;text-align:justify"><?= empty($note) ? "Tidak Ada Remark" : $note->value; ?></p>
+                </td>
+            </tr>
+        </table>
         <div id="ttd" style="margin-top:45px">
             <table style="width: 100%;">
                 <tr>
@@ -348,35 +359,35 @@
             <table style="width: 100%; padding-top:20px">
                 <tr>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($ttd_kiri->header) ? $ttd_kiri->header : 'Customer Approval,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_kiri->header) ? $ttd_kiri->header : ''; ?></h5>
                     </td>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_satu->header) ? $ttd_tengah_satu->header : 'Hormat Kami,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_tengah_satu->header) ? $ttd_tengah_satu->header : ''; ?></h5>
                     </td>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($tengah_dua->header) ? $tengah_dua->header : 'Dicek Oleh,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($tengah_dua->header) ? $tengah_dua->header : ''; ?></h5>
                     </td>
                     <td>
-                        <h5 style="font-size:12px"><?= !empty($ttd_kanan->header) ? $ttd_kanan->header : 'Mengetahui,'; ?></h5>
+                        <h5 style="font-size:12px"><?= !empty($ttd_kanan->header) ? $ttd_kanan->header : ''; ?></h5>
                     </td>
                 </tr>
                 <tr>
                     <td style=" padding-top: 4em;">
-                        <h5 style="font-size:12px"><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : $member->member_job . " " . $member->member_company; ?></p>
+                        <h5 style="font-size:12px"><u><?= !empty($ttd_kiri->value) ? $ttd_kiri->value : ''; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($ttd_kiri->position) ? '(' . $ttd_kiri->position . ')' : "" ?></p>
                     </td>
 
                     <td style="padding-top: 4em;">
-                        <h5 style="font-size:12px"><u><?= !empty($ttd_tengah_satu->value) ? $ttd_tengah_satu->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_tengah_satu->position) ? '(' . $ttd_tengah_satu->position . ')' : 'Spv. Marketing & Sales'; ?></p>
+                        <h5 style="font-size:12px"><u><?= !empty($ttd_tengah_satu->value) ? $ttd_tengah_satu->value : ''; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($ttd_tengah_satu->position) ? '(' . $ttd_tengah_satu->position . ')' : ''; ?></p>
                     </td>
                     <td style="padding-top: 4em;">
-                        <h5 style="font-size:12px"><u><?= !empty($tengah_dua->value) ? $tengah_dua->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($tengah_dua->position) ? '(' . $tengah_dua->position . ')' : 'Head of Marketing & Sales'; ?></p>
+                        <h5 style="font-size:12px"><u><?= !empty($tengah_dua->value) ? $tengah_dua->value : ''; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($tengah_dua->position) ? '(' . $tengah_dua->position . ')' : ''; ?></p>
                     </td>
                     <td style=" padding-top: 4em;">
-                        <h5 style="font-size:12px"><u><?= !empty($ttd_kanan->value) ? $ttd_kanan->value : '____________________'; ?></u></h5>
-                        <p style="font-size:11px"><?= !empty($ttd_kanan->position) ? '(' . $ttd_kanan->position . ')' : 'General Manager'; ?></p>
+                        <h5 style="font-size:12px"><u><?= !empty($ttd_kanan->value) ? $ttd_kanan->value : ''; ?></u></h5>
+                        <p style="font-size:11px"><?= !empty($ttd_kanan->position) ? '(' . $ttd_kanan->position . ')' : ''; ?></p>
                     </td>
                 </tr>
             </table>

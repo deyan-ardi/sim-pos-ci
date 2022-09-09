@@ -120,6 +120,7 @@ class Transaction extends BaseController
                 'sale_status'   => 0,
                 'sale_ket'      => 'Project',
                 'user_id'       => user()->id,
+                'sale_stock_status' => 0,
                 'member_id'     => $find_member[0]->id,
             ]);
             if ($save) {
@@ -157,33 +158,47 @@ class Transaction extends BaseController
         if (!empty($this->request->getPost('invoice'))) {
             if (get_cookie('transaction')) {
                 $find_sale_detail = $this->m_sale_detail->getAllSaleDetail(get_cookie('transaction'));
-                $status = true;
-                foreach ($find_sale_detail as $detail) {
-                    $item = $this->m_item->getAllItem($detail->item_id, null);
-                    if ($item[0]->item_stock - $detail->detail_quantity < 0) {
-                        $status = false;
-                        break;
+                $sale = $this->m_sale->where('id', get_cookie('transaction'))->first();
+                $status_aksi = true;
+                if ($sale->sale_stock_status == 0) {
+                    foreach ($find_sale_detail as $detail) {
+                        $item = $this->m_item->getAllItem($detail->item_id, null);
+                        if ($item[0]->item_stock - $detail->detail_quantity < 0) {
+                            $status_aksi = false;
+                            break;
+                        }
                     }
                 }
-                if ($status) {
-                    $sale = $this->m_sale->where('id', get_cookie('transaction'))->first();
+
+                if ($status_aksi) {
                     if ($sale->sale_pay - $sale->sale_kurang < 0) {
                         $status = 1;
                     } else {
                         $status = 2;
-                        foreach ($find_sale_detail as $detail) {
-                            $item = $this->m_item->getAllItem($detail->item_id, null);
-                            if ($item[0]->item_stock - $detail->detail_quantity >= 0) {
-                                $this->m_item->save([
-                                    'id' => $detail->item_id,
-                                    'item_stock' => $item[0]->item_stock - $detail->detail_quantity
-                                ]);
+                        if ($sale->sale_stock_status == 0) {
+                            foreach ($find_sale_detail as $detail) {
+                                $item = $this->m_item->getAllItem($detail->item_id, null);
+                                if ($item[0]->item_stock - $detail->detail_quantity >= 0) {
+                                    $this->m_item->save([
+                                        'id' => $detail->item_id,
+                                        'item_stock' => $item[0]->item_stock - $detail->detail_quantity
+                                    ]);
+                                    $this->m_sale_detail->save([
+                                        'id' => $detail->id,
+                                        'detail_send_status' => 0,
+                                    ]);
+                                }
                             }
+                            $save_update_status = $this->m_sale->save([
+                                'id'          => $sale->id,
+                                'sale_stock_status' => 1,
+                            ]);
                         }
                     }
                     $save_update_status = $this->m_sale->save([
                         'id'          => get_cookie('transaction'),
                         'sale_status' => $status,
+                        'sale_send_status' => 0,
                     ]);
                     if ($save_update_status) {
                         $find_member = $this->m_member->find($find_sale[0]->member_id);
@@ -204,6 +219,7 @@ class Transaction extends BaseController
                             'ttd_tengah_dua'  => $ttd_tengah_dua,
                             'ttd_kanan'  => $ttd_kanan,
                             'note'       => $note,
+                            'status' => $status,
                         ];
                         set_cookie('transaction', false, -900);
                         delete_cookie('transaction');
@@ -261,9 +277,9 @@ class Transaction extends BaseController
             } else {
                 $save = $this->m_sale->save([
                     'id'       => $id_transaksi,
-                    'sale_pay' => $sale->sale_pay + $bayar_total >= $sale->sale_total ? $sale->sale_total : $sale->sale_pay + $bayar_total,
+                    'sale_pay' => $sale->sale_pay + $bayar_total,
                     'sale_kurang' => 0,
-                    'sale_status' => 2,
+                    'sale_status' => 0,
                 ]);
                 if ($save) {
                     return json_encode(['status' => true, "message" => "Transaksi Berhasil, Silahkan Cetak Invoice"]);
@@ -424,28 +440,40 @@ class Transaction extends BaseController
                 ];
                 if (!empty($this->request->getPost('invoice'))) {
                     $find_sale_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
-                    $status = true;
-                    foreach ($find_sale_detail as $detail) {
-                        $item = $this->m_item->getAllItem($detail->item_id, null);
-                        if ($item[0]->item_stock - $detail->detail_quantity < 0) {
-                            $status = false;
-                            break;
+                    $status_aksi = true;
+                    if ($find_sale_code->sale_stock_status == 0) {
+                        foreach ($find_sale_detail as $detail) {
+                            $item = $this->m_item->getAllItem($detail->item_id, null);
+                            if ($item[0]->item_stock - $detail->detail_quantity < 0) {
+                                $status_aksi = false;
+                                break;
+                            }
                         }
                     }
-                    if ($status) {
+                    if ($status_aksi) {
                         $sale = $this->m_sale->where('id', $find_sale_code->id)->first();
                         if ($sale->sale_pay - $sale->sale_total < 0) {
                             $status = 1;
                         } else {
                             $status = 2;
-                            foreach ($find_sale_detail as $detail) {
-                                $item = $this->m_item->getAllItem($detail->item_id, null);
-                                if ($item[0]->item_stock - $detail->detail_quantity >= 0) {
-                                    $this->m_item->save([
-                                        'id' => $detail->item_id,
-                                        'item_stock' => $item[0]->item_stock - $detail->detail_quantity
-                                    ]);
+                            if ($sale->sale_stock_status == 0) {
+                                foreach ($find_sale_detail as $detail) {
+                                    $item = $this->m_item->getAllItem($detail->item_id, null);
+                                    if ($item[0]->item_stock - $detail->detail_quantity >= 0) {
+                                        $this->m_item->save([
+                                            'id' => $detail->item_id,
+                                            'item_stock' => $item[0]->item_stock - $detail->detail_quantity
+                                        ]);
+                                        $this->m_sale_detail->save([
+                                            'id' => $detail->id,
+                                            'detail_send_status' => 0,
+                                        ]);
+                                    }
                                 }
+                                $save_update_status = $this->m_sale->save([
+                                    'id'          => $sale->id,
+                                    'sale_stock_status' => 1,
+                                ]);
                             }
                         }
                         $save_update_status = $this->m_sale->save([
@@ -471,6 +499,7 @@ class Transaction extends BaseController
                                 'ttd_tengah_dua'  => $ttd_tengah_dua,
                                 'ttd_kanan'  => $ttd_kanan,
                                 'note'       => $note,
+                                'status' => $status,
                             ];
                             set_cookie('transaction', false, 900);
                             $mpdf = new \Mpdf\Mpdf();
