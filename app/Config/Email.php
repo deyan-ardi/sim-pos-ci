@@ -9,12 +9,12 @@ class Email extends BaseConfig
     /**
      * @var string
      */
-    public $fromEmail = 'ganatech.id@gmail.com';
+    public $fromEmail = 'info@ganadev.com';
 
     /**
      * @var string
      */
-    public $fromName = 'Ganatech ID';
+    public $fromName = 'GanaDev Com';
 
     /**
      * @var string
@@ -47,21 +47,21 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = 'smtp.gmail.com';
+    public $SMTPHost = 'mail.ganadev.com';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'ganatech.id@gmail.com';
+    public $SMTPUser = 'info@ganadev.com';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '-*ganatech2020*-';
+    public $SMTPPass = '-Ganadev2020-';
 
     /**
      * SMTP Port

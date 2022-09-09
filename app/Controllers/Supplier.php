@@ -469,11 +469,47 @@ class Supplier extends BaseController
                 }
                 if ($this->request->getPost('input_rogs')) {
                     // Cetak ROGS Disini
-                    dd('cetak rogs');
+                    $find_detail_order = $this->m_order_detail->getAllOrder($find[0]->id);
+                    $ttd_kiri    = $this->m_invoice->where('key', 'rogs-kiri')->first();
+                    $ttd_tengah_satu  = $this->m_invoice->where('key', 'rogs-tengah-satu')->first();
+                    $ttd_tengah_dua  = $this->m_invoice->where('key', 'rogs-tengah-dua')->first();
+                    $ttd_kanan   = $this->m_invoice->where('key', 'rogs-kanan')->first();
+                    $data        = [
+                        'supplier' => $this->m_supplier->where('id', $find[0]->supplier_id)->first(),
+                        'order' => $find,
+                        'order_detail' =>  $find_detail_order,
+                        'ttd_kiri'   => $ttd_kiri,
+                        'ttd_tengah_satu' => $ttd_tengah_satu,
+                        'ttd_tengah_dua' => $ttd_tengah_dua,
+                        'ttd_kanan'  => $ttd_kanan,
+                    ];
+                    $mpdf = new \Mpdf\Mpdf();
+                    $html = view('Invoice/invoice-rogs', $data);
+                    $mpdf->WriteHTML($html);
+                    // $mpdf->SetWatermarkText("SUKSES");
+                    // $mpdf->showWatermarkText = true;
+                    $mpdf->showImageErrors = true;
+                    $this->response->setHeader('Content-Type', 'application/pdf');
+                    // $mpdf->AutoPrint(true);
+                    $mpdf->SetJS('this.print();');
+                    // $mpdf->Output('Invoice Transaction.pdf', 'I');
+                    $mpdf->Output();
                 }
                 if ($this->request->getPost('input_retur')) {
-                    // Cetak ROGS Disini
-                    dd('cetak retur');
+                    // Cetak Retur Disini
+                    $item_retur = $this->m_order->getAllOrderWhereReturWhereOrder($find[0]->id);
+                    $data_in = [
+                        'ket'    => 'BARANG DIRETUR KE SUPPLIER',
+                        'barang' => $item_retur,
+                        'awal'   => null,
+                        'akhir'  => null,
+                    ];
+                    $mpdf = new \Mpdf\Mpdf();
+                    $html = view('Invoice/invoice-barang-retur', $data_in);
+                    $mpdf->WriteHTML($html);
+                    $mpdf->showImageErrors = true;
+                    $this->response->setHeader('Content-Type', 'application/pdf');
+                    $mpdf->Output('Data Barang Diretur Ke Supplier.pdf', 'I');
                 }
                 return view('Admin/page/create_orders', $data);
             }
@@ -682,7 +718,31 @@ class Supplier extends BaseController
                 }
                 if ($this->request->getPost('input_rogs')) {
                     // Cetak ROGS Disini
-                    dd('cetak rogs');
+                    $find_detail_order = $this->m_order_detail->getAllOrder($find[0]->id);
+                    $ttd_kiri    = $this->m_invoice->where('key', 'rogs-kiri')->first();
+                    $ttd_tengah_satu  = $this->m_invoice->where('key', 'rogs-tengah-satu')->first();
+                    $ttd_tengah_dua  = $this->m_invoice->where('key', 'rogs-tengah-dua')->first();
+                    $ttd_kanan   = $this->m_invoice->where('key', 'rogs-kanan')->first();
+                    $data        = [
+                        'supplier' => $this->m_supplier->where('id', $find[0]->supplier_id)->first(),
+                        'order' => $find,
+                        'order_detail' =>  $find_detail_order,
+                        'ttd_kiri'   => $ttd_kiri,
+                        'ttd_tengah_satu' => $ttd_tengah_satu,
+                        'ttd_tengah_dua' => $ttd_tengah_dua,
+                        'ttd_kanan'  => $ttd_kanan,
+                    ];
+                    $mpdf = new \Mpdf\Mpdf();
+                    $html = view('Invoice/invoice-rogs', $data);
+                    $mpdf->WriteHTML($html);
+                    // $mpdf->SetWatermarkText("SUKSES");
+                    // $mpdf->showWatermarkText = true;
+                    $mpdf->showImageErrors = true;
+                    $this->response->setHeader('Content-Type', 'application/pdf');
+                    // $mpdf->AutoPrint(true);
+                    $mpdf->SetJS('this.print();');
+                    // $mpdf->Output('Invoice Transaction.pdf', 'I');
+                    $mpdf->Output();
                 }
                 if ($this->request->getPost('input_retur')) {
                     $item_retur = $this->m_order->getAllOrderWhereReturWhereOrder($find[0]->id);

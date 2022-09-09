@@ -67,7 +67,7 @@
 
 ## Fitur Invoice
 
-- ROGS
+- ROGS [Sudah]
 - Penawaran [Sudah]
 - PO [Sudah]
 - Data Barang Retur [Sudah]

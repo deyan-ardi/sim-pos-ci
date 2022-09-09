@@ -94,9 +94,9 @@ Tambahkan Order
                                     <div class="card-body">
                                         <div class="card-body">
                                             <div class="row">
-                                                <form action="" method="POST">
+                                                <form action="" method="POST" target="_blank" rel="noopener noreferrer">
                                                     <?= csrf_field(); ?>
-
+                                                    <input type="hidden" name="id_transaksi" value="<?= $supplier[0]->id; ?>">
                                                     <?php if (in_groups('SUPER ADMIN') || in_groups('PURCHASING')) : ?>
                                                         <?php if ($supplier[0]->order_status == 1) : ?>
                                                             <button type="button" class="btn btn-gradient-primary btn-rounded btn-glow mb-4" data-toggle="modal" data-target="#addCategory"><i class="feather icon-file-plus"></i> Buat Pesanan</button>
@@ -108,7 +108,7 @@ Tambahkan Order
                                                     <button type="submit" name="input_rogs" value="rogs" class="btn btn-gradient-warning btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak ROGS</button>
                                                 </form>
                                                 <?php if (in_groups('SUPER ADMIN') || in_groups('GUDANG')) : ?>
-                                                    <form action="" method="POST">
+                                                    <form action="" method="POST" target="_blank" rel="noopener noreferrer">
                                                         <?= csrf_field(); ?>
                                                         <button type="submit" name="input_retur" value="rogs" class="btn btn-gradient-danger btn-rounded btn-glow mb-4"><i class="feather icon-printer"></i>Cetak Retur</button>
                                                     </form>
