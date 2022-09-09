@@ -164,33 +164,34 @@ class TransactionProyek extends BaseController
 		$data = [
 			'transaksi' => $this->m_sale->getAllSaleWhere('General'),
 		];
-		$find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->first();
+		$find_sale = $this->m_sale->where('id', $this->request->getPost('id_transaksi'))->first();
 		if (!empty($this->request->getPost('invoice'))) {
-			// $find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
-			// $find_sale   = $this->m_sale->getAllSale($find_sale_code->id);
-			// $find_member = $this->m_member->find($find_sale[0]->member_id);
-			// $find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
-			// $pph_model   = $this->m_pph->getAllPPh();
-			// $ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-			// $ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-			// $ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-			// $ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-			// $note        = $this->m_invoice->where('key', 'note')->first();
-			// $data        = [
-			// 	'detail'     => $find_detail,
-			// 	'sale'       => $find_sale,
-			// 	'pph'        => $pph_model,
-			// 	'member'     => $find_member,
-			// 	'user'       => $find_user,
-			// 	'ttd_kiri'   => $ttd_kiri,
-			// 	'ttd_tengah' => $ttd_tengah,
-			// 	'ttd_kanan'  => $ttd_kanan,
-			// 	'ttd_bawah'  => $ttd_bawah,
-			// 	'note'       => $note,
-			// ];
+			$this->m_sale->save([
+				'id' => $find_sale->id,
+				'sale_send_status' => 2,
+			]);
 
+			$find_detail = $this->m_sale_detail->getAllSaleDetailWhere($find_sale->id);
+			$find_member = $this->m_member->find($find_sale->member_id);
+			$find_user   = $this->m_user->getUserRole($find_sale->user_id);
+			$ttd_kiri    = $this->m_invoice->where('key', 'surat-jalan-kiri')->first();
+			$ttd_tengah_satu  = $this->m_invoice->where('key', 'surat-jalan-tengah-satu')->first();
+			$ttd_tengah_dua  = $this->m_invoice->where('key', 'surat-jalan-tengah-dua')->first();
+			$ttd_kanan   = $this->m_invoice->where('key', 'surat-jalan-kanan')->first();
+			$note        = $this->m_invoice->where('key', 'surat-jalan-note')->first();
+			$data        = [
+				'detail'     => $find_detail,
+				'sale'       => $find_sale,
+				'member'     => $find_member,
+				'user'       => $find_user,
+				'ttd_kiri'   => $ttd_kiri,
+				'ttd_tengah_satu' => $ttd_tengah_satu,
+				'ttd_tengah_dua' => $ttd_tengah_dua,
+				'ttd_kanan'  => $ttd_kanan,
+				'note'       => $note,
+			];
 			$mpdf = new \Mpdf\Mpdf();
-			$html = view('Invoice/invoice-transaksi-general');
+			$html = view('Invoice/invoice-surat-jalan', $data);
 			$mpdf->WriteHTML($html);
 			// $mpdf->SetWatermarkText("SUKSES");
 			// $mpdf->showWatermarkText = true;
@@ -209,37 +210,35 @@ class TransactionProyek extends BaseController
 		$data = [
 			'transaksi' => $this->m_sale->getAllSaleWhere('Project'),
 		];
-		$find_sale_code = $this->m_sale->where('sale_code', $this->request->getPost('id_transaksi'))->first();
+		$find_sale = $this->m_sale->where('id', $this->request->getPost('id_transaksi'))->first();
 		if (!empty($this->request->getPost('invoice'))) {
-			// $find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);
-			// $find_sale   = $this->m_sale->getAllSale($find_sale_code->id);
-			// $find_member = $this->m_member->find($find_sale[0]->member_id);
-			// $find_user   = $this->m_user->getUserRole($find_sale[0]->user_id);
-			// $pph_model   = $this->m_pph->getAllPPh();
-			// $ttd_kiri    = $this->m_invoice->where('key', 'kiri')->first();
-			// $ttd_tengah  = $this->m_invoice->where('key', 'tengah')->first();
-			// $ttd_kanan   = $this->m_invoice->where('key', 'kanan')->first();
-			// $ttd_bawah   = $this->m_invoice->where('key', 'bawah')->first();
-			// $note        = $this->m_invoice->where('key', 'note')->first();
-			// $data        = [
-			// 	'detail'     => $find_detail,
-			// 	'sale'       => $find_sale,
-			// 	'pph'        => $pph_model,
-			// 	'member'     => $find_member,
-			// 	'user'       => $find_user,
-			// 	'ttd_kiri'   => $ttd_kiri,
-			// 	'ttd_tengah' => $ttd_tengah,
-			// 	'ttd_kanan'  => $ttd_kanan,
-			// 	'ttd_bawah'  => $ttd_bawah,
-			// 	'note'       => $note,
-			// ];
-			$data = [
-				'title' => "Test"
+			$this->m_sale->save([
+				'id' => $find_sale->id,
+				'sale_send_status' => 2,
+			]);
+
+			$find_detail = $this->m_sale_detail->getAllSaleDetailWhere($find_sale->id);
+			$find_member = $this->m_member->find($find_sale->member_id);
+			$find_user   = $this->m_user->getUserRole($find_sale->user_id);
+			$ttd_kiri    = $this->m_invoice->where('key', 'surat-jalan-kiri')->first();
+			$ttd_tengah_satu  = $this->m_invoice->where('key', 'surat-jalan-tengah-satu')->first();
+			$ttd_tengah_dua  = $this->m_invoice->where('key', 'surat-jalan-tengah-dua')->first();
+			$ttd_kanan   = $this->m_invoice->where('key', 'surat-jalan-kanan')->first();
+			$note        = $this->m_invoice->where('key', 'surat-jalan-note')->first();
+			$data        = [
+				'detail'     => $find_detail,
+				'sale'       => $find_sale,
+				'member'     => $find_member,
+				'user'       => $find_user,
+				'ttd_kiri'   => $ttd_kiri,
+				'ttd_tengah_satu' => $ttd_tengah_satu,
+				'ttd_tengah_dua' => $ttd_tengah_dua,
+				'ttd_kanan'  => $ttd_kanan,
+				'note'       => $note,
 			];
 			$mpdf = new \Mpdf\Mpdf();
-			$html = view('Invoice/page/invoice-transaksi-general', $data);
+			$html = view('Invoice/invoice-surat-jalan', $data);
 			$mpdf->WriteHTML($html);
-			$mpdf->SetDisplayMode('default');
 			// $mpdf->SetWatermarkText("SUKSES");
 			// $mpdf->showWatermarkText = true;
 			$mpdf->showImageErrors = true;
@@ -249,7 +248,6 @@ class TransactionProyek extends BaseController
 			// $mpdf->Output('Invoice Transaction.pdf', 'I');
 			$mpdf->Output();
 		}
-		// return view('Admin/page/surat-jalan-project-proyek', $data);
-		return view('Invoice/invoice-transaksi-general');
+		return view('Admin/page/surat-jalan-project-proyek', $data);
 	}
 }

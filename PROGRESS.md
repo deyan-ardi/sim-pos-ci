@@ -72,7 +72,7 @@
 - PO [Sudah]
 - Data Barang Retur [Sudah]
 - SPPB [Sudah]
-- Surat Jalan
+- Surat Jalan [Sudah]
 - Invoice General [Sudah]
 - Invoice Project [Sudah]
 - Update Invoice-Invoice Lama [Sudah]

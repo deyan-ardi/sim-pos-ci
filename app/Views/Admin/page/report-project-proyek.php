@@ -137,7 +137,7 @@ SPPB
                                                             <?php elseif ($t->sale_send_status == 1) : ?>
                                                                 <td><button type="button" class="btn btn-warning btn-sm"> Progress</button></td>
                                                             <?php else : ?>
-                                                                <td><button type="button" class="btn btn-success btn-sm"> Sukses</button></td>
+                                                                <td><button type="button" class="btn btn-success btn-sm"> Dikirim</button></td>
                                                             <?php endif; ?>
                                                             <td>
                                                                 <?= CodeIgniter\I18n\Time::parse($t->updated_at)->humanize(); ?>

@@ -123,14 +123,8 @@
                                </li>
                            </ul>
                        </li>
-                       <li data-username="pengaturan pph invoice transaksi project general" class="nav-item pcoded-hasmenu">
-                           <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Setelan Transaksi</span></a>
-                           <ul class="pcoded-submenu">
-                               <li class=""><a href="<?= base_url(); ?>/transaction/cashier/pengaturan" class="">PPh dan Invoice</a>
-                               </li>
-                           </ul>
-                       </li>
                    <?php endif; ?>
+
 
                    <?php if (in_groups('SUPER ADMIN') ||  in_groups('PROYEK') ||  in_groups('MARKETING') ||  in_groups('GUDANG')) : ?>
                        <li class="nav-item pcoded-menu-caption">
@@ -171,6 +165,13 @@
                        <li data-username="financial report payment" class="nav-item"><a href="<?= base_url(); ?>/report" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Data Laporan
                                    Keuangan</span></a></li>
                    <?php endif; ?>
+                   <li data-username="pengaturan pph invoice transaksi project general" class="nav-item pcoded-hasmenu">
+                       <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Setelan Transaksi</span></a>
+                       <ul class="pcoded-submenu">
+                           <li class=""><a href="<?= base_url(); ?>/pengaturan" class="">Pengaturan PPh Invoice</a>
+                           </li>
+                       </ul>
+                   </li>
                </ul>
            </div>
 

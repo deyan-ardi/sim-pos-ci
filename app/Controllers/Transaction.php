@@ -531,56 +531,52 @@ class Transaction extends BaseController
 
     public function pengaturan()
     {
-        if (in_groups('SUPER ADMIN') || in_groups('FINANCE')) {
-            $data = [
-                'pph'        => $this->m_pph->getAllPPh(),
-                'invoice'    => $this->m_invoice->findAll(),
-                'validation' => $this->validate,
-            ];
-            if (!empty($this->request->getPost('update_status_order'))) {
-                $save = $this->m_pph->save([
-                    'id'        => $this->request->getPost('id_order'),
-                    'pph_value' => $this->request->getPost('pph'),
-                ]);
-                if ($save) {
-                    session()->setFlashdata('berhasil', 'PPh Berhasil Diperbaharui');
+        $data = [
+            'pph'        => $this->m_pph->getAllPPh(),
+            'invoice'    => $this->m_invoice->findAll(),
+            'validation' => $this->validate,
+        ];
+        if (!empty($this->request->getPost('update_status_order'))) {
+            $save = $this->m_pph->save([
+                'id'        => $this->request->getPost('id_order'),
+                'pph_value' => $this->request->getPost('pph'),
+            ]);
+            if ($save) {
+                session()->setFlashdata('berhasil', 'PPh Berhasil Diperbaharui');
 
-                    return redirect()->to('/transaction/pengaturan')->withCookies();
-                }
-                session()->setFlashdata('gagal', 'PPh Gagal Diperbaharui');
-
-                return redirect()->to('/transaction/pengaturan')->withCookies();
+                return redirect()->to('pengaturan')->withCookies();
             }
-            if (!empty($this->request->getPost('update_pengaturan'))) {
-                if ($this->request->getPost('pengaturan') == '' || empty($this->request->getPost('pengaturan'))) {
-                    $value  = null;
-                    $posisi = null;
-                    $header = null;
-                } else {
-                    $value  = ucwords($this->request->getPost('pengaturan'));
-                    $posisi = ucwords($this->request->getPost('posisi'));
-                    $header = ucwords($this->request->getPost('header'));
-                }
+            session()->setFlashdata('gagal', 'PPh Gagal Diperbaharui');
 
-                $save = $this->m_invoice->save([
-                    'id'       => $this->request->getPost('id_order'),
-                    'value'    => $value,
-                    'position' => $posisi,
-                    'header'   => $header,
-                ]);
-                if ($save) {
-                    session()->setFlashdata('berhasil', 'Pengaturan Berhasil Diperbaharui');
-
-                    return redirect()->to('/transaction/pengaturan')->withCookies();
-                }
-                session()->setFlashdata('gagal', 'Pengaturan Gagal Diperbaharui');
-
-                return redirect()->to('/transaction/pengaturan')->withCookies();
+            return redirect()->to('pengaturan')->withCookies();
+        }
+        if (!empty($this->request->getPost('update_pengaturan'))) {
+            if ($this->request->getPost('pengaturan') == '' || empty($this->request->getPost('pengaturan'))) {
+                $value  = null;
+                $posisi = null;
+                $header = null;
+            } else {
+                $value  = ucwords($this->request->getPost('pengaturan'));
+                $posisi = ucwords($this->request->getPost('posisi'));
+                $header = ucwords($this->request->getPost('header'));
             }
 
-            return view('Admin/page/pengaturan', $data);
+            $save = $this->m_invoice->save([
+                'id'       => $this->request->getPost('id_order'),
+                'value'    => $value,
+                'position' => $posisi,
+                'header'   => $header,
+            ]);
+            if ($save) {
+                session()->setFlashdata('berhasil', 'Pengaturan Berhasil Diperbaharui');
+
+                return redirect()->to('pengaturan')->withCookies();
+            }
+            session()->setFlashdata('gagal', 'Pengaturan Gagal Diperbaharui');
+
+            return redirect()->to('pengaturan')->withCookies();
         }
 
-        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        return view('Admin/page/pengaturan', $data);
     }
 }

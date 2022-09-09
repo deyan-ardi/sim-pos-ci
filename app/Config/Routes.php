@@ -173,12 +173,12 @@ $routes->group('transaction', ['namespace' => 'App\Controllers'], static functio
             $routes->post('/', 'Transaction::search');
             $routes->delete('/', 'Transaction::search');
         });
-
-        $routes->group('pengaturan', static function ($routes) {
-            $routes->get('/', 'Transaction::pengaturan');
-            $routes->patch('/', 'Transaction::pengaturan');
-        });
     });
+});
+
+$routes->group('pengaturan', static function ($routes) {
+    $routes->get('/', 'Transaction::pengaturan');
+    $routes->patch('/', 'Transaction::pengaturan');
 });
 
 $routes->group('transaction-general', ['filter' => 'role:SUPER ADMIN, FINANCE'], ['namespace' => 'App\Controllers'], static function ($routes) {
