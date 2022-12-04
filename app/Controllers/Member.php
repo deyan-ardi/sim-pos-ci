@@ -20,12 +20,12 @@ class Member extends BaseController
         ];
         if ($this->request->getPost('input_member')) {
             $formSubmit = $this->validate([
-                'member_name'        => 'required|max_length[200]',
-                'member_contact'     => 'required|is_natural',
-                'member_company'     => 'required|max_length[200]',
-                'member_job'         => 'required|max_length[200]',
+                'member_name'        => 'permit_empty|max_length[200]',
+                'member_contact'     => 'permit_empty|is_natural',
+                'member_company'     => 'permit_empty|max_length[200]',
+                'member_job'         => 'permit_empty|max_length[200]',
                 'member_discount'    => 'permit_empty',
-                'member_email'       => 'required|valid_email',
+                'member_email'       => 'permit_empty|valid_email',
                 'member_description' => 'permit_empty|max_length[500]',
             ]);
             if (! $formSubmit) {
@@ -54,12 +54,12 @@ class Member extends BaseController
             return redirect()->to('/members')->withCookies();
         } elseif ($this->request->getPost('update_member')) {
             $formSubmit = $this->validate([
-                'member_name_up'        => 'required|max_length[200]',
-                'member_contact_up'     => 'required|is_natural',
+                'member_name_up'        => 'permit_empty|max_length[200]',
+                'member_contact_up'     => 'permit_empty|is_natural',
                 'member_discount_up'    => 'permit_empty',
-                'member_email_up'       => 'required|valid_email',
-                'member_company_up'     => 'required|max_length[200]',
-                'member_job_up'         => 'required|max_length[200]',
+                'member_email_up'       => 'permit_empty|valid_email',
+                'member_company_up'     => 'permit_empty|max_length[200]',
+                'member_job_up'         => 'permit_empty|max_length[200]',
                 'member_description_up' => 'permit_empty|max_length[500]',
             ]);
             if (! $formSubmit) {

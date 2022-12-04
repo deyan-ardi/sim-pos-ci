@@ -20,12 +20,12 @@ class MemberModel extends Model
     protected $useTimestamps = true;
 
     // Validation
-    protected $validationRules = [
-        'member_code'    => 'required',
-        'member_name'    => 'required',
-        'member_contact' => 'required',
-        'member_email'   => 'required',
-    ];
+    // protected $validationRules = [
+    //     'member_code'    => 'required',
+    //     'member_name'    => 'required',
+    //     'member_contact' => 'required',
+    //     'member_email'   => 'required',
+    // ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
