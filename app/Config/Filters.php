@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\RoleFilter;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -20,7 +21,8 @@ class Filters extends BaseConfig
         'toolbar'    => DebugToolbar::class,
         'honeypot'   => Honeypot::class,
         'login'      => \Myth\Auth\Filters\LoginFilter::class,
-        'role'       => \Myth\Auth\Filters\RoleFilter::class,
+        // 'role'       => \Myth\Auth\Filters\RoleFilter::class,
+        'role'       => RoleFilter::class,
         'permission' => \Myth\Auth\Filters\PermissionFilter::class,
     ];
 

@@ -10,6 +10,12 @@ use Hermawan\DataTables\DataTable;
 
 class Marketing extends BaseController
 {
+    protected $validate;
+    protected $m_request_order;
+    protected $m_item;
+    protected $m_order_detail;
+    protected $m_order;
+    protected $crop;
     public function __construct()
     {
         $this->validate        = \Config\Services::validation();
@@ -50,13 +56,13 @@ class Marketing extends BaseController
             'item'          => $this->m_item->getAllItem(),
             'validation'    => $this->validate,
         ];
-        if (! empty($this->request->getPost('input_request_order'))) {
+        if (!empty($this->request->getPost('input_request_order'))) {
             $formSubmit = $this->validate([
                 'item_name'           => 'required',
                 'request_description' => 'required',
                 'order_total'         => 'required|integer',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/marketing/order-items')->withInput();
             }
             $save = $this->m_request_order->save([
@@ -74,13 +80,13 @@ class Marketing extends BaseController
             session()->setFlashdata('gagal', 'Gagal Menambahkan Order Barang');
 
             return redirect()->to('/marketing/order-items')->withCookies();
-        } elseif (! empty($this->request->getPost('update_request_order'))) {
+        } elseif (!empty($this->request->getPost('update_request_order'))) {
             $formSubmit = $this->validate([
                 'item_name'           => 'required',
                 'request_description' => 'required',
                 'order_total'         => 'required|integer',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/marketing/order-items')->withInput();
             }
             $save = $this->m_request_order->save([
@@ -99,10 +105,10 @@ class Marketing extends BaseController
             session()->setFlashdata('gagal', 'Gagal Memperbaharui Order Barang');
 
             return redirect()->to('/marketing/order-items')->withCookies();
-        } elseif (! empty($this->request->getPost('delete_request_order'))) {
+        } elseif (!empty($this->request->getPost('delete_request_order'))) {
             // Disini ada perkondisian untuk menghitung
             $find = $this->m_request_order->find($this->request->getPost('id_order'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 if ($this->m_request_order->delete($this->request->getPost('id_order'))) {
                     session()->setFlashdata('berhasil', 'Permintaan Order Barang Yang Dipilih Berhasil Dihapus');
 
@@ -132,9 +138,9 @@ class Marketing extends BaseController
 
     public function list_orders()
     {
-        if (! empty($this->request->getGet('order_code'))) {
+        if (!empty($this->request->getGet('order_code'))) {
             $find = $this->m_order->getAllOrder(null, $this->request->getGet('order_code'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 $data = [
                     'supplier'    => $find,
                     'validation'  => $this->validate,

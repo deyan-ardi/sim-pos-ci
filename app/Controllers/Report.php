@@ -14,6 +14,16 @@ use App\Models\UserModel;
 
 class Report extends BaseController
 {
+    protected $validate;
+    protected $m_sale;
+    protected $m_sale_detail;
+    protected $m_member;
+    protected $m_user;
+    protected $m_order;
+    protected $m_pph;
+    protected $m_penawaran;
+    protected $m_penawaran_detail;
+    protected $m_invoice;
     public function __construct()
     {
         $this->validate      = \Config\Services::validation();

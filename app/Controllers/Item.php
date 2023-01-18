@@ -11,6 +11,13 @@ use Hermawan\DataTables\DataTable;
 
 class Item extends BaseController
 {
+    protected $validate;
+    protected $m_item;
+    protected $m_category;
+    protected $m_supplier;
+    protected $crop;
+    protected $m_order;
+    protected $m_sale;
     public function __construct()
     {
         $this->validate   = \Config\Services::validation();

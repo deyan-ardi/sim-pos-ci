@@ -12,6 +12,15 @@ use App\Models\UserModel;
 
 class Home extends BaseController
 {
+    protected $validate;
+    protected $m_user;
+    protected $m_sale;
+    protected $m_category;
+    protected $m_item;
+    protected $m_member;
+    protected $m_penawaran;
+    protected $m_supplier;
+    protected $crop;
     public function __construct()
     {
         $this->validate   = \Config\Services::validation();

@@ -7,6 +7,10 @@ use App\Models\UserModel;
 
 class User extends BaseController
 {
+    protected $validate;
+    protected $m_user;
+    protected $crop;
+    protected $m_group_user;
     public function __construct()
     {
         $this->validate     = \Config\Services::validation();
@@ -42,10 +46,10 @@ class User extends BaseController
                     'group'            => 'required|integer',
                 ]);
             }
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/users')->withInput();
             }
-            if (! empty($this->request->getPost('password')) && ! empty($this->request->getPost('password_confirm'))) {
+            if (!empty($this->request->getPost('password')) && !empty($this->request->getPost('password_confirm'))) {
                 if ($this->request->getFile('user_image')->getError() == 0) {
                     $fotoUser     = $this->request->getFile('user_image');
                     $namaFotoUser = $fotoUser->getRandomName();
@@ -133,11 +137,11 @@ class User extends BaseController
                     'group_up'            => 'required|integer',
                 ]);
             }
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/users')->withInput();
             }
             $find = $this->m_user->getUserRole($this->request->getPost('id_user'));
-            if (! empty($this->request->getPost('password_up')) && ! empty($this->request->getPost('password_confirm_up'))) {
+            if (!empty($this->request->getPost('password_up')) && !empty($this->request->getPost('password_confirm_up'))) {
                 // Password Create Hash
                 $hashOptions = [
                     'cost' => 10,
@@ -155,7 +159,7 @@ class User extends BaseController
             }
 
             if ($this->request->getFile('user_image_up')->getError() == 0) {
-                if (! empty($find[0]['user_image'])) {
+                if (!empty($find[0]['user_image'])) {
                     if (unlink('upload/user/' . $find[0]['user_image'])) {
                         $unlink = true;
                     } else {
@@ -220,13 +224,13 @@ class User extends BaseController
         }
         if ($this->request->getPost('delete_user')) {
             $find = $this->m_user->getUserRole($this->request->getPost('id_user'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 if ($find[0]['userid'] == user()->id) {
                     session()->setFlashdata('gagal', 'Tidak Dapat Mengapus Diri Sendiri');
 
                     return redirect()->to('/users')->withCookies();
                 }
-                if (! empty($find[0]['user_image'])) {
+                if (!empty($find[0]['user_image'])) {
                     if (unlink('upload/user/' . $find[0]['user_image'])) {
                         $unlink = true;
                     } else {

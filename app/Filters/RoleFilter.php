@@ -25,7 +25,7 @@ class RoleFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $params = null)
     {
-        if (! function_exists('logged_in')) {
+        if (!function_exists('logged_in')) {
             helper('auth');
         }
 
@@ -36,7 +36,7 @@ class RoleFilter implements FilterInterface
         $authenticate = service('authentication');
 
         // if no user is logged in then send to the login form
-        if (! $authenticate->check()) {
+        if (!$authenticate->check()) {
             session()->set('redirect_url', current_url());
 
             return redirect('login');
@@ -58,7 +58,8 @@ class RoleFilter implements FilterInterface
             return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
         }
 
-        throw new PermissionException(lang('Auth.notEnoughPrivilege'));
+        // throw new PermissionException(lang('Auth.notEnoughPrivilege'));
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
 
     //--------------------------------------------------------------------

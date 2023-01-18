@@ -14,6 +14,16 @@ use App\Models\UserModel;
 
 class Transaction extends BaseController
 {
+    protected $validate;
+    protected $m_sale_detail;
+    protected $m_sale;
+    protected $m_item;
+    protected $m_penawaran;
+    protected $m_penawaran_detail;
+    protected $m_member;
+    protected $m_user;
+    protected $m_pph;
+    protected $m_invoice;
     public function __construct()
     {
         $this->validate      = \Config\Services::validation();

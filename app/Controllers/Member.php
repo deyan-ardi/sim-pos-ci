@@ -6,6 +6,8 @@ use App\Models\MemberModel;
 
 class Member extends BaseController
 {
+    protected $m_member;
+    protected $validate;
     public function __construct()
     {
         $this->m_member = new MemberModel();
@@ -28,7 +30,7 @@ class Member extends BaseController
                 'member_email'       => 'permit_empty|valid_email',
                 'member_description' => 'permit_empty|max_length[500]',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/members')->withInput();
             }
             $string = '0123456789';
@@ -62,7 +64,7 @@ class Member extends BaseController
                 'member_job_up'         => 'permit_empty|max_length[200]',
                 'member_description_up' => 'permit_empty|max_length[500]',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/members')->withInput();
             }
             $save = $this->m_member->save([
@@ -85,7 +87,7 @@ class Member extends BaseController
             return redirect()->to('/members')->withCookies();
         } elseif ($this->request->getPost('delete_member')) {
             $find = $this->m_member->find($this->request->getPost('id_member'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 if ($this->m_member->delete($this->request->getPost('id_member'))) {
                     session()->setFlashdata('berhasil', 'Member Yang Dipilih Berhasil Dihapus');
 

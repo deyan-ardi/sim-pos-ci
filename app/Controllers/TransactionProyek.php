@@ -12,6 +12,13 @@ use App\Models\UserModel;
 
 class TransactionProyek extends BaseController
 {
+	protected $m_sale_detail;
+	protected $m_sale;
+	protected $m_item;
+	protected $m_member;
+	protected $m_user;
+	protected $m_invoice;
+	protected $validate;
 	public function __construct()
 	{
 		$this->m_sale_detail = new SaleDetailModel();

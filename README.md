@@ -27,7 +27,7 @@ Selanjutnya, pastikan pada `php.ini` anda telah mengaktifkan:
 - Buka folder `xampp/htdocs` lalu clone repository ini dengan menggunakan perintah `git clone https://github.com/deyan-ardi/pos-project`
 - Buka folder pos-project di Visual Studio Code, selanjutnya rename file `env rename` menjadi `.env`
 - Buat sebuah database di mysql, boleh menggunakan phpmyadmin. Selanjutnya buka file `.env` lalu lihat bagian `database.default.database = db_pos_project`, ganti `db_pos_project` menjadi nama database yang baru saja anda buat
-- Buka terminal/cmd, arahkan ke folder root project. Jalankan perintah `composer update`. Setelah itu, jalankan perintah berikut secara bertahap
+- Buka terminal/cmd, arahkan ke folder root project. Jalankan perintah `composer install`. Setelah itu, jalankan perintah berikut secara bertahap
 
 1. `php spark migrate`
 2. `php spark db:seed`

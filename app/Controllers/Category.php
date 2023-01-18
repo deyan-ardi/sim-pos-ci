@@ -7,6 +7,9 @@ use App\Models\ItemModel;
 
 class Category extends BaseController
 {
+    protected $validate;
+    protected $m_category;
+    protected $m_item;
     public function __construct()
     {
         $this->validate   = \Config\Services::validation();
@@ -20,11 +23,11 @@ class Category extends BaseController
             'validation' => $this->validate,
             'category'   => $this->m_category->findAll(),
         ];
-        if (! empty($this->request->getPost('submit_category'))) {
+        if (!empty($this->request->getPost('submit_category'))) {
             $formSubmit = $this->validate([
                 'category' => 'required|max_length[200]',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/categories')->withInput();
             }
             $save = $this->m_category->save([
@@ -38,11 +41,11 @@ class Category extends BaseController
             session()->setFlashdata('berhasil', 'Gagal Menambahkan Kategori');
 
             return redirect()->to('/categories')->withCookies();
-        } elseif (! empty($this->request->getPost('update_category'))) {
+        } elseif (!empty($this->request->getPost('update_category'))) {
             $formSubmit = $this->validate([
                 'category_update' => 'required|max_length[200]',
             ]);
-            if (! $formSubmit) {
+            if (!$formSubmit) {
                 return redirect()->to('/categories')->withInput();
             }
             $save = $this->m_category->save([
@@ -57,11 +60,11 @@ class Category extends BaseController
             session()->setFlashdata('gagal', 'Gagal Mengubah Data Kategori');
 
             return redirect()->to('/categories')->withCookies();
-        } elseif (! empty($this->request->getPost('delete_category'))) {
+        } elseif (!empty($this->request->getPost('delete_category'))) {
             $find = $this->m_category->find($this->request->getPost('id_category'));
-            if (! empty($find)) {
+            if (!empty($find)) {
                 $find_relation = $this->m_item->where('category_id', $find->id)->findAll();
-                if (! empty($find_relation)) {
+                if (!empty($find_relation)) {
                     foreach ($find_relation as $r) {
                         unlink('upload/produk/' . $r->item_image);
                     }

@@ -11,6 +11,13 @@ use App\Models\SupplierModel;
 
 class Supplier extends BaseController
 {
+    protected $validate;
+    protected $m_supplier;
+    protected $m_item;
+    protected $m_request_order;
+    protected $m_order;
+    protected $m_order_detail;
+    protected $m_invoice;
     public function __construct()
     {
         $this->validate        = \Config\Services::validation();
@@ -180,7 +187,7 @@ class Supplier extends BaseController
                 return redirect()->to('/suppliers/order-items')->withInput();
             }
             $this->m_order->save([
-                'order_code'           => 'Token',
+                'order_code'           => $kode_po,
                 'order_total_quantity' => '0',
                 'order_total_item'     => '0',
                 'order_status'         => '1',
