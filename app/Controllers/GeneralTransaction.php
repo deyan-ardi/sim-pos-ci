@@ -520,7 +520,7 @@ class GeneralTransaction extends BaseController
         if (!empty($this->request->getPost('invoice'))) {
             $save_update_status = $this->m_sale->save([
                 'id'          => $find_sale_code->id,
-                'sale_status' => 1,
+                'sale_status' => 2,
             ]);
             if ($save_update_status) {
                 $find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);

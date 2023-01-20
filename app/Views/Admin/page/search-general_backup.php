@@ -73,7 +73,6 @@ Transaksi Barang - Menu Kasir
         // console.log($('#form').serialize());
     }
 
-    /* Fungsi formatRupiah */
     function formatRupiah(angka, prefix) {
         var number_string = angka.replace(/[^,\d]/g, "").toString(),
             split = number_string.split(","),
@@ -172,13 +171,6 @@ Transaksi Barang - Menu Kasir
             document.getElementById("menit").innerHTML = waktu.getMinutes() + " WITA";
         }
     }
-</script>
-<script>
-    $(document).ready(function() {
-        $('#member_id').selectize({
-            sortField: 'text'
-        });
-    });
     $(document).ready(function() {
         $('#item_id').selectize({
             sortField: 'text'
@@ -218,34 +210,27 @@ Transaksi Barang - Menu Kasir
                             </div>
                         </div>
                         <!-- [ breadcrumb ] end -->
-                        <?php if (empty($find_sale)) : ?>
+                        <?php if ($find_sale[0]->sale_status == 2) : ?>
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Sistem Kasir - Kasir General</span></h5>
+                                            <h5>Sistem Kasir - Informasi Transaksi</span></h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body">
-                                                <form action="" method="POST">
-                                                    <?php csrf_field() ?>
-
-                                                    <div class="form-group">
-                                                        <select name="member_id" id="member_id" required class="form-control <?= $validation->getError('member_id') ? 'is-invalid' : ''; ?>">
-                                                            <?php foreach ($member as $m) : ?>
-                                                                <option value="<?= $m->id; ?>"><?= $m->member_code; ?> - <?= $m->member_name; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            <?= $validation->getError('member_id'); ?>
-                                                        </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12">
+                                                        <h4 class="text-center mb-4">Transaksi Selesai dan Cetak Ulang Berhasil Dilakukan, Silahkan Ke Menu Kasir</h4>
+                                                        <a href="<?= base_url(); ?>/transaction-general" class="btn btn-warning col-12"><i class="feather icon-lock"></i> Ke Menu Kasir</a>
+                                                        <form action="" target="_blank" rel="noopener noreferrer" method="post">
+                                                            <?= csrf_field() ?>
+                                                            <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
+                                                            <button type="submit" name="invoice" value="invoice" class="form-control btn btn-primary"><i class="feather icon-printer"></i> Cetak Ulang Transaksi</button>
+                                                        </form>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" name="submit_member" value="submit" class="btn btn-primary mt-3 col-12"><i class="feather icon-save"></i> Mulai Sesi</button>
-                                                    </div>
-                                                </form>
-
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -386,63 +371,113 @@ Transaksi Barang - Menu Kasir
                                                                             endforeach; ?>
                                                                 </tbody>
                                                                 <tfoot>
-
-                                                                    <tr>
-                                                                        <th colspan="<?= $colspan_all; ?>" rowspan="8"></th>
-                                                                        <th>Sub Total I</th>
-                                                                        <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Diskon Member</th>
-                                                                        <th colspan="<?= $colspan; ?>"> <?= $find_sale[0]->sale_discount; ?>%</th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <?php
-                                                                        $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
-                                                                        $sub_tot_2 = $total_order - $disk;
-                                                                        ?>
-                                                                        <th>Sub Total II</th>
-                                                                        <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2); ?></th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>PPN</th>
-                                                                        <th colspan="<?= $colspan; ?>"><?= $pph[0]->pph_value; ?> %</th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Grand Total</th>
-                                                                        <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Perlu Membayar</th>
-                                                                        <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
-                                                                    </tr>
-                                                                    <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
+                                                                    <?php if ($find_sale[0]->sale_handling != NULL && $find_sale[0]->sale_handling >= 0) : ?>
 
                                                                         <tr>
-                                                                            <th>Bayar</th>
+                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="10"></th>
+                                                                            <th>Sub Total I</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Diskon Member</th>
+                                                                            <th colspan="<?= $colspan; ?>"> <?= $find_sale[0]->sale_discount; ?>%</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <?php
+                                                                            $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
+                                                                            $sub_tot_2 = $total_order - $disk;
+                                                                            ?>
+                                                                            <th>Sub Total II</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2); ?></th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Handling & Final Connecting</th>
                                                                             <th colspan="<?= $colspan; ?>">
-                                                                                <form action="" onkeyup="ajax_send()" method="post" id="form">
-                                                                                    <?php csrf_field() ?>
-                                                                                    <input type="hidden" name="cetak_ulang" value="cetak_ulang">
-                                                                                    <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
-                                                                                    <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
-                                                                                </form>
+                                                                                Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Sub Total III</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2 + $find_sale[0]->sale_handling); ?></th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>PPN</th>
+                                                                            <th colspan="<?= $colspan; ?>"><?= $pph[0]->pph_value; ?> %</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Grand Total</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Perlu Membayar</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
+                                                                        </tr>
+                                                                        <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total && !empty($transaction)) : ?>
+
+                                                                            <tr>
+                                                                                <th>Bayar</th>
+                                                                                <th colspan="<?= $colspan; ?>">
+                                                                                    <form action="" onkeyup="ajax_send()" method="post" id="form">
+                                                                                        <?php csrf_field() ?>
+                                                                                        <input type="hidden" name="cetak_ulang" value="cetak_ulang">
+                                                                                        <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
+                                                                                        <input type="text" id="bayar" min="0" placeholder="Jumlah Dibayar Dalam Rupiah" name="bayar" class="form-control">
+                                                                                    </form>
+                                                                                </th>
+                                                                            </tr>
+                                                                        <?php else : ?>
+                                                                            <tr>
+                                                                                <th>Bayar</th>
+                                                                                <th colspan="<?= $colspan; ?>">
+                                                                                    <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
+                                                                                </th>
+                                                                            </tr>
+                                                                        <?php endif; ?>
+                                                                        <tr>
+                                                                            <th>Kembali</th>
+                                                                            <th colspan="<?= $colspan; ?>">
+                                                                                <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
                                                                             </th>
                                                                         </tr>
                                                                     <?php else : ?>
                                                                         <tr>
-                                                                            <th>Bayar</th>
-                                                                            <th colspan="<?= $colspan; ?>">
-                                                                                <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
-                                                                            </th>
+                                                                            <th colspan="<?= $colspan_all; ?>" rowspan="4"></th>
+                                                                            <th>Sub Total I</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($total_order); ?></th>
                                                                         </tr>
+                                                                        <tr>
+                                                                            <th>Diskon Member</th>
+                                                                            <th colspan="<?= $colspan; ?>"> <?= $find_sale[0]->sale_discount; ?>%</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <?php
+                                                                            $disk      = ($total_order * $find_sale[0]->sale_discount) / 100;
+                                                                            $sub_tot_2 = $total_order - $disk;
+                                                                            ?>
+                                                                            <th>Sub Total II</th>
+                                                                            <th colspan="<?= $colspan; ?>">Rp. <?= format_rupiah($sub_tot_2); ?></th>
+                                                                        </tr>
+                                                                        <?php if ($find_sale[0]->sale_total > 0) : ?>
+                                                                            <tr>
+                                                                                <th>Handling & Final Connecting</th>
+                                                                                <th colspan="<?= $colspan; ?>">
+                                                                                    <form action="<?= base_url('transaction-general/report/add_handling'); ?>" method="POST" onkeyup="ajax_send_handling()" id="form_handling">
+                                                                                        <?php csrf_field() ?>
+                                                                                        <input type="hidden" name="handling" value="handling">
+                                                                                        <input type="hidden" name="id_transaksi" value="<?= $find_sale[0]->id; ?>">
+                                                                                        <input type="text" min="0" id="handling" value="0" placeholder=" Dalam Rupiah" name="handling_tot" class="form-control">
+                                                                                    </form>
+                                                                                </th>
+                                                                            </tr>
+                                                                        <?php else : ?>
+                                                                            <tr>
+                                                                                <th>Handling & Final Connecting</th>
+                                                                                <th colspan="<?= $colspan; ?>">
+                                                                                    Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
+                                                                                </th>
+                                                                            </tr>
+                                                                        <?php endif; ?>
                                                                     <?php endif; ?>
-                                                                    <tr>
-                                                                        <th>Kembali</th>
-                                                                        <th colspan="<?= $colspan; ?>">
-                                                                            <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
-                                                                        </th>
-                                                                    </tr>
                                                                 </tfoot>
                                                             </table>
                                                         </div>
@@ -461,13 +496,7 @@ Transaksi Barang - Menu Kasir
                                                                 </form>
                                                             </div>
                                                             <div class="col-3">
-                                                                <form action="" id="delete-<?= $find_sale[0]->id; ?>" method="POST">
-                                                                    <?php csrf_field() ?>
-
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="batalkan_transaksi" value="batalkan">
-                                                                    <button type="submit" data-formid="<?= $find_sale[0]->id; ?>" data-nama="<?= $find_sale[0]->sale_code; ?>" class="form-control delete-button btn btn-danger"><i class="feather icon-trash-2"></i>Batalkan</button>
-                                                                </form>
+                                                                <a href="<?= base_url(); ?>/transaction-general/report" class="form-control btn btn-danger"><i class="feather icon-arrow-left"></i>Kembali</a>
                                                             </div>
                                                         </div>
                                                     </div>

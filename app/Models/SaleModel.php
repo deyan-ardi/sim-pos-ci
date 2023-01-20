@@ -94,7 +94,7 @@ class SaleModel extends Model
         $this->join('items', 'items.id = sale_details.item_id');
         $this->join('item_categories', 'item_categories.id = items.category_id');
         $this->join('users', 'users.id = sales.user_id');
-        $this->where('sales.sale_status', 1);
+        $this->where('sales.sale_status', 2);
 
         return $this->get()->getResult();
     }

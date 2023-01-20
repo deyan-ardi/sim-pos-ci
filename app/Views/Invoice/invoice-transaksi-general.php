@@ -301,7 +301,7 @@
                             <p style="font-size:11px">Rp. <?= format_rupiah($sub_tot_2); ?></p>
                         </td>
                     </tr>
-                    <tr style="background-color:whitesmoke">
+                    <!-- <tr style="background-color:whitesmoke">
                         <td class="text-right" colspan="5">
                             <p style="font-size:11px">Handling & Final Connecting</p>
                         </td>
@@ -316,7 +316,7 @@
                         <td class="text-right">
                             <p style="font-size:11px">Rp. <?= format_rupiah($sub_tot_2 + $sale[0]->sale_handling); ?></p>
                         </td>
-                    </tr>
+                    </tr> -->
                     <tr style="background-color:whitesmoke">
                         <td class="text-right" colspan="5">
                             <p style="font-size:11px">PPh</p>
