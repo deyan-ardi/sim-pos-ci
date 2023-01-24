@@ -299,9 +299,9 @@ Transaksi Barang - Menu Kasir
                                                                         <option value="">--Pilih Barang--</option>
                                                                         <?php foreach ($item as $i) : ?>
                                                                             <?php if ($i->item_stock <= 0) : ?>
-                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - [ STOK HABIS ]</option>
+                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - [ STOK HABIS ] (Rp.<?= format_rupiah($i->item_sale) ?>)</option>
                                                                             <?php else : ?>
-                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Unit</option>
+                                                                                <option value="<?= $i->id; ?>"><?= $i->item_code; ?> - <?= $i->item_name; ?> - Sisa Stock <?= $i->item_stock; ?> Unit (Rp.<?= format_rupiah($i->item_sale) ?>)</option>
                                                                             <?php endif; ?>
                                                                         <?php endforeach; ?>
                                                                     </select>
@@ -309,13 +309,28 @@ Transaksi Barang - Menu Kasir
                                                                         <?= $validation->getError('item_barang'); ?>
                                                                     </div>
                                                                 </div>
-                                                                <div class="input-group search-form">
-                                                                    <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? 'is-invalid' : ''; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ?: ''; ?>">
-                                                                    <div class="input-group-append">
-                                                                        <span class="input-group-text bg-transparent">Unit</span>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="input-group search-form">
+                                                                            <input type="number" min="1" class="form-control <?= $validation->getError('item_quantity') ? 'is-invalid' : ''; ?>" name="item_quantity" required placeholder="Jumlah Beli" value="<?= old('item_quantity') ?: ''; ?>">
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text bg-transparent">Unit</span>
+                                                                            </div>
+                                                                            <div class="invalid-feedback">
+                                                                                <?= $validation->getError('item_quantity'); ?>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="invalid-feedback">
-                                                                        <?= $validation->getError('item_quantity'); ?>
+                                                                    <div class="col-6">
+                                                                        <div class="input-group search-form">
+                                                                            <input type="number" min="0" step="0.01" class="form-control <?= $validation->getError('item_discount') ? 'is-invalid' : ''; ?>" name="item_discount" required placeholder="Besar Diskon" value="<?= old('item_discount') ?: 0; ?>">
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text bg-transparent">%</span>
+                                                                            </div>
+                                                                            <div class="invalid-feedback">
+                                                                                <?= $validation->getError('item_discount'); ?>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -342,17 +357,19 @@ Transaksi Barang - Menu Kasir
                                                                         <th>Kode Barang</th>
                                                                         <th>Nama Barang</th>
                                                                         <th>Banyak</th>
-                                                                        <th>Harga</th>
-                                                                        <th>Jumlah</th>
+                                                                        <th>Harga Satuan</th>
+                                                                        <th>Besar Diskon</th>
+                                                                        <th>Jumlah Sebelum Diskon</th>
+                                                                        <th>Jumlah Akhir</th>
                                                                         <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
-                                                                            <?php $colspan     = 3; ?>
-                                                                            <?php $colspan_all = 3; ?>
+                                                                            <?php $colspan     = 4; ?>
+                                                                            <?php $colspan_all = 4; ?>
 
                                                                             <th class="text-center"><i class="feather icon-settings"></i>
                                                                             </th>
                                                                         <?php else : ?>
-                                                                            <?php $colspan_all = 2; ?>
-                                                                            <?php $colspan     = 3; ?>
+                                                                            <?php $colspan_all = 3; ?>
+                                                                            <?php $colspan     = 4; ?>
                                                                         <?php endif; ?>
                                                                     </tr>
                                                                 </thead>
@@ -369,6 +386,8 @@ Transaksi Barang - Menu Kasir
                                                                             <td><?= $d->item_name; ?></td>
                                                                             <td><?= $d->detail_quantity; ?> Unit</td>
                                                                             <td>Rp. <?= format_rupiah($d->item_sale); ?></td>
+                                                                            <td>Rp. <?= format_rupiah($d->detail_value_discount); ?> (<?= $d->detail_percen_discount ?>%)</td>
+                                                                            <td>Rp. <?= format_rupiah($d->detail_before_discount); ?></td>
                                                                             <td>Rp. <?= format_rupiah($d->detail_total); ?></td>
                                                                             <?php if ($find_sale[0]->sale_pay <= $find_sale[0]->sale_total) : ?>
                                                                                 <td>

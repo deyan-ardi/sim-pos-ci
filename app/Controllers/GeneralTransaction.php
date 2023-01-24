@@ -137,6 +137,8 @@ class GeneralTransaction extends BaseController
             $formSubmit = $this->validate([
                 'item_barang'   => 'required',
                 'item_quantity' => 'required|integer',
+                'item_discount' => 'permit_empty',
+
             ]);
             if (!$formSubmit) {
                 return redirect()->to('/transaction-general')->withInput();
@@ -159,12 +161,21 @@ class GeneralTransaction extends BaseController
                 // Perhitungan Total Belanjar
                 $detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
 
+                // Perhitungan Besar Discount
+                $discount_total = $this->request->getPost('item_discount') * $detail / 100;
+                $after_discount = $detail - $discount_total;
+
                 // Total Keuntungan
                 $profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
-                $total_profit    = $find_sale[0]->sale_profit + $profit_per_item;
+                $profit_after_discount = $profit_per_item - $discount_total;
+                $total_profit    = $find_sale[0]->sale_profit + $profit_after_discount;
+
                 // $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
                 $save_sale_detail = $this->m_sale_detail->save([
-                    'detail_total'    => $detail,
+                    'detail_total'    => $after_discount,
+                    'detail_before_discount' => $detail,
+                    'detail_value_discount' => $discount_total,
+                    'detail_percen_discount' => $this->request->getPost('item_discount'),
                     'detail_quantity' => $this->request->getPost('item_quantity'),
                     'user_id'         => user()->id,
                     'item_id'         => $this->request->getPost('item_barang'),
@@ -618,6 +629,7 @@ class GeneralTransaction extends BaseController
                     $formSubmit = $this->validate([
                         'item_barang'   => 'required',
                         'item_quantity' => 'required|integer',
+                        'item_discount' => 'permit_empty',
                     ]);
                     if (!$formSubmit) {
                         return redirect()->to('/transaction-general')->withInput();
@@ -639,12 +651,21 @@ class GeneralTransaction extends BaseController
                     // Perhitungan Total Belanjar
                     $detail = $this->request->getPost('item_quantity') * $item_barang->item_sale;
 
+                    // Perhitungan Besar Discount
+                    $discount_total = $this->request->getPost('item_discount') * $detail / 100;
+                    $after_discount = $detail - $discount_total;
+
                     // Total Keuntungan
                     $profit_per_item = $this->request->getPost('item_quantity') * $item_barang->item_profit;
-                    $total_profit    = $find_sale[0]->sale_profit + $profit_per_item;
+                    $profit_after_discount = $profit_per_item - $discount_total;
+                    $total_profit    = $find_sale[0]->sale_profit + $profit_after_discount;
+
                     // $total_discount = $find_sale[0]->sale_discount + $item_barang->item_discount;
                     $save_sale_detail = $this->m_sale_detail->save([
-                        'detail_total'    => $detail,
+                        'detail_total'    => $after_discount,
+                        'detail_before_discount' => $detail,
+                        'detail_value_discount' => $discount_total,
+                        'detail_percen_discount' => $this->request->getPost('item_discount'),
                         'detail_send_status' => 0,
                         'detail_quantity' => $this->request->getPost('item_quantity'),
                         'user_id'         => user()->id,

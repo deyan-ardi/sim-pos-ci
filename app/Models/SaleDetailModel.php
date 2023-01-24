@@ -13,7 +13,7 @@ class SaleDetailModel extends Model
     protected $returnType       = SaleDetailModel::class;
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
-        'detail_total', 'detail_send_status', 'detail_send_address', 'detail_send_estimate', 'detail_quantity', 'user_id', 'item_id', 'sale_id',
+        'detail_total', 'detail_send_status', 'detail_value_discount', 'detail_percen_discount', 'detail_before_discount', 'detail_send_address', 'detail_send_estimate', 'detail_quantity', 'user_id', 'item_id', 'sale_id',
     ];
 
     // Dates

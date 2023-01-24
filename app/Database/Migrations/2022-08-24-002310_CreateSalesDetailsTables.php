@@ -11,6 +11,9 @@ class CreateSalesDetailsTables extends Migration
 		$this->forge->addField([
 			'id'              => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
 			'detail_total'    => ['type' => 'float'],
+			'detail_before_discount' => ['type' => 'float'],
+			'detail_percen_discount'    => ['type' => 'float'],
+			'detail_value_discount'    => ['type' => 'float'],
 			'detail_quantity' => ['type' => 'int'],
 			'detail_send_status' => ['type' => 'int', 'null' => true],
 			'detail_send_address' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],

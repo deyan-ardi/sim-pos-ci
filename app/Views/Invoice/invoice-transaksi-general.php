@@ -228,10 +228,16 @@
                             <h5 style="color:#ffffff;font-size:12px">Banyak</h5>
                         </td>
                         <td style="background-color:#7460ee;vertical-align: middle;">
-                            <h5 style="color:#ffffff;font-size:12px">Harga</h5>
+                            <h5 style="color:#ffffff;font-size:12px">Harga Satuan</h5>
+                        </td>
+                        <td style="background-color:#7460ee;vertical-align: middle;">
+                            <h5 style="color:#ffffff;font-size:12px">Besar Diskon</h5>
+                        </td>
+                        <td style="background-color:#7460ee;vertical-align: middle;">
+                            <h5 style="color:#ffffff;font-size:12px">Jumlah Sebelum Diskon</h5>
                         </td>
                         <td style="background-color:#7460ee;vertical-align: middle;" width="160px" class="text-right">
-                            <h5 style="color:#ffffff;font-size:12px">Sub Total</h5>
+                            <h5 style="color:#ffffff;font-size:12px">Jumlah Akhir</h5>
                         </td>
                     </tr>
                 </thead>
@@ -242,7 +248,7 @@
                     ?>
                     <?php if (empty($detail)) : ?>
                         <tr>
-                            <td colspan="6" style="text-align: center;">
+                            <td colspan="8" style="text-align: center;">
                                 <p style="font-size:12px">Tidak Ada Item Yang Dibeli</p>
                             </td>
                         </tr>
@@ -264,6 +270,12 @@
                                 <td>
                                     <p style="font-size:11px">Rp. <?= format_rupiah($d->item_sale); ?></p>
                                 </td>
+                                <td>
+                                    <p style="font-size:11px">Rp. <?= format_rupiah($d->detail_value_discount); ?> (<?= $d->detail_percen_discount ?> %)</p>
+                                </td>
+                                <td>
+                                    <p style="font-size:11px">Rp. <?= format_rupiah($d->detail_before_discount); ?></p>
+                                </td>
                                 <td class="text-right">
                                     <p style="font-size:11px">Rp. <?= format_rupiah($d->detail_total); ?></p>
                                 </td>
@@ -274,7 +286,7 @@
                     <?php endif; ?>
 
                     <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">SUB TOTAL I</p>
                         </td>
                         <td class="text-right">
@@ -282,7 +294,7 @@
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">DISKON MEMBER</p>
                         </td>
                         <td class="text-right">
@@ -294,7 +306,7 @@
                         $disk      = ($total * $sale[0]->sale_discount) / 100;
                         $sub_tot_2 = $total - $disk;
                         ?>
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">SUB TOTAL II</p>
                         </td>
                         <td class="text-right">
@@ -302,7 +314,7 @@
                         </td>
                     </tr>
                     <!-- <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">Handling & Final Connecting</p>
                         </td>
                         <td class="text-right">
@@ -310,7 +322,7 @@
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">SUB TOTAL III</p>
                         </td>
                         <td class="text-right">
@@ -318,7 +330,7 @@
                         </td>
                     </tr> -->
                     <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">PPh</p>
                         </td>
                         <td class="text-right">
@@ -326,7 +338,7 @@
                         </td>
                     </tr>
                     <tr style="background-color:whitesmoke">
-                        <td class="text-right" colspan="5">
+                        <td class="text-right" colspan="7">
                             <p style="font-size:11px">GRAND TOTAL</p>
                         </td>
                         <td class="text-right text-success">
