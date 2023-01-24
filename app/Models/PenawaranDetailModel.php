@@ -13,7 +13,7 @@ class PenawaranDetailModel extends Model
 	protected $returnType       = PenawaranDetailModel::class;
 	protected $useSoftDeletes   = false;
 	protected $allowedFields    = [
-		'detail_total', 'detail_quantity', 'user_id', 'item_id', 'penawaran_id',
+		'detail_total', 'detail_quantity', 'detail_percen_discount', 'detail_value_discount', 'detail_before_discount', 'user_id', 'item_id', 'penawaran_id',
 	];
 
 	// Dates

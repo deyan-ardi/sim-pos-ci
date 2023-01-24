@@ -140,6 +140,9 @@ class Transaction extends BaseController
                 foreach ($find_penawaran_detail as $detail_penawaran) {
                     $this->m_sale_detail->save([
                         'detail_total'    => $detail_penawaran->detail_total,
+                        'detail_before_discount'    => $detail_penawaran->detail_before_discount,
+                        'detail_value_discount' => $detail_penawaran->detail_value_discount,
+                        'detail_percen_discount' => $detail_penawaran->detail_percen_discount, 
                         'detail_quantity' => $detail_penawaran->detail_quantity,
                         'user_id'         => $detail_penawaran->user_id,
                         'item_id'         => $detail_penawaran->item_id,
@@ -310,7 +313,7 @@ class Transaction extends BaseController
         if (!empty($this->request->getPost('invoice'))) {
             $save_update_status = $this->m_sale->save([
                 'id'          => $find_sale_code->id,
-                'sale_status' => 1,
+                'sale_status' => 2,
             ]);
             if ($save_update_status) {
                 $find_detail = $this->m_sale_detail->getAllSaleDetail($find_sale_code->id);

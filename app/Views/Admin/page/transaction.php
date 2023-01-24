@@ -302,8 +302,10 @@ Transaksi Barang - Menu Kasir Project
                                                                         <th>Nama Barang</th>
                                                                         <th>Jumlah Pesan</th>
                                                                         <th>Jumlah Stok</th>
-                                                                        <th>Harga</th>
-                                                                        <th>Jumlah</th>
+                                                                        <th>Harga Satuan</th>
+                                                                        <th>Besar Diskon</th>
+                                                                        <th>Jumlah Sebelum Diskon</th>
+                                                                        <th>Jumlah Akhir</th>
                                                                         <th>Status Barang</th>
                                                                     </tr>
                                                                 </thead>
@@ -321,6 +323,8 @@ Transaksi Barang - Menu Kasir Project
                                                                             <td><?= $d->detail_quantity; ?> Unit</td>
                                                                             <td><?= $d->item_stock; ?> Unit</td>
                                                                             <td>Rp. <?= format_rupiah($d->item_sale); ?></td>
+                                                                            <td>Rp. <?= format_rupiah($d->detail_value_discount); ?> (<?= $d->detail_percen_discount ?>%)</td>
+                                                                            <td>Rp. <?= format_rupiah($d->detail_before_discount); ?></td>
                                                                             <td>Rp. <?= format_rupiah($d->detail_total); ?></td>
                                                                             <?php if ($d->item_stock - $d->detail_quantity < 0) : ?>
                                                                                 <?php $status--; ?>
@@ -337,13 +341,13 @@ Transaksi Barang - Menu Kasir Project
                                                                 <tfoot>
 
                                                                     <tr>
-                                                                        <th colspan="4" rowspan="10"></th>
+                                                                        <th colspan="7" rowspan="10"></th>
                                                                         <th>Sub Total I</th>
-                                                                        <th colspan="4">Rp. <?= format_rupiah($total_order); ?></th>
+                                                                        <th colspan="7">Rp. <?= format_rupiah($total_order); ?></th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Diskon Member</th>
-                                                                        <th colspan="4"> <?= $find_sale[0]->sale_discount; ?>%</th>
+                                                                        <th colspan="7"> <?= $find_sale[0]->sale_discount; ?>%</th>
                                                                     </tr>
                                                                     <tr>
                                                                         <?php
@@ -351,34 +355,34 @@ Transaksi Barang - Menu Kasir Project
                                                                         $sub_tot_2 = $total_order - $disk;
                                                                         ?>
                                                                         <th>Sub Total II</th>
-                                                                        <th colspan="4">Rp. <?= format_rupiah($sub_tot_2); ?></th>
+                                                                        <th colspan="7">Rp. <?= format_rupiah($sub_tot_2); ?></th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Handling & Final Connecting (Optional)</th>
-                                                                        <th colspan="4">
+                                                                        <th colspan="7">
                                                                             Rp. <?= format_rupiah($find_sale[0]->sale_handling); ?>
                                                                         </th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Sub Total III</th>
-                                                                        <th colspan="4">Rp. <?= format_rupiah($sub_tot_2 + $find_sale[0]->sale_handling); ?></th>
+                                                                        <th colspan="7">Rp. <?= format_rupiah($sub_tot_2 + $find_sale[0]->sale_handling); ?></th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>PPN</th>
-                                                                        <th colspan="4"><?= $pph[0]->pph_value; ?> %</th>
+                                                                        <th colspan="7"><?= $pph[0]->pph_value; ?> %</th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Grand Total</th>
-                                                                        <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
+                                                                        <th colspan="7">Rp. <?= format_rupiah($find_sale[0]->sale_total); ?></th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Perlu Membayar</th>
-                                                                        <th colspan="4">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
+                                                                        <th colspan="7">Rp. <?= format_rupiah($find_sale[0]->sale_kurang); ?></th>
                                                                     </tr>
                                                                     <?php if ($find_sale[0]->sale_pay < $find_sale[0]->sale_total  && $status == count($transaction)) : ?>
                                                                         <tr>
                                                                             <th>Bayar</th>
-                                                                            <th colspan="4">
+                                                                            <th colspan="7">
                                                                                 <form action="" onkeyup="ajax_send()" method="post" id="form">
                                                                                     <?php csrf_field() ?>
                                                                                     <input type="hidden" name="cetak_ulang" value="cetak_ulang">
@@ -391,12 +395,12 @@ Transaksi Barang - Menu Kasir Project
                                                                         <tr>
                                                                             <?php if ($status != count($transaction)) : ?>
                                                                                 <th>Bayar</th>
-                                                                                <th colspan="4">
+                                                                                <th colspan="7">
                                                                                     <p>Proses Pembayaran Tidak Dapat Dilakukan</p>
                                                                                 </th>
                                                                             <?php else : ?>
                                                                                 <th>Bayar</th>
-                                                                                <th colspan="4">
+                                                                                <th colspan="7">
                                                                                     <p>Rp. <?= format_rupiah($find_sale[0]->sale_pay); ?></p>
                                                                                 </th>
                                                                             <?php endif; ?>
@@ -404,7 +408,7 @@ Transaksi Barang - Menu Kasir Project
                                                                     <?php endif; ?>
                                                                     <tr>
                                                                         <th>Kembali</th>
-                                                                        <th colspan="4">
+                                                                        <th colspan="7">
                                                                             <h3 class="text-primary">Rp. <?= format_rupiah(($find_sale[0]->sale_pay - $find_sale[0]->sale_total < 0) ? 0 : $find_sale[0]->sale_pay - $find_sale[0]->sale_total); ?></h3>
                                                                         </th>
                                                                     </tr>

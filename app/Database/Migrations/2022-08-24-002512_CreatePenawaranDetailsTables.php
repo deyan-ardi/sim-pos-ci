@@ -11,6 +11,9 @@ class CreatePenawaranDetailsTables extends Migration
 		$this->forge->addField([
 			'id'              => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
 			'detail_total'    => ['type' => 'float'],
+			'detail_before_discount' => ['type' => 'float'],
+			'detail_percen_discount'    => ['type' => 'float'],
+			'detail_value_discount'    => ['type' => 'float'],
 			'detail_quantity' => ['type' => 'int'],
 			'user_id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
 			'item_id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
